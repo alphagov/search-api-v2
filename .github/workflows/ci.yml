@@ -20,3 +20,4 @@ jobs:
         with:
           bundler-cache: true
       - run: bin/rake
+      - run: bundle exec brakeman
