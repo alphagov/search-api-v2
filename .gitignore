@@ -17,3 +17,9 @@
 /tmp/pids/*
 !/tmp/pids/
 !/tmp/pids/.keep
+
+# RSpec run persistence (for e.g. --only-failures)
+spec/examples.txt
+
+# Simplecov
+/coverage/*
