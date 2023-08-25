@@ -9,6 +9,7 @@ gem "activemodel", RAILS_GEMS_VERSION
 gem "activesupport", RAILS_GEMS_VERSION
 gem "railties", RAILS_GEMS_VERSION
 
+gem "bootsnap", require: false
 gem "govuk_app_config"
 
 group :test do

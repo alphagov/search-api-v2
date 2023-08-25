@@ -24,6 +24,8 @@ GEM
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
+    bootsnap (1.16.0)
+      msgpack (~> 1.2)
     brakeman (6.0.1)
     builder (3.2.4)
     capybara (3.39.2)
@@ -81,6 +83,7 @@ GEM
     method_source (1.0.0)
     mini_mime (1.1.5)
     minitest (5.19.0)
+    msgpack (1.7.2)
     nio4r (2.5.9)
     nokogiri (1.15.4-aarch64-linux)
       racc (~> 1.4)
@@ -401,6 +404,7 @@ DEPENDENCIES
   actionpack (= 7.0.7.2)
   activemodel (= 7.0.7.2)
   activesupport (= 7.0.7.2)
+  bootsnap
   brakeman
   debug
   govuk_app_config
