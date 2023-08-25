@@ -9,7 +9,7 @@ gem "activemodel", RAILS_GEMS_VERSION
 gem "activesupport", RAILS_GEMS_VERSION
 gem "railties", RAILS_GEMS_VERSION
 
-gem "puma", "~> 5.0"
+gem "govuk_app_config"
 
 group :test do
   gem "simplecov", require: false
