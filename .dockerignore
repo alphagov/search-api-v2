@@ -8,3 +8,4 @@
 !/tmp/.keep
 /tmp/pids/*
 !/tmp/pids/.keep
+tmp
