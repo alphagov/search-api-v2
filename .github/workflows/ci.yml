@@ -1,3 +1,5 @@
+name: CI
+
 on:
   push:
     branches:
@@ -9,8 +11,18 @@ on:
         description: 'The branch, tag or SHA to checkout'
         default: main
         type: string
+
 jobs:
-  test:
+  lint-ruby:
+    name: Lint Ruby
+    uses: alphagov/govuk-infrastructure/.github/workflows/rubocop.yml@main
+
+  security-analysis:
+    name: Security Analysis
+    uses: alphagov/govuk-infrastructure/.github/workflows/brakeman.yml@main
+
+  test-ruby:
+    name: Test Ruby
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -20,4 +32,3 @@ jobs:
         with:
           bundler-cache: true
       - run: bin/rake
-      - run: bundle exec brakeman
