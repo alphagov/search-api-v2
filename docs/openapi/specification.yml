@@ -1,0 +1,36 @@
+openapi: '3.0.0'
+info:
+  title: GOV.UK Search API
+  version: 2.0.0-alpha
+
+paths:
+  /search:
+    get:
+      summary: Perform a search
+      description: Returns search results
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SearchResponse'
+
+components:
+  schemas:
+    SearchResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: string
+          default: []
+          maxItems: 0
+          description: 'The array of search results. Currently always empty (not yet implemented).'
+        total:
+          type: integer
+          description: 'The total number of items that match the search criteria.'
+        start:
+          type: integer
+          description: 'The starting index for the returned search results.'
