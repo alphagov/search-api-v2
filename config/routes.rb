@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resource :search, only: [:show]
+
   # Healthchecks
   get "/healthcheck/live", to: proc { [200, {}, %w[OK]] }
   get "/healthcheck/ready", to: GovukHealthcheck.rack_response
