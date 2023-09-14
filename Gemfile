@@ -11,6 +11,7 @@ gem "railties", RAILS_GEMS_VERSION
 
 gem "bootsnap", require: false
 gem "govuk_app_config"
+gem "govuk_message_queue_consumer"
 
 group :test do
   gem "simplecov", require: false
