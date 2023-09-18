@@ -29,4 +29,6 @@ RSpec.configure do |config|
   config.mock_with :rspec do |mocks|
     mocks.verify_partial_doubles = true # Preempting v4 default
   end
+
+  config.include FixtureHelpers
 end
