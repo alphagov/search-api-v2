@@ -30,10 +30,11 @@ Cloud libraries provide the mechanisms for exporting BigQuery data and importing
 5. The latency requirements of reflecting recent events in the search engine is not near-real time and will ultimately always be dependent on the time the search engine takes to train and tune it's models which may not be in our control 
 
 ## Decision
-Implement Scheduled option with sufficient headroom for GA4 export completion.
+In discussions between @richardTowers and Matt Gregory on 14th Sept 2023 it was agreed to implement Scheduled option with sufficient headroom for GA4 export completion and to use Python for orchestration code due to function and cloud library support
 
-Use Python for orchestration code due to function and cloud library support
+An Event triggered option would be more graceful but potentially over-engineering at this stage based on data import frequency and latency requirements
 
+A full blown workflow approach would be costly and with no existing capability in GOV.UK would likely add to maintenance overheads
 
 ## Status
-Ready for Review
+Decided

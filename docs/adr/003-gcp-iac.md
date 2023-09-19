@@ -19,7 +19,7 @@ Google Cloud Build is Google Cloud Platform's service for orchestrating build an
 3. Terraform providers are available for the majority of GCP resources and Google Cloud SDK can be used for those not natively supported
 
 ## Decision
-Use Terraform for IaC of Google Cloud resources and add additional deployments to existing [repository](https://github.com/alphagov/govuk-infrastructure) for Search Improvements
+In discussions between @richardTowers and Matt Gregory on 14th Sept 2023 it was agreed to use Terraform for IaC of Google Cloud resources and add additional deployments to existing [repository](https://github.com/alphagov/govuk-infrastructure) for Search Improvements
 
 ## Status
-Ready for Review
+Decided
