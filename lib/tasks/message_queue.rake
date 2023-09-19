@@ -15,7 +15,7 @@ namespace :message_queue do
   task consume_published_documents: :environment do
     GovukMessageQueueConsumer::Consumer.new(
       queue_name: "search_api_v2_published_documents",
-      processor: PublishedDocumentsQueueConsumer.new,
+      processor: ConsumePublishedDocumentFromMessageQueue,
     ).run
   end
 end
