@@ -1,6 +1,6 @@
-require_relative "publish_event"
+require_relative "publishing_event"
 
-module PublishEventPipeline
+module PublishingEventPipeline
   # Processes incoming content changes from the publishing message queue.
   class MessageProcessor
     # Implements the callback interface required by `govuk_message_queue_consumer`
@@ -15,12 +15,12 @@ module PublishEventPipeline
     end
 
     def call
-      publish_event = PublishEvent.from_message_hash(message.payload)
-      document = publish_event.document
+      publishing_event = PublishingEvent.from_message_hash(message.payload)
+      document = publishing_event.document
       Rails.logger.info(
         sprintf(
           "Received %s: %s ('%s')",
-          publish_event.update_type, document.content_id, document.title
+          publishing_event.update_type, document.content_id, document.title
         ),
       )
       message.ack

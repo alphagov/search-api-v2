@@ -1,9 +1,9 @@
-require "publish_event_pipeline/message_processor"
+require "publishing_event_pipeline/message_processor"
 
 require "govuk_message_queue_consumer"
 require "govuk_message_queue_consumer/test_helpers"
 
-RSpec.describe PublishEventPipeline::MessageProcessor do
+RSpec.describe PublishingEventPipeline::MessageProcessor do
   describe ".process" do
     subject(:class_acting_as_processor) { described_class }
 
@@ -14,7 +14,7 @@ RSpec.describe PublishEventPipeline::MessageProcessor do
     subject(:command) { described_class.new(message) }
 
     let(:message) { GovukMessageQueueConsumer::MockMessage.new(payload) }
-    let(:payload) { json_fixture_as_hash("message_queue/message.json") }
+    let(:payload) { json_fixture_as_hash("message_queue/republish_message.json") }
 
     before do
       allow(Rails.logger).to receive(:info)

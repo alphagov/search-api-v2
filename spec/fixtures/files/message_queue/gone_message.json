@@ -1,0 +1,21 @@
+{
+  "document_type": "gone",
+  "schema_name": "gone",
+  "base_path": "/government/publications/guidance-for-parents-and-carers-on-safeguarding-children-in-out-of-school-settings.lt",
+  "locale": "lt",
+  "publishing_app": "whitehall",
+  "public_updated_at": "2023-09-15T10:25:05Z",
+  "details": {
+    "explanation": "<div class=\"govspeak\"><p>This translation is no longer available. You can find the original version of this content at <a href=\"https://www.gov.uk/government/publications/guidance-for-parents-and-carers-on-safeguarding-children-in-out-of-school-settings\" class=\"govuk-link\">https://www.gov.uk/government/publications/guidance-for-parents-and-carers-on-safeguarding-children-in-out-of-school-settings</a></p>\n</div>",
+    "alternative_path": ""
+  },
+  "routes": [
+    {
+      "path": "/government/publications/guidance-for-parents-and-carers-on-safeguarding-children-in-out-of-school-settings.lt",
+      "type": "exact"
+    }
+  ],
+  "content_id": "966bae6d-223e-4102-a6e5-e874012390e5",
+  "govuk_request_id": "21-1695137029.556-10.13.22.59-107886",
+  "payload_version": 65893230
+}
