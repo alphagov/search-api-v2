@@ -19,5 +19,13 @@ class ConsumePublishedDocumentFromMessageQueue
       ),
     )
     message.ack
+  rescue StandardError => e
+    Rails.logger.error(
+      sprintf(
+        "Failed to handle message\nError: %s\nMessage: %s",
+        e.message,
+        message.inspect,
+      ),
+    )
   end
 end

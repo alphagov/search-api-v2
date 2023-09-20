@@ -27,5 +27,18 @@ RSpec.describe ConsumePublishedDocumentFromMessageQueue do
       expect(Rails.logger).to have_received(:info)
         .with("Received republish: f75d26a3-25a4-4c31-beea-a77cada4ce12 ('Ebola medal for over 3000 heroes')")
     end
+
+    context "when the message is invalid" do
+      let(:payload) { { "I am" => "not valid" } }
+
+      before do
+        allow(Rails.logger).to receive(:error)
+      end
+
+      it "logs the error" do
+        command.call
+        expect(Rails.logger).to have_received(:error)
+      end
+    end
   end
 end
