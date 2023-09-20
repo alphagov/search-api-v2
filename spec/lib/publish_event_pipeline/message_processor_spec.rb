@@ -1,6 +1,9 @@
+require "publish_event_pipeline/message_processor"
+
+require "govuk_message_queue_consumer"
 require "govuk_message_queue_consumer/test_helpers"
 
-RSpec.describe ConsumePublishedDocumentFromMessageQueue do
+RSpec.describe PublishEventPipeline::MessageProcessor do
   describe ".process" do
     subject(:class_acting_as_processor) { described_class }
 
