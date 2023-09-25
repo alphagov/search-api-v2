@@ -19,7 +19,7 @@ namespace :publishing_event_pipeline do
   task process_messages: :environment do
     GovukMessageQueueConsumer::Consumer.new(
       queue_name: ENV.fetch("PUBLISHING_EVENT_MESSAGE_QUEUE_NAME"),
-      processor: PublishingEventPipeline::MessageProcessor,
+      processor: PublishingEventPipeline::MessageProcessor.new,
     ).run
   end
 end
