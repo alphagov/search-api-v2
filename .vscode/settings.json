@@ -1,0 +1,6 @@
+{
+  // GOV.UK Docker uses `rbenv` to manage Ruby versions
+  "rubyLsp.rubyVersionManager": "rbenv",
+  "rubyLsp.formatter": "rubocop",
+  "testExplorer.useNativeTesting": true
+}

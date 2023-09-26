@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "connorshea.vscode-ruby-test-adapter",
+    "hbenl.vscode-test-explorer", // Remove when `vscode-ruby-test-adapter` supports native UI
+    "KoichiSasada.vscode-rdbg",
+    "Shopify.ruby-lsp",
+  ]
+}
