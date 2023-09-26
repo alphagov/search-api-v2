@@ -4,11 +4,11 @@ module PublishingEventPipeline
     attr_reader :event_class, :repository
 
     def initialize(
-      event_class: DocumentLifecycleEvent,
-      repository: PublishingEventPipeline.configuration.repository
+      repository:,
+      event_class: DocumentLifecycleEvent
     )
-      @event_class = event_class
       @repository = repository
+      @event_class = event_class
     end
 
     # Implements the callback interface required by `govuk_message_queue_consumer`
