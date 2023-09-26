@@ -57,7 +57,8 @@ RSpec.describe PublishingEventPipeline::DocumentLifecycleEvent do
 
         expect(repository).to have_received(:put).with(
           "f75d26a3-25a4-4c31-beea-a77cada4ce12",
-          an_instance_of(PublishingEventPipeline::Document),
+          { base_path: "/government/news/ebola-medal-for-over-3000-heroes" },
+          content: nil,
           payload_version: 65_861_808,
         )
       end
