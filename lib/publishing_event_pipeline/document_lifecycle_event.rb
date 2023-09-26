@@ -9,7 +9,8 @@ module PublishingEventPipeline
     # Creates an instance from a message hash conforming to the publishing schema.
     def initialize(
       message_hash,
-      content_extractor: ContentExtractor.new
+      content_extractor: ContentExtractor.new,
+      metadata_extractor: MetadataExtractor.new
     )
       # These fields *must* be present in the message hash, and we want to fail fast if they're not
       @content_id = message_hash.fetch("content_id")
@@ -17,10 +18,7 @@ module PublishingEventPipeline
       @payload_version = message_hash.fetch("payload_version")
 
       unless delete?
-        # TODO: Flesh these out as we need them
-        @metadata = {
-          base_path: message_hash.fetch("base_path"),
-        }
+        @metadata = metadata_extractor.call(message_hash)
         @content = content_extractor.call(message_hash)
       end
     end
