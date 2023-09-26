@@ -2,13 +2,11 @@ require "govuk_message_queue_consumer"
 require "govuk_message_queue_consumer/test_helpers"
 
 RSpec.describe PublishingEventPipeline::MessageProcessor do
-  subject(:processor) { described_class.new(event_class:, repository:) }
+  subject(:processor) { described_class.new(document_event_mapper:, repository:) }
 
   let(:repository) { double }
-  let(:event_class) { class_double(PublishingEventPipeline::DocumentLifecycleEvent, new: event) }
-  let(:event) do
-    instance_double(PublishingEventPipeline::DocumentLifecycleEvent, synchronize_to: nil)
-  end
+  let(:document_event_mapper) { ->(_) { event } }
+  let(:event) { double(synchronize_to: nil) } # rubocop:disable RSpec/VerifiedDoubles (interface)
 
   it_behaves_like "a message queue processor"
 
@@ -34,7 +32,7 @@ RSpec.describe PublishingEventPipeline::MessageProcessor do
 
     context "when processing the event fails" do
       before do
-        allow(event_class).to receive(:new).and_raise("Something went wrong")
+        allow(document_event_mapper).to receive(:call).and_raise("Something went wrong")
       end
 
       it "bubbles the error up and does not ack the message" do
