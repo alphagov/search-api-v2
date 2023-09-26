@@ -1,5 +1,3 @@
-require_relative "../document"
-
 module PublishingEventPipeline
   module Repositories
     # A repository that does nothing, for use until we can integrate with the real product.

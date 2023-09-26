@@ -9,6 +9,13 @@ require "rspec/rails"
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 GovukTest.configure
 
+# TODO: If the write side of this application is extracted to a separate unit, we will need to
+#   remove this, otherwise it can be made permanent.
+require "publishing_event_pipeline"
+PublishingEventPipeline.configure do |config|
+  config.repository = PublishingEventPipeline::Repositories::NullRepository.new
+end
+
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   config.default_formatter = "doc" if config.files_to_run.one?

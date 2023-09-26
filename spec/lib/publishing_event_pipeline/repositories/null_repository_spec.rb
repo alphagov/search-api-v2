@@ -1,5 +1,3 @@
-require "publishing_event_pipeline/repositories/null_repository"
-
 RSpec.describe PublishingEventPipeline::Repositories::NullRepository do
   let(:repository) { described_class.new }
   let(:content_id) { "some_content_id" }
