@@ -1,5 +1,3 @@
-require "publishing_event_pipeline/document_lifecycle_event"
-
 RSpec.describe PublishingEventPipeline::DocumentLifecycleEvent do
   subject(:event) { described_class.new(message_hash) }
 

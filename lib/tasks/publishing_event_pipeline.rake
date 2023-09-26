@@ -1,12 +1,20 @@
 require "govuk_message_queue_consumer"
+require "publishing_event_pipeline"
 
-require "publishing_event_pipeline/message_processor"
-
+# TODO: For now, this lives within the application repository, but we may want to extract it to a
+#   completely separate unit if we can keep dependencies between the read and write sides of this
+#   project to a minimum. This isn't something that is 100% clear at this stage.
+#
+# Until then, these tasks intentionally run outside the Rails environment to avoid us adding any
+# implicit dependencies on the Rails application.
+#
+# rubocop:disable Rails/RakeEnvironment
 namespace :publishing_event_pipeline do
   desc "Create RabbitMQ queue for development environment"
-  task create_queue: :environment do
+  task :create_queue do
     # The exchange, queue, and binding are created via Terraform outside of local development:
     # https://github.com/alphagov/govuk-aws/blob/main/terraform/projects/app-publishing-amazonmq/
+    # TODO: Remove dependency on Rails if extracted to a separate unit
     raise "This task should only be run in development" unless Rails.env.development?
 
     bunny = Bunny.new
@@ -16,10 +24,18 @@ namespace :publishing_event_pipeline do
   end
 
   desc "Listens to and processes messages from the published documents queue"
-  task process_messages: :environment do
+  task :process_messages do
+    PublishingEventPipeline.configure do |config|
+      # TODO: Once we have access to the search product and written a repository for it, this should
+      #  be set to the real repository. Until then, this allows us to verify that the pipeline is
+      #  working as expected through the logs.
+      config.repository = PublishingEventPipeline::Repositories::NullRepository.new
+    end
+
     GovukMessageQueueConsumer::Consumer.new(
       queue_name: ENV.fetch("PUBLISHING_EVENT_MESSAGE_QUEUE_NAME"),
       processor: PublishingEventPipeline::MessageProcessor.new,
     ).run
   end
 end
+# rubocop:enable Rails/RakeEnvironment

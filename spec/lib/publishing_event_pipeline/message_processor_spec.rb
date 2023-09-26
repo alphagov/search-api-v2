@@ -1,5 +1,3 @@
-require "publishing_event_pipeline/message_processor"
-
 require "govuk_message_queue_consumer"
 require "govuk_message_queue_consumer/test_helpers"
 

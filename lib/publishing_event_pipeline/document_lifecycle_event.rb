@@ -1,5 +1,3 @@
-require_relative "document"
-
 module PublishingEventPipeline
   # Domain model for a content change event coming through from a publishing system
   class DocumentLifecycleEvent

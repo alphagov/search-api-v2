@@ -1,6 +1,3 @@
-require_relative "document_lifecycle_event"
-require_relative "repositories/null_repository"
-
 module PublishingEventPipeline
   # Processes incoming content changes from the publishing message queue.
   class MessageProcessor
@@ -8,7 +5,7 @@ module PublishingEventPipeline
 
     def initialize(
       event_class: DocumentLifecycleEvent,
-      repository: Repositories::NullRepository.new
+      repository: PublishingEventPipeline.configuration.repository
     )
       @event_class = event_class
       @repository = repository
