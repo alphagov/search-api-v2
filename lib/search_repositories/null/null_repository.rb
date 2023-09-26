@@ -1,5 +1,5 @@
-module PublishingEventPipeline
-  module Repositories
+module SearchRepositories
+  module Null
     # A repository that does nothing, for use until we can integrate with the real product.
     class NullRepository
       def put(content_id, document, payload_version: nil)

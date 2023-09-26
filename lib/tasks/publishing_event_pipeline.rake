@@ -1,5 +1,7 @@
 require "govuk_message_queue_consumer"
+
 require "publishing_event_pipeline"
+require "search_repositories/null/null_repository"
 
 # TODO: For now, this lives within the application repository, but we may want to extract it to a
 #   completely separate unit if we can keep dependencies between the read and write sides of this
@@ -29,7 +31,7 @@ namespace :publishing_event_pipeline do
       # TODO: Once we have access to the search product and written a repository for it, this should
       #  be set to the real repository. Until then, this allows us to verify that the pipeline is
       #  working as expected through the logs.
-      config.repository = PublishingEventPipeline::Repositories::NullRepository.new
+      config.repository = SearchRepositories::Null::NullRepository.new
     end
 
     GovukMessageQueueConsumer::Consumer.new(
