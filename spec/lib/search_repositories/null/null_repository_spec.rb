@@ -1,4 +1,6 @@
-RSpec.describe PublishingEventPipeline::Repositories::NullRepository do
+require "search_repositories/null/null_repository"
+
+RSpec.describe SearchRepositories::Null::NullRepository do
   let(:repository) { described_class.new }
   let(:content_id) { "some_content_id" }
   let(:metadata) { { base_path: "/some/path" } }
