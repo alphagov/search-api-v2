@@ -1,7 +1,8 @@
 RSpec.describe PublishingEventPipeline::DocumentLifecycleEvent do
-  subject(:event) { described_class.new(message_hash, content_extractor:) }
+  subject(:event) { described_class.new(message_hash, content_extractor:, metadata_extractor:) }
 
   let(:content_extractor) { ->(_) { "Lorem ipsum dolor sit amet" } }
+  let(:metadata_extractor) { ->(_) { { reticulating: "splines" } } }
 
   describe "#initialize" do
     context "with a valid republish message" do
@@ -59,7 +60,7 @@ RSpec.describe PublishingEventPipeline::DocumentLifecycleEvent do
 
         expect(repository).to have_received(:put).with(
           "f75d26a3-25a4-4c31-beea-a77cada4ce12",
-          { base_path: "/government/news/ebola-medal-for-over-3000-heroes" },
+          { reticulating: "splines" },
           content: "Lorem ipsum dolor sit amet",
           payload_version: 65_861_808,
         )
