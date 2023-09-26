@@ -1,32 +1,30 @@
 require "search_repositories/null/null_repository"
 
 RSpec.describe SearchRepositories::Null::NullRepository do
-  let(:repository) { described_class.new }
-  let(:content_id) { "some_content_id" }
-  let(:metadata) { { base_path: "/some/path" } }
-  let(:content) { "Lorem ipsum dolor sit amet, consecutur edipiscing elit" }
-  let(:payload_version) { "1" }
+  let(:repository) { described_class.new(logger:) }
+  let(:logger) { instance_double(Logger, info: nil) }
 
   describe "#put" do
     it "logs the put operation" do
-      expect(Rails.logger).to receive(:info).with(
-        a_string_ending_with(
-          "Persisted some_content_id: /some/path (@v1): " \
-          "'Lorem ipsum dolor sit amet, consecutur edipiscing e...'",
-        ),
+      repository.put(
+        "some_content_id",
+        { base_path: "/some/path" },
+        content: "Lorem ipsum dolor sit amet, consecutur edipiscing elit",
+        payload_version: "1",
       )
 
-      repository.put(content_id, metadata, content:, payload_version:)
+      expect(logger).to have_received(:info).with(
+        "[PUT some_content_id@v1] /some/path: " \
+          "'Lorem ipsum dolor sit amet, consecutur edipiscing e...'",
+      )
     end
   end
 
   describe "#delete" do
     it "logs the delete operation" do
-      expect(Rails.logger).to receive(:info).with(
-        a_string_ending_with("Deleted some_content_id (@v1)"),
-      )
+      repository.delete("some_content_id", payload_version: "1")
 
-      repository.delete(content_id, payload_version:)
+      expect(logger).to have_received(:info).with("[DELETE some_content_id@v1]")
     end
   end
 end

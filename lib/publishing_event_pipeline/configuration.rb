@@ -3,7 +3,7 @@ module PublishingEventPipeline
     attr_accessor :logger, :message_queue_name, :repository
 
     def initialize
-      @logger = Logger.new($stdout)
+      @logger = Logger.new($stdout, progname: "PublishingEventPipeline")
     end
   end
 end

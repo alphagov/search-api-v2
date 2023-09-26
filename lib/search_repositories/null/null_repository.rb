@@ -1,26 +1,30 @@
 module SearchRepositories
   module Null
-    # A repository that does nothing, for use until we can integrate with the real product.
+    # A repository that does nothing other than logging out any received calls, for use until we can
+    # integrate with the real product.
     class NullRepository
+      def initialize(logger: Logger.new($stdout, progname: self.class.name))
+        @logger = logger
+      end
+
       def put(content_id, metadata, content: nil, payload_version: nil)
         content_snippet = content ? content[0..50] : "<no content>"
 
-        Rails.logger.info(
+        logger.info(
           sprintf(
-            "[%s] Persisted %s: %s (@v%s): '%s...'",
-            self.class.name, content_id, metadata[:base_path], payload_version, content_snippet
+            "[PUT %s@v%s] %s: '%s...'",
+            content_id, payload_version, metadata[:base_path], content_snippet
           ),
         )
       end
 
       def delete(content_id, payload_version: nil)
-        Rails.logger.info(
-          sprintf(
-            "[%s] Deleted %s (@v%s)",
-            self.class.name, content_id, payload_version
-          ),
-        )
+        logger.info(sprintf("[DELETE %s@v%s]", content_id, payload_version))
       end
+
+    private
+
+      attr_reader :logger
     end
   end
 end
