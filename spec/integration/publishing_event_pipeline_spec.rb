@@ -18,8 +18,11 @@ RSpec.describe "Publishing event pipeline" do
 
     it "is added to the repository" do
       result = repository.get("f75d26a3-25a4-4c31-beea-a77cada4ce12")
-      # TODO: Flesh out the document model and test that it is as expected
-      expect(result).to be_present
+      # TODO: Flesh out the document model and test that everything is as expected
+      expect(result[:metadata]).to eq(
+        base_path: "/government/news/ebola-medal-for-over-3000-heroes",
+      )
+      expect(result[:content]).to be_nil
     end
   end
 
@@ -29,7 +32,6 @@ RSpec.describe "Publishing event pipeline" do
 
     it "is removed from the repository" do
       result = repository.get("966bae6d-223e-4102-a6e5-e874012390e5")
-      # TODO: Flesh out the document model and test that it is as expected
       expect(result).to be_nil
     end
   end

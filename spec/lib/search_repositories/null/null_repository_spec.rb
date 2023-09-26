@@ -4,16 +4,19 @@ RSpec.describe SearchRepositories::Null::NullRepository do
   let(:repository) { described_class.new }
   let(:content_id) { "some_content_id" }
   let(:metadata) { { base_path: "/some/path" } }
-  let(:document) { instance_double(PublishingEventPipeline::Document, metadata:) }
+  let(:content) { "Lorem ipsum dolor sit amet, consecutur edipiscing elit" }
   let(:payload_version) { "1" }
 
   describe "#put" do
     it "logs the put operation" do
       expect(Rails.logger).to receive(:info).with(
-        a_string_ending_with("Persisted some_content_id: /some/path (@v1)"),
+        a_string_ending_with(
+          "Persisted some_content_id: /some/path (@v1): " \
+          "'Lorem ipsum dolor sit amet, consecutur edipiscing e...'",
+        ),
       )
 
-      repository.put(content_id, document, payload_version:)
+      repository.put(content_id, metadata, content:, payload_version:)
     end
   end
 

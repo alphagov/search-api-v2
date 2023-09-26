@@ -13,7 +13,13 @@ module PublishingEventPipeline
       @document_type = message_hash.fetch("document_type")
       @payload_version = message_hash.fetch("payload_version")
 
-      @document = Document.from_message_hash(message_hash) unless delete?
+      unless delete?
+        # TODO: Flesh these out as we need them
+        @metadata = {
+          base_path: message_hash.fetch("base_path"),
+        }
+        @content = nil
+      end
     end
 
     # Persists the document to, or removes it from, a repository for a search product.
@@ -21,13 +27,13 @@ module PublishingEventPipeline
       if delete?
         repository.delete(content_id, payload_version:)
       else
-        repository.put(content_id, document, payload_version:)
+        repository.put(content_id, metadata, content:, payload_version:)
       end
     end
 
   private
 
-    attr_reader :content_id, :document_type, :payload_version, :document
+    attr_reader :content_id, :document_type, :payload_version, :metadata, :content
 
     def delete?
       UNPUBLISH_DOCUMENT_TYPES.include?(document_type)

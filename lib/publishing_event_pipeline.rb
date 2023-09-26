@@ -1,5 +1,4 @@
 require "publishing_event_pipeline/configuration"
-require "publishing_event_pipeline/document"
 require "publishing_event_pipeline/document_lifecycle_event"
 
 require "publishing_event_pipeline/message_processor"

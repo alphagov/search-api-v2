@@ -17,8 +17,8 @@ module PublishingEventPipeline
       end
 
       # rubocop:disable Lint/UnusedMethodArgument
-      def put(content_id, document, payload_version: nil)
-        documents[content_id] = document
+      def put(content_id, metadata, content: nil, payload_version: nil)
+        documents[content_id] = { metadata:, content: }
       end
 
       def delete(content_id, payload_version: nil)
