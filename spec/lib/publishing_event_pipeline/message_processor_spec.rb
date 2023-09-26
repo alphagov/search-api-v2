@@ -4,43 +4,45 @@ require "govuk_message_queue_consumer"
 require "govuk_message_queue_consumer/test_helpers"
 
 RSpec.describe PublishingEventPipeline::MessageProcessor do
-  describe ".process" do
-    subject(:class_acting_as_processor) { described_class }
+  subject(:processor) { described_class.new(event_class:, repository:) }
 
-    it_behaves_like "a message queue processor"
+  let(:repository) { double }
+  let(:event_class) { class_double(PublishingEventPipeline::DocumentLifecycleEvent, new: event) }
+  let(:event) do
+    instance_double(PublishingEventPipeline::DocumentLifecycleEvent, synchronize_to: nil)
   end
 
-  describe "when receiving an incoming message" do
-    subject(:command) { described_class.new(message) }
+  it_behaves_like "a message queue processor"
 
+  describe "when receiving an incoming message" do
     let(:message) { GovukMessageQueueConsumer::MockMessage.new(payload) }
-    let(:payload) { json_fixture_as_hash("message_queue/republish_message.json") }
+    let(:payload) { { "I am" => "a message" } }
 
     before do
       allow(Rails.logger).to receive(:info)
     end
 
     it "acks incoming messages" do
-      command.call
+      processor.process(message)
+
       expect(message).to be_acked
     end
 
-    it "logs the payload of incoming messages" do
-      command.call
-      expect(Rails.logger).to have_received(:info)
-        .with("Received republish: f75d26a3-25a4-4c31-beea-a77cada4ce12 ('Ebola medal for over 3000 heroes')")
+    it "makes the event synchronize itself to the repository" do
+      processor.process(message)
+
+      expect(event).to have_received(:synchronize_to).with(repository)
     end
 
-    context "when the message is invalid" do
-      let(:payload) { { "I am" => "not valid" } }
-
+    context "when processing the event fails" do
       before do
-        allow(Rails.logger).to receive(:error)
+        allow(event_class).to receive(:new).and_raise("Something went wrong")
       end
 
-      it "logs the error" do
-        command.call
-        expect(Rails.logger).to have_received(:error)
+      it "bubbles the error up and does not ack the message" do
+        expect { processor.process(message) }.to raise_error("Something went wrong")
+
+        expect(message).not_to be_acked
       end
     end
   end
