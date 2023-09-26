@@ -5,11 +5,7 @@ RSpec.describe "Publishing event pipeline" do
   let(:message) { GovukMessageQueueConsumer::MockMessage.new(payload) }
 
   before do
-    PublishingEventPipeline.configure do |config|
-      config.repository = repository
-    end
-
-    PublishingEventPipeline::MessageProcessor.new.process(message)
+    PublishingEventPipeline::MessageProcessor.new(repository:).process(message)
   end
 
   describe "when a message is received that a document is published" do

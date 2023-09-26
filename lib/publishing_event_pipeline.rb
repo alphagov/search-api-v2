@@ -1,3 +1,5 @@
+require "govuk_message_queue_consumer"
+
 require "publishing_event_pipeline/configuration"
 require "publishing_event_pipeline/document_lifecycle_event"
 
@@ -10,5 +12,14 @@ module PublishingEventPipeline
 
   def self.configure
     yield(configuration)
+  end
+
+  def self.run
+    GovukMessageQueueConsumer::Consumer.new(
+      queue_name: PublishingEventPipeline.configuration.message_queue_name,
+      processor: PublishingEventPipeline::MessageProcessor.new(
+        repository: configuration.repository,
+      ),
+    ).run
   end
 end

@@ -1,5 +1,3 @@
-require "govuk_message_queue_consumer"
-
 require "publishing_event_pipeline"
 require "search_repositories/null/null_repository"
 
@@ -32,12 +30,10 @@ namespace :publishing_event_pipeline do
       #  be set to the real repository. Until then, this allows us to verify that the pipeline is
       #  working as expected through the logs.
       config.repository = SearchRepositories::Null::NullRepository.new
+      config.message_queue_name = ENV.fetch("PUBLISHING_EVENT_MESSAGE_QUEUE_NAME")
     end
 
-    GovukMessageQueueConsumer::Consumer.new(
-      queue_name: ENV.fetch("PUBLISHING_EVENT_MESSAGE_QUEUE_NAME"),
-      processor: PublishingEventPipeline::MessageProcessor.new,
-    ).run
+    PublishingEventPipeline.run
   end
 end
 # rubocop:enable Rails/RakeEnvironment
