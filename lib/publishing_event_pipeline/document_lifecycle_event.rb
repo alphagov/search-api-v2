@@ -7,7 +7,10 @@ module PublishingEventPipeline
     UNPUBLISH_DOCUMENT_TYPES = %w[gone redirect substitute vanish].freeze
 
     # Creates an instance from a message hash conforming to the publishing schema.
-    def initialize(message_hash)
+    def initialize(
+      message_hash,
+      content_extractor: ContentExtractor.new
+    )
       # These fields *must* be present in the message hash, and we want to fail fast if they're not
       @content_id = message_hash.fetch("content_id")
       @document_type = message_hash.fetch("document_type")
@@ -18,7 +21,7 @@ module PublishingEventPipeline
         @metadata = {
           base_path: message_hash.fetch("base_path"),
         }
-        @content = nil
+        @content = content_extractor.call(message_hash)
       end
     end
 

@@ -14,11 +14,12 @@ RSpec.describe "Publishing event pipeline" do
 
     it "is added to the repository" do
       result = repository.get("f75d26a3-25a4-4c31-beea-a77cada4ce12")
-      # TODO: Flesh out the document model and test that everything is as expected
+      # TODO: Continue fleshing out the document model and test that everything is as expected
       expect(result[:metadata]).to eq(
         base_path: "/government/news/ebola-medal-for-over-3000-heroes",
       )
-      expect(result[:content]).to be_nil
+      expect(result[:content]).to start_with("<div class=\"govspeak\"><p>The government has")
+      expect(result[:content].length).to eq(4_932)
     end
   end
 
