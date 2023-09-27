@@ -1,13 +1,13 @@
 require "govuk_message_queue_consumer"
 
 require "publishing_event_pipeline/configuration"
-require "publishing_event_pipeline/content_extractor"
 require "publishing_event_pipeline/document_event_mapper"
-require "publishing_event_pipeline/document_publish_event"
-require "publishing_event_pipeline/document_unpublish_event"
-require "publishing_event_pipeline/metadata_extractor"
-
 require "publishing_event_pipeline/message_processor"
+
+require "publishing_event_pipeline/events/publish"
+require "publishing_event_pipeline/events/unpublish"
+require "publishing_event_pipeline/extractors/content"
+require "publishing_event_pipeline/extractors/metadata"
 
 module PublishingEventPipeline
   def self.configuration

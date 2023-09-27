@@ -1,4 +1,4 @@
-RSpec.describe PublishingEventPipeline::DocumentUnpublishEvent do
+RSpec.describe PublishingEventPipeline::Events::Unpublish do
   subject(:event) { described_class.new(content_id, payload_version:) }
 
   let(:repository) { double(delete: nil) } # rubocop:disable RSpec/VerifiedDoubles (is an interface)

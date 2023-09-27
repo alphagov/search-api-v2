@@ -18,10 +18,10 @@ RSpec.describe PublishingEventPipeline::DocumentEventMapper do
     context "when the document is any publishing type" do
       let(:document_type) { "spline-reticulation-report" }
 
-      it "returns a DocumentPublishEvent" do
+      it "returns a publish event" do
         event = mapper.call(message_hash)
 
-        expect(event).to be_a(PublishingEventPipeline::DocumentPublishEvent)
+        expect(event).to be_a(PublishingEventPipeline::Events::Publish)
         expect(event.content_id).to eq("content-id")
         expect(event.content).to eq("the_content")
         expect(event.metadata).to eq("the_metadata")
@@ -33,10 +33,10 @@ RSpec.describe PublishingEventPipeline::DocumentEventMapper do
       context "when the document is an unpublishing type of #{unpublishing_type}" do
         let(:document_type) { unpublishing_type }
 
-        it "returns a DocumentUnpublishEvent" do
+        it "returns an unpublish event" do
           event = mapper.call(message_hash)
 
-          expect(event).to be_a(PublishingEventPipeline::DocumentUnpublishEvent)
+          expect(event).to be_a(PublishingEventPipeline::Events::Unpublish)
           expect(event.content_id).to eq("content-id")
           expect(event.payload_version).to eq("payload-version")
         end

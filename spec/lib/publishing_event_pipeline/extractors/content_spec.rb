@@ -1,4 +1,4 @@
-RSpec.describe PublishingEventPipeline::ContentExtractor do
+RSpec.describe PublishingEventPipeline::Extractors::Content do
   describe "#call" do
     subject(:content) { described_class.new.call(message_hash) }
 

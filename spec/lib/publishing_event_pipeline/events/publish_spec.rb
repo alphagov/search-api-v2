@@ -1,4 +1,4 @@
-RSpec.describe PublishingEventPipeline::DocumentPublishEvent do
+RSpec.describe PublishingEventPipeline::Events::Publish do
   subject(:event) { described_class.new(content_id, metadata, content:, payload_version:) }
 
   let(:repository) { double(put: nil) } # rubocop:disable RSpec/VerifiedDoubles (is an interface)
