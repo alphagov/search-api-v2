@@ -1,4 +1,4 @@
-RSpec.describe PublishingEventPipeline::MetadataExtractor do
+RSpec.describe PublishingEventPipeline::Extractors::Metadata do
   subject(:extractor) { described_class.new }
 
   describe "#call" do

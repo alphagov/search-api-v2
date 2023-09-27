@@ -6,8 +6,8 @@ module PublishingEventPipeline
     UNPUBLISH_DOCUMENT_TYPES = %w[gone redirect substitute vanish].freeze
 
     def initialize(
-      content_extractor: ContentExtractor.new,
-      metadata_extractor: MetadataExtractor.new
+      content_extractor: Extractors::Content.new,
+      metadata_extractor: Extractors::Metadata.new
     )
       @content_extractor = content_extractor
       @metadata_extractor = metadata_extractor
@@ -22,9 +22,9 @@ module PublishingEventPipeline
         metadata = metadata_extractor.call(message_hash)
         content = content_extractor.call(message_hash)
 
-        DocumentPublishEvent.new(content_id, metadata, content:, payload_version:)
+        Events::Publish.new(content_id, metadata, content:, payload_version:)
       else
-        DocumentUnpublishEvent.new(content_id, payload_version:)
+        Events::Unpublish.new(content_id, payload_version:)
       end
     end
 
