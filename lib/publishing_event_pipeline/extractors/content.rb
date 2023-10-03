@@ -1,13 +1,33 @@
+require "jsonpath"
+
 module PublishingEventPipeline
   module Extractors
-    # Extracts indexable unstructured content from a publishing event
+    # Extracts single string of indexable unstructured content from a publishing event
     class Content
-      # Returns a string of unstructured content
+      # JSON paths of keys in the message hash to extract content from
+      # (see https://github.com/joshbuddy/jsonpath)
+      VALUE_PATHS = %w[
+        $.details.body
+        $.details.contact_groups[*].title
+        $.details.description
+        $.details.hidden_search_terms
+        $.details.introduction
+        $.details.introductory_paragraph
+        $.details.metadata.hidden_indexable_content[*]
+        $.details.metadata.project_code
+        $.details.more_information
+        $.details.need_to_know
+        $.details.parts[*].title
+        $.details.parts[*].body
+        $.details.summary
+        $.details.title
+      ].map { JsonPath.new(_1) }.freeze
+
       def call(message_hash)
-        # TODO: Eventually, this should do something more sophisticated along the lines of what the
-        # existing search-api does in `lib/govuk_index/presenters/indexable_content_presenter.rb`, but
-        # this is a decent enough MVP for now.
-        message_hash.dig("details", "body")
+        VALUE_PATHS
+          .map { _1.on(message_hash) }
+          .flatten
+          .join("\n")
       end
     end
   end

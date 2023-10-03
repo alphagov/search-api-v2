@@ -14,6 +14,7 @@ gem "govuk_app_config"
 
 # Gems for publishing_event_pipeline
 gem "govuk_message_queue_consumer", require: false
+gem "jsonpath", require: false
 
 group :test do
   gem "simplecov", require: false
