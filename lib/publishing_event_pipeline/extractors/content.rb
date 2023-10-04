@@ -1,12 +1,11 @@
-require "jsonpath"
-
 module PublishingEventPipeline
   module Extractors
     # Extracts single string of indexable unstructured content from a publishing event
     class Content
-      # JSON paths of keys in the message hash to extract content from
-      # (see https://github.com/joshbuddy/jsonpath)
-      VALUE_PATHS = %w[
+      include Helpers::Extract
+
+      # All the possible keys in the message hash that can contain content that we want to index
+      INDEXABLE_CONTENT_VALUES_PATHS = %w[
         $.details.body
         $.details.contact_groups[*].title
         $.details.description
@@ -17,17 +16,13 @@ module PublishingEventPipeline
         $.details.metadata.project_code
         $.details.more_information
         $.details.need_to_know
-        $.details.parts[*].title
-        $.details.parts[*].body
+        $.details.parts[*]['title','body']
         $.details.summary
         $.details.title
-      ].map { JsonPath.new(_1) }.freeze
+      ].freeze
 
       def call(message_hash)
-        VALUE_PATHS
-          .map { _1.on(message_hash) }
-          .flatten
-          .join("\n")
+        extract_all(message_hash, INDEXABLE_CONTENT_VALUES_PATHS)
       end
     end
   end

@@ -1,0 +1,49 @@
+{
+  "title": "Brighton & Hove City Council",
+  "public_updated_at": "2023-09-28T14:56:19Z",
+  "publishing_app": "search-admin",
+  "rendering_app": null,
+  "update_type": "minor",
+  "phase": "live",
+  "analytics_identifier": null,
+  "document_type": "external_content",
+  "schema_name": "external_content",
+  "first_published_at": "2023-09-28T14:56:19Z",
+  "base_path": null,
+  "description": "Website of Brighton & Hove City Council",
+  "details": {
+    "url": "https://www.brighton-hove.gov.uk",
+    "hidden_search_terms": [
+      "Brighton & Hove City Council"
+    ]
+  },
+  "routes": [],
+  "redirects": [],
+  "content_id": "526d5caf-221b-4c7b-9e74-b3e0b189fc8d",
+  "locale": "en",
+  "expanded_links": {
+    "available_translations": [
+      {
+        "title": "Brighton & Hove City Council",
+        "public_updated_at": "2023-09-28T14:56:19Z",
+        "analytics_identifier": null,
+        "document_type": "external_content",
+        "schema_name": "external_content",
+        "base_path": null,
+        "api_path": null,
+        "withdrawn": false,
+        "content_id": "526d5caf-221b-4c7b-9e74-b3e0b189fc8d",
+        "locale": "en"
+      }
+    ]
+  },
+  "user_journey_document_supertype": "thing",
+  "email_document_supertype": "other",
+  "government_document_supertype": "other",
+  "content_purpose_subgroup": "other",
+  "content_purpose_supergroup": "other",
+  "publishing_request_id": "62ddf38267b456f12f1090feef936181",
+  "govuk_request_id": "62ddf38267b456f12f1090feef936181",
+  "links": {},
+  "payload_version": 17
+}
