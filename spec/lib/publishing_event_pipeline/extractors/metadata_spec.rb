@@ -2,6 +2,22 @@ RSpec.describe PublishingEventPipeline::Extractors::Metadata do
   subject(:extracted_data) { described_class.new.call(message_hash) }
 
   describe "#call" do
+    describe "content_id" do
+      subject(:content_id) { extracted_data[:content_id] }
+
+      let(:message_hash) { { "content_id" => "000-000-000" } }
+
+      it { is_expected.to eq("000-000-000") }
+    end
+
+    describe "document_type" do
+      subject(:document_type) { extracted_data[:document_type] }
+
+      let(:message_hash) { { "document_type" => "foo_bar" } }
+
+      it { is_expected.to eq("foo_bar") }
+    end
+
     describe "title" do
       subject(:title) { extracted_data[:title] }
 
@@ -78,6 +94,28 @@ RSpec.describe PublishingEventPipeline::Extractors::Metadata do
       end
 
       context "without a base_path or external URL" do
+        let(:message_hash) { {} }
+
+        it { is_expected.to be_nil }
+      end
+    end
+
+    describe "public_timestamp" do
+      subject(:public_timestamp) { extracted_data[:public_timestamp] }
+
+      let(:message_hash) { { "public_updated_at" => "2012-02-01T00:00:00Z" } }
+
+      it { is_expected.to eq("2012-02-01T00:00:00Z") }
+    end
+
+    describe "public_timestamp_int" do
+      subject(:public_timestamp_int) { extracted_data[:public_timestamp_int] }
+
+      let(:message_hash) { { "public_updated_at" => "2012-02-01T00:00:00Z" } }
+
+      it { is_expected.to eq(1_328_054_400) }
+
+      context "without a public_timestamp" do
         let(:message_hash) { {} }
 
         it { is_expected.to be_nil }
