@@ -433,6 +433,7 @@ DEPENDENCIES
   govuk_message_queue_consumer
   govuk_test
   jsonpath
+  plek
   railties (= 7.0.7.2)
   rspec-rails
   rubocop-govuk
