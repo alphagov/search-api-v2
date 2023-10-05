@@ -79,7 +79,7 @@ RSpec.describe PublishingEventPipeline::Extractors::Content do
         }
       end
 
-      it { is_expected.to eq("x\ny\nz\na\nb\nc") }
+      it { is_expected.to eq("x\na\ny\nb\nz\nc") }
     end
 
     describe "without any fields" do

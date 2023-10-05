@@ -8,7 +8,7 @@ RSpec.describe SearchRepositories::Null::NullRepository do
     it "logs the put operation" do
       repository.put(
         "some_content_id",
-        { base_path: "/some/path" },
+        { link: "/some/path" },
         content: "Lorem ipsum dolor sit amet, consecutur edipiscing elit",
         payload_version: "1",
       )

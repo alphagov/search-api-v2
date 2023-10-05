@@ -13,7 +13,7 @@ module SearchRepositories
         logger.info(
           sprintf(
             "[PUT %s@v%s] %s: '%s...'",
-            content_id, payload_version, metadata[:base_path], content_snippet
+            content_id, payload_version, metadata[:link], content_snippet
           ),
         )
       end

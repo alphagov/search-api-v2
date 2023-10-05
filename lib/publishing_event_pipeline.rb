@@ -1,8 +1,11 @@
 require "govuk_message_queue_consumer"
+require "jsonpath"
 
 require "publishing_event_pipeline/configuration"
 require "publishing_event_pipeline/document_event_mapper"
 require "publishing_event_pipeline/message_processor"
+
+require "publishing_event_pipeline/helpers/extract"
 
 require "publishing_event_pipeline/events/publish"
 require "publishing_event_pipeline/events/unpublish"
