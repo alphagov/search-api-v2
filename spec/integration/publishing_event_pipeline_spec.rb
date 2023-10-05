@@ -19,6 +19,7 @@ RSpec.describe "Publishing event pipeline" do
         title: "Ebola medal for over 3000 heroes",
         description: "A new medal has been created to recognise the bravery and hard work of people who have helped to stop the spread of Ebola.",
         link: "/government/news/ebola-medal-for-over-3000-heroes",
+        url: "http://www.dev.gov.uk/government/news/ebola-medal-for-over-3000-heroes",
       )
       expect(result[:content]).to start_with("<div class=\"govspeak\"><p>The government has")
       expect(result[:content]).to end_with("response to Ebola</a>.</p>\n</div>\n\n</div>")
@@ -36,6 +37,7 @@ RSpec.describe "Publishing event pipeline" do
         title: "Brighton & Hove City Council",
         description: "Website of Brighton & Hove City Council",
         link: "https://www.brighton-hove.gov.uk",
+        url: "https://www.brighton-hove.gov.uk",
       )
       expect(result[:content]).to eq("Brighton & Hove City Council")
     end

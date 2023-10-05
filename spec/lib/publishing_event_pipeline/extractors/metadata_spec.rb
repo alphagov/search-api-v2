@@ -47,5 +47,41 @@ RSpec.describe PublishingEventPipeline::Extractors::Metadata do
         it { is_expected.to be_nil }
       end
     end
+
+    describe "url" do
+      subject(:url) { extracted_data[:url] }
+
+      before do
+        allow(Plek).to receive(:new).and_return(
+          instance_double(Plek, website_root: "https://test.gov.uk"),
+        )
+      end
+
+      context "with a base_path" do
+        let(:message_hash) { { "base_path" => "/test" } }
+
+        it { is_expected.to eq("https://test.gov.uk/test") }
+      end
+
+      context "with an external URL" do
+        let(:message_hash) { { "details" => { "url" => "https://liverpool.gov.uk/" } } }
+
+        it { is_expected.to eq("https://liverpool.gov.uk/") }
+      end
+
+      context "with both a base_path and an external URL" do
+        let(:message_hash) do
+          { "base_path" => "/test", "details" => { "url" => "https://liverpool.gov.uk/" } }
+        end
+
+        it { is_expected.to eq("https://test.gov.uk/test") }
+      end
+
+      context "without a base_path or external URL" do
+        let(:message_hash) { {} }
+
+        it { is_expected.to be_nil }
+      end
+    end
   end
 end

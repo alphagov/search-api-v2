@@ -1,5 +1,6 @@
 require "govuk_message_queue_consumer"
 require "jsonpath"
+require "plek"
 
 require "publishing_event_pipeline/configuration"
 require "publishing_event_pipeline/document_event_mapper"
