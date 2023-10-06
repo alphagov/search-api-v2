@@ -1,5 +1,5 @@
 require "document_sync_worker"
-require "search_repositories/null/null_repository"
+require "repositories/null/repository"
 
 # TODO: For now, this lives within the application repository, but we may want to extract it to a
 #   completely separate unit if we can keep dependencies between the read and write sides of this
@@ -29,7 +29,7 @@ namespace :document_sync_worker do
       # TODO: Once we have access to the search product and written a repository for it, this should
       #  be set to the real repository. Until then, this allows us to verify that the pipeline is
       #  working as expected through the logs.
-      config.repository = SearchRepositories::Null::NullRepository.new
+      config.repository = Repositories::Null::Repository.new
       config.message_queue_name = ENV.fetch("PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_NAME")
     end
 
