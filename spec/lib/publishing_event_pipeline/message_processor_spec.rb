@@ -2,11 +2,10 @@ require "govuk_message_queue_consumer"
 require "govuk_message_queue_consumer/test_helpers"
 
 RSpec.describe PublishingEventPipeline::MessageProcessor do
-  subject(:processor) { described_class.new(document_event_mapper:, repository:) }
+  subject(:processor) { described_class.new(repository:) }
 
   let(:repository) { double }
-  let(:document_event_mapper) { ->(_) { event } }
-  let(:event) { double(synchronize_to: nil) } # rubocop:disable RSpec/VerifiedDoubles (interface)
+  let(:document) { double(synchronize_to: nil) } # rubocop:disable RSpec/VerifiedDoubles (interface)
 
   it_behaves_like "a message queue processor"
 
@@ -16,6 +15,7 @@ RSpec.describe PublishingEventPipeline::MessageProcessor do
 
     before do
       allow(Rails.logger).to receive(:info)
+      allow(PublishingEventPipeline::Document).to receive(:for).with(payload).and_return(document)
     end
 
     it "acks incoming messages" do
@@ -24,15 +24,15 @@ RSpec.describe PublishingEventPipeline::MessageProcessor do
       expect(message).to be_acked
     end
 
-    it "makes the event synchronize itself to the repository" do
+    it "makes the document synchronize itself to the repository" do
       processor.process(message)
 
-      expect(event).to have_received(:synchronize_to).with(repository)
+      expect(document).to have_received(:synchronize_to).with(repository)
     end
 
-    context "when processing the event fails" do
+    context "when creating the document fails" do
       before do
-        allow(document_event_mapper).to receive(:call).and_raise("Something went wrong")
+        allow(PublishingEventPipeline::Document).to receive(:for).and_raise("Something went wrong")
       end
 
       it "bubbles the error up and does not ack the message" do
