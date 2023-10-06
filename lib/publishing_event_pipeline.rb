@@ -3,15 +3,14 @@ require "jsonpath"
 require "plek"
 
 require "publishing_event_pipeline/configuration"
-require "publishing_event_pipeline/document_event_mapper"
 require "publishing_event_pipeline/message_processor"
 
 require "publishing_event_pipeline/helpers/extract"
 
-require "publishing_event_pipeline/events/publish"
-require "publishing_event_pipeline/events/unpublish"
-require "publishing_event_pipeline/extractors/content"
-require "publishing_event_pipeline/extractors/metadata"
+require "publishing_event_pipeline/document"
+require "publishing_event_pipeline/document/base"
+require "publishing_event_pipeline/document/publish"
+require "publishing_event_pipeline/document/unpublish"
 
 module PublishingEventPipeline
   def self.configuration
