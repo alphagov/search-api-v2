@@ -33,12 +33,23 @@ RSpec.describe DocumentSyncWorker::MessageProcessor do
     context "when creating the document fails" do
       before do
         allow(DocumentSyncWorker::Document).to receive(:for).and_raise("Something went wrong")
+        allow(GovukError).to receive(:notify)
       end
 
-      it "bubbles the error up and does not ack the message" do
-        expect { processor.process(message) }.to raise_error("Something went wrong")
+      it "reports the error to Sentry" do
+        processor.process(message)
+
+        expect(GovukError).to have_received(:notify).with(
+          "Failed to process incoming document message",
+          extra: payload,
+        )
+      end
+
+      it "rejects the message" do
+        processor.process(message)
 
         expect(message).not_to be_acked
+        expect(message).to be_discarded
       end
     end
   end
