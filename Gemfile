@@ -12,10 +12,12 @@ gem "railties", RAILS_GEMS_VERSION
 gem "bootsnap", require: false
 gem "govuk_app_config"
 
-# Gems for document_sync_worker
-gem "govuk_message_queue_consumer", require: false
-gem "jsonpath", require: false
-gem "plek", require: false
+# Gems specific to the document sync worker that aren't required for the main Rails API app
+group :document_sync_worker do
+  gem "govuk_message_queue_consumer"
+  gem "jsonpath"
+  gem "plek"
+end
 
 group :test do
   gem "simplecov", require: false
