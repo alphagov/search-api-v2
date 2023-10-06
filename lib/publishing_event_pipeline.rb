@@ -5,8 +5,6 @@ require "plek"
 require "publishing_event_pipeline/configuration"
 require "publishing_event_pipeline/message_processor"
 
-require "publishing_event_pipeline/helpers/extract"
-
 require "publishing_event_pipeline/document"
 require "publishing_event_pipeline/document/base"
 require "publishing_event_pipeline/document/publish"

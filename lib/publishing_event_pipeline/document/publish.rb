@@ -1,7 +1,8 @@
 module PublishingEventPipeline
   module Document
     class Publish < Base
-      # All the possible keys in the message hash that can contain content that we want to index
+      # All the possible keys in the message hash that can contain unstructured content that we want
+      # to index, represented as JsonPath path strings.
       INDEXABLE_CONTENT_VALUES_PATHS = %w[
         $.details.body
         $.details.contact_groups[*].title
@@ -17,8 +18,7 @@ module PublishingEventPipeline
         $.details.summary
         $.details.title
       ].freeze
-
-      include Helpers::Extract
+      INDEXABLE_CONTENT_SEPARATOR = "\n".freeze
 
       # Synchronize the document to the given repository (i.e. put it in the repository).
       def synchronize_to(repository)
@@ -27,20 +27,11 @@ module PublishingEventPipeline
 
       # Extracts a hash of structured metadata about this document.
       def metadata
-        link = extract_first(document_hash, %w[$.base_path $.details.url])
-        url = if link&.start_with?("/")
-                Plek.website_root + link
-              else
-                link
-              end
-        public_timestamp = extract_single(document_hash, "$.public_updated_at")
-        public_timestamp_int = Time.zone.parse(public_timestamp).to_i if public_timestamp
-
         {
-          content_id: extract_single(document_hash, "$.content_id"),
-          document_type: extract_single(document_hash, "$.document_type"),
-          title: extract_single(document_hash, "$.title"),
-          description: extract_single(document_hash, "$.description"),
+          content_id: document_hash["content_id"],
+          document_type: document_hash["document_type"],
+          title: document_hash["title"],
+          description: document_hash["description"],
           link:,
           url:,
           public_timestamp:,
@@ -50,7 +41,34 @@ module PublishingEventPipeline
 
       # Extracts a single string of indexable unstructured content from the document.
       def content
-        extract_all(document_hash, INDEXABLE_CONTENT_VALUES_PATHS)
+        values = INDEXABLE_CONTENT_VALUES_PATHS.map { JsonPath.new(_1).on(document_hash) }
+        values.flatten.join(INDEXABLE_CONTENT_SEPARATOR)
+      end
+
+    private
+
+      def link
+        document_hash["base_path"].presence || document_hash.dig("details", "url")
+      end
+
+      def link_relative?
+        link&.start_with?("/")
+      end
+
+      def url
+        return link unless link_relative?
+
+        Plek.website_root + link
+      end
+
+      def public_timestamp
+        document_hash["public_updated_at"]
+      end
+
+      def public_timestamp_int
+        return nil unless public_timestamp
+
+        Time.zone.parse(public_timestamp).to_i
       end
     end
   end
