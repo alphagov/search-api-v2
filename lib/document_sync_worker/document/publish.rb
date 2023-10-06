@@ -3,7 +3,7 @@ module DocumentSyncWorker
     class Publish < Base
       # All the possible keys in the message hash that can contain unstructured content that we want
       # to index, represented as JsonPath path strings.
-      INDEXABLE_CONTENT_VALUES_PATHS = %w[
+      INDEXABLE_CONTENT_VALUES_JSON_PATHS = %w[
         $.details.body
         $.details.contact_groups[*].title
         $.details.description
@@ -17,7 +17,7 @@ module DocumentSyncWorker
         $.details.parts[*]['title','body']
         $.details.summary
         $.details.title
-      ].freeze
+      ].map { JsonPath.new(_1) }.freeze
       INDEXABLE_CONTENT_SEPARATOR = "\n".freeze
 
       # Synchronize the document to the given repository (i.e. put it in the repository).
@@ -41,7 +41,7 @@ module DocumentSyncWorker
 
       # Extracts a single string of indexable unstructured content from the document.
       def content
-        values = INDEXABLE_CONTENT_VALUES_PATHS.map { JsonPath.new(_1).on(document_hash) }
+        values = INDEXABLE_CONTENT_VALUES_JSON_PATHS.map { _1.on(document_hash) }
         values.flatten.join(INDEXABLE_CONTENT_SEPARATOR)
       end
 
