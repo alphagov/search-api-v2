@@ -68,7 +68,7 @@ module DocumentSyncWorker
       def public_timestamp_int
         return nil unless public_timestamp
 
-        Time.zone.parse(public_timestamp).to_i
+        Time.parse(public_timestamp).to_i # rubocop:disable Rails/TimeZone (string contains TZ info)
       end
     end
   end
