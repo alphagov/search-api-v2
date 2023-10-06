@@ -1,5 +1,3 @@
-require "govuk_message_queue_consumer"
-
 RSpec.describe DocumentSyncWorker do
   describe ".run" do
     let(:consumer) { instance_double(GovukMessageQueueConsumer::Consumer, run: nil) }

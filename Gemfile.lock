@@ -438,6 +438,7 @@ DEPENDENCIES
   rspec-rails
   rubocop-govuk
   simplecov
+  zeitwerk
 
 RUBY VERSION
    ruby 3.2.2p53

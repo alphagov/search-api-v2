@@ -17,6 +17,7 @@ group :document_sync_worker do
   gem "govuk_message_queue_consumer"
   gem "jsonpath"
   gem "plek"
+  gem "zeitwerk"
 end
 
 group :test do

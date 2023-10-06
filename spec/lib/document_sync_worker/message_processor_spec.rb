@@ -1,4 +1,3 @@
-require "govuk_message_queue_consumer"
 require "govuk_message_queue_consumer/test_helpers"
 
 RSpec.describe DocumentSyncWorker::MessageProcessor do
