@@ -1,4 +1,4 @@
-module PublishingEventPipeline
+module DocumentSyncWorker
   module Repositories
     # A fake repository for end-to-end testing purposes
     class TestRepository

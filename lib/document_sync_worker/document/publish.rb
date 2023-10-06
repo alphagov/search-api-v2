@@ -1,4 +1,4 @@
-module PublishingEventPipeline
+module DocumentSyncWorker
   module Document
     class Publish < Base
       # All the possible keys in the message hash that can contain unstructured content that we want

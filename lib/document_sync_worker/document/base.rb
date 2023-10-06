@@ -1,4 +1,4 @@
-module PublishingEventPipeline
+module DocumentSyncWorker
   module Document
     # Abstract base class for documents that can be synchronized to a repository.
     class Base

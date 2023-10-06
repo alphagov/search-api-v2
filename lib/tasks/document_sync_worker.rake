@@ -1,4 +1,4 @@
-require "publishing_event_pipeline"
+require "document_sync_worker"
 require "search_repositories/null/null_repository"
 
 # TODO: For now, this lives within the application repository, but we may want to extract it to a
@@ -9,7 +9,7 @@ require "search_repositories/null/null_repository"
 # implicit dependencies on the Rails application.
 #
 # rubocop:disable Rails/RakeEnvironment
-namespace :publishing_event_pipeline do
+namespace :document_sync_worker do
   desc "Create RabbitMQ queue for development environment"
   task :create_queue do
     # The exchange, queue, and binding are created via Terraform outside of local development:
@@ -20,20 +20,20 @@ namespace :publishing_event_pipeline do
     bunny = Bunny.new
     channel = bunny.start.create_channel
     exch = Bunny::Exchange.new(channel, :topic, "published_documents")
-    channel.queue(ENV.fetch("PUBLISHING_EVENT_MESSAGE_QUEUE_NAME")).bind(exch, routing_key: "*.*")
+    channel.queue(ENV.fetch("PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_NAME")).bind(exch, routing_key: "*.*")
   end
 
   desc "Listens to and processes messages from the published documents queue"
-  task :process_messages do
-    PublishingEventPipeline.configure do |config|
+  task :run do
+    DocumentSyncWorker.configure do |config|
       # TODO: Once we have access to the search product and written a repository for it, this should
       #  be set to the real repository. Until then, this allows us to verify that the pipeline is
       #  working as expected through the logs.
       config.repository = SearchRepositories::Null::NullRepository.new
-      config.message_queue_name = ENV.fetch("PUBLISHING_EVENT_MESSAGE_QUEUE_NAME")
+      config.message_queue_name = ENV.fetch("PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_NAME")
     end
 
-    PublishingEventPipeline.run
+    DocumentSyncWorker.run
   end
 end
 # rubocop:enable Rails/RakeEnvironment

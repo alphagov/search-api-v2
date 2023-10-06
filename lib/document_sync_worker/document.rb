@@ -1,4 +1,4 @@
-module PublishingEventPipeline
+module DocumentSyncWorker
   module Document
     # When a document is unpublished in the source system, its document type changes to one of
     # these values. While semantically different for other systems, we only need to know that they

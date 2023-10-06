@@ -1,4 +1,4 @@
-module PublishingEventPipeline
+module DocumentSyncWorker
   module Document
     class Unpublish < Base
       # Synchronize the document to the given repository (i.e. delete it from the repository).
