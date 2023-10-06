@@ -1,6 +1,5 @@
-require "govuk_message_queue_consumer"
-require "jsonpath"
-require "plek"
+# Gems specific to the document sync worker are in their own group in the Gemfile
+Bundler.require(:document_sync_worker)
 
 require "document_sync_worker/configuration"
 require "document_sync_worker/message_processor"
