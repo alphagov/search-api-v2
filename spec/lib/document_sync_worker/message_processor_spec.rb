@@ -31,18 +31,29 @@ RSpec.describe DocumentSyncWorker::MessageProcessor do
     end
 
     context "when creating the document fails" do
+      let(:logger) { instance_double(Logger, error: nil) }
+      let(:error) { RuntimeError.new("Something went wrong") }
+
       before do
-        allow(DocumentSyncWorker::Document).to receive(:for).and_raise("Something went wrong")
+        allow(DocumentSyncWorker::Document).to receive(:for).and_raise(error)
+        allow(DocumentSyncWorker).to receive(:logger).and_return(logger)
         allow(GovukError).to receive(:notify)
       end
 
-      it "reports the error to Sentry" do
+      it "logs the error" do
         processor.process(message)
 
-        expect(GovukError).to have_received(:notify).with(
-          "Failed to process incoming document message",
-          extra: payload,
-        )
+        expect(logger).to have_received(:error).with(<<~MSG)
+          Failed to process incoming document message:
+          RuntimeError: Something went wrong
+          Message content: {\"I am\"=>\"a message\"}
+        MSG
+      end
+
+      it "sends the error to Sentry" do
+        processor.process(message)
+
+        expect(GovukError).to have_received(:notify).with(error)
       end
 
       it "rejects the message" do

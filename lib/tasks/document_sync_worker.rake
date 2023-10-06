@@ -29,7 +29,7 @@ namespace :document_sync_worker do
       # TODO: Once we have access to the search product and written a repository for it, this should
       #  be set to the real repository. Until then, this allows us to verify that the pipeline is
       #  working as expected through the logs.
-      config.repository = Repositories::Null::Repository.new
+      config.repository = Repositories::Null::Repository.new(logger: config.logger)
       config.message_queue_name = ENV.fetch("PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_NAME")
     end
 

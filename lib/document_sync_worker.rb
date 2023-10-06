@@ -18,12 +18,19 @@ module DocumentSyncWorker
     yield(configuration)
   end
 
+  def self.logger
+    configuration.logger
+  end
+
   def self.run
+    logger.info("Starting DocumentSyncWorker")
     GovukMessageQueueConsumer::Consumer.new(
       queue_name: DocumentSyncWorker.configuration.message_queue_name,
       processor: DocumentSyncWorker::MessageProcessor.new(
         repository: configuration.repository,
       ),
     ).run
+  rescue Interrupt
+    logger.info("Stopping DocumentSyncWorker (received interrupt)")
   end
 end
