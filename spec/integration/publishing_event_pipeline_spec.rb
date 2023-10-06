@@ -2,11 +2,11 @@ require "govuk_message_queue_consumer"
 require "govuk_message_queue_consumer/test_helpers"
 
 RSpec.describe "Publishing event pipeline" do
-  let(:repository) { PublishingEventPipeline::Repositories::TestRepository.new(documents) }
+  let(:repository) { DocumentSyncWorker::Repositories::TestRepository.new(documents) }
   let(:message) { GovukMessageQueueConsumer::MockMessage.new(payload) }
 
   before do
-    PublishingEventPipeline::MessageProcessor.new(repository:).process(message)
+    DocumentSyncWorker::MessageProcessor.new(repository:).process(message)
   end
 
   describe "for a 'press_release' message" do

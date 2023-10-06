@@ -11,7 +11,7 @@ GovukTest.configure
 
 # TODO: If the write side of this application is extracted to a separate unit, we will need to
 #   remove this, otherwise it can be made permanent.
-require "publishing_event_pipeline"
+require "document_sync_worker"
 
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|

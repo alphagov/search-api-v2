@@ -1,4 +1,4 @@
-module PublishingEventPipeline
+module DocumentSyncWorker
   # Processes incoming content changes from the publishing message queue.
   class MessageProcessor
     attr_reader :repository

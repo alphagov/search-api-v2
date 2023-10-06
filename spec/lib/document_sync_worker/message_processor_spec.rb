@@ -1,7 +1,7 @@
 require "govuk_message_queue_consumer"
 require "govuk_message_queue_consumer/test_helpers"
 
-RSpec.describe PublishingEventPipeline::MessageProcessor do
+RSpec.describe DocumentSyncWorker::MessageProcessor do
   subject(:processor) { described_class.new(repository:) }
 
   let(:repository) { double }
@@ -15,7 +15,7 @@ RSpec.describe PublishingEventPipeline::MessageProcessor do
 
     before do
       allow(Rails.logger).to receive(:info)
-      allow(PublishingEventPipeline::Document).to receive(:for).with(payload).and_return(document)
+      allow(DocumentSyncWorker::Document).to receive(:for).with(payload).and_return(document)
     end
 
     it "acks incoming messages" do
@@ -32,7 +32,7 @@ RSpec.describe PublishingEventPipeline::MessageProcessor do
 
     context "when creating the document fails" do
       before do
-        allow(PublishingEventPipeline::Document).to receive(:for).and_raise("Something went wrong")
+        allow(DocumentSyncWorker::Document).to receive(:for).and_raise("Something went wrong")
       end
 
       it "bubbles the error up and does not ack the message" do

@@ -12,7 +12,7 @@ gem "railties", RAILS_GEMS_VERSION
 gem "bootsnap", require: false
 gem "govuk_app_config"
 
-# Gems for publishing_event_pipeline
+# Gems for document_sync_worker
 gem "govuk_message_queue_consumer", require: false
 gem "jsonpath", require: false
 gem "plek", require: false

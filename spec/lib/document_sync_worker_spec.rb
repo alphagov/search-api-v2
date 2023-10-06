@@ -1,6 +1,6 @@
 require "govuk_message_queue_consumer"
 
-RSpec.describe PublishingEventPipeline do
+RSpec.describe DocumentSyncWorker do
   describe ".run" do
     let(:consumer) { instance_double(GovukMessageQueueConsumer::Consumer, run: nil) }
     let(:repository) { double }
@@ -13,7 +13,7 @@ RSpec.describe PublishingEventPipeline do
 
       allow(GovukMessageQueueConsumer::Consumer).to receive(:new).with(
         queue_name: "test-queue",
-        processor: an_instance_of(PublishingEventPipeline::MessageProcessor),
+        processor: an_instance_of(DocumentSyncWorker::MessageProcessor),
       ).and_return(consumer)
     end
 

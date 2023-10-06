@@ -1,4 +1,4 @@
-RSpec.describe PublishingEventPipeline::Document::Unpublish do
+RSpec.describe DocumentSyncWorker::Document::Unpublish do
   subject(:document) { described_class.new(document_hash) }
 
   let(:repository) do
