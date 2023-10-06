@@ -2,28 +2,20 @@ RSpec.describe PublishingEventPipeline::Document do
   describe ".for" do
     subject(:document) { described_class.for(document_hash) }
 
-    let(:document_hash) { double }
+    let(:document_hash) { { "document_type" => document_type } }
 
-    context "when the document is handled by Unpublish" do
-      before do
-        allow(PublishingEventPipeline::Document::Unpublish)
-          .to receive(:handles?).with(document_hash).and_return(true)
-      end
+    %w[gone redirect substitute vanish].each do |document_type|
+      context "when the document type is #{document_type}" do
+        let(:document_type) { document_type }
 
-      it "returns an Unpublish document" do
-        expect(document).to be_a(PublishingEventPipeline::Document::Unpublish)
+        it { is_expected.to be_a(PublishingEventPipeline::Document::Unpublish) }
       end
     end
 
-    context "when the document is not handled by Unpublish" do
-      before do
-        allow(PublishingEventPipeline::Document::Unpublish)
-          .to receive(:handles?).with(document_hash).and_return(false)
-      end
+    context "when the document type is not one of the unpublish document types" do
+      let(:document_type) { "anything-else" }
 
-      it "returns a Publish document" do
-        expect(document).to be_a(PublishingEventPipeline::Document::Publish)
-      end
+      it { is_expected.to be_a(PublishingEventPipeline::Document::Publish) }
     end
   end
 end

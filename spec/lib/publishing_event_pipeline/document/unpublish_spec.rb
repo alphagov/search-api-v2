@@ -16,24 +16,6 @@ RSpec.describe PublishingEventPipeline::Document::Unpublish do
     }
   end
 
-  describe ".handles?" do
-    subject(:handles) { described_class.handles?(document_hash) }
-
-    %w[gone redirect substitute vanish].each do |document_type|
-      context "when the document type is #{document_type}" do
-        let(:document_type) { document_type }
-
-        it { is_expected.to be(true) }
-      end
-    end
-
-    context "when the document type is not one of the unpublish document types" do
-      let(:document_type) { "anything-else" }
-
-      it { is_expected.to be(false) }
-    end
-  end
-
   describe "#content_id" do
     it "returns the content_id from the document hash" do
       expect(document.content_id).to eq(content_id)
