@@ -1,6 +1,6 @@
-require "search_repositories/null/null_repository"
+require "repositories/null/repository"
 
-RSpec.describe SearchRepositories::Null::NullRepository do
+RSpec.describe Repositories::Null::Repository do
   let(:repository) { described_class.new(logger:) }
   let(:logger) { instance_double(Logger, info: nil) }
 

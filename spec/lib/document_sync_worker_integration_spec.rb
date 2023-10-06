@@ -1,7 +1,6 @@
-require "govuk_message_queue_consumer"
 require "govuk_message_queue_consumer/test_helpers"
 
-RSpec.describe "Publishing event pipeline" do
+RSpec.describe "Document sync worker end-to-end" do
   let(:repository) { DocumentSyncWorker::Repositories::TestRepository.new(documents) }
   let(:message) { GovukMessageQueueConsumer::MockMessage.new(payload) }
 

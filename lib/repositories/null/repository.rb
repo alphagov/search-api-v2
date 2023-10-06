@@ -1,8 +1,8 @@
-module SearchRepositories
+module Repositories
   module Null
     # A repository that does nothing other than logging out any received calls, for use until we can
     # integrate with the real product.
-    class NullRepository
+    class Repository
       def initialize(logger: Logger.new($stdout, progname: self.class.name))
         @logger = logger
       end
