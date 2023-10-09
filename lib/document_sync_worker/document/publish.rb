@@ -10,7 +10,7 @@ module DocumentSyncWorker
         $.details.hidden_search_terms
         $.details.introduction
         $.details.introductory_paragraph
-        $.details.metadata.hidden_indexable_content[*]
+        $.details.metadata.hidden_indexable_content
         $.details.metadata.project_code
         $.details.more_information
         $.details.need_to_know
