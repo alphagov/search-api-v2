@@ -51,7 +51,7 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
       it { is_expected.to eq("a\nb\nc\nd\ne\nf\ng\nh\ni") }
     end
 
-    describe "with hidden indexable content" do
+    describe "with hidden indexable content as an array" do
       let(:document_hash) do
         {
           "details" => {
@@ -63,6 +63,20 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
       end
 
       it { is_expected.to eq("x\ny\nz") }
+    end
+
+    describe "with hidden indexable content as a string" do
+      let(:document_hash) do
+        {
+          "details" => {
+            "metadata" => {
+              "hidden_indexable_content" => "x y z",
+            },
+          },
+        }
+      end
+
+      it { is_expected.to eq("x y z") }
     end
 
     describe "with a project code" do
