@@ -79,7 +79,7 @@ GEM
     irb (1.7.4)
       reline (>= 0.3.6)
     json (2.6.3)
-    jsonpath (1.1.4)
+    jsonpath (1.1.5)
       multi_json
     language_server-protocol (3.17.0.3)
     logstasher (2.1.5)
