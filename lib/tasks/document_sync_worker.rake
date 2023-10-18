@@ -1,5 +1,5 @@
 require "document_sync_worker"
-require "repositories/null/repository"
+require "repositories/google_discovery_engine/repository"
 
 namespace :document_sync_worker do
   desc "Create RabbitMQ queue for development environment"
@@ -18,10 +18,7 @@ namespace :document_sync_worker do
   desc "Listens to and processes messages from the published documents queue"
   task run: :environment do
     DocumentSyncWorker.configure do |config|
-      # TODO: Once we have access to the search product and written a repository for it, this should
-      #  be set to the real repository. Until then, this allows us to verify that the pipeline is
-      #  working as expected through the logs.
-      config.repository = Repositories::Null::Repository.new(logger: config.logger)
+      config.repository = Repositories::GoogleDiscoveryEngine::Repository.new(logger: config.logger)
       config.message_queue_name = ENV.fetch("PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_NAME")
     end
 
