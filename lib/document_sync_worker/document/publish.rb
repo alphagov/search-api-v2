@@ -45,6 +45,8 @@ module DocumentSyncWorker
           document_type: document_hash["document_type"],
           content_purpose_supergroup: document_hash["content_purpose_supergroup"],
           part_of_taxonomy_tree: document_hash.dig("links", "taxons") || [],
+          # Vertex can only currently boost on numeric fields, not booleans
+          is_historic: historic? ? 1 : 0,
           locale: document_hash["locale"],
         }
       end
@@ -82,6 +84,13 @@ module DocumentSyncWorker
         # rubocop:disable Rails/TimeZone (string already contains timezone info which would be lost)
         Time.parse(document_hash["public_updated_at"]).to_i
         # rubocop:enable Rails/TimeZone
+      end
+
+      def historic?
+        political = document_hash.dig("details", "political") || false
+        government = document_hash.dig("expanded_links", "government")&.first
+
+        political && government&.dig("details", "current") == false
       end
     end
   end

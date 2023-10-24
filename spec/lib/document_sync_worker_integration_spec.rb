@@ -23,6 +23,7 @@ RSpec.describe "Document sync worker end-to-end" do
         url: "http://www.dev.gov.uk/government/news/ebola-medal-for-over-3000-heroes",
         public_timestamp: 1_434_021_240,
         document_type: "press_release",
+        is_historic: 0,
         content_purpose_supergroup: "news_and_communications",
         part_of_taxonomy_tree: %w[
           668cd623-c7a8-4159-9575-90caac36d4b4 c31256e8-f328-462b-993f-dce50b7892e9
@@ -32,6 +33,36 @@ RSpec.describe "Document sync worker end-to-end" do
       expect(result[:content]).to start_with("<div class=\"govspeak\"><p>The government has")
       expect(result[:content]).to end_with("response to Ebola</a>.</p>\n</div>\n\n</div>")
       expect(result[:content].length).to eq(4_932)
+    end
+  end
+
+  describe "for a historic 'news_story' message" do
+    let(:documents) { {} }
+    let(:payload) { json_fixture_as_hash("message_queue/historic_news_story_message.json") }
+
+    it "is added to the repository" do
+      result = repository.get("5c880596-7631-11e4-a3cb-005056011aef")
+      expect(result[:metadata]).to eq(
+        content_id: "5c880596-7631-11e4-a3cb-005056011aef",
+        title: "Travel advice for fans going to Champions League and Europa League matches this week",
+        description: "Tottenham, Manchester City and Chelsea are playing matches in Europe this week. If you’re going to the matches, check our travel advice for fans.",
+        additional_searchable_text: "",
+        link: "/government/news/travel-advice-for-fans-going-to-champions-league-and-europa-league-matches-this-week",
+        url: "http://www.dev.gov.uk/government/news/travel-advice-for-fans-going-to-champions-league-and-europa-league-matches-this-week",
+        public_timestamp: 1_284_336_000,
+        document_type: "news_story",
+        is_historic: 1,
+        content_purpose_supergroup: "news_and_communications",
+        part_of_taxonomy_tree: %w[
+          06ad07f7-1e79-462f-a192-6b2c9d92089c
+          ce9e9802-6138-4fe9-9f33-045ef213be29
+          3dbeb4a3-33c0-4bda-bd21-b721b0f8736f
+        ],
+        locale: "en",
+      )
+      expect(result[:content]).to start_with("<div class=\"govspeak\"><p>In the UEFA Champions")
+      expect(result[:content]).to end_with("football fans</a>.</p>\n</div>")
+      expect(result[:content].length).to eq(2_118)
     end
   end
 
@@ -50,6 +81,7 @@ RSpec.describe "Document sync worker end-to-end" do
         url: "https://www.brighton-hove.gov.uk",
         public_timestamp: 1_695_912_979,
         document_type: "external_content",
+        is_historic: 0,
         content_purpose_supergroup: "other",
         part_of_taxonomy_tree: [],
         locale: "en",

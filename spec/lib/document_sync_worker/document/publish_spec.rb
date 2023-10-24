@@ -288,6 +288,45 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
       end
     end
 
+    describe "is_historic" do
+      subject(:extracted_is_historic) { document.metadata[:is_historic] }
+
+      let(:document_hash) { { "locale" => "en" } }
+
+      context "when the document is non-political" do
+        let(:document_hash) { { "details" => {} } }
+
+        it { is_expected.to eq(0) }
+      end
+
+      context "when the document is political" do
+        let(:document_hash) do
+          {
+            "details" => { "political" => true },
+            "expanded_links" => expanded_links,
+          }
+        end
+
+        context "without link to a government" do
+          let(:expanded_links) { {} }
+
+          it { is_expected.to eq(0) }
+        end
+
+        context "with a link to the current government" do
+          let(:expanded_links) { { "government" => [{ "details" => { "current" => true } }] } }
+
+          it { is_expected.to eq(0) }
+        end
+
+        context "with a link to a previous government" do
+          let(:expanded_links) { { "government" => [{ "details" => { "current" => false } }] } }
+
+          it { is_expected.to eq(1) }
+        end
+      end
+    end
+
     describe "locale" do
       subject(:extracted_locale) { document.metadata[:locale] }
 
