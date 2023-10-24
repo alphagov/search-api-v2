@@ -1,0 +1,307 @@
+{
+  "title": "Travel advice for fans going to Champions League and Europa League matches this week",
+  "public_updated_at": "2010-09-13T00:00:00Z",
+  "publishing_app": "whitehall",
+  "rendering_app": "government-frontend",
+  "update_type": "republish",
+  "phase": "live",
+  "analytics_identifier": null,
+  "document_type": "news_story",
+  "schema_name": "news_article",
+  "first_published_at": "2010-09-13T00:00:00Z",
+  "base_path": "/government/news/travel-advice-for-fans-going-to-champions-league-and-europa-league-matches-this-week",
+  "description": "Tottenham, Manchester City and Chelsea are playing matches in Europe this week. If you’re going to the matches, check our travel advice for fans.",
+  "details": {
+    "body": "\u003cdiv class=\"govspeak\"\u003e\u003cp\u003eIn the UEFA Champions League, Tottenham play Werder Bremen in Germany on 14 September, and Chelsea play Zilina in Slovakia on 15 September.\u003c/p\u003e\n\n\u003cp\u003eManchester City play Salzburg in a Europa League Group A Game on 19 September at the Red Bull Salzburg Stadium, in Salzburg, Austria.\u003c/p\u003e\n\n\u003cp\u003eYou can find specific advice for each match in our travelling football fans section:\u003c/p\u003e\n\n\u003cp\u003e\u003ca rel=\"external\" href=\"http://www.fco.gov.uk/en/news/latest-news/?view=News\u0026amp;id=22851737\" class=\"govuk-link\"\u003eBremen v Tottenham\u003c/a\u003e \u003cbr\u003e\n\u003ca rel=\"external\" href=\"http://www.fco.gov.uk/en/news/latest-news/?view=News\u0026amp;id=22851737\" class=\"govuk-link\"\u003eSalzburg v Manchester City\u003c/a\u003e \u003cbr\u003e\n\u003ca rel=\"external\" href=\"http://www.fco.gov.uk/en/news/latest-news/?view=News\u0026amp;id=22851737\" class=\"govuk-link\"\u003eZilina v Chelsea\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003eIf you are going to watch your club play, bear in mind :\u003c/p\u003e\n\n\u003cul\u003e\n  \u003cli\u003eYou don’t need a visa to enter Germany, Slovakia or Austria, but your passport must be valid for the duration of your stay.\u003c/li\u003e\n  \u003cli\u003eRemember to take out some \u003ca rel=\"external\" href=\"http://www.fco.gov.uk/en/travel-and-living-abroad/staying-safe/travel-insurance/\" class=\"govuk-link\"\u003etravel insurance\u003c/a\u003e even if you’re only going for one night - if you get into difficulties it could save you a lot of money!\u003c/li\u003e\n  \u003cli\u003eSee our \u003ca rel=\"external\" href=\"http://www.fco.gov.uk/en/travel-and-living-abroad/travel-advice-by-country/\" class=\"govuk-link\"\u003etravel advice by country\u003c/a\u003e for information on local laws and customs.\u003c/li\u003e\n  \u003cli\u003eThere may be additional regulations in force on match days and in the vicinity of the stadium. These may include restrictions on where alcohol can be consumed. If in doubt, check with local police or tourist authorities.\u003c/li\u003e\n  \u003cli\u003eCrowds in and around football stadiums can attract pickpockets. Take care to safeguard your possessions in crowded areas.\u003c/li\u003e\n\u003c/ul\u003e\n\n\u003cp\u003eYou can find more tips in our \u003ca rel=\"external\" href=\"http://www.fco.gov.uk/en/travel-and-living-abroad/your-trip/travellingfans1/\" class=\"govuk-link\"\u003eadvice for travelling football fans\u003c/a\u003e.\u003c/p\u003e\n\u003c/div\u003e",
+    "tags": {
+      "topics": [],
+      "browse_pages": []
+    },
+    "image": {
+      "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/default_news_organisation_image_data/file/102/s300_Main-building-gov.uk.jpg",
+      "caption": null,
+      "alt_text": "",
+      "high_resolution_url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/default_news_organisation_image_data/file/102/s960_Main-building-gov.uk.jpg"
+    },
+    "political": true,
+    "attachments": [],
+    "change_history": [
+      {
+        "note": "This news article was converted to a news story",
+        "public_timestamp": "2010-09-13T01:00:00.000+01:00"
+      }
+    ],
+    "first_public_at": "2010-09-13T01:00:00.000+01:00",
+    "emphasised_organisations": [
+      "9adfc4ed-9f6c-4976-a6d8-18d34356367c"
+    ]
+  },
+  "routes": [
+    {
+      "path": "/government/news/travel-advice-for-fans-going-to-champions-league-and-europa-league-matches-this-week",
+      "type": "exact"
+    }
+  ],
+  "redirects": [],
+  "content_id": "5c880596-7631-11e4-a3cb-005056011aef",
+  "locale": "en",
+  "expanded_links": {
+    "government": [
+      {
+        "content_id": "591c83aa-3b74-437d-a342-612bddd97572",
+        "title": "2010 to 2015 Conservative and Liberal Democrat coalition government",
+        "locale": "en",
+        "api_path": "/api/content/government/2010-to-2015-conservative-and-liberal-democrat-coalition-government",
+        "base_path": "/government/2010-to-2015-conservative-and-liberal-democrat-coalition-government",
+        "document_type": "government",
+        "details": {
+          "started_on": "2010-05-12T00:00:00+00:00",
+          "ended_on": "2015-05-08T00:00:00+00:00",
+          "current": false
+        },
+        "links": {}
+      }
+    ],
+    "organisations": [
+      {
+        "content_id": "9adfc4ed-9f6c-4976-a6d8-18d34356367c",
+        "title": "Foreign \u0026 Commonwealth Office",
+        "locale": "en",
+        "analytics_identifier": "D13",
+        "api_path": "/api/content/government/organisations/foreign-commonwealth-office",
+        "base_path": "/government/organisations/foreign-commonwealth-office",
+        "document_type": "organisation",
+        "schema_name": "organisation",
+        "withdrawn": false,
+        "details": {
+          "acronym": "FCO",
+          "logo": {
+            "crest": "single-identity",
+            "formatted_title": "Foreign \u0026amp;\u003cbr/\u003eCommonwealth \u003cbr/\u003eOffice"
+          },
+          "brand": "foreign-commonwealth-office",
+          "default_news_image": {
+            "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/default_news_organisation_image_data/file/102/s300_Main-building-gov.uk.jpg",
+            "high_resolution_url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/default_news_organisation_image_data/file/102/s960_Main-building-gov.uk.jpg"
+          },
+          "organisation_govuk_status": {
+            "url": "http://www.gov.uk/fco",
+            "status": "replaced",
+            "updated_at": "2020-09-02T00:00:00.000+01:00"
+          }
+        },
+        "links": {}
+      }
+    ],
+    "original_primary_publishing_organisation": [
+      {
+        "content_id": "9adfc4ed-9f6c-4976-a6d8-18d34356367c",
+        "title": "Foreign \u0026 Commonwealth Office",
+        "locale": "en",
+        "analytics_identifier": "D13",
+        "api_path": "/api/content/government/organisations/foreign-commonwealth-office",
+        "base_path": "/government/organisations/foreign-commonwealth-office",
+        "document_type": "organisation",
+        "schema_name": "organisation",
+        "withdrawn": false,
+        "details": {
+          "acronym": "FCO",
+          "logo": {
+            "crest": "single-identity",
+            "formatted_title": "Foreign \u0026amp;\u003cbr/\u003eCommonwealth \u003cbr/\u003eOffice"
+          },
+          "brand": "foreign-commonwealth-office",
+          "default_news_image": {
+            "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/default_news_organisation_image_data/file/102/s300_Main-building-gov.uk.jpg",
+            "high_resolution_url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/default_news_organisation_image_data/file/102/s960_Main-building-gov.uk.jpg"
+          },
+          "organisation_govuk_status": {
+            "url": "http://www.gov.uk/fco",
+            "status": "replaced",
+            "updated_at": "2020-09-02T00:00:00.000+01:00"
+          }
+        },
+        "links": {}
+      }
+    ],
+    "primary_publishing_organisation": [
+      {
+        "content_id": "9adfc4ed-9f6c-4976-a6d8-18d34356367c",
+        "title": "Foreign \u0026 Commonwealth Office",
+        "locale": "en",
+        "analytics_identifier": "D13",
+        "api_path": "/api/content/government/organisations/foreign-commonwealth-office",
+        "base_path": "/government/organisations/foreign-commonwealth-office",
+        "document_type": "organisation",
+        "schema_name": "organisation",
+        "withdrawn": false,
+        "details": {
+          "acronym": "FCO",
+          "logo": {
+            "crest": "single-identity",
+            "formatted_title": "Foreign \u0026amp;\u003cbr/\u003eCommonwealth \u003cbr/\u003eOffice"
+          },
+          "brand": "foreign-commonwealth-office",
+          "default_news_image": {
+            "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/default_news_organisation_image_data/file/102/s300_Main-building-gov.uk.jpg",
+            "high_resolution_url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/default_news_organisation_image_data/file/102/s960_Main-building-gov.uk.jpg"
+          },
+          "organisation_govuk_status": {
+            "url": "http://www.gov.uk/fco",
+            "status": "replaced",
+            "updated_at": "2020-09-02T00:00:00.000+01:00"
+          }
+        },
+        "links": {}
+      }
+    ],
+    "taxons": [
+      {
+        "content_id": "ce9e9802-6138-4fe9-9f33-045ef213be29",
+        "title": "Countries (Living In)",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/going-and-being-abroad/countries-living-in",
+        "base_path": "/going-and-being-abroad/countries-living-in",
+        "document_type": "taxon",
+        "public_updated_at": "2018-03-08T14:49:08Z",
+        "schema_name": "taxon",
+        "withdrawn": false,
+        "description": "A list of countries that link to content about living in them. ",
+        "details": {
+          "internal_name": "Countries (Living in)",
+          "notes_for_editors": "",
+          "visible_to_departmental_editors": false
+        },
+        "phase": "alpha",
+        "links": {
+          "parent_taxons": [
+            {
+              "content_id": "6e3f3cfb-142a-41f4-a03a-fea504cc1f79",
+              "title": "Going and being abroad",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/going-and-being-abroad-old",
+              "base_path": "/going-and-being-abroad-old",
+              "document_type": "taxon",
+              "public_updated_at": "2018-09-03T13:53:06Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "",
+              "details": {
+                "internal_name": "Going and being abroad (old)",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "alpha",
+              "links": {}
+            }
+          ]
+        }
+      },
+      {
+        "content_id": "3dbeb4a3-33c0-4bda-bd21-b721b0f8736f",
+        "title": "British nationals overseas",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/going-and-being-abroad/british-nationals-overseas",
+        "base_path": "/going-and-being-abroad/british-nationals-overseas",
+        "document_type": "taxon",
+        "public_updated_at": "2018-08-22T13:01:16Z",
+        "schema_name": "taxon",
+        "withdrawn": false,
+        "description": null,
+        "details": {
+          "internal_name": "British nationals overseas",
+          "notes_for_editors": "",
+          "visible_to_departmental_editors": false
+        },
+        "phase": "live",
+        "links": {
+          "parent_taxons": [
+            {
+              "content_id": "9597c30a-605a-4e36-8bc1-47e5cdae41b3",
+              "title": "Going and being abroad",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/going-and-being-abroad",
+              "base_path": "/going-and-being-abroad",
+              "document_type": "taxon",
+              "public_updated_at": "2018-08-22T13:01:16Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": null,
+              "details": {
+                "internal_name": "Going and being abroad",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": true
+              },
+              "phase": "live",
+              "links": {
+                "root_taxon": [
+                  {
+                    "content_id": "f3bbdec2-0e62-4520-a7fd-6ffd5d36e03a",
+                    "title": "GOV.UK homepage",
+                    "locale": "en",
+                    "analytics_identifier": null,
+                    "api_path": "/api/content/",
+                    "base_path": "/",
+                    "document_type": "homepage",
+                    "public_updated_at": "2023-06-28T09:32:34Z",
+                    "schema_name": "homepage",
+                    "withdrawn": false,
+                    "links": {}
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "available_translations": [
+      {
+        "title": "Travel advice for fans going to Champions League and Europa League matches this week",
+        "public_updated_at": "2010-09-13T00:00:00Z",
+        "analytics_identifier": null,
+        "document_type": "news_story",
+        "schema_name": "news_article",
+        "base_path": "/government/news/travel-advice-for-fans-going-to-champions-league-and-europa-league-matches-this-week",
+        "api_path": "/api/content/government/news/travel-advice-for-fans-going-to-champions-league-and-europa-league-matches-this-week",
+        "withdrawn": false,
+        "content_id": "5c880596-7631-11e4-a3cb-005056011aef",
+        "locale": "en"
+      }
+    ]
+  },
+  "user_journey_document_supertype": "thing",
+  "email_document_supertype": "announcements",
+  "government_document_supertype": "news-stories",
+  "content_purpose_subgroup": "news",
+  "content_purpose_supergroup": "news_and_communications",
+  "publishing_request_id": "22371-1617030220.335-10.13.6.90-539",
+  "govuk_request_id": null,
+  "links": {
+    "government": [
+      "591c83aa-3b74-437d-a342-612bddd97572"
+    ],
+    "organisations": [
+      "9adfc4ed-9f6c-4976-a6d8-18d34356367c"
+    ],
+    "original_primary_publishing_organisation": [
+      "9adfc4ed-9f6c-4976-a6d8-18d34356367c"
+    ],
+    "primary_publishing_organisation": [
+      "9adfc4ed-9f6c-4976-a6d8-18d34356367c"
+    ],
+    "related_policies": [
+      "5c7653b1-7631-11e4-a3cb-005056011aef"
+    ],
+    "taxons": [
+      "06ad07f7-1e79-462f-a192-6b2c9d92089c",
+      "ce9e9802-6138-4fe9-9f33-045ef213be29",
+      "3dbeb4a3-33c0-4bda-bd21-b721b0f8736f"
+    ]
+  },
+  "payload_version": "12345"
+}
