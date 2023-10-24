@@ -1,24 +1,31 @@
 module DocumentSyncWorker
   module Document
     class Publish < Base
-      # All the possible keys in the message hash that can contain unstructured content that we want
-      # to index, represented as JsonPath path strings.
+      # All the possible keys in the message hash that can contain the primary unstructured document
+      # content that we want to index, represented as JsonPath path strings.
       INDEXABLE_CONTENT_VALUES_JSON_PATHS = %w[
-        $.details.body
-        $.details.contact_groups[*].title
         $.details.description
-        $.details.hidden_search_terms
         $.details.introduction
         $.details.introductory_paragraph
-        $.details.metadata.hidden_indexable_content
-        $.details.metadata.project_code
-        $.details.more_information
-        $.details.need_to_know
-        $.details.parts[*]['title','body']
-        $.details.summary
+        $.details.contact_groups[*].title
         $.details.title
+        $.details.summary
+        $.details.body
+        $.details.need_to_know
+        $.details.more_information
+        $.details.parts[*]['title','body']
       ].map { JsonPath.new(_1) }.freeze
       INDEXABLE_CONTENT_SEPARATOR = "\n".freeze
+
+      # All the possible keys in the message hash that can contain additional keywords or other text
+      # that should be searchable but doesn't form part of the primary document content, represented
+      # as JsonPath path strings.
+      ADDITIONAL_SEARCHABLE_TEXT_VALUES_JSON_PATHS = %w[
+        $.details.hidden_search_terms
+        $.details.metadata.hidden_indexable_content
+        $.details.metadata.project_code
+      ].map { JsonPath.new(_1) }.freeze
+      ADDITIONAL_SEARCHABLE_TEXT_VALUES_SEPARATOR = "\n".freeze
 
       # Synchronize the document to the given repository (i.e. put it in the repository).
       def synchronize_to(repository)
@@ -29,13 +36,16 @@ module DocumentSyncWorker
       def metadata
         {
           content_id: document_hash["content_id"],
-          document_type: document_hash["document_type"],
           title: document_hash["title"],
           description: document_hash["description"],
+          additional_searchable_text:,
           link:,
           url:,
           public_timestamp:,
-          public_timestamp_int:,
+          document_type: document_hash["document_type"],
+          content_purpose_supergroup: document_hash["content_purpose_supergroup"],
+          part_of_taxonomy_tree: document_hash.dig("links", "taxons") || [],
+          locale: document_hash["locale"],
         }
       end
 
@@ -61,14 +71,17 @@ module DocumentSyncWorker
         Plek.website_root + link
       end
 
-      def public_timestamp
-        document_hash["public_updated_at"]
+      def additional_searchable_text
+        values = ADDITIONAL_SEARCHABLE_TEXT_VALUES_JSON_PATHS.map { _1.on(document_hash) }
+        values.flatten.join(ADDITIONAL_SEARCHABLE_TEXT_VALUES_SEPARATOR)
       end
 
-      def public_timestamp_int
-        return nil unless public_timestamp
+      def public_timestamp
+        return nil unless document_hash["public_updated_at"]
 
-        Time.parse(public_timestamp).to_i # rubocop:disable Rails/TimeZone (string contains TZ info)
+        # rubocop:disable Rails/TimeZone (string already contains timezone info which would be lost)
+        Time.parse(document_hash["public_updated_at"]).to_i
+        # rubocop:enable Rails/TimeZone
       end
     end
   end

@@ -35,62 +35,19 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
       let(:document_hash) do
         {
           "details" => {
-            "body" => "a",
-            "description" => "b",
-            "hidden_search_terms" => "c",
-            "introduction" => "d",
-            "introductory_paragraph" => "e",
-            "more_information" => "f",
+            "description" => "a",
+            "introduction" => "b",
+            "introductory_paragraph" => "c",
+            "title" => "d",
+            "summary" => "e",
+            "body" => "f",
             "need_to_know" => "g",
-            "summary" => "h",
-            "title" => "i",
+            "more_information" => "h",
           },
         }
       end
 
-      it { is_expected.to eq("a\nb\nc\nd\ne\nf\ng\nh\ni") }
-    end
-
-    describe "with hidden indexable content as an array" do
-      let(:document_hash) do
-        {
-          "details" => {
-            "metadata" => {
-              "hidden_indexable_content" => %w[x y z],
-            },
-          },
-        }
-      end
-
-      it { is_expected.to eq("x\ny\nz") }
-    end
-
-    describe "with hidden indexable content as a string" do
-      let(:document_hash) do
-        {
-          "details" => {
-            "metadata" => {
-              "hidden_indexable_content" => "x y z",
-            },
-          },
-        }
-      end
-
-      it { is_expected.to eq("x y z") }
-    end
-
-    describe "with a project code" do
-      let(:document_hash) do
-        {
-          "details" => {
-            "metadata" => {
-              "project_code" => "PRINCE2",
-            },
-          },
-        }
-      end
-
-      it { is_expected.to eq("PRINCE2") }
+      it { is_expected.to eq("a\nb\nc\nd\ne\nf\ng\nh") }
     end
 
     describe "with contact groups" do
@@ -145,14 +102,6 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
       it { is_expected.to eq("000-000-000") }
     end
 
-    describe "document_type" do
-      subject(:extracted_document_type) { document.metadata[:document_type] }
-
-      let(:document_hash) { { "document_type" => "foo_bar" } }
-
-      it { is_expected.to eq("foo_bar") }
-    end
-
     describe "title" do
       subject(:extracted_title) { document.metadata[:title] }
 
@@ -167,6 +116,64 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
       let(:document_hash) { { "description" => "Lorem ipsum dolor sit amet." } }
 
       it { is_expected.to eq("Lorem ipsum dolor sit amet.") }
+    end
+
+    describe "additional_searchable_text" do
+      subject(:additional_searchable_text) { document.metadata[:additional_searchable_text] }
+
+      describe "with hidden search terms" do
+        let(:document_hash) do
+          {
+            "details" => {
+              "hidden_search_terms" => "a b c",
+            },
+          }
+        end
+
+        it { is_expected.to eq("a b c") }
+      end
+
+      describe "with hidden indexable content as an array" do
+        let(:document_hash) do
+          {
+            "details" => {
+              "metadata" => {
+                "hidden_indexable_content" => %w[x y z],
+              },
+            },
+          }
+        end
+
+        it { is_expected.to eq("x\ny\nz") }
+      end
+
+      describe "with hidden indexable content as a string" do
+        let(:document_hash) do
+          {
+            "details" => {
+              "metadata" => {
+                "hidden_indexable_content" => "x y z",
+              },
+            },
+          }
+        end
+
+        it { is_expected.to eq("x y z") }
+      end
+
+      describe "with a project code" do
+        let(:document_hash) do
+          {
+            "details" => {
+              "metadata" => {
+                "project_code" => "PRINCE2",
+              },
+            },
+          }
+        end
+
+        it { is_expected.to eq("PRINCE2") }
+      end
     end
 
     describe "link" do
@@ -240,14 +247,6 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
 
       let(:document_hash) { { "public_updated_at" => "2012-02-01T00:00:00Z" } }
 
-      it { is_expected.to eq("2012-02-01T00:00:00Z") }
-    end
-
-    describe "public_timestamp_int" do
-      subject(:extracted_public_timestamp_int) { document.metadata[:public_timestamp_int] }
-
-      let(:document_hash) { { "public_updated_at" => "2012-02-01T00:00:00Z" } }
-
       it { is_expected.to eq(1_328_054_400) }
 
       context "without a public_timestamp" do
@@ -255,6 +254,46 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
 
         it { is_expected.to be_nil }
       end
+    end
+
+    describe "document_type" do
+      subject(:extracted_document_type) { document.metadata[:document_type] }
+
+      let(:document_hash) { { "document_type" => "foo_bar" } }
+
+      it { is_expected.to eq("foo_bar") }
+    end
+
+    describe "content_purpose_supergroup" do
+      subject(:extracted_content_purpose_supergroup) { document.metadata[:content_purpose_supergroup] }
+
+      let(:document_hash) { { "content_purpose_supergroup" => "foo_bar" } }
+
+      it { is_expected.to eq("foo_bar") }
+    end
+
+    describe "part_of_taxonomy_tree" do
+      subject(:extracted_part_of_taxonomy_tree) { document.metadata[:part_of_taxonomy_tree] }
+
+      context "with a set of taxon links" do
+        let(:document_hash) { { "links" => { "taxons" => %w[0000 ffff] } } }
+
+        it { is_expected.to eq(%w[0000 ffff]) }
+      end
+
+      context "without taxon links" do
+        let(:document_hash) { { "links": {} } }
+
+        it { is_expected.to be_empty }
+      end
+    end
+
+    describe "locale" do
+      subject(:extracted_locale) { document.metadata[:locale] }
+
+      let(:document_hash) { { "locale" => "en" } }
+
+      it { is_expected.to eq("en") }
     end
   end
 
