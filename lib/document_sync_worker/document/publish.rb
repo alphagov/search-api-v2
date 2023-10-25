@@ -13,7 +13,6 @@ module DocumentSyncWorker
         $.details.body
         $.details.need_to_know
         $.details.more_information
-        $.details.parts[*]['title','body']
       ].map { JsonPath.new(_1) }.freeze
       INDEXABLE_CONTENT_SEPARATOR = "\n".freeze
 
