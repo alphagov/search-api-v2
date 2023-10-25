@@ -318,6 +318,37 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
 
       it { is_expected.to eq("en") }
     end
+
+    describe "parts" do
+      subject(:extracted_parts) { document.metadata[:parts] }
+
+      let(:document_hash) { { "details" => { "parts" => parts } } }
+
+      context "when the document has no parts" do
+        let(:parts) { nil }
+
+        it { is_expected.to be_empty }
+      end
+
+      context "when the document has parts" do
+        let(:parts) do
+          [
+            {
+              "title" => "Part 1",
+              "slug" => "/part-1",
+              "body" => "Part 1 body",
+            },
+            {
+              "title" => "Part 2",
+              "slug" => "/part-2",
+              "body" => "Part 2 body",
+            },
+          ]
+        end
+
+        it { is_expected.to eq([{ title: "Part 1", slug: "/part-1" }, { title: "Part 2", slug: "/part-2" }]) }
+      end
+    end
   end
 
   describe "#synchronize_to" do
