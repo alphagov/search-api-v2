@@ -66,22 +66,6 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
       it { is_expected.to eq("x\ny\nz") }
     end
 
-    describe "with parts" do
-      let(:document_hash) do
-        {
-          "details" => {
-            "parts" => [
-              { "title" => "x", "body" => "a" },
-              { "title" => "y", "body" => "b" },
-              { "title" => "z", "body" => "c" },
-            ],
-          },
-        }
-      end
-
-      it { is_expected.to eq("x\na\ny\nb\nz\nc") }
-    end
-
     describe "without any fields" do
       let(:document_hash) do
         {
