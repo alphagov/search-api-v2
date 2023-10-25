@@ -73,6 +73,7 @@ GEM
       capybara (>= 3.36)
       puma
       selenium-webdriver (>= 4.0)
+    hana (1.3.7)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
     io-console (0.6.0)
@@ -80,6 +81,10 @@ GEM
       rdoc
       reline (>= 0.3.8)
     json (2.6.3)
+    json_schemer (2.0.0)
+      hana (~> 1.3)
+      regexp_parser (~> 2.0)
+      simpleidn (~> 0.2)
     jsonpath (1.1.5)
       multi_json
     language_server-protocol (3.17.0.3)
@@ -409,6 +414,8 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.12.3)
     simplecov_json_formatter (0.1.4)
+    simpleidn (0.2.1)
+      unf (~> 0.1.4)
     sorted_set (1.0.3)
       rbtree
       set (~> 1.0)
@@ -417,6 +424,9 @@ GEM
     thor (1.2.2)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.8.2)
     unicode-display_width (2.5.0)
     webrick (1.8.1)
     websocket (1.2.10)
@@ -439,6 +449,7 @@ DEPENDENCIES
   govuk_app_config
   govuk_message_queue_consumer
   govuk_test
+  json_schemer
   jsonpath
   oj
   plek

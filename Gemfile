@@ -22,6 +22,7 @@ group :document_sync_worker do
 end
 
 group :test do
+  gem "json_schemer"
   gem "simplecov", require: false
 end
 
