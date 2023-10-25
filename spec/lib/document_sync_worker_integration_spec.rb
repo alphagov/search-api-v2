@@ -14,6 +14,8 @@ RSpec.describe "Document sync worker end-to-end" do
 
     it "is added to the repository" do
       result = repository.get("f75d26a3-25a4-4c31-beea-a77cada4ce12")
+
+      expect(result[:metadata]).to match_json_schema(metadata_json_schema)
       expect(result[:metadata]).to eq(
         content_id: "f75d26a3-25a4-4c31-beea-a77cada4ce12",
         title: "Ebola medal for over 3000 heroes",
@@ -30,6 +32,7 @@ RSpec.describe "Document sync worker end-to-end" do
         ],
         locale: "en",
       )
+
       expect(result[:content]).to start_with("<div class=\"govspeak\"><p>The government has")
       expect(result[:content]).to end_with("response to Ebola</a>.</p>\n</div>\n\n</div>")
       expect(result[:content].length).to eq(4_932)
@@ -42,6 +45,8 @@ RSpec.describe "Document sync worker end-to-end" do
 
     it "is added to the repository" do
       result = repository.get("b662d0a3-c20d-4167-8056-b9c7d058d860")
+
+      expect(result[:metadata]).to match_json_schema(metadata_json_schema)
       expect(result[:metadata]).to eq(
         content_id: "b662d0a3-c20d-4167-8056-b9c7d058d860",
         title: "Austria travel advice",
@@ -58,6 +63,7 @@ RSpec.describe "Document sync worker end-to-end" do
         ],
         locale: "en",
       )
+
       expect(result[:content]).to be_empty
     end
   end
@@ -68,6 +74,8 @@ RSpec.describe "Document sync worker end-to-end" do
 
     it "is added to the repository" do
       result = repository.get("5c880596-7631-11e4-a3cb-005056011aef")
+
+      expect(result[:metadata]).to match_json_schema(metadata_json_schema)
       expect(result[:metadata]).to eq(
         content_id: "5c880596-7631-11e4-a3cb-005056011aef",
         title: "Travel advice for fans going to Champions League and Europa League matches this week",
@@ -86,6 +94,7 @@ RSpec.describe "Document sync worker end-to-end" do
         ],
         locale: "en",
       )
+
       expect(result[:content]).to start_with("<div class=\"govspeak\"><p>In the UEFA Champions")
       expect(result[:content]).to end_with("football fans</a>.</p>\n</div>")
       expect(result[:content].length).to eq(2_118)
@@ -98,6 +107,8 @@ RSpec.describe "Document sync worker end-to-end" do
 
     it "is added to the repository" do
       result = repository.get("526d5caf-221b-4c7b-9e74-b3e0b189fc8d")
+
+      expect(result[:metadata]).to match_json_schema(metadata_json_schema)
       expect(result[:metadata]).to eq(
         content_id: "526d5caf-221b-4c7b-9e74-b3e0b189fc8d",
         title: "Brighton & Hove City Council",
@@ -112,6 +123,7 @@ RSpec.describe "Document sync worker end-to-end" do
         part_of_taxonomy_tree: [],
         locale: "en",
       )
+
       expect(result[:content]).to be_blank
     end
   end

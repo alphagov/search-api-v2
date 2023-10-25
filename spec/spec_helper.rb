@@ -35,4 +35,5 @@ RSpec.configure do |config|
   end
 
   config.include FixtureHelpers
+  config.include SchemaHelpers
 end
