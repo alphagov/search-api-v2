@@ -11,6 +11,7 @@ gem "railties", RAILS_GEMS_VERSION
 
 gem "bootsnap", require: false
 gem "govuk_app_config"
+gem "loofah"
 gem "oj"
 
 # Gems specific to the document sync worker that aren't required for the main Rails API app

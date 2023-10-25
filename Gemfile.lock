@@ -451,6 +451,7 @@ DEPENDENCIES
   govuk_test
   json_schemer
   jsonpath
+  loofah
   oj
   plek
   railties (= 7.0.7.2)

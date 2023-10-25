@@ -327,7 +327,7 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
       context "when the document has no parts" do
         let(:parts) { nil }
 
-        it { is_expected.to be_empty }
+        it { is_expected.to be_nil }
       end
 
       context "when the document has parts" do
@@ -336,17 +336,44 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
             {
               "title" => "Part 1",
               "slug" => "/part-1",
-              "body" => "Part 1 body",
+              "body" => [
+                {
+                  "content" => "Part 1 body",
+                  "content_type" => "text/simples",
+                },
+                {
+                  "content" => "<div class=\"lipsum\">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur <blink>tincidunt sem erat</blink>, eget blandit urna porta ac. Mauris lobortis tincidunt dui at pharetra.</div>",
+                  "content_type" => "text/html",
+                },
+              ],
             },
             {
               "title" => "Part 2",
               "slug" => "/part-2",
-              "body" => "Part 2 body",
+              "body" => [
+                {
+                  "content" => "I have no HTML content :(",
+                  "content_type" => "text/simples",
+                },
+              ],
             },
           ]
         end
 
-        it { is_expected.to eq([{ title: "Part 1", slug: "/part-1" }, { title: "Part 2", slug: "/part-2" }]) }
+        it "contains the expected titles" do
+          expect(extracted_parts.map { _1[:title] }).to eq(["Part 1", "Part 2"])
+        end
+
+        it "contains the expected slugs" do
+          expect(extracted_parts.map { _1[:slug] }).to eq(%w[/part-1 /part-2])
+        end
+
+        it "contains the expected body with HTML stripped and truncated" do
+          expect(extracted_parts.map { _1[:body] }).to eq([
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur…",
+            "",
+          ])
+        end
       end
     end
   end
