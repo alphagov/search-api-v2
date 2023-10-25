@@ -47,6 +47,7 @@ module DocumentSyncWorker
           # Vertex can only currently boost on numeric fields, not booleans
           is_historic: historic? ? 1 : 0,
           locale: document_hash["locale"],
+          parts:,
         }
       end
 
@@ -90,6 +91,12 @@ module DocumentSyncWorker
         government = document_hash.dig("expanded_links", "government")&.first
 
         political && government&.dig("details", "current") == false
+      end
+
+      def parts
+        document_hash
+          .dig("details", "parts")
+          &.map { { slug: _1["slug"], title: _1["title"] } } || []
       end
     end
   end

@@ -31,6 +31,7 @@ RSpec.describe "Document sync worker end-to-end" do
           668cd623-c7a8-4159-9575-90caac36d4b4 c31256e8-f328-462b-993f-dce50b7892e9
         ],
         locale: "en",
+        parts: [],
       )
 
       expect(result[:content]).to start_with("<div class=\"govspeak\"><p>The government has")
@@ -62,6 +63,13 @@ RSpec.describe "Document sync worker end-to-end" do
           8f78544f-a4ed-46b4-8163-889679d119b9 71cd9f51-f492-4c3f-91ca-5ad694c26592
         ],
         locale: "en",
+        parts: [
+          { slug: "warnings-and-insurance", title: "Warnings and insurance" },
+          { slug: "entry-requirements", title: "Entry requirements" },
+          { slug: "safety-and-security", title: "Safety and security" },
+          { slug: "health", title: "Health" },
+          { slug: "getting-help", title: "Getting help" },
+        ],
       )
 
       expect(result[:content]).to be_empty
@@ -93,6 +101,7 @@ RSpec.describe "Document sync worker end-to-end" do
           3dbeb4a3-33c0-4bda-bd21-b721b0f8736f
         ],
         locale: "en",
+        parts: [],
       )
 
       expect(result[:content]).to start_with("<div class=\"govspeak\"><p>In the UEFA Champions")
@@ -122,6 +131,7 @@ RSpec.describe "Document sync worker end-to-end" do
         content_purpose_supergroup: "other",
         part_of_taxonomy_tree: [],
         locale: "en",
+        parts: [],
       )
 
       expect(result[:content]).to be_blank
