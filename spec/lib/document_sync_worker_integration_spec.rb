@@ -36,6 +36,32 @@ RSpec.describe "Document sync worker end-to-end" do
     end
   end
 
+  describe "for a 'travel_advice' message" do
+    let(:documents) { {} }
+    let(:payload) { json_fixture_as_hash("message_queue/travel_advice_message.json") }
+
+    it "is added to the repository" do
+      result = repository.get("b662d0a3-c20d-4167-8056-b9c7d058d860")
+      expect(result[:metadata]).to eq(
+        content_id: "b662d0a3-c20d-4167-8056-b9c7d058d860",
+        title: "Austria travel advice",
+        description: "FCDO travel advice for Austria. Includes safety and security, insurance, entry requirements and legal differences.",
+        additional_searchable_text: "",
+        link: "/foreign-travel-advice/austria",
+        url: "http://www.dev.gov.uk/foreign-travel-advice/austria",
+        public_timestamp: 1_697_629_071,
+        document_type: "travel_advice",
+        is_historic: 0,
+        content_purpose_supergroup: "guidance_and_regulation",
+        part_of_taxonomy_tree: %w[
+          8f78544f-a4ed-46b4-8163-889679d119b9 71cd9f51-f492-4c3f-91ca-5ad694c26592
+        ],
+        locale: "en",
+      )
+      expect(result[:content]).to be_empty
+    end
+  end
+
   describe "for a historic 'news_story' message" do
     let(:documents) { {} }
     let(:payload) { json_fixture_as_hash("message_queue/historic_news_story_message.json") }
