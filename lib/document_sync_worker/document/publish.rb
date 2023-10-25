@@ -96,7 +96,13 @@ module DocumentSyncWorker
       def parts
         document_hash
           .dig("details", "parts")
-          &.map { { slug: _1["slug"], title: _1["title"] } } || []
+          &.map do
+            {
+              slug: _1["slug"],
+              title: _1["title"],
+              body: ContentWithMultipleTypes.new(_1["body"]).summarized_text_content,
+            }
+          end
       end
     end
   end

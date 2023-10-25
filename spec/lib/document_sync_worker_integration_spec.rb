@@ -31,7 +31,7 @@ RSpec.describe "Document sync worker end-to-end" do
           668cd623-c7a8-4159-9575-90caac36d4b4 c31256e8-f328-462b-993f-dce50b7892e9
         ],
         locale: "en",
-        parts: [],
+        parts: nil,
       )
 
       expect(result[:content]).to start_with("<div class=\"govspeak\"><p>The government has")
@@ -64,11 +64,31 @@ RSpec.describe "Document sync worker end-to-end" do
         ],
         locale: "en",
         parts: [
-          { slug: "warnings-and-insurance", title: "Warnings and insurance" },
-          { slug: "entry-requirements", title: "Entry requirements" },
-          { slug: "safety-and-security", title: "Safety and security" },
-          { slug: "health", title: "Health" },
-          { slug: "getting-help", title: "Getting help" },
+          {
+            slug: "warnings-and-insurance",
+            title: "Warnings and insurance",
+            body: "The Foreign, Commonwealth & Development Office (FCDO) provides advice…",
+          },
+          {
+            slug: "entry-requirements",
+            title: "Entry requirements",
+            body: "This advice reflects the UK government’s understanding of current rules…",
+          },
+          {
+            slug: "safety-and-security",
+            title: "Safety and security",
+            body: "Terrorism There is a high threat of terrorist attack globally affecting UK…",
+          },
+          {
+            slug: "health",
+            title: "Health",
+            body: "Before you travel check that: your destination can provide the healthcare…",
+          },
+          {
+            slug: "getting-help",
+            title: "Getting help",
+            body: "The Foreign, Commonwealth & Development Office (FCDO) cannot provide…",
+          },
         ],
       )
 
@@ -101,7 +121,7 @@ RSpec.describe "Document sync worker end-to-end" do
           3dbeb4a3-33c0-4bda-bd21-b721b0f8736f
         ],
         locale: "en",
-        parts: [],
+        parts: nil,
       )
 
       expect(result[:content]).to start_with("<div class=\"govspeak\"><p>In the UEFA Champions")
@@ -131,7 +151,7 @@ RSpec.describe "Document sync worker end-to-end" do
         content_purpose_supergroup: "other",
         part_of_taxonomy_tree: [],
         locale: "en",
-        parts: [],
+        parts: nil,
       )
 
       expect(result[:content]).to be_blank
