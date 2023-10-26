@@ -345,31 +345,18 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
     describe "government_name" do
       subject(:extracted_government_name) { document.metadata[:government_name] }
 
-      context "when the document is non-political" do
-        let(:document_hash) { { "details" => {} } }
+      let(:document_hash) { { "expanded_links" => expanded_links } }
+
+      context "without link to a government" do
+        let(:expanded_links) { {} }
 
         it { is_expected.to be_nil }
       end
 
-      context "when the document is political" do
-        let(:document_hash) do
-          {
-            "details" => { "political" => true },
-            "expanded_links" => expanded_links,
-          }
-        end
+      context "with a link to a government" do
+        let(:expanded_links) { { "government" => [{ "title" => "2096 Something Party government" }] } }
 
-        context "without link to a government" do
-          let(:expanded_links) { {} }
-
-          it { is_expected.to be_nil }
-        end
-
-        context "with a link to a government" do
-          let(:expanded_links) { { "government" => [{ "title" => "2096 Something Party government" }] } }
-
-          it { is_expected.to eq("2096 Something Party government") }
-        end
+        it { is_expected.to eq("2096 Something Party government") }
       end
     end
 
