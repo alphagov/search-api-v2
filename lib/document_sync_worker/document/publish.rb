@@ -46,9 +46,10 @@ module DocumentSyncWorker
           part_of_taxonomy_tree: document_hash.dig("links", "taxons") || [],
           # Vertex can only currently boost on numeric fields, not booleans
           is_historic: historic? ? 1 : 0,
+          government_name:,
           locale: document_hash["locale"],
           parts:,
-        }
+        }.compact
       end
 
       # Extracts a single string of indexable unstructured content from the document.
@@ -100,6 +101,13 @@ module DocumentSyncWorker
         government = document_hash.dig("expanded_links", "government")&.first
 
         political && government&.dig("details", "current") == false
+      end
+
+      def government_name
+        document_hash
+          .dig("expanded_links", "government")
+          &.first
+          &.dig("title")
       end
 
       def parts
