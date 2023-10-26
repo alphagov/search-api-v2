@@ -24,7 +24,7 @@ module DocumentSyncWorker
         $.details.metadata.hidden_indexable_content
         $.details.metadata.project_code
         $.details.acronym
-        $.details.attachments[*].title
+        $.details.attachments[*]['title','isbn','unique_reference','command_paper_number','hoc_paper_number']
       ].map { JsonPath.new(_1) }.freeze
       ADDITIONAL_SEARCHABLE_TEXT_VALUES_SEPARATOR = "\n".freeze
 
@@ -88,7 +88,10 @@ module DocumentSyncWorker
 
       def additional_searchable_text
         values = ADDITIONAL_SEARCHABLE_TEXT_VALUES_JSON_PATHS.map { _1.on(document_hash) }
-        values.flatten.join(ADDITIONAL_SEARCHABLE_TEXT_VALUES_SEPARATOR)
+        values
+          .flatten
+          .compact_blank
+          .join(ADDITIONAL_SEARCHABLE_TEXT_VALUES_SEPARATOR)
       end
 
       def public_timestamp

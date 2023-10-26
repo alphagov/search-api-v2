@@ -209,14 +209,24 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
           {
             "details" => {
               "attachments" => [
-                { "title" => "A report" },
-                { "title" => "Another report" },
+                {
+                  "title" => "A report",
+                  "isbn" => "1234567890123",
+                  "unique_reference" => "ABCDEF",
+                  "command_paper_number" => "",
+                },
+                {
+                  "title" => "Another report",
+                  "isbn" => "",
+                  "command_paper_number" => "CPN1234",
+                  "hoc_paper_number" => "ADHOC",
+                },
               ],
             },
           }
         end
 
-        it { is_expected.to eq("A report\nAnother report") }
+        it { is_expected.to eq("A report\n1234567890123\nABCDEF\nAnother report\nCPN1234\nADHOC") }
       end
     end
 
