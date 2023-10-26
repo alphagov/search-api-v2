@@ -134,6 +134,35 @@ RSpec.describe "Document sync worker end-to-end" do
     end
   end
 
+  describe "for an 'organisation' message" do
+    let(:documents) { {} }
+    let(:payload) { json_fixture_as_hash("message_queue/organisation_message.json") }
+
+    it "is added to the repository" do
+      result = repository.get("6ba90ae6-972d-4d48-ad66-693bbb31496d")
+
+      expect(result[:metadata]).to match_json_schema(metadata_json_schema)
+      expect(result[:metadata]).to eq(
+        content_id: "6ba90ae6-972d-4d48-ad66-693bbb31496d",
+        title: "Legal Aid Agency",
+        description: "We provide civil and criminal legal aid and advice in England and Wales to help people deal with their legal problems. LAA is an executive agency, sponsored by the Ministry of Justice .",
+        additional_searchable_text: "",
+        link: "/government/organisations/legal-aid-agency",
+        url: "http://www.dev.gov.uk/government/organisations/legal-aid-agency",
+        public_timestamp: 1_695_391_634,
+        document_type: "organisation",
+        is_historic: 0,
+        content_purpose_supergroup: "other",
+        part_of_taxonomy_tree: [],
+        locale: "en",
+      )
+
+      expect(result[:content]).to start_with("<div class=\"govspeak\"><p>We provide civil")
+      expect(result[:content]).to end_with("Ministry of Justice</a>.</p>\n</div>")
+      expect(result[:content].length).to eq(345)
+    end
+  end
+
   describe "for an 'external_content' message" do
     let(:documents) { {} }
     let(:payload) { json_fixture_as_hash("message_queue/external_content_message.json") }
