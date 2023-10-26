@@ -24,6 +24,7 @@ module DocumentSyncWorker
         $.details.metadata.hidden_indexable_content
         $.details.metadata.project_code
         $.details.acronym
+        $.details.attachments[*].title
       ].map { JsonPath.new(_1) }.freeze
       ADDITIONAL_SEARCHABLE_TEXT_VALUES_SEPARATOR = "\n".freeze
 

@@ -203,6 +203,21 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
 
         it { is_expected.to eq("LOL") }
       end
+
+      describe "with attachments" do
+        let(:document_hash) do
+          {
+            "details" => {
+              "attachments" => [
+                { "title" => "A report" },
+                { "title" => "Another report" },
+              ],
+            },
+          }
+        end
+
+        it { is_expected.to eq("A report\nAnother report") }
+      end
     end
 
     describe "link" do

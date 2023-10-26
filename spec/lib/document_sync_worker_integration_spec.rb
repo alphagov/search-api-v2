@@ -164,6 +164,40 @@ RSpec.describe "Document sync worker end-to-end" do
     end
   end
 
+  describe "for an 'independent_report' message" do
+    let(:documents) { {} }
+    let(:payload) { json_fixture_as_hash("message_queue/independent_report_message.json") }
+
+    it "is added to the repository" do
+      result = repository.get("5d315ee8-7631-11e4-a3cb-005056011aef")
+
+      expect(result[:metadata]).to match_json_schema(metadata_json_schema)
+      expect(result[:metadata]).to eq(
+        content_id: "5d315ee8-7631-11e4-a3cb-005056011aef",
+        title: "Directgov 2010 and beyond: revolution not evolution, a report by Martha Lane Fox",
+        description: "A report from the Digital Champion Martha Lane Fox with recommendations for the future of Directgov.",
+        additional_searchable_text: <<~TEXT.chomp,
+          Directgov 2010 and Beyond: Revolution Not Evolution - Letter from Martha Lane Fox to Francis Maude
+          Francis Maude's reply to Martha Lane Fox's letter
+          Directgov Strategic Review - Executive Summary
+        TEXT
+        link: "/government/publications/directgov-2010-and-beyond-revolution-not-evolution-a-report-by-martha-lane-fox",
+        url: "http://www.dev.gov.uk/government/publications/directgov-2010-and-beyond-revolution-not-evolution-a-report-by-martha-lane-fox",
+        public_timestamp: 1_290_470_400,
+        document_type: "independent_report",
+        is_historic: 0,
+        government_name: "2010 to 2015 Conservative and Liberal Democrat coalition government",
+        content_purpose_supergroup: "research_and_statistics",
+        part_of_taxonomy_tree: %w[f3caf326-fe33-410f-b7f4-553f4011c81e],
+        locale: "en",
+      )
+
+      expect(result[:content]).to start_with("<div class=\"govspeak\"><p>A report from the Digital Champion")
+      expect(result[:content]).to end_with("Francis Maude.\u00a0</p>\n</div>")
+      expect(result[:content].length).to eq(195)
+    end
+  end
+
   describe "for an 'external_content' message" do
     let(:documents) { {} }
     let(:payload) { json_fixture_as_hash("message_queue/external_content_message.json") }
