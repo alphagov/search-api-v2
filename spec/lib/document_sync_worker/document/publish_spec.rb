@@ -219,6 +219,26 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
         it { is_expected.to eq("Boeing 747-436\nG-CIVY") }
       end
 
+      describe "with tribunal decision details" do
+        let(:document_hash) do
+          {
+            "details" => {
+              "metadata" => {
+                "tribunal_decision_categories_name" => "A",
+                "tribunal_decision_country_name" => "B",
+                "tribunal_decision_judges_name" => "C",
+                "tribunal_decision_category_name" => "D",
+                "tribunal_decision_sub_category_name" => "E",
+                "tribunal_decision_sub_categories_name" => "F",
+                "tribunal_decision_landmark_name" => "G",
+              },
+            },
+          }
+        end
+
+        it { is_expected.to eq("A\nB\nC\nD\nE\nF\nG") }
+      end
+
       describe "with attachments" do
         let(:document_hash) do
           {
