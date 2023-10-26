@@ -204,6 +204,21 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
         it { is_expected.to eq("LOL") }
       end
 
+      describe "with a registration and aircraft type" do
+        let(:document_hash) do
+          {
+            "details" => {
+              "metadata" => {
+                "registration" => "G-CIVY",
+                "aircraft_type" => "Boeing 747-436",
+              },
+            },
+          }
+        end
+
+        it { is_expected.to eq("Boeing 747-436\nG-CIVY") }
+      end
+
       describe "with attachments" do
         let(:document_hash) do
           {

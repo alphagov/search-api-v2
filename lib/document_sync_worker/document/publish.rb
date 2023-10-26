@@ -23,6 +23,8 @@ module DocumentSyncWorker
         $.details.hidden_search_terms
         $.details.metadata.hidden_indexable_content
         $.details.metadata.project_code
+        $.details.metadata.aircraft_type
+        $.details.metadata.registration
         $.details.acronym
         $.details.attachments[*]['title','isbn','unique_reference','command_paper_number','hoc_paper_number']
       ].map { JsonPath.new(_1) }.freeze
