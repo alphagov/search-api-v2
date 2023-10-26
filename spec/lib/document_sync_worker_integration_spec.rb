@@ -26,12 +26,12 @@ RSpec.describe "Document sync worker end-to-end" do
         public_timestamp: 1_434_021_240,
         document_type: "press_release",
         is_historic: 0,
+        government_name: "2015 Conservative government",
         content_purpose_supergroup: "news_and_communications",
         part_of_taxonomy_tree: %w[
           668cd623-c7a8-4159-9575-90caac36d4b4 c31256e8-f328-462b-993f-dce50b7892e9
         ],
         locale: "en",
-        parts: nil,
       )
 
       expect(result[:content]).to start_with("<div class=\"govspeak\"><p>The government has")
@@ -118,6 +118,7 @@ RSpec.describe "Document sync worker end-to-end" do
         public_timestamp: 1_284_336_000,
         document_type: "news_story",
         is_historic: 1,
+        government_name: "2010 to 2015 Conservative and Liberal Democrat coalition government",
         content_purpose_supergroup: "news_and_communications",
         part_of_taxonomy_tree: %w[
           06ad07f7-1e79-462f-a192-6b2c9d92089c
@@ -125,7 +126,6 @@ RSpec.describe "Document sync worker end-to-end" do
           3dbeb4a3-33c0-4bda-bd21-b721b0f8736f
         ],
         locale: "en",
-        parts: nil,
       )
 
       expect(result[:content]).to start_with("<div class=\"govspeak\"><p>In the UEFA Champions")
@@ -155,7 +155,6 @@ RSpec.describe "Document sync worker end-to-end" do
         content_purpose_supergroup: "other",
         part_of_taxonomy_tree: [],
         locale: "en",
-        parts: nil,
       )
 
       expect(result[:content]).to be_blank
