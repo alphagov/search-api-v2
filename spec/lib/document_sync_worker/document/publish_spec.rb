@@ -360,6 +360,24 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
       end
     end
 
+    describe "organisation_state" do
+      subject(:extracted_organisation_state) { document.metadata[:organisation_state] }
+
+      let(:document_hash) { { "details" => details } }
+
+      context "without an organisation state" do
+        let(:details) { {} }
+
+        it { is_expected.to be_nil }
+      end
+
+      context "with an organisation state" do
+        let(:details) { { "organisation_govuk_status" => { "status" => "blub" } } }
+
+        it { is_expected.to eq("blub") }
+      end
+    end
+
     describe "locale" do
       subject(:extracted_locale) { document.metadata[:locale] }
 

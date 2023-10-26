@@ -152,6 +152,7 @@ RSpec.describe "Document sync worker end-to-end" do
         public_timestamp: 1_695_391_634,
         document_type: "organisation",
         is_historic: 0,
+        organisation_state: "live",
         content_purpose_supergroup: "other",
         part_of_taxonomy_tree: [],
         locale: "en",
