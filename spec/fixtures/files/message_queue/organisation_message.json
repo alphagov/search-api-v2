@@ -1,0 +1,980 @@
+{
+  "title": "Legal Aid Agency",
+  "public_updated_at": "2023-09-22T14:07:14Z",
+  "publishing_app": "whitehall",
+  "rendering_app": "collections",
+  "update_type": "republish",
+  "phase": "live",
+  "analytics_identifier": "EA556",
+  "document_type": "organisation",
+  "schema_name": "organisation",
+  "first_published_at": "2013-09-12T10:52:26Z",
+  "base_path": "/government/organisations/legal-aid-agency",
+  "description": "We provide civil and criminal legal aid and advice in England and Wales to help people deal with their legal problems. LAA is an executive agency, sponsored by the Ministry of Justice .",
+  "details": {
+    "body": "\u003cdiv class=\"govspeak\"\u003e\u003cp\u003eWe provide civil and criminal legal aid and advice in England and Wales to help people deal with their legal problems.\u003c/p\u003e\n\n\u003cp\u003e\u003cabbr title=\"Legal Aid Agency\"\u003eLAA\u003c/abbr\u003e is an executive agency, sponsored by the \u003ca class=\"govuk-link\" href=\"/government/organisations/ministry-of-justice\"\u003eMinistry of Justice\u003c/a\u003e.\u003c/p\u003e\n\u003c/div\u003e",
+    "logo": {
+      "crest": "single-identity",
+      "formatted_title": "Legal Aid \u003cbr/\u003eAgency"
+    },
+    "brand": null,
+    "acronym": "LAA",
+    "foi_exempt": false,
+    "organisation_type": "executive_agency",
+    "social_media_links": [
+      {
+        "href": "https://twitter.com/LegalAidAgency",
+        "title": "@LegalAidAgency",
+        "service_type": "twitter"
+      },
+      {
+        "href": "https://legalaid.blog.gov.uk/",
+        "title": "Legal aid blog",
+        "service_type": "blog"
+      }
+    ],
+    "ordered_featured_links": [
+      {
+        "href": "https://www.gov.uk/government/collections/legal-aid-guidance-for-professionals",
+        "title": "Main content page"
+      },
+      {
+        "href": "https://www.gov.uk/search/news-and-communications?parent=legal-aid-agency\u0026keywords=news\u0026organisations%5B%5D=legal-aid-agency\u0026order=updated-newest",
+        "title": "Civil and crime news"
+      },
+      {
+        "href": "https://www.gov.uk/legal-aid-for-providers/tenders",
+        "title": "Current tenders"
+      },
+      {
+        "href": "https://portal.legalservices.gov.uk/LAAPortal/pages/home.jsp",
+        "title": "LAA Online Portal"
+      },
+      {
+        "href": "https://www.gov.uk/check-legal-aid",
+        "title": "Check if you can get legal aid"
+      }
+    ],
+    "organisation_political": false,
+    "important_board_members": 25,
+    "organisation_govuk_status": {
+      "url": null,
+      "status": "live",
+      "updated_at": null
+    },
+    "ordered_featured_documents": [
+      {
+        "href": "/government/news/civil-news-tender-opens-for-2024-standard-civil-contract",
+        "image": {
+          "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/feature/image/97656/Computer_working_edited.jpg",
+          "alt_text": "2 people working together on computer."
+        },
+        "title": "Civil news: tender opens for 2024 standard civil contract",
+        "summary": "\u003cdiv class=\"govspeak\"\u003e\u003cp\u003eProcurement process opens for delivery of civil legal aid services from 1 September 2024.\u003c/p\u003e\n\u003c/div\u003e",
+        "document_type": "News story",
+        "public_updated_at": "2023-09-13T12:51:51.000+01:00"
+      },
+      {
+        "href": "/government/news/civil-news-find-out-about-legal-aid-opportunities-in-north-west",
+        "image": {
+          "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/feature/image/97841/keswick.jpg",
+          "alt_text": "Houses and trees in a rural setting."
+        },
+        "title": "Civil news: find out about legal aid opportunities in north west",
+        "summary": "\u003cdiv class=\"govspeak\"\u003e\u003cp\u003eMarket engagement event taking place for civil legal aid providers in the north west of England.\u003c/p\u003e\n\u003c/div\u003e",
+        "document_type": "News story",
+        "public_updated_at": "2023-09-26T15:18:00.000+01:00"
+      },
+      {
+        "href": "/government/news/civil-news-changes-to-hourly-rates-screens-in-ccms",
+        "image": {
+          "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/feature/image/97806/Hourly_rates_edited.jpg",
+          "alt_text": "Stopwatches on top of computer keyboard"
+        },
+        "title": "Civil news: changes to hourly rates screens in CCMS",
+        "summary": "\u003cdiv class=\"govspeak\"\u003e\u003cp\u003eWe are making changes to the Client and Cost Management System (CCMS) to make it easier for providers to submit large hourly rates bills.\u003c/p\u003e\n\u003c/div\u003e",
+        "document_type": "News story",
+        "public_updated_at": "2023-09-22T10:09:38.000+01:00"
+      },
+      {
+        "href": "/government/news/civil-news-inquest-legal-help-means-testing-rules-change",
+        "image": {
+          "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/feature/image/97491/s300_candlelight_edited.jpg",
+          "alt_text": "Candles glowing against a dark setting."
+        },
+        "title": "Civil news: inquest legal help means testing rules change",
+        "summary": "\u003cdiv class=\"govspeak\"\u003e\u003cp\u003eBereaved families at inquests can apply to be excepted from the legal help means test using form CW1 INQ after a rule change on 4 September 2023.\u003c/p\u003e\n\u003c/div\u003e",
+        "document_type": "News story",
+        "public_updated_at": "2023-09-04T11:54:50.000+01:00"
+      },
+      {
+        "href": "/government/news/civil-news-online-eligibility-tool-launched-for-all-providers",
+        "image": {
+          "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/feature/image/97327/Working_together_on_computer_edited.jpg",
+          "alt_text": "Two women working together in front of computer."
+        },
+        "title": "Civil news: online eligibility tool launched for providers",
+        "summary": "\u003cdiv class=\"govspeak\"\u003e\u003cp\u003eNew tool now available for providers to check a client’s financial eligibility for civil legal aid.\u003c/p\u003e\n\u003c/div\u003e",
+        "document_type": "News story",
+        "public_updated_at": "2023-08-22T10:54:00.000+01:00"
+      },
+      {
+        "href": "/government/news/civilcrime-news-overnight-accommodation-rates-set-to-rise",
+        "image": {
+          "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/feature/image/97465/Hotel_room_edited.jpg",
+          "alt_text": "Hotel room with bed and bedside table."
+        },
+        "title": "Civil/crime news: overnight accommodation rates set to rise",
+        "summary": "\u003cdiv class=\"govspeak\"\u003e\u003cp\u003eProviders and experts requesting approval for overnight accommodation costs should know that guideline rates are increasing from 1 September 2023.\u003c/p\u003e\n\u003c/div\u003e",
+        "document_type": "News story",
+        "public_updated_at": "2023-09-01T12:44:38.000+01:00"
+      }
+    ],
+    "ordered_promotional_features": [],
+    "organisation_featuring_priority": "news",
+    "alternative_format_contact_email": "LAAReasonableAdjustmentRequests@justice.gov.uk",
+    "ordered_corporate_information_pages": [
+      {
+        "href": "/government/organisations/legal-aid-agency/about/accessible-documents-policy",
+        "title": "Accessible documents policy"
+      },
+      {
+        "href": "/government/organisations/legal-aid-agency/about/equality-and-diversity",
+        "title": "Equality and diversity"
+      },
+      {
+        "href": "/government/organisations/legal-aid-agency/about/complaints-procedure",
+        "title": "Complaints procedure"
+      },
+      {
+        "href": "/government/organisations/legal-aid-agency/about/our-governance",
+        "title": "Our governance"
+      },
+      {
+        "href": "/government/organisations/legal-aid-agency/about/recruitment",
+        "title": "Working for LAA"
+      },
+      {
+        "href": "/government/organisations/legal-aid-agency/about/procurement",
+        "title": "Procurement at LAA"
+      },
+      {
+        "href": "https://jobs.justice.gov.uk/agency/legal-aid-agency/",
+        "title": "Jobs"
+      }
+    ],
+    "secondary_corporate_information_pages": "Our \u003ca class=\"govuk-link brand__color\" href=\"/government/organisations/legal-aid-agency/about/personal-information-charter\"\u003ePersonal information charter\u003c/a\u003e explains how we treat your personal information. Read our policy on \u003ca class=\"govuk-link brand__color\" href=\"/government/organisations/legal-aid-agency/about/social-media-use\"\u003eSocial media use\u003c/a\u003e."
+  },
+  "routes": [
+    {
+      "path": "/government/organisations/legal-aid-agency",
+      "type": "prefix"
+    },
+    {
+      "path": "/government/organisations/legal-aid-agency.atom",
+      "type": "exact"
+    }
+  ],
+  "redirects": [],
+  "content_id": "6ba90ae6-972d-4d48-ad66-693bbb31496d",
+  "locale": "en",
+  "expanded_links": {
+    "ordered_parent_organisations": [
+      {
+        "content_id": "dcc907d6-433c-42df-9ffb-d9c68be5dc4d",
+        "title": "Ministry of Justice",
+        "locale": "en",
+        "analytics_identifier": "D18",
+        "api_path": "/api/content/government/organisations/ministry-of-justice",
+        "base_path": "/government/organisations/ministry-of-justice",
+        "document_type": "organisation",
+        "schema_name": "organisation",
+        "withdrawn": false,
+        "details": {
+          "acronym": "MOJ",
+          "logo": {
+            "crest": "single-identity",
+            "formatted_title": "Ministry\u003cbr/\u003eof Justice"
+          },
+          "brand": "ministry-of-justice",
+          "default_news_image": {
+            "url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/default_news_organisation_image_data/file/155/s300_ministry-of-justice.jpg",
+            "high_resolution_url": "https://assets.publishing.service.gov.uk/government/uploads/system/uploads/default_news_organisation_image_data/file/155/s960_ministry-of-justice.jpg"
+          },
+          "organisation_govuk_status": {
+            "url": null,
+            "status": "live",
+            "updated_at": null
+          }
+        },
+        "links": {}
+      }
+    ],
+    "ordered_roles": [
+      {
+        "content_id": "84753612-c0f1-11e4-8223-005056011aef",
+        "title": "Director, Legal Aid Commissioning and Strategy",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2014-07-11T14:28:14Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The director’s responsibilities include commissioning and contract management of legal aid providers throughout England and Wales, leading the Legal Aid Transformation programme and overseeing the Public Defender Service.",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe director’s responsibilities include commissioning and contract management of legal aid providers throughout England and Wales, leading the Legal Aid Transformation programme and overseeing the Public Defender Service.\u003c/p\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "84753665-c0f1-11e4-8223-005056011aef",
+        "title": "HR Director",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2016-10-19T09:56:21Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The Director of Human Resources is responsible for the development and implementation of the 'people strategy' for the agency. ",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe Director of Human Resources is responsible for the development and implementation of the ‘people strategy’ for the agency.\u003c/p\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "847536ba-c0f1-11e4-8223-005056011aef",
+        "title": "Interim Head of LAA Digital",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2017-03-31T12:48:47Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "As well as leading the IT and digital department, this role leads on the design of digital public services, oversees how those services are managed and supported and heads up transformation programmes.",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eAs well as leading the IT and digital department, this role leads on the design of digital public services, oversees how those services are managed and supported and heads up transformation programmes.\u003c/p\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "8475370a-c0f1-11e4-8223-005056011aef",
+        "title": "Head, Corporate Services",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2023-02-14T11:25:33Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The head of Corporate Services at the LAA is responsible for:\r\n\r\n*  LAA’s strategy and business plan\r\n*  internal and stakeholder communications\r\n*  complaints and central customer service functions\r\n*  information governance\r\n*  corporate reporting\r\n*  organisational change\r\n*  oversight of both the CEO’s private office and the board secretariat\r\n*  equality and diversity issues\r\n\r\n*[LAA]: Legal Aid Agency",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe head of Corporate Services at the \u003cabbr title=\"Legal Aid Agency\"\u003eLAA\u003c/abbr\u003e is responsible for:\u003c/p\u003e\n\n\u003cul\u003e\n  \u003cli\u003e\n\u003cabbr title=\"Legal Aid Agency\"\u003eLAA\u003c/abbr\u003e’s strategy and business plan\u003c/li\u003e\n  \u003cli\u003einternal and stakeholder communications\u003c/li\u003e\n  \u003cli\u003ecomplaints and central customer service functions\u003c/li\u003e\n  \u003cli\u003einformation governance\u003c/li\u003e\n  \u003cli\u003ecorporate reporting\u003c/li\u003e\n  \u003cli\u003eorganisational change\u003c/li\u003e\n  \u003cli\u003eoversight of both the CEO’s private office and the board secretariat\u003c/li\u003e\n  \u003cli\u003eequality and diversity issues\u003c/li\u003e\n\u003c/ul\u003e\n\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "84753760-c0f1-11e4-8223-005056011aef",
+        "title": "Chief Executive",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2014-07-11T16:04:54Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The chief executive provides overall leadership of the LAA and works to ensure that legal aid is provided effectively and efficiently in England and Wales.\r\n\r\n*[LAA]: Legal Aid Agency",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe chief executive provides overall leadership of the \u003cabbr title=\"Legal Aid Agency\"\u003eLAA\u003c/abbr\u003e and works to ensure that legal aid is provided effectively and efficiently in England and Wales.\u003c/p\u003e\n\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "847537b1-c0f1-11e4-8223-005056011aef",
+        "title": "Interim Principal Legal Adviser",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2023-02-16T11:33:34Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "Responsible for assuring the Director of Legal Aid Casework that our funding decisions are correct. Also, defending any proceedings brought against the Legal Aid Agency or Lord Chancellor in relation to the operation of the legal aid scheme.",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eResponsible for assuring the Director of Legal Aid Casework that our funding decisions are correct. Also, defending any proceedings brought against the Legal Aid Agency or Lord Chancellor in relation to the operation of the legal aid scheme.\u003c/p\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "84753808-c0f1-11e4-8223-005056011aef",
+        "title": "Interim Chief Executive",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2019-07-12T09:41:00Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The chief executive provides overall leadership of the LAA and works to ensure that legal aid is provided effectively and efficiently in England and Wales. Responsibilities include:\r\n\r\n* Legal aid case management\r\n* Legal aid commissioning and strategy\r\n* Legal aid finance and digital\r\n* LAA corporate central functions\r\n",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe chief executive provides overall leadership of the LAA and works to ensure that legal aid is provided effectively and efficiently in England and Wales. Responsibilities include:\u003c/p\u003e\n\n\u003cul\u003e\n  \u003cli\u003eLegal aid case management\u003c/li\u003e\n  \u003cli\u003eLegal aid commissioning and strategy\u003c/li\u003e\n  \u003cli\u003eLegal aid finance and digital\u003c/li\u003e\n  \u003cli\u003eLAA corporate central functions\u003c/li\u003e\n\u003c/ul\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "1afa23ab-2fdb-46d2-ae06-ec3b54e8d0d0",
+        "title": "Chair of Legal Aid Agency Board",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2017-03-31T14:44:06Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "ca928e4e-4891-4f5a-bf34-f1fe2afa3939",
+        "title": "Director of Finance Business Partner",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2021-11-25T16:26:50Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The director’s responsibilities include providing business partnering support to the Ministry of Justice’s corporate services functions and three executive agencies – the largest of which is the Legal Aid Agency. ",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe director’s responsibilities include providing business partnering support to the Ministry of Justice’s corporate services functions and three executive agencies – the largest of which is the Legal Aid Agency.\u003c/p\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "2a34c31f-8700-42d9-b935-89fb6b6951e6",
+        "title": "Head of Contract Management",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2017-03-31T14:44:09Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The Head of Contract Management leads a team of around 100 people in 11 locations. The post-holder is responsible for managing relationships with legal aid providers and ensuring that they comply with contractual requirements.",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe Head of Contract Management leads a team of around 100 people in 11 locations. The post-holder is responsible for managing relationships with legal aid providers and ensuring that they comply with contractual requirements.\u003c/p\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "89756d27-67a3-45b5-a299-93d5250613d7",
+        "title": "Head of Civil Legal Aid",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2017-03-31T14:44:09Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The Head of Civil Legal Aid is responsible for ensuring civil certificated applications and bills are processed effectively.\r\n\r\nThe post-holder leads teams processing civil applications, bills, payments on account, customer services, complaints handling, stakeholder training in civil processes, administration and the operation of the LAA national filing centre. \r\n",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe Head of Civil Legal Aid is responsible for ensuring civil certificated applications and bills are processed effectively.\u003c/p\u003e\n\n\u003cp\u003eThe post-holder leads teams processing civil applications, bills, payments on account, customer services, complaints handling, stakeholder training in civil processes, administration and the operation of the LAA national filing centre.\u003c/p\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "8e8d7808-d118-4ce8-8ee8-7935408ddc2c",
+        "title": "Head of Service Development and Central Commissioning ",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2022-03-22T12:24:16Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The Head of Service Development and Central Commissioning is responsible for:\r\n\r\n* policy implementation, working closely with the Ministry of Justice legal aid policy team\r\n\r\n* procurement of contracts for the Legal Aid Agency\r\n",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe Head of Service Development and Central Commissioning is responsible for:\u003c/p\u003e\n\n\u003cul\u003e\n  \u003cli\u003e\n    \u003cp\u003epolicy implementation, working closely with the Ministry of Justice legal aid policy team\u003c/p\u003e\n  \u003c/li\u003e\n  \u003cli\u003e\n    \u003cp\u003eprocurement of contracts for the Legal Aid Agency\u003c/p\u003e\n  \u003c/li\u003e\n\u003c/ul\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "6d805f2b-a9f0-46e7-b95d-e394e0d58cbf",
+        "title": "Head of Public Defender Service",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2017-03-31T14:44:09Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The Head of the Public Defender Service provides leadership for the PDS and has overall responsibility for PDS performance. The PDS is responsible for delivery of high quality defence representation in all types of criminal cases.",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe Head of the Public Defender Service provides leadership for the PDS and has overall responsibility for PDS performance. The PDS is responsible for delivery of high quality defence representation in all types of criminal cases.\u003c/p\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "53b5301a-6b74-45c2-a3d0-536c22bc3014",
+        "title": "Head of Criminal Casework",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2019-07-12T09:25:37Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The Head of Criminal Casework leads the teams that process all applications and bills for criminal legal aid and central funds. This also includes the collection and enforcement of contributions made under the Crown Court means testing scheme.\r\n\r\nThe post-holder is a member of the Executive Leadership Team, chairs the LAA’s Operational Committee and has membership of the LAA board.",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe Head of Criminal Casework leads the teams that process all applications and bills for criminal legal aid and central funds. This also includes the collection and enforcement of contributions made under the Crown Court means testing scheme.\u003c/p\u003e\n\n\u003cp\u003eThe post-holder is a member of the Executive Leadership Team, chairs the LAA’s Operational Committee and has membership of the LAA board.\u003c/p\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "631d6703-a4b8-43a7-b31e-788c0c834f79",
+        "title": "Head of High Cost Civil Complex Cases",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2021-09-15T13:27:05Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The post-holder heads up an operational team which makes determinations for legal aid. This includes high profile and complex civil cases. The team sits within the LAA’s case management directorate.\r\n\r\n*[LAA]: Legal Aid Agency",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe post-holder heads up an operational team which makes determinations for legal aid. This includes high profile and complex civil cases. The team sits within the \u003cabbr title=\"Legal Aid Agency\"\u003eLAA\u003c/abbr\u003e’s case management directorate.\u003c/p\u003e\n\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "596b39cd-66be-461e-91aa-b3e996fe1895",
+        "title": "Joint Deputy Director, Service Development and Central Commissioning ",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2019-02-08T11:39:12Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The Deputy Director for Service Development and Central Commissioning is responsible for policy implementation, working closely with the Ministry of Justice Legal Aid Policy team, and the commissioning of legal aid services for the Legal Aid Agency.",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe Deputy Director for Service Development and Central Commissioning is responsible for policy implementation, working closely with the Ministry of Justice Legal Aid Policy team, and the commissioning of legal aid services for the Legal Aid Agency.\u003c/p\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "9bc809da-93b1-4318-919f-a7fe941749cb",
+        "title": "Head of Performance, Planning and Change",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2017-03-31T14:44:10Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The Head of Performance, Planning and Change is responsible for the LAA’s Strategy and Business Plan and supporting the Performance Framework. Also, performance monitoring across the organisation, corporate reporting, and the Agency’s significant portfolio of organisational change. ",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe Head of Performance, Planning and Change is responsible for the LAA’s Strategy and Business Plan and supporting the Performance Framework. Also, performance monitoring across the organisation, corporate reporting, and the Agency’s significant portfolio of organisational change.\u003c/p\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "1f26caba-2df8-4d9d-927c-2e029527375f",
+        "title": "Head of Assurance",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2017-03-31T14:44:12Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The Head of Assurance’s responsibilities include;\r\n\r\n*  monitoring of error levels within the legal aid fund\r\n*  identifying error recovery opportunities\r\n*  quality assurance of legal aid providers\r\n*  corporate risk and assurance frameworks\r\n*  counter-fraud and investigations functions",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe Head of Assurance’s responsibilities include;\u003c/p\u003e\n\n\u003cul\u003e\n  \u003cli\u003emonitoring of error levels within the legal aid fund\u003c/li\u003e\n  \u003cli\u003eidentifying error recovery opportunities\u003c/li\u003e\n  \u003cli\u003equality assurance of legal aid providers\u003c/li\u003e\n  \u003cli\u003ecorporate risk and assurance frameworks\u003c/li\u003e\n  \u003cli\u003ecounter-fraud and investigations functions\u003c/li\u003e\n\u003c/ul\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "3201af83-63ed-45a1-b270-c3bd94bbed05",
+        "title": "Deputy Director, Finance",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2017-06-21T09:20:21Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The Deputy Director of Finance manages a team working in key areas for the delivery of business objectives. These include:\r\n\r\n1.  Financial accounting, including the production of the annual statutory accounts\r\n2.  Management accounting, including measuring performance against budgeted values\r\n3.  Fund forecasting\r\n4.  Business partnering\r\n5.  Statistics\r\n6.  Recovery services\r\n",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe Deputy Director of Finance manages a team working in key areas for the delivery of business objectives. These include:\u003c/p\u003e\n\n\u003col\u003e\n  \u003cli\u003eFinancial accounting, including the production of the annual statutory accounts\u003c/li\u003e\n  \u003cli\u003eManagement accounting, including measuring performance against budgeted values\u003c/li\u003e\n  \u003cli\u003eFund forecasting\u003c/li\u003e\n  \u003cli\u003eBusiness partnering\u003c/li\u003e\n  \u003cli\u003eStatistics\u003c/li\u003e\n  \u003cli\u003eRecovery services\u003c/li\u003e\n\u003c/ol\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "ae7b0f8b-427b-4887-85d9-d7de7ec6dfd5",
+        "title": "Head of Operations Finance Business Partnering",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2023-02-15T17:09:04Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The postholder leads a team providing business partnering support to the Legal Aid Agency, Criminal Injuries Compensation Authority, and the Office of the Public Guardian.\r\n",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe postholder leads a team providing business partnering support to the Legal Aid Agency, Criminal Injuries Compensation Authority, and the Office of the Public Guardian.\u003c/p\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "3b296985-c537-4d61-a51f-3d06f3bde39a",
+        "title": "Head of Contract Management and Assurance",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2019-08-16T09:51:18Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The Head of Contract Management and Assurance is responsible for managing provider relationships, ensuring contract compliance and monitoring error levels within the legal aid fund. This includes identifying error reduction opportunities, compliance audit and quality assurance of legal aid providers. The team also includes the LAA’s counter fraud and investigations functions.",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe Head of Contract Management and Assurance is responsible for managing provider relationships, ensuring contract compliance and monitoring error levels within the legal aid fund. This includes identifying error reduction opportunities, compliance audit and quality assurance of legal aid providers. The team also includes the LAA’s counter fraud and investigations functions.\u003c/p\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "6ee90a68-bfb4-432f-9d46-82e373843393",
+        "title": "Head of Case Management",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2021-11-25T16:33:08Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The Head of Case Management is responsible for ensuring applications and bills are processed effectively. \r\n\r\nThis includes leading teams dealing with applications, bills, payments on account, customer services, complaints handling, stakeholder training, administration and the operation of the LAA national filing centre. Also, the collection and enforcement of contributions made under the Crown Court means testing scheme.\r\n\r\nThe role includes membership of both the Executive Leadership Team and the LAA Board as well as chairing the LAA’s Operational Committee.",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe Head of Case Management is responsible for ensuring applications and bills are processed effectively.\u003c/p\u003e\n\n\u003cp\u003eThis includes leading teams dealing with applications, bills, payments on account, customer services, complaints handling, stakeholder training, administration and the operation of the LAA national filing centre. Also, the collection and enforcement of contributions made under the Crown Court means testing scheme.\u003c/p\u003e\n\n\u003cp\u003eThe role includes membership of both the Executive Leadership Team and the LAA Board as well as chairing the LAA’s Operational Committee.\u003c/p\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "171f8037-ccf9-476e-85dd-a081e944c7f9",
+        "title": "Second Permanent Secretary, Ministry of Justice and Chief Executive Officer, HM Prison \u0026 Probation Service",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2022-05-24T12:50:55Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The Second Permanent Secretary works closely with the Permanent Secretary on all aspects of Ministry of Justice leadership. Jo holds responsibility for Her Majesty’s Prison and Probation Service and oversight for Legal Aid Agency, Official Solicitor and Public Trustee, Office of the Public Guardian and Criminal Injuries Compensation Authority.\r\n\r\nThe CEO of HM Prison and Probation Service has the strategic management and accountability of the agency and is a member of Ministry of Justice Departmental Board executive management committee.",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe Second Permanent Secretary works closely with the Permanent Secretary on all aspects of Ministry of Justice leadership. Jo holds responsibility for Her Majesty’s Prison and Probation Service and oversight for Legal Aid Agency, Official Solicitor and Public Trustee, Office of the Public Guardian and Criminal Injuries Compensation Authority.\u003c/p\u003e\n\n\u003cp\u003eThe CEO of HM Prison and Probation Service has the strategic management and accountability of the agency and is a member of Ministry of Justice Departmental Board executive management committee.\u003c/p\u003e\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "2e6776dd-e2a5-44f8-9914-804609d76184",
+        "title": "Head of Transformation, jobshare",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2021-11-30T15:26:38Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The Head of Transformation leads the transformation team, which is made up of Legal Aid Agency (LAA) staff and members of the project delivery function. \r\n\r\nThe vision of the transformation team is to lead the transformation of the LAA, through innovation, collaboration and inclusion, creating a better experience for everyone.\r\n\r\nThe team works closely with LAA Digital and teams across the LAA to implement change. This includes improvements to our digital services, as well as implementing policy changes.\r\n\r\n*[LAA]: Legal Aid Agency",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe Head of Transformation leads the transformation team, which is made up of Legal Aid Agency (\u003cabbr title=\"Legal Aid Agency\"\u003eLAA\u003c/abbr\u003e) staff and members of the project delivery function.\u003c/p\u003e\n\n\u003cp\u003eThe vision of the transformation team is to lead the transformation of the \u003cabbr title=\"Legal Aid Agency\"\u003eLAA\u003c/abbr\u003e, through innovation, collaboration and inclusion, creating a better experience for everyone.\u003c/p\u003e\n\n\u003cp\u003eThe team works closely with \u003cabbr title=\"Legal Aid Agency\"\u003eLAA\u003c/abbr\u003e Digital and teams across the \u003cabbr title=\"Legal Aid Agency\"\u003eLAA\u003c/abbr\u003e to implement change. This includes improvements to our digital services, as well as implementing policy changes.\u003c/p\u003e\n\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      },
+      {
+        "content_id": "e8bf8b08-6acd-4515-a290-fa67c2093fcb",
+        "title": "Head of Transformation, jobshare",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": null,
+        "base_path": null,
+        "document_type": "board_member_role",
+        "public_updated_at": "2021-11-30T15:14:20Z",
+        "schema_name": "role",
+        "withdrawn": false,
+        "details": {
+          "body": [
+            {
+              "content": "The Head of Transformation leads the transformation team, which is made up of Legal Aid Agency (LAA) staff and members of the project delivery function. \r\n\r\nThe vision of the transformation team is to lead the transformation of the LAA, through innovation, collaboration and inclusion, creating a better experience for everyone.\r\n\r\nThe team works closely with LAA Digital and teams across the LAA to implement change. This includes improvements to our digital services, as well as implementing policy changes.\r\n\r\n*[LAA]: Legal Aid Agency",
+              "content_type": "text/govspeak"
+            },
+            {
+              "content_type": "text/html",
+              "content": "\u003cp\u003eThe Head of Transformation leads the transformation team, which is made up of Legal Aid Agency (\u003cabbr title=\"Legal Aid Agency\"\u003eLAA\u003c/abbr\u003e) staff and members of the project delivery function.\u003c/p\u003e\n\n\u003cp\u003eThe vision of the transformation team is to lead the transformation of the \u003cabbr title=\"Legal Aid Agency\"\u003eLAA\u003c/abbr\u003e, through innovation, collaboration and inclusion, creating a better experience for everyone.\u003c/p\u003e\n\n\u003cp\u003eThe team works closely with \u003cabbr title=\"Legal Aid Agency\"\u003eLAA\u003c/abbr\u003e Digital and teams across the \u003cabbr title=\"Legal Aid Agency\"\u003eLAA\u003c/abbr\u003e to implement change. This includes improvements to our digital services, as well as implementing policy changes.\u003c/p\u003e\n\n"
+            }
+          ],
+          "role_payment_type": null
+        },
+        "links": {}
+      }
+    ],
+    "primary_publishing_organisation": [
+      {
+        "content_id": "6ba90ae6-972d-4d48-ad66-693bbb31496d",
+        "title": "Legal Aid Agency",
+        "locale": "en",
+        "analytics_identifier": "EA556",
+        "api_path": "/api/content/government/organisations/legal-aid-agency",
+        "base_path": "/government/organisations/legal-aid-agency",
+        "document_type": "organisation",
+        "schema_name": "organisation",
+        "withdrawn": false,
+        "details": {
+          "acronym": "LAA",
+          "logo": {
+            "crest": "single-identity",
+            "formatted_title": "Legal Aid \u003cbr/\u003eAgency"
+          },
+          "brand": null,
+          "default_news_image": null,
+          "organisation_govuk_status": {
+            "url": null,
+            "status": "live",
+            "updated_at": null
+          }
+        },
+        "links": {}
+      }
+    ],
+    "available_translations": [
+      {
+        "title": "Legal Aid Agency",
+        "public_updated_at": "2023-09-22T14:07:14Z",
+        "analytics_identifier": "EA556",
+        "document_type": "organisation",
+        "schema_name": "organisation",
+        "base_path": "/government/organisations/legal-aid-agency",
+        "api_path": "/api/content/government/organisations/legal-aid-agency",
+        "withdrawn": false,
+        "content_id": "6ba90ae6-972d-4d48-ad66-693bbb31496d",
+        "locale": "en"
+      }
+    ]
+  },
+  "user_journey_document_supertype": "finding",
+  "email_document_supertype": "other",
+  "government_document_supertype": "other",
+  "content_purpose_subgroup": "other",
+  "content_purpose_supergroup": "other",
+  "publishing_request_id": "21-1696413947.234-10.13.22.59-2067",
+  "govuk_request_id": null,
+  "links": {
+    "ordered_board_members": [
+      "5fd7078a-2889-4f34-848f-2d56654bec92",
+      "da0f78bd-ab19-4d2e-be5a-bd67d5bf265d",
+      "f7b076cd-17ee-470d-ad91-39583a0f0e76",
+      "6449c354-18a8-42a7-a91d-f02bfb94bb0b",
+      "46467c6d-48f0-4f2f-9e92-248f7d001e6b",
+      "89e90147-92ed-4d08-8a3f-f62de32fb47d",
+      "9970112c-40f2-4404-9cfe-547e9c368f64",
+      "85b9b789-86b3-4958-89ff-d2acdde73e7b"
+    ],
+    "ordered_contacts": [
+      "0b94ab50-746e-49e2-ab7a-05a72511af46",
+      "e8539023-dc9b-468c-8184-5e4848759432",
+      "2881e969-89a1-42f1-829f-669107bc67ab",
+      "b12697d1-117b-412c-b4a4-2c643fe31e6b",
+      "cf34b718-d923-46d3-8498-d3ac08d78481",
+      "46cbc746-84c5-4907-a8a4-fd7cea55e88d",
+      "3b61bea6-88bd-4cb9-9061-f4859e10108a",
+      "f934773f-d454-4f97-9f6e-1d56b1df0ee2",
+      "a3856037-65c7-45eb-989f-4a6f7afc7714",
+      "1879904a-7d38-4079-9f3c-b1e08ba0ab98",
+      "cb9a1348-7c9c-44c6-a52c-f4b3bad04ae1",
+      "2d05efad-5586-450a-b2f0-672c27ce9e6e",
+      "02afc000-f134-4d40-af82-8e71f1123301",
+      "6ef6d0d1-6bbc-4e4c-9f65-9de8ff22a53f"
+    ],
+    "ordered_foi_contacts": [
+      "c063412d-85b6-436c-a668-17b9564115fe"
+    ],
+    "ordered_parent_organisations": [
+      "dcc907d6-433c-42df-9ffb-d9c68be5dc4d"
+    ],
+    "ordered_roles": [
+      "84753612-c0f1-11e4-8223-005056011aef",
+      "84753665-c0f1-11e4-8223-005056011aef",
+      "847536ba-c0f1-11e4-8223-005056011aef",
+      "8475370a-c0f1-11e4-8223-005056011aef",
+      "84753760-c0f1-11e4-8223-005056011aef",
+      "847537b1-c0f1-11e4-8223-005056011aef",
+      "84753808-c0f1-11e4-8223-005056011aef",
+      "1afa23ab-2fdb-46d2-ae06-ec3b54e8d0d0",
+      "ca928e4e-4891-4f5a-bf34-f1fe2afa3939",
+      "2a34c31f-8700-42d9-b935-89fb6b6951e6",
+      "89756d27-67a3-45b5-a299-93d5250613d7",
+      "8e8d7808-d118-4ce8-8ee8-7935408ddc2c",
+      "6d805f2b-a9f0-46e7-b95d-e394e0d58cbf",
+      "53b5301a-6b74-45c2-a3d0-536c22bc3014",
+      "631d6703-a4b8-43a7-b31e-788c0c834f79",
+      "596b39cd-66be-461e-91aa-b3e996fe1895",
+      "9bc809da-93b1-4318-919f-a7fe941749cb",
+      "1f26caba-2df8-4d9d-927c-2e029527375f",
+      "3201af83-63ed-45a1-b270-c3bd94bbed05",
+      "ae7b0f8b-427b-4887-85d9-d7de7ec6dfd5",
+      "3b296985-c537-4d61-a51f-3d06f3bde39a",
+      "6ee90a68-bfb4-432f-9d46-82e373843393",
+      "171f8037-ccf9-476e-85dd-a081e944c7f9",
+      "2e6776dd-e2a5-44f8-9914-804609d76184",
+      "e8bf8b08-6acd-4515-a290-fa67c2093fcb"
+    ],
+    "primary_publishing_organisation": [
+      "6ba90ae6-972d-4d48-ad66-693bbb31496d"
+    ]
+  },
+  "payload_version": "12345"
+}
