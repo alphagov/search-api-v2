@@ -25,6 +25,13 @@ module DocumentSyncWorker
         $.details.metadata.project_code
         $.details.metadata.aircraft_type
         $.details.metadata.registration
+        $.details.metadata.tribunal_decision_categories_name
+        $.details.metadata.tribunal_decision_country_name
+        $.details.metadata.tribunal_decision_judges_name
+        $.details.metadata.tribunal_decision_category_name
+        $.details.metadata.tribunal_decision_sub_category_name
+        $.details.metadata.tribunal_decision_sub_categories_name
+        $.details.metadata.tribunal_decision_landmark_name
         $.details.acronym
         $.details.attachments[*]['title','isbn','unique_reference','command_paper_number','hoc_paper_number']
       ].map { JsonPath.new(_1) }.freeze
