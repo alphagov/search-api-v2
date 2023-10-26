@@ -92,7 +92,11 @@ RSpec.describe "Document sync worker end-to-end" do
         ],
       )
 
-      expect(result[:content]).to be_empty
+      expect(result[:content]).to include("<h1>Warnings and insurance</h1>\n<p>The Foreign,")
+      expect(result[:content]).to include("<h1>Entry requirements</h1>\n<p>This advice reflects")
+      expect(result[:content]).to include("<h1>Safety and security</h1>\n<h2 id=\"terrorism\">")
+      expect(result[:content]).to include("<h1>Health</h1>\n<p>Before you travel")
+      expect(result[:content]).to include("<h1>Getting help</h1>\n<p>The Foreign,")
     end
   end
 
