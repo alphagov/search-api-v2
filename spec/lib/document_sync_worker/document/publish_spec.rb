@@ -191,6 +191,18 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
 
         it { is_expected.to eq("PRINCE2") }
       end
+
+      describe "with an acronym" do
+        let(:document_hash) do
+          {
+            "details" => {
+              "acronym" => "LOL",
+            },
+          }
+        end
+
+        it { is_expected.to eq("LOL") }
+      end
     end
 
     describe "link" do

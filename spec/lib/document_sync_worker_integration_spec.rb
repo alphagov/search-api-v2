@@ -146,7 +146,7 @@ RSpec.describe "Document sync worker end-to-end" do
         content_id: "6ba90ae6-972d-4d48-ad66-693bbb31496d",
         title: "Legal Aid Agency",
         description: "We provide civil and criminal legal aid and advice in England and Wales to help people deal with their legal problems. LAA is an executive agency, sponsored by the Ministry of Justice .",
-        additional_searchable_text: "",
+        additional_searchable_text: "LAA",
         link: "/government/organisations/legal-aid-agency",
         url: "http://www.dev.gov.uk/government/organisations/legal-aid-agency",
         public_timestamp: 1_695_391_634,

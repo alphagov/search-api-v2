@@ -23,6 +23,7 @@ module DocumentSyncWorker
         $.details.hidden_search_terms
         $.details.metadata.hidden_indexable_content
         $.details.metadata.project_code
+        $.details.acronym
       ].map { JsonPath.new(_1) }.freeze
       ADDITIONAL_SEARCHABLE_TEXT_VALUES_SEPARATOR = "\n".freeze
 
