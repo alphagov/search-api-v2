@@ -20,18 +20,56 @@ RSpec.describe Repositories::GoogleDiscoveryEngine::Repository do
   end
 
   describe "#put" do
-    it "logs the put operation" do
-      repository.put(
-        "some_content_id",
-        { link: "/some/path" },
-        content: "Lorem ipsum dolor sit amet, consecutur edipiscing elit",
-        payload_version: "1",
-      )
+    context "when updating the document succeeds" do
+      before do
+        allow(client).to receive(:update_document).and_return(
+          double(name: "document-name"), # rubocop:disable RSpec/VerifiedDoubles
+        )
 
-      expect(logger).to have_received(:info).with(
-        "[PUT some_content_id@v1] /some/path: " \
-          "'Lorem ipsum dolor sit amet, consecutur edipiscing e...'",
-      )
+        repository.put(
+          "some_content_id",
+          { foo: "bar" },
+          content: "some content",
+          payload_version: "1",
+        )
+      end
+
+      it "updates the document" do
+        expect(client).to have_received(:update_document).with(
+          document: {
+            id: "some_content_id",
+            name: "datastore-path/branches/my_branch/documents/some_content_id",
+            json_data: "{\"foo\":\"bar\",\"payload_version\":\"1\"}",
+            content: {
+              mime_type: "text/html",
+              raw_bytes: an_object_satisfying { |io| io.read == "some content" },
+            },
+          },
+          allow_missing: true,
+        )
+      end
+
+      it "logs the put operation" do
+        expect(logger).to have_received(:info).with("[GCDE][PUT some_content_id@v1] -> document-name")
+      end
+    end
+
+    context "when updating the document fails" do
+      let(:err) { Google::Cloud::Error.new("Something went wrong") }
+
+      before do
+        allow(client).to receive(:update_document).and_raise(err)
+
+        repository.put("some_content_id", {}, payload_version: "1")
+      end
+
+      it "logs the failure" do
+        expect(logger).to have_received(:error).with("[GCDE][PUT some_content_id@v1] Something went wrong")
+      end
+
+      it "send the error to Sentry" do
+        expect(GovukError).to have_received(:notify).with(err)
+      end
     end
   end
 

@@ -5,6 +5,7 @@ module Repositories
     # A repository integrating with Google Discovery Engine
     class Repository
       DEFAULT_BRANCH_NAME = "default_branch".freeze
+      MIME_TYPE = "text/html".freeze
 
       def initialize(
         datastore_path,
@@ -18,15 +19,25 @@ module Repositories
         @logger = logger
       end
 
-      def put(content_id, metadata, content: nil, payload_version: nil)
-        content_snippet = content ? content[0..50] : "<no content>"
-
-        logger.info(
-          sprintf(
-            "[PUT %s@v%s] %s: '%s...'",
-            content_id, payload_version, metadata[:link], content_snippet
-          ),
+      def put(content_id, metadata, content: "", payload_version: nil)
+        doc = client.update_document(
+          document: {
+            id: content_id,
+            name: document_name(content_id),
+            json_data: metadata.merge(payload_version:).to_json,
+            content: {
+              mime_type: MIME_TYPE,
+              # The Google client expects an IO object to extract raw byte content from
+              raw_bytes: StringIO.new(content),
+            },
+          },
+          allow_missing: true,
         )
+
+        logger.info(sprintf("[GCDE][PUT %s@v%s] -> %s", content_id, payload_version, doc.name))
+      rescue Google::Cloud::Error => e
+        logger.error(sprintf("[GCDE][PUT %s@v%s] %s", content_id, payload_version, e.message))
+        GovukError.notify(e)
       end
 
       def delete(content_id, payload_version: nil)
