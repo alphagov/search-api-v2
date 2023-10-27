@@ -10,6 +10,7 @@ gem "activesupport", RAILS_GEMS_VERSION
 gem "railties", RAILS_GEMS_VERSION
 
 gem "bootsnap", require: false
+gem "google-cloud-discovery_engine"
 gem "govuk_app_config"
 gem "loofah"
 gem "oj"
