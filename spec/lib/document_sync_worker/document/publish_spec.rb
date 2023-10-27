@@ -6,7 +6,7 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
   end
 
   let(:content_id) { "123" }
-  let(:payload_version) { 1 }
+  let(:payload_version) { "1" }
   let(:document_type) { "press_release" }
   let(:document_hash) do
     {
@@ -24,7 +24,7 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
 
   describe "#payload_version" do
     it "returns the payload_version from the document hash" do
-      expect(document.payload_version).to eq(payload_version)
+      expect(document.payload_version).to eq(1)
     end
   end
 
@@ -522,7 +522,7 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
       document.synchronize_to(repository)
 
       expect(repository).to have_received(:put).with(
-        content_id, document.metadata, content: document.content, payload_version:
+        content_id, document.metadata, content: document.content, payload_version: 1
       )
     end
   end

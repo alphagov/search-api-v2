@@ -6,7 +6,7 @@ RSpec.describe DocumentSyncWorker::Document::Unpublish do
   end
 
   let(:content_id) { "123" }
-  let(:payload_version) { 1 }
+  let(:payload_version) { "1" }
   let(:document_type) { "gone" }
   let(:document_hash) do
     {
@@ -24,7 +24,7 @@ RSpec.describe DocumentSyncWorker::Document::Unpublish do
 
   describe "#payload_version" do
     it "returns the payload_version from the document hash" do
-      expect(document.payload_version).to eq(payload_version)
+      expect(document.payload_version).to eq(1)
     end
   end
 
@@ -32,7 +32,7 @@ RSpec.describe DocumentSyncWorker::Document::Unpublish do
     it "deletes the document from the repository" do
       document.synchronize_to(repository)
 
-      expect(repository).to have_received(:delete).with(content_id, payload_version:)
+      expect(repository).to have_received(:delete).with(content_id, payload_version: 1)
     end
   end
 end

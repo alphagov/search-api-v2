@@ -18,7 +18,7 @@ module DocumentSyncWorker
 
       # The payload version of the document.
       def payload_version
-        document_hash.fetch("payload_version")
+        document_hash.fetch("payload_version").to_i
       end
 
     private
