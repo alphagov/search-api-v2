@@ -4,13 +4,16 @@ module Repositories
   module GoogleDiscoveryEngine
     # A repository integrating with Google Discovery Engine
     class Repository
-      # We only ever use the default branch (for now)
-      BRANCH = "/branches/default_branch".freeze
+      DEFAULT_BRANCH_NAME = "default_branch".freeze
 
       def initialize(
+        datastore_path,
+        branch_name: DEFAULT_BRANCH_NAME,
         client: ::Google::Cloud::DiscoveryEngine.document_service(version: :v1),
         logger: Logger.new($stdout, progname: self.class.name)
       )
+        @datastore_path = datastore_path
+        @branch_name = branch_name
         @client = client
         @logger = logger
       end
@@ -42,14 +45,10 @@ module Repositories
 
     private
 
-      attr_reader :client, :logger
-
-      def datastore_path
-        ENV.fetch("DISCOVERY_ENGINE_DATASTORE")
-      end
+      attr_reader :datastore_path, :branch_name, :client, :logger
 
       def branch_path
-        datastore_path + BRANCH
+        "#{datastore_path}/branches/#{branch_name}"
       end
 
       def document_name(content_id)

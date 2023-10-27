@@ -4,12 +4,18 @@ require "repositories/google_discovery_engine/repository"
 require "google/cloud/discovery_engine/v1"
 
 RSpec.describe Repositories::GoogleDiscoveryEngine::Repository do
-  let(:repository) { described_class.new(client:, logger:) }
+  let(:repository) do
+    described_class.new(
+      "datastore-path",
+      branch_name: "my_branch",
+      client:,
+      logger:,
+    )
+  end
   let(:client) { instance_double(Google::Cloud::DiscoveryEngine::V1::DocumentService::Client) }
   let(:logger) { instance_double(Logger, info: nil, warn: nil, error: nil) }
 
   before do
-    allow(ENV).to receive(:fetch).with("DISCOVERY_ENGINE_DATASTORE").and_return("datastore-path")
     allow(GovukError).to receive(:notify)
   end
 
@@ -39,7 +45,7 @@ RSpec.describe Repositories::GoogleDiscoveryEngine::Repository do
 
       it "deletes the document" do
         expect(client).to have_received(:delete_document)
-          .with(name: "datastore-path/branches/default_branch/documents/some_content_id")
+          .with(name: "datastore-path/branches/my_branch/documents/some_content_id")
       end
 
       it "logs the delete operation" do

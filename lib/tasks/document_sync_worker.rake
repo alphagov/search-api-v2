@@ -18,7 +18,10 @@ namespace :document_sync_worker do
   desc "Listens to and processes messages from the published documents queue"
   task run: :environment do
     DocumentSyncWorker.configure do |config|
-      config.repository = Repositories::GoogleDiscoveryEngine::Repository.new(logger: config.logger)
+      config.repository = Repositories::GoogleDiscoveryEngine::Repository.new(
+        ENV.fetch("DISCOVERY_ENGINE_DATASTORE"),
+        logger: config.logger,
+      )
       config.message_queue_name = ENV.fetch("PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_NAME")
     end
 
