@@ -1,10 +1,14 @@
+require "google/cloud/discovery_engine"
+
 module Repositories
   module GoogleDiscoveryEngine
     # A repository integrating with Google Discovery Engine
-    # TODO: This is just a copy of the Null repository to start off with, but it should be updated
-    #       to integrate with the real product.
     class Repository
-      def initialize(logger: Logger.new($stdout, progname: self.class.name))
+      def initialize(
+        client: ::Google::Cloud::DiscoveryEngine.document_service(version: :v1),
+        logger: Logger.new($stdout, progname: self.class.name)
+      )
+        @client = client
         @logger = logger
       end
 
@@ -25,7 +29,7 @@ module Repositories
 
     private
 
-      attr_reader :logger
+      attr_reader :client, :logger
     end
   end
 end
