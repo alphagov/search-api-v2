@@ -16,6 +16,9 @@ module SearchApiV2
     config.time_zone = "London"
     config.api_only = true
 
-    config.discovery_engine_engine = ENV.fetch("DISCOVERY_ENGINE_ENGINE")
+    # Google Discovery Engine configuration (overridden in test environment)
+    unless Rails.env.test?
+      config.discovery_engine_serving_config = ENV.fetch("DISCOVERY_ENGINE_SERVING_CONFIG")
+    end
   end
 end

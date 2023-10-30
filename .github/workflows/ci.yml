@@ -25,7 +25,9 @@ jobs:
     name: Test Ruby
     runs-on: ubuntu-latest
     env:
-      DISCOVERY_ENGINE_ENGINE: "engine"
+      # As we're running the tests through Rake, we need to make sure they are run in the `test`
+      # Rails env rather than `development`
+      RAILS_ENV: test
     steps:
       - uses: actions/checkout@v3
         with:
