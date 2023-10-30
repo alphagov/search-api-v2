@@ -2,8 +2,8 @@ require "google/cloud/discovery_engine"
 
 module Repositories
   module GoogleDiscoveryEngine
-    # A repository integrating with Google Discovery Engine
-    class Repository
+    # A repository to add data to Google Discovery Engine
+    class WriteRepository
       DEFAULT_BRANCH_NAME = "default_branch".freeze
       MIME_TYPE = "text/html".freeze
 

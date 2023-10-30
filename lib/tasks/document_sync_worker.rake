@@ -1,5 +1,5 @@
 require "document_sync_worker"
-require "repositories/google_discovery_engine/repository"
+require "repositories/google_discovery_engine/write_repository"
 
 namespace :document_sync_worker do
   desc "Create RabbitMQ queue for development environment"
@@ -18,7 +18,7 @@ namespace :document_sync_worker do
   desc "Listens to and processes messages from the published documents queue"
   task run: :environment do
     DocumentSyncWorker.configure do |config|
-      config.repository = Repositories::GoogleDiscoveryEngine::Repository.new(
+      config.repository = Repositories::GoogleDiscoveryEngine::WriteRepository.new(
         ENV.fetch("DISCOVERY_ENGINE_DATASTORE"),
         logger: config.logger,
       )

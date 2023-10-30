@@ -1,9 +1,9 @@
-require "repositories/google_discovery_engine/repository"
+require "repositories/google_discovery_engine/write_repository"
 
 # Require v1 specifically to instance_double it (repository itself uses non-versioned API)
 require "google/cloud/discovery_engine/v1"
 
-RSpec.describe Repositories::GoogleDiscoveryEngine::Repository do
+RSpec.describe Repositories::GoogleDiscoveryEngine::WriteRepository do
   let(:repository) do
     described_class.new(
       "datastore-path",
