@@ -15,5 +15,7 @@ module SearchApiV2
     config.load_defaults 7.0
     config.time_zone = "London"
     config.api_only = true
+
+    config.discovery_engine_engine = ENV.fetch("DISCOVERY_ENGINE_ENGINE")
   end
 end

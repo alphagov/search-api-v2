@@ -24,6 +24,8 @@ jobs:
   test-ruby:
     name: Test Ruby
     runs-on: ubuntu-latest
+    env:
+      DISCOVERY_ENGINE_ENGINE: "engine"
     steps:
       - uses: actions/checkout@v3
         with:

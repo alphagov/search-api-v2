@@ -1,9 +1,5 @@
 class SearchesController < ApplicationController
   def show
-    render json: {
-      results: [],
-      total: 0,
-      start: 0,
-    }
+    render json: Query.new.result_set
   end
 end
