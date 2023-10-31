@@ -10,7 +10,7 @@ module Repositories
       DEFAULT_COUNT = 0
 
       def initialize(
-        serving_config_path,
+        serving_config_path = Rails.configuration.discovery_engine_serving_config,
         client: ::Google::Cloud::DiscoveryEngine.search_service(version: :v1),
         logger: Logger.new($stdout, progname: self.class.name)
       )
