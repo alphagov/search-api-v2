@@ -1,7 +1,7 @@
 require "govuk_message_queue_consumer/test_helpers"
 
 RSpec.describe "Document sync worker end-to-end" do
-  let(:repository) { DocumentSyncWorker::Repositories::TestRepository.new(documents) }
+  let(:repository) { TestRepository.new(documents) }
   let(:message) { GovukMessageQueueConsumer::MockMessage.new(payload) }
 
   before do
