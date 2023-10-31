@@ -11,6 +11,7 @@ Rails.application.configure do
 
   # Use a fake discovery engine client to avoid any real API calls being made in tests
   config.discovery_engine_serving_config = "/test/serving/config"
+  config.repository_class = Repositories::TestRepository
 
   # Turn false under Spring and add config.action_view.cache_template_loading = true.
   config.cache_classes = true

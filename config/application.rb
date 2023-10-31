@@ -19,6 +19,9 @@ module SearchApiV2
     # Google Discovery Engine configuration (overridden in test environment)
     unless Rails.env.test?
       config.discovery_engine_serving_config = ENV.fetch("DISCOVERY_ENGINE_SERVING_CONFIG")
+
+      require "repositories/google_discovery_engine/read_repository"
+      config.repository_class = Repositories::GoogleDiscoveryEngine::ReadRepository
     end
   end
 end
