@@ -2,7 +2,7 @@ RSpec.describe DocumentSyncWorker::Document::Publish do
   subject(:document) { described_class.new(document_hash) }
 
   let(:repository) do
-    double("repository", put: nil) # rubocop:disable RSpec/VerifiedDoubles (interface)
+    double("repository", put: nil)
   end
 
   let(:content_id) { "123" }

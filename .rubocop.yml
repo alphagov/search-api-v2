@@ -9,6 +9,12 @@ inherit_mode:
   merge:
     - Exclude
 
+# We often want to test duck-typed interfaces rather than specific classes, especially in the
+# context of the Google API client, which returns dynamic objects that RSpec's `instance_double`
+# can't verify.
+RSpec/VerifiedDoubles:
+  Enabled: false
+
 # **************************************************************
 # TRY NOT TO ADD OVERRIDES IN THIS FILE
 #

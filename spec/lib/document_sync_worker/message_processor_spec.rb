@@ -4,7 +4,7 @@ RSpec.describe DocumentSyncWorker::MessageProcessor do
   subject(:processor) { described_class.new(repository:) }
 
   let(:repository) { double }
-  let(:document) { double(synchronize_to: nil) } # rubocop:disable RSpec/VerifiedDoubles (interface)
+  let(:document) { double(synchronize_to: nil) }
 
   it_behaves_like "a message queue processor"
 
