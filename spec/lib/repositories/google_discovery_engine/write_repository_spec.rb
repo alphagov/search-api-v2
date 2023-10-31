@@ -23,7 +23,7 @@ RSpec.describe Repositories::GoogleDiscoveryEngine::WriteRepository do
     context "when updating the document succeeds" do
       before do
         allow(client).to receive(:update_document).and_return(
-          double(name: "document-name"), # rubocop:disable RSpec/VerifiedDoubles
+          double(name: "document-name"),
         )
 
         repository.put(
