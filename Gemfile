@@ -24,6 +24,7 @@ group :document_sync_worker do
 end
 
 group :test do
+  gem "grpc_mock"
   gem "json_schemer"
   gem "simplecov", require: false
 end

@@ -129,6 +129,8 @@ GEM
     grpc (1.59.0-x86_64-linux)
       google-protobuf (~> 3.24)
       googleapis-common-protos-types (~> 1.0)
+    grpc_mock (0.4.6)
+      grpc (>= 1.12.0, < 2)
     hana (1.3.7)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
@@ -513,6 +515,7 @@ DEPENDENCIES
   govuk_app_config
   govuk_message_queue_consumer
   govuk_test
+  grpc_mock
   json_schemer
   jsonpath
   loofah

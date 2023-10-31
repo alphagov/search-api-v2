@@ -13,6 +13,8 @@ GovukTest.configure
 #   remove this, otherwise it can be made permanent.
 require "document_sync_worker"
 
+require "grpc_mock/rspec"
+
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   config.default_formatter = "doc" if config.files_to_run.one?
@@ -36,4 +38,6 @@ RSpec.configure do |config|
 
   config.include FixtureHelpers
   config.include SchemaHelpers
+
+  GrpcMock.disable_net_connect!
 end
