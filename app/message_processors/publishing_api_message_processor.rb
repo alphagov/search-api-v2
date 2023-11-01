@@ -1,24 +1,16 @@
-require "repositories/google_discovery_engine/write_repository"
-
 class PublishingApiMessageProcessor
-  attr_reader :repository
-
-  def initialize(repository:)
-    @repository = repository
-  end
-
   # Implements the callback interface required by `govuk_message_queue_consumer`
   def process(message)
     document = PublishingApiDocument.for(message.payload)
-    document.synchronize_to(repository)
+    document.synchronize
 
     message.ack
   rescue StandardError => e
     # TODO: Consider options for handling errors more granularly, and for differentiating between
-    # retriable (e.g. transient connection issue in repository) and fatal (e.g. malformed document
-    # on queue) errors. For now while we aren't live, log an error, send the error to Sentry, and
-    # reject the message to avoid unnecessary retries that would probably fail again while we're
-    # very actively iterating.
+    # retriable (e.g. transient connection issue) and fatal (e.g. malformed document on queue)
+    # errors. For now while we aren't live, log an error, send the error to Sentry, and reject the
+    # message to avoid unnecessary retries that would probably fail again while we're very actively
+    # iterating.
     payload = if message.payload.is_a?(Hash)
                 # Omit details as it may be large and is probably unnecessary
                 message.payload.except("details")

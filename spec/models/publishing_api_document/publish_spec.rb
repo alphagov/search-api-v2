@@ -1,10 +1,6 @@
 RSpec.describe PublishingApiDocument::Publish do
   subject(:document) { described_class.new(document_hash) }
 
-  let(:repository) do
-    double("repository", put: nil)
-  end
-
   let(:content_id) { "123" }
   let(:payload_version) { "1" }
   let(:document_type) { "press_release" }
@@ -517,11 +513,13 @@ RSpec.describe PublishingApiDocument::Publish do
     end
   end
 
-  describe "#synchronize_to" do
-    it "puts the document in the repository" do
-      document.synchronize_to(repository)
+  describe "#synchronize" do
+    let(:service) { double("Put service", call: nil) }
 
-      expect(repository).to have_received(:put).with(
+    it "synchronises using a services" do
+      document.synchronize(service:)
+
+      expect(service).to have_received(:call).with(
         content_id, document.metadata, content: document.content, payload_version: 1
       )
     end

@@ -1,10 +1,6 @@
 RSpec.describe PublishingApiDocument::Unpublish do
   subject(:document) { described_class.new(document_hash) }
 
-  let(:repository) do
-    double("repository", delete: nil)
-  end
-
   let(:content_id) { "123" }
   let(:payload_version) { "1" }
   let(:document_type) { "gone" }
@@ -28,11 +24,13 @@ RSpec.describe PublishingApiDocument::Unpublish do
     end
   end
 
-  describe "#synchronize_to" do
-    it "deletes the document from the repository" do
-      document.synchronize_to(repository)
+  describe "#synchronize" do
+    let(:service) { double("Delete service", call: nil) }
 
-      expect(repository).to have_received(:delete).with(content_id, payload_version: 1)
+    it "synchronises using a services" do
+      document.synchronize(service:)
+
+      expect(service).to have_received(:call).with(content_id, payload_version: 1)
     end
   end
 end
