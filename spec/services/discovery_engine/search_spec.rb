@@ -33,9 +33,9 @@ RSpec.describe DiscoveryEngine::Search do
       it "returns a result set with the correct contents" do
         expect(result_set.start).to eq(0)
         expect(result_set.total).to eq(42)
-        expect(result_set.results).to eq([
-          { title: "Louth Garden Centre" },
-          { title: "Cleethorpes Garden Centre" },
+        expect(result_set.results.map(&:title)).to eq([
+          "Louth Garden Centre",
+          "Cleethorpes Garden Centre",
         ])
       end
 

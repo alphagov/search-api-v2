@@ -1,6 +1,7 @@
 RSpec.describe "Making a search request" do
   let(:search_service) { instance_double(DiscoveryEngine::Search, call: result_set) }
-  let(:result_set) { ResultSet.new(results: [], total: 42, start: 21) }
+  let(:result_set) { ResultSet.new(results:, total: 42, start: 21) }
+  let(:results) { [Result.new(content_id: "123"), Result.new(content_id: "456")] }
 
   before do
     allow(DiscoveryEngine::Search).to receive(:new).and_return(search_service)
@@ -12,7 +13,10 @@ RSpec.describe "Making a search request" do
 
       expect(response).to have_http_status(:ok)
       expect(JSON.parse(response.body)).to eq({
-        "results" => [],
+        "results" => [
+          { "content_id" => "123" },
+          { "content_id" => "456" },
+        ],
         "total" => 42,
         "start" => 21,
       })
