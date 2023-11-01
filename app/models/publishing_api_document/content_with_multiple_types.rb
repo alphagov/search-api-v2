@@ -1,4 +1,4 @@
-module DocumentSyncWorker::Document
+module PublishingApiDocument
   class ContentWithMultipleTypes
     def initialize(content_with_multiple_types)
       @content_with_multiple_types = content_with_multiple_types
