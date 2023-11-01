@@ -1,6 +1,6 @@
 require "govuk_message_queue_consumer/test_helpers"
 
-RSpec.describe DocumentSyncWorker::MessageProcessor do
+RSpec.describe PublishingApiMessageProcessor do
   subject(:processor) { described_class.new(repository:) }
 
   let(:repository) { double }
@@ -35,7 +35,7 @@ RSpec.describe DocumentSyncWorker::MessageProcessor do
 
       before do
         allow(DocumentSyncWorker::Document).to receive(:for).and_raise(error)
-        allow(DocumentSyncWorker).to receive(:logger).and_return(logger)
+        allow(Rails).to receive(:logger).and_return(logger)
         allow(GovukError).to receive(:notify)
       end
 

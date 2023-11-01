@@ -1,12 +1,9 @@
-require "document_sync_worker"
-require "repositories/google_discovery_engine/write_repository"
-
 namespace :document_sync_worker do
   desc "Create RabbitMQ queue for development environment"
   task create_queue: :environment do
+    # This is a convenience task to create RabbitMQ resources for development purposes only.
     # The exchange, queue, and binding are created via Terraform outside of local development:
     # https://github.com/alphagov/govuk-aws/blob/main/terraform/projects/app-publishing-amazonmq/
-    # TODO: Remove dependency on Rails if extracted to a separate unit
     raise "This task should only be run in development" unless Rails.env.development?
 
     bunny = Bunny.new
@@ -17,14 +14,18 @@ namespace :document_sync_worker do
 
   desc "Listens to and processes messages from the published documents queue"
   task run: :environment do
-    DocumentSyncWorker.configure do |config|
-      config.repository = Repositories::GoogleDiscoveryEngine::WriteRepository.new(
-        ENV.fetch("DISCOVERY_ENGINE_DATASTORE"),
-        logger: config.logger,
-      )
-      config.message_queue_name = ENV.fetch("PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_NAME")
-    end
+    logger.info("Starting document sync worker")
 
-    DocumentSyncWorker.run
+    repository = Repositories::GoogleDiscoveryEngine::WriteRepository.new(
+      ENV.fetch("DISCOVERY_ENGINE_DATASTORE"),
+      logger: Rails.logger,
+    )
+
+    GovukMessageQueueConsumer::Consumer.new(
+      queue_name: ENV.fetch("PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_NAME"),
+      processor: PublishingApiMessageProcessor.new(repository:),
+    ).run
+  rescue Interrupt
+    logger.info("Stopping document sync worker (received interrupt)")
   end
 end
