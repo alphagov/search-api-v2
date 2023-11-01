@@ -12,16 +12,11 @@ gem "railties", RAILS_GEMS_VERSION
 gem "bootsnap", require: false
 gem "google-cloud-discovery_engine"
 gem "govuk_app_config"
+gem "govuk_message_queue_consumer"
+gem "jsonpath"
 gem "loofah"
 gem "oj"
-
-# Gems specific to the document sync worker that aren't required for the main Rails API app
-group :document_sync_worker do
-  gem "govuk_message_queue_consumer"
-  gem "jsonpath"
-  gem "plek"
-  gem "zeitwerk"
-end
+gem "plek"
 
 group :test do
   gem "grpc_mock"

@@ -1,4 +1,3 @@
-require "document_sync_worker"
 require "repositories/google_discovery_engine/write_repository"
 
 class PublishingApiMessageProcessor
@@ -10,7 +9,7 @@ class PublishingApiMessageProcessor
 
   # Implements the callback interface required by `govuk_message_queue_consumer`
   def process(message)
-    document = DocumentSyncWorker::Document.for(message.payload)
+    document = PublishingApiDocument.for(message.payload)
     document.synchronize_to(repository)
 
     message.ack

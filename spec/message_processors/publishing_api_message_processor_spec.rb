@@ -14,7 +14,7 @@ RSpec.describe PublishingApiMessageProcessor do
 
     before do
       allow(Rails.logger).to receive(:info)
-      allow(DocumentSyncWorker::Document).to receive(:for).with(payload).and_return(document)
+      allow(PublishingApiDocument).to receive(:for).with(payload).and_return(document)
     end
 
     it "acks incoming messages" do
@@ -34,7 +34,7 @@ RSpec.describe PublishingApiMessageProcessor do
       let(:error) { RuntimeError.new("Something went wrong") }
 
       before do
-        allow(DocumentSyncWorker::Document).to receive(:for).and_raise(error)
+        allow(PublishingApiDocument).to receive(:for).and_raise(error)
         allow(Rails).to receive(:logger).and_return(logger)
         allow(GovukError).to receive(:notify)
       end

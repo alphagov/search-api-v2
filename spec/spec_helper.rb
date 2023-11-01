@@ -9,10 +9,6 @@ require "rspec/rails"
 Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 GovukTest.configure
 
-# TODO: If the write side of this application is extracted to a separate unit, we will need to
-#   remove this, otherwise it can be made permanent.
-require "document_sync_worker"
-
 require "grpc_mock/rspec"
 
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration

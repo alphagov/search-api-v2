@@ -14,7 +14,7 @@ namespace :document_sync_worker do
 
   desc "Listens to and processes messages from the published documents queue"
   task run: :environment do
-    logger.info("Starting document sync worker")
+    Rails.logger.info("Starting document sync worker")
 
     repository = Repositories::GoogleDiscoveryEngine::WriteRepository.new(
       ENV.fetch("DISCOVERY_ENGINE_DATASTORE"),
@@ -26,6 +26,6 @@ namespace :document_sync_worker do
       processor: PublishingApiMessageProcessor.new(repository:),
     ).run
   rescue Interrupt
-    logger.info("Stopping document sync worker (received interrupt)")
+    Rails.logger.info("Stopping document sync worker (received interrupt)")
   end
 end

@@ -1,4 +1,4 @@
-RSpec.describe DocumentSyncWorker::Document do
+RSpec.describe PublishingApiDocument do
   describe ".for" do
     subject(:document) { described_class.for(document_hash) }
 
@@ -8,14 +8,14 @@ RSpec.describe DocumentSyncWorker::Document do
       context "when the document type is #{document_type}" do
         let(:document_type) { document_type }
 
-        it { is_expected.to be_a(DocumentSyncWorker::Document::Unpublish) }
+        it { is_expected.to be_a(PublishingApiDocument::Unpublish) }
       end
     end
 
     context "when the document type is not one of the unpublish document types" do
       let(:document_type) { "anything-else" }
 
-      it { is_expected.to be_a(DocumentSyncWorker::Document::Publish) }
+      it { is_expected.to be_a(PublishingApiDocument::Publish) }
     end
   end
 end
