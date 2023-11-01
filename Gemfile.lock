@@ -26,7 +26,7 @@ GEM
     amq-protocol (2.3.2)
     ast (2.4.2)
     base64 (0.1.1)
-    bootsnap (1.16.0)
+    bootsnap (1.17.0)
       msgpack (~> 1.2)
     brakeman (6.0.1)
     builder (3.2.4)
