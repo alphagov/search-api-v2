@@ -8,7 +8,7 @@ module SchemaHelpers
 
   # Returns a JSONSchemer object representing the JSON schema for document metadata
   def metadata_json_schema
-    @metadata_json_schema ||= begin
+    @@metadata_json_schema ||= begin # rubocop:disable Style/ClassVars
       remote_schema = Net::HTTP.get(METADATA_JSON_SCHEMA_URI)
       schema_contents = JSON.parse(remote_schema)
 
