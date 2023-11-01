@@ -5,7 +5,7 @@ RSpec.describe "Document sync worker end-to-end" do
   let(:message) { GovukMessageQueueConsumer::MockMessage.new(payload) }
 
   before do
-    DocumentSyncWorker::MessageProcessor.new(repository:).process(message)
+    PublishingApiMessageProcessor.new(repository:).process(message)
   end
 
   describe "for a 'press_release' message" do
