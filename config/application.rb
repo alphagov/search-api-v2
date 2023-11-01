@@ -18,5 +18,6 @@ module SearchApiV2
 
     # Google Discovery Engine configuration
     config.discovery_engine_serving_config = ENV.fetch("DISCOVERY_ENGINE_SERVING_CONFIG")
+    config.discovery_engine_datastore = ENV.fetch("DISCOVERY_ENGINE_DATASTORE")
   end
 end

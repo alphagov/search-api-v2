@@ -16,14 +16,9 @@ namespace :document_sync_worker do
   task run: :environment do
     Rails.logger.info("Starting document sync worker")
 
-    repository = Repositories::GoogleDiscoveryEngine::WriteRepository.new(
-      ENV.fetch("DISCOVERY_ENGINE_DATASTORE"),
-      logger: Rails.logger,
-    )
-
     GovukMessageQueueConsumer::Consumer.new(
       queue_name: ENV.fetch("PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_NAME"),
-      processor: PublishingApiMessageProcessor.new(repository:),
+      processor: PublishingApiMessageProcessor.new,
     ).run
   rescue Interrupt
     Rails.logger.info("Stopping document sync worker (received interrupt)")

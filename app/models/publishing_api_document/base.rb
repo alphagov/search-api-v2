@@ -1,12 +1,14 @@
 module PublishingApiDocument
-  # Abstract base class for documents that can be synchronized to a repository.
+  # Abstract base class for documents from the Publishing API that can be synchronized to a service.
+  # Concrete subclasses are responsible for implementing synchronization logic for their particular
+  # type of document, which may involve creating or deleting a record remotely.
   class Base
     def initialize(document_hash)
       @document_hash = document_hash
     end
 
-    # Synchronize the document to the given repository.
-    def synchronize_to(repository)
+    # Synchronize the document to the given service.
+    def synchronize(service: nil)
       raise NotImplementedError, "You must use a concrete subclass of Document"
     end
 

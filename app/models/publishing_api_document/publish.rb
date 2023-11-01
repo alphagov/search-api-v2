@@ -36,9 +36,9 @@ module PublishingApiDocument
     ].map { JsonPath.new(_1) }.freeze
     ADDITIONAL_SEARCHABLE_TEXT_VALUES_SEPARATOR = "\n".freeze
 
-    # Synchronize the document to the given repository (i.e. put it in the repository).
-    def synchronize_to(repository)
-      repository.put(content_id, metadata, content:, payload_version:)
+    # Synchronize the document to the given service (i.e. create or update it remotely)
+    def synchronize(service: DiscoveryEngine::Put.new)
+      service.call(content_id, metadata, content:, payload_version:)
     end
 
     # Extracts a hash of structured metadata about this document.
