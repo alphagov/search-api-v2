@@ -186,6 +186,32 @@ RSpec.describe "Document synchronization" do
     end
   end
 
+  describe "for a 'taxon' message that isn't ignorelisted" do
+    let(:payload) { json_fixture_as_hash("message_queue/world_taxon_message.json") }
+
+    it "is added to Discovery Engine through the Put service" do
+      expect(put_service).to have_received(:call).with(
+        "f1724368-504f-4b3c-9dc2-41121046de9f",
+        {
+          content_id: "f1724368-504f-4b3c-9dc2-41121046de9f",
+          title: "UK help and services in Switzerland",
+          description: "Services if you're visiting, studying, working or living in Switzerland. Includes information about trading with and doing business in the UK and Switzerland, and your rights after the UK’s exit from the EU.",
+          additional_searchable_text: "",
+          link: "/world/switzerland",
+          url: "http://www.dev.gov.uk/world/switzerland",
+          public_timestamp: 1_583_165_036,
+          document_type: "taxon",
+          is_historic: 0,
+          content_purpose_supergroup: "other",
+          part_of_taxonomy_tree: %w[],
+          locale: "en",
+        },
+        content: "",
+        payload_version: 12_345,
+      )
+    end
+  end
+
   describe "for an 'external_content' message" do
     let(:payload) { json_fixture_as_hash("message_queue/external_content_message.json") }
 

@@ -6,6 +6,7 @@ RSpec.describe "PublishingApiDocument schema-compliant metadata generation" do
     organisation_message
     press_release_message
     travel_advice_message
+    world_taxon_message
   ].each do |message_fixture|
     context "when processing a '#{message_fixture}'" do
       let(:document_hash) { json_fixture_as_hash("message_queue/#{message_fixture}.json") }

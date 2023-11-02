@@ -1,0 +1,732 @@
+{
+  "title": "UK help and services in Switzerland",
+  "public_updated_at": "2020-03-02T16:03:56Z",
+  "publishing_app": "content-tagger",
+  "rendering_app": "collections",
+  "update_type": "major",
+  "phase": "live",
+  "analytics_identifier": null,
+  "document_type": "taxon",
+  "schema_name": "taxon",
+  "first_published_at": "2017-06-29T14:04:04Z",
+  "base_path": "/world/switzerland",
+  "description": "Services if you're visiting, studying, working or living in Switzerland. Includes information about trading with and doing business in the UK and Switzerland, and your rights after the UK’s exit from the EU.",
+  "details": {
+    "internal_name": "UK help and services in Switzerland",
+    "notes_for_editors": "",
+    "visible_to_departmental_editors": false
+  },
+  "routes": [
+    {
+      "path": "/world/switzerland",
+      "type": "exact"
+    }
+  ],
+  "redirects": [],
+  "content_id": "f1724368-504f-4b3c-9dc2-41121046de9f",
+  "locale": "en",
+  "expanded_links": {
+    "child_taxons": [
+      {
+        "content_id": "fcdca447-3336-400d-a6f9-d6ed4661f290",
+        "title": "Living in Switzerland",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/world/living-in-switzerland",
+        "base_path": "/world/living-in-switzerland",
+        "document_type": "taxon",
+        "public_updated_at": "2020-03-03T17:05:59Z",
+        "schema_name": "taxon",
+        "withdrawn": false,
+        "description": "Guidance on your rights after the UK’s exit from the EU, accessing healthcare, getting a document legalised, English-speaking lawyers, how to vote abroad.",
+        "details": {
+          "internal_name": "Living in Switzerland",
+          "notes_for_editors": "",
+          "visible_to_departmental_editors": false
+        },
+        "phase": "live",
+        "links": {
+          "parent_taxons": [
+            {
+              "content_id": "f1724368-504f-4b3c-9dc2-41121046de9f",
+              "title": "UK help and services in Switzerland",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/switzerland",
+              "base_path": "/world/switzerland",
+              "document_type": "taxon",
+              "public_updated_at": "2020-03-02T16:03:56Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Services if you're visiting, studying, working or living in Switzerland. Includes information about trading with and doing business in the UK and Switzerland, and your rights after the UK’s exit from the EU.",
+              "details": {
+                "internal_name": "UK help and services in Switzerland",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ],
+          "associated_taxons": [
+            {
+              "content_id": "f4450d6d-ae53-4da0-88e5-cfe32c76a5ee",
+              "title": "Living abroad",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/living-abroad",
+              "base_path": "/world/living-abroad",
+              "document_type": "taxon",
+              "public_updated_at": "2017-06-30T14:23:44Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Includes how to access healthcare, get a document legalised, lists of lawyers and how to vote abroad.",
+              "details": {
+                "internal_name": "Living abroad (GENERIC)",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ]
+        }
+      },
+      {
+        "content_id": "8d0b5192-8f84-49db-ad40-592ada5afa79",
+        "title": "Birth, death and marriage abroad",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/world/birth-death-and-marriage-abroad-switzerland",
+        "base_path": "/world/birth-death-and-marriage-abroad-switzerland",
+        "document_type": "taxon",
+        "public_updated_at": "2017-06-29T08:18:22Z",
+        "schema_name": "taxon",
+        "withdrawn": false,
+        "description": "Includes how to get married, list of funeral directors and how to register a birth abroad.",
+        "details": {
+          "internal_name": "Birth, death and marriage abroad (Switzerland)",
+          "notes_for_editors": "",
+          "visible_to_departmental_editors": true
+        },
+        "phase": "live",
+        "links": {
+          "parent_taxons": [
+            {
+              "content_id": "f1724368-504f-4b3c-9dc2-41121046de9f",
+              "title": "UK help and services in Switzerland",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/switzerland",
+              "base_path": "/world/switzerland",
+              "document_type": "taxon",
+              "public_updated_at": "2020-03-02T16:03:56Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Services if you're visiting, studying, working or living in Switzerland. Includes information about trading with and doing business in the UK and Switzerland, and your rights after the UK’s exit from the EU.",
+              "details": {
+                "internal_name": "UK help and services in Switzerland",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ],
+          "associated_taxons": [
+            {
+              "content_id": "eed5b92e-8279-4ca9-a141-5c35ed22fcf1",
+              "title": "Birth, death and marriage abroad ",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/birth-death-and-marriage-abroad",
+              "base_path": "/world/birth-death-and-marriage-abroad",
+              "document_type": "taxon",
+              "public_updated_at": "2017-06-23T11:04:33Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Includes how to get married, list of funeral directors and how to register a birth abroad.",
+              "details": {
+                "internal_name": "Birth, death and marriage abroad (GENERIC)",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ]
+        }
+      },
+      {
+        "content_id": "c1e7fdbe-6313-490e-b897-fa2a8e33200f",
+        "title": "Tax, benefits, pensions and working abroad",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/world/tax-benefits-pensions-and-working-abroad-switzerland",
+        "base_path": "/world/tax-benefits-pensions-and-working-abroad-switzerland",
+        "document_type": "taxon",
+        "public_updated_at": "2017-06-29T08:18:22Z",
+        "schema_name": "taxon",
+        "withdrawn": false,
+        "description": "Includes how to pay tax, claim State Pension and get tax credits abroad.",
+        "details": {
+          "internal_name": "Tax, benefits, pensions and working abroad (Switzerland)",
+          "notes_for_editors": "",
+          "visible_to_departmental_editors": true
+        },
+        "phase": "live",
+        "links": {
+          "parent_taxons": [
+            {
+              "content_id": "f1724368-504f-4b3c-9dc2-41121046de9f",
+              "title": "UK help and services in Switzerland",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/switzerland",
+              "base_path": "/world/switzerland",
+              "document_type": "taxon",
+              "public_updated_at": "2020-03-02T16:03:56Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Services if you're visiting, studying, working or living in Switzerland. Includes information about trading with and doing business in the UK and Switzerland, and your rights after the UK’s exit from the EU.",
+              "details": {
+                "internal_name": "UK help and services in Switzerland",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ],
+          "associated_taxons": [
+            {
+              "content_id": "382360ab-c4cf-4e2a-b043-0cfa395f1d0b",
+              "title": "Tax, benefits, pensions and working abroad",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/tax-benefits-pensions-and-working-abroad",
+              "base_path": "/world/tax-benefits-pensions-and-working-abroad",
+              "document_type": "taxon",
+              "public_updated_at": "2017-06-23T11:04:50Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Includes how to pay tax, claim State Pension and get tax credits abroad. ",
+              "details": {
+                "internal_name": "Tax, benefits, pensions and working abroad (GENERIC)",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ]
+        }
+      },
+      {
+        "content_id": "179f5b60-c9e1-4311-9820-84cf6e79cda4",
+        "title": "British embassy or high commission",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/world/british-embassy-or-high-commission-switzerland",
+        "base_path": "/world/british-embassy-or-high-commission-switzerland",
+        "document_type": "taxon",
+        "public_updated_at": "2017-06-29T08:18:22Z",
+        "schema_name": "taxon",
+        "withdrawn": false,
+        "description": "Includes contact details, opening hours and consular fees and local services.",
+        "details": {
+          "internal_name": "British embassy or high commission (Switzerland)",
+          "notes_for_editors": "",
+          "visible_to_departmental_editors": true
+        },
+        "phase": "live",
+        "links": {
+          "parent_taxons": [
+            {
+              "content_id": "f1724368-504f-4b3c-9dc2-41121046de9f",
+              "title": "UK help and services in Switzerland",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/switzerland",
+              "base_path": "/world/switzerland",
+              "document_type": "taxon",
+              "public_updated_at": "2020-03-02T16:03:56Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Services if you're visiting, studying, working or living in Switzerland. Includes information about trading with and doing business in the UK and Switzerland, and your rights after the UK’s exit from the EU.",
+              "details": {
+                "internal_name": "UK help and services in Switzerland",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ],
+          "associated_taxons": [
+            {
+              "content_id": "0d729f86-e07e-4271-a505-9f80954eeeed",
+              "title": "British embassy or high commission ",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/british-embassy-or-high-commission",
+              "base_path": "/world/british-embassy-or-high-commission",
+              "document_type": "taxon",
+              "public_updated_at": "2017-06-23T11:05:24Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Includes contact details, opening hours and consular fees and local services.",
+              "details": {
+                "internal_name": "British embassy or high commission (GENERIC)",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ]
+        }
+      },
+      {
+        "content_id": "84a2093d-cd01-45c3-8d8b-cddf864bc2cd",
+        "title": "Passports and emergency travel documents",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/world/passports-and-emergency-travel-documents-switzerland",
+        "base_path": "/world/passports-and-emergency-travel-documents-switzerland",
+        "document_type": "taxon",
+        "public_updated_at": "2017-06-29T08:18:21Z",
+        "schema_name": "taxon",
+        "withdrawn": false,
+        "description": "Includes how to cancel a lost passport, renew a passport and apply for an emergency travel document.",
+        "details": {
+          "internal_name": "Passports and emergency travel documents (Switzerland)",
+          "notes_for_editors": "",
+          "visible_to_departmental_editors": true
+        },
+        "phase": "live",
+        "links": {
+          "parent_taxons": [
+            {
+              "content_id": "f1724368-504f-4b3c-9dc2-41121046de9f",
+              "title": "UK help and services in Switzerland",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/switzerland",
+              "base_path": "/world/switzerland",
+              "document_type": "taxon",
+              "public_updated_at": "2020-03-02T16:03:56Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Services if you're visiting, studying, working or living in Switzerland. Includes information about trading with and doing business in the UK and Switzerland, and your rights after the UK’s exit from the EU.",
+              "details": {
+                "internal_name": "UK help and services in Switzerland",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ],
+          "associated_taxons": [
+            {
+              "content_id": "374e8288-d58c-4914-b81b-e66ab4803925",
+              "title": "Passports and emergency travel documents",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/passports-and-emergency-travel-documents",
+              "base_path": "/world/passports-and-emergency-travel-documents",
+              "document_type": "taxon",
+              "public_updated_at": "2017-06-23T10:57:30Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Includes how to cancel a lost passport, renew a passport and apply for an emergency travel document.",
+              "details": {
+                "internal_name": "Passports and emergency travel documents (GENERIC)",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ]
+        }
+      },
+      {
+        "content_id": "14357240-7647-42f3-a329-a9d893f07463",
+        "title": "News and events",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/world/news-and-events-switzerland",
+        "base_path": "/world/news-and-events-switzerland",
+        "document_type": "taxon",
+        "public_updated_at": "2017-06-29T08:18:22Z",
+        "schema_name": "taxon",
+        "withdrawn": false,
+        "description": "Find out about the UK government's diplomatic, security and development work in Switzerland.",
+        "details": {
+          "internal_name": "News and events (Switzerland)",
+          "notes_for_editors": "",
+          "visible_to_departmental_editors": true
+        },
+        "phase": "live",
+        "links": {
+          "parent_taxons": [
+            {
+              "content_id": "f1724368-504f-4b3c-9dc2-41121046de9f",
+              "title": "UK help and services in Switzerland",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/switzerland",
+              "base_path": "/world/switzerland",
+              "document_type": "taxon",
+              "public_updated_at": "2020-03-02T16:03:56Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Services if you're visiting, studying, working or living in Switzerland. Includes information about trading with and doing business in the UK and Switzerland, and your rights after the UK’s exit from the EU.",
+              "details": {
+                "internal_name": "UK help and services in Switzerland",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ],
+          "associated_taxons": [
+            {
+              "content_id": "0c5945fc-f65c-4bd1-a664-9e302f3d448c",
+              "title": "News and events",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/news-and-events",
+              "base_path": "/world/news-and-events",
+              "document_type": "taxon",
+              "public_updated_at": "2017-11-14T09:48:38Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Find out about the UK government's diplomatic, security and development work abroad.",
+              "details": {
+                "internal_name": "News and events (GENERIC)",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ]
+        }
+      },
+      {
+        "content_id": "2d113bc4-6843-4416-9fdd-1232c14f3bc7",
+        "title": "Travelling to Switzerland",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/world/travelling-to-switzerland",
+        "base_path": "/world/travelling-to-switzerland",
+        "document_type": "taxon",
+        "public_updated_at": "2017-06-29T08:18:21Z",
+        "schema_name": "taxon",
+        "withdrawn": false,
+        "description": "Includes travel advice and how to get married abroad.",
+        "details": {
+          "internal_name": "Travelling to Switzerland",
+          "notes_for_editors": "",
+          "visible_to_departmental_editors": true
+        },
+        "phase": "live",
+        "links": {
+          "parent_taxons": [
+            {
+              "content_id": "f1724368-504f-4b3c-9dc2-41121046de9f",
+              "title": "UK help and services in Switzerland",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/switzerland",
+              "base_path": "/world/switzerland",
+              "document_type": "taxon",
+              "public_updated_at": "2020-03-02T16:03:56Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Services if you're visiting, studying, working or living in Switzerland. Includes information about trading with and doing business in the UK and Switzerland, and your rights after the UK’s exit from the EU.",
+              "details": {
+                "internal_name": "UK help and services in Switzerland",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ],
+          "associated_taxons": [
+            {
+              "content_id": "4fe5a04b-9f68-4644-abb4-1f54c93f50e7",
+              "title": "Travelling abroad",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/travelling-abroad",
+              "base_path": "/world/travelling-abroad",
+              "document_type": "taxon",
+              "public_updated_at": "2017-06-30T14:24:24Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Includes travel advice and how to get married abroad.",
+              "details": {
+                "internal_name": "Travelling abroad (GENERIC)",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ]
+        }
+      },
+      {
+        "content_id": "3d55560a-348e-4fca-a08a-ee9c178ed3b2",
+        "title": "Coming to the UK",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/world/coming-to-the-uk-switzerland",
+        "base_path": "/world/coming-to-the-uk-switzerland",
+        "document_type": "taxon",
+        "public_updated_at": "2017-06-29T08:18:21Z",
+        "schema_name": "taxon",
+        "withdrawn": false,
+        "description": "Get a visa to study, work or visit the UK.",
+        "details": {
+          "internal_name": "Coming to the UK (Switzerland)",
+          "notes_for_editors": "",
+          "visible_to_departmental_editors": true
+        },
+        "phase": "live",
+        "links": {
+          "parent_taxons": [
+            {
+              "content_id": "f1724368-504f-4b3c-9dc2-41121046de9f",
+              "title": "UK help and services in Switzerland",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/switzerland",
+              "base_path": "/world/switzerland",
+              "document_type": "taxon",
+              "public_updated_at": "2020-03-02T16:03:56Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Services if you're visiting, studying, working or living in Switzerland. Includes information about trading with and doing business in the UK and Switzerland, and your rights after the UK’s exit from the EU.",
+              "details": {
+                "internal_name": "UK help and services in Switzerland",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ],
+          "associated_taxons": [
+            {
+              "content_id": "d0e61780-6962-40aa-bb57-298f35187e4f",
+              "title": "Coming to the UK",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/coming-to-the-uk",
+              "base_path": "/world/coming-to-the-uk",
+              "document_type": "taxon",
+              "public_updated_at": "2017-06-23T11:08:24Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Get a visa to study, work or visit the UK.",
+              "details": {
+                "internal_name": "Coming to the UK (GENERIC)",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ]
+        }
+      },
+      {
+        "content_id": "3e4a999a-10dc-4fe3-a9d7-70f9c88654ff",
+        "title": "Emergency help for British nationals",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/world/emergency-help-for-british-nationals-switzerland",
+        "base_path": "/world/emergency-help-for-british-nationals-switzerland",
+        "document_type": "taxon",
+        "public_updated_at": "2017-06-29T08:18:21Z",
+        "schema_name": "taxon",
+        "withdrawn": false,
+        "description": "Get help if you're the victim of crime, you've been arrested, or are affected by a crisis abroad.",
+        "details": {
+          "internal_name": "Emergency help for British nationals (Switzerland)",
+          "notes_for_editors": "",
+          "visible_to_departmental_editors": true
+        },
+        "phase": "live",
+        "links": {
+          "parent_taxons": [
+            {
+              "content_id": "f1724368-504f-4b3c-9dc2-41121046de9f",
+              "title": "UK help and services in Switzerland",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/switzerland",
+              "base_path": "/world/switzerland",
+              "document_type": "taxon",
+              "public_updated_at": "2020-03-02T16:03:56Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Services if you're visiting, studying, working or living in Switzerland. Includes information about trading with and doing business in the UK and Switzerland, and your rights after the UK’s exit from the EU.",
+              "details": {
+                "internal_name": "UK help and services in Switzerland",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ],
+          "associated_taxons": [
+            {
+              "content_id": "26adf294-1b3d-49cf-a465-46fe132511e9",
+              "title": "Emergency help for British nationals",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/emergency-help-for-british-nationals",
+              "base_path": "/world/emergency-help-for-british-nationals",
+              "document_type": "taxon",
+              "public_updated_at": "2017-06-23T10:56:41Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Get help if you're the victim of crime, you've been arrested, or are affected by a crisis abroad.",
+              "details": {
+                "internal_name": "Emergency help for British nationals (GENERIC)",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ]
+        }
+      },
+      {
+        "content_id": "cf4c2666-1210-46ad-9b0e-4db0751854ad",
+        "title": "Trade and invest",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/world/trade-and-invest-switzerland",
+        "base_path": "/world/trade-and-invest-switzerland",
+        "document_type": "taxon",
+        "public_updated_at": "2017-06-29T08:18:22Z",
+        "schema_name": "taxon",
+        "withdrawn": false,
+        "description": "Includes investing and setting up a business in the UK and doing business in Switzerland.",
+        "details": {
+          "internal_name": "Trade and invest (Switzerland)",
+          "notes_for_editors": "",
+          "visible_to_departmental_editors": true
+        },
+        "phase": "live",
+        "links": {
+          "parent_taxons": [
+            {
+              "content_id": "f1724368-504f-4b3c-9dc2-41121046de9f",
+              "title": "UK help and services in Switzerland",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/switzerland",
+              "base_path": "/world/switzerland",
+              "document_type": "taxon",
+              "public_updated_at": "2020-03-02T16:03:56Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Services if you're visiting, studying, working or living in Switzerland. Includes information about trading with and doing business in the UK and Switzerland, and your rights after the UK’s exit from the EU.",
+              "details": {
+                "internal_name": "UK help and services in Switzerland",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ],
+          "associated_taxons": [
+            {
+              "content_id": "172c9d39-445f-4501-b0b2-1d527cc7cabc",
+              "title": "Trade and invest",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/world/trade-and-invest",
+              "base_path": "/world/trade-and-invest",
+              "document_type": "taxon",
+              "public_updated_at": "2017-11-14T09:48:58Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": "Includes investing and setting up a business in the UK and doing business abroad.",
+              "details": {
+                "internal_name": "Trade and invest (GENERIC)",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {}
+            }
+          ]
+        }
+      }
+    ],
+    "parent_taxons": [
+      {
+        "content_id": "91b8ef20-74e7-4552-880c-50e6d73c2ff9",
+        "title": "Help and services around the world",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/world/all",
+        "base_path": "/world/all",
+        "document_type": "taxon",
+        "public_updated_at": "2021-07-09T10:08:54Z",
+        "schema_name": "taxon",
+        "withdrawn": false,
+        "description": "Help and services in a country",
+        "details": {
+          "url_override": "",
+          "internal_name": "Help and services around the world",
+          "notes_for_editors": "",
+          "visible_to_departmental_editors": false
+        },
+        "phase": "live",
+        "links": {}
+      }
+    ],
+    "available_translations": [
+      {
+        "title": "UK help and services in Switzerland",
+        "public_updated_at": "2020-03-02T16:03:56Z",
+        "analytics_identifier": null,
+        "document_type": "taxon",
+        "schema_name": "taxon",
+        "base_path": "/world/switzerland",
+        "api_path": "/api/content/world/switzerland",
+        "withdrawn": false,
+        "content_id": "f1724368-504f-4b3c-9dc2-41121046de9f",
+        "locale": "en"
+      }
+    ]
+  },
+  "user_journey_document_supertype": "finding",
+  "email_document_supertype": "other",
+  "government_document_supertype": "other",
+  "content_purpose_subgroup": "other",
+  "content_purpose_supergroup": "other",
+  "publishing_request_id": "18886-1583165043.422-10.3.3.1-1831",
+  "govuk_request_id": null,
+  "links": {
+    "parent_taxons": [
+      "91b8ef20-74e7-4552-880c-50e6d73c2ff9"
+    ]
+  },
+  "payload_version": "12345"
+}
