@@ -8,3 +8,6 @@ shared:
 - /help # special_route
 - /help/cookies # special_route
 - /find-local-council # special_route
+
+test:
+- /test_ignored_path_override
