@@ -1,4 +1,4 @@
-module PublishingApiDocument
+module PublishingApiAction
   class Publish < Base
     # All the possible keys in the message hash that can contain the primary unstructured document
     # content that we want to index, represented as JsonPath path strings.

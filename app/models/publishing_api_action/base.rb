@@ -1,4 +1,4 @@
-module PublishingApiDocument
+module PublishingApiAction
   # Abstract base class for documents from the Publishing API that can be synchronized to a service.
   # Concrete subclasses are responsible for implementing synchronization logic for their particular
   # type of document, which may involve creating or deleting a record remotely.
