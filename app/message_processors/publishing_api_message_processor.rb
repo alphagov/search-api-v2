@@ -1,7 +1,8 @@
 class PublishingApiMessageProcessor
   # Implements the callback interface required by `govuk_message_queue_consumer`
   def process(message)
-    document = PublishingApiDocument.for(message.payload)
+    document_hash = message.payload.deep_symbolize_keys
+    document = PublishingApiDocument.for(document_hash)
     document.synchronize
 
     message.ack

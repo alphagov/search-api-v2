@@ -12,7 +12,7 @@ module PublishingApiDocument
       $.details.body
       $.details.need_to_know
       $.details.more_information
-    ].map { JsonPath.new(_1) }.freeze
+    ].map { JsonPath.new(_1, use_symbols: true) }.freeze
     INDEXABLE_CONTENT_SEPARATOR = "\n".freeze
 
     # All the possible keys in the message hash that can contain additional keywords or other text
@@ -33,7 +33,7 @@ module PublishingApiDocument
       $.details.metadata.tribunal_decision_landmark_name
       $.details.acronym
       $.details.attachments[*]['title','isbn','unique_reference','command_paper_number','hoc_paper_number']
-    ].map { JsonPath.new(_1) }.freeze
+    ].map { JsonPath.new(_1, use_symbols: true) }.freeze
     ADDITIONAL_SEARCHABLE_TEXT_VALUES_SEPARATOR = "\n".freeze
 
     # Synchronize the document to the given service (i.e. create or update it remotely)
@@ -44,21 +44,21 @@ module PublishingApiDocument
     # Extracts a hash of structured metadata about this document.
     def metadata
       {
-        content_id: document_hash["content_id"],
-        title: document_hash["title"],
-        description: document_hash["description"],
+        content_id: document_hash[:content_id],
+        title: document_hash[:title],
+        description: document_hash[:description],
         additional_searchable_text:,
         link:,
         url:,
         public_timestamp:,
-        document_type: document_hash["document_type"],
-        content_purpose_supergroup: document_hash["content_purpose_supergroup"],
-        part_of_taxonomy_tree: document_hash.dig("links", "taxons") || [],
+        document_type: document_hash[:document_type],
+        content_purpose_supergroup: document_hash[:content_purpose_supergroup],
+        part_of_taxonomy_tree: document_hash.dig(:links, :taxons) || [],
         # Vertex can only currently boost on numeric fields, not booleans
         is_historic: historic? ? 1 : 0,
         government_name:,
         organisation_state:,
-        locale: document_hash["locale"],
+        locale: document_hash[:locale],
         parts:,
       }.compact
     end
@@ -66,10 +66,10 @@ module PublishingApiDocument
     # Extracts a single string of indexable unstructured content from the document.
     def content
       values_from_json_paths = INDEXABLE_CONTENT_VALUES_JSON_PATHS.map { _1.on(document_hash) }
-      values_from_parts = document_hash.dig("details", "parts")&.map do
+      values_from_parts = document_hash.dig(:details, :parts)&.map do
         # Add the part title as a heading to help the search model better understand the structure
         # of the content
-        ["<h1>#{_1['title']}</h1>", ContentWithMultipleTypes.new(_1["body"]).html_content]
+        ["<h1>#{_1[:title]}</h1>", ContentWithMultipleTypes.new(_1[:body]).html_content]
       end
 
       [
@@ -81,7 +81,7 @@ module PublishingApiDocument
   private
 
     def link
-      document_hash["base_path"].presence || document_hash.dig("details", "url")
+      document_hash[:base_path].presence || document_hash.dig(:details, :url)
     end
 
     def link_relative?
@@ -103,40 +103,40 @@ module PublishingApiDocument
     end
 
     def public_timestamp
-      return nil unless document_hash["public_updated_at"]
+      return nil unless document_hash[:public_updated_at]
 
       # rubocop:disable Rails/TimeZone (string already contains timezone info which would be lost)
-      Time.parse(document_hash["public_updated_at"]).to_i
+      Time.parse(document_hash[:public_updated_at]).to_i
       # rubocop:enable Rails/TimeZone
     end
 
     def historic?
-      political = document_hash.dig("details", "political") || false
-      government = document_hash.dig("expanded_links", "government")&.first
+      political = document_hash.dig(:details, :political) || false
+      government = document_hash.dig(:expanded_links, :government)&.first
 
-      political && government&.dig("details", "current") == false
+      political && government&.dig(:details, :current) == false
     end
 
     def government_name
       document_hash
-        .dig("expanded_links", "government")
+        .dig(:expanded_links, :government)
         &.first
-        &.dig("title")
+        &.dig(:title)
     end
 
     def organisation_state
       document_hash
-        .dig("details", "organisation_govuk_status", "status")
+        .dig(:details, :organisation_govuk_status, :status)
     end
 
     def parts
       document_hash
-        .dig("details", "parts")
+        .dig(:details, :parts)
         &.map do
           {
-            slug: _1["slug"],
-            title: _1["title"],
-            body: ContentWithMultipleTypes.new(_1["body"]).summarized_text_content,
+            slug: _1[:slug],
+            title: _1[:title],
+            body: ContentWithMultipleTypes.new(_1[:body]).summarized_text_content,
           }
         end
     end
