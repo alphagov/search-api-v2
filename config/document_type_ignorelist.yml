@@ -1,0 +1,35 @@
+# A set of document types that come through from Publishing API that we don't want to add to
+# Discovery Engine because they are not useful for search.
+shared:
+  - !ruby/regexp /^placeholder/ # any placeholder type
+  - completed_transaction
+  - email_alert_signup
+  - embassies_index
+  - facet
+  - facet_group
+  - facet_value
+  - field_of_operation
+  - fields_of_operation
+  - finder_email_signup
+  - government
+  - historic_appointment
+  - historic_appointments
+  - homepage
+  - html_publication
+  - ministers_index
+  - national
+  - need
+  - official
+  - official_statistics_announcement
+  - policy_area
+  - search
+  - service_sign_in
+  - services_and_information
+  - special_route
+  - take_part
+  - taxon
+  - working_group
+  - world_index
+  - world_location_news
+  - worldwide_office
+  - worldwide_organisation

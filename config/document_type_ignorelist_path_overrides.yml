@@ -1,0 +1,10 @@
+# A set of paths for documents that should be added to search even if their document type is in the
+# ignorelist. This is used for document types that shouldn't show up in search in general, but that
+# do have a handful of exceptions.
+# This is compared using ===, so you may use regular expression tags
+shared:
+- !ruby/regexp /^\/world/[^\/]+$/ # taxon
+- /cost-of-living # special_route
+- /help # special_route
+- /help/cookies # special_route
+- /find-local-council # special_route

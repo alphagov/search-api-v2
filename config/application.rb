@@ -19,5 +19,11 @@ module SearchApiV2
     # Google Discovery Engine configuration
     config.discovery_engine_serving_config = ENV.fetch("DISCOVERY_ENGINE_SERVING_CONFIG")
     config.discovery_engine_datastore = ENV.fetch("DISCOVERY_ENGINE_DATASTORE")
+
+    # Document sync configuration
+    config.document_type_ignorelist = config_for(:document_type_ignorelist)
+    config.document_type_ignorelist_path_overrides = config_for(
+      :document_type_ignorelist_path_overrides,
+    )
   end
 end
