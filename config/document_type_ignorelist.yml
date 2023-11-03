@@ -33,3 +33,7 @@ shared:
   - world_location_news
   - worldwide_office
   - worldwide_organisation
+
+test:
+  - test_ignored_type
+  - !ruby/regexp /^another_test_ignored_type/

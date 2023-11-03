@@ -8,30 +8,40 @@ class PublishingApiDocument
   # behaviour of the existing search. This may change in the future.
   PERMITTED_LOCALES = %w[en].freeze
 
-  def initialize(document_hash)
+  attr_reader :content_id, :payload_version
+
+  def initialize(
+    document_hash,
+    put_service: DiscoveryEngine::Put.new,
+    delete_service: DiscoveryEngine::Delete.new
+  )
     @document_hash = document_hash
 
-    @document_type = document_hash[:document_type]
+    @document_type = document_hash.fetch(:document_type)
+    @content_id = document_hash.fetch(:content_id)
     @base_path = document_hash[:base_path]
     @external_link = document_hash.dig(:details, :url)
     @locale = document_hash[:locale]
+    @payload_version = document_hash[:payload_version]
+
+    @put_service = put_service
+    @delete_service = delete_service
   end
 
-  def action
+  def synchronize
     if unpublish?
-      PublishingApiAction::Unpublish.new(document_hash)
+      delete_service.call(content_id, payload_version:)
     elsif ignore?
-      PublishingApiAction::Ignore.new(document_hash)
+      Rails.logger.info("Ignoring document '#{content_id}'")
     else
-      PublishingApiAction::Publish.new(document_hash)
+      PublishingApiAction::Publish.new(document_hash).synchronize(service: put_service)
     end
   end
 
-  delegate :synchronize, to: :action
-
 private
 
-  attr_reader :document_hash, :document_type, :base_path, :external_link, :locale
+  attr_reader :document_hash, :document_type, :base_path, :external_link, :locale,
+              :put_service, :delete_service
 
   def unpublish?
     UNPUBLISH_DOCUMENT_TYPES.include?(document_type)
