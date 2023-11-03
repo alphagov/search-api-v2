@@ -5,7 +5,7 @@ module PublishingApiDocument
     end
 
     def html_content
-      @content_with_multiple_types.find { _1["content_type"] == "text/html" }&.dig("content")
+      @content_with_multiple_types.find { _1[:content_type] == "text/html" }&.dig(:content)
     end
 
     def text_content

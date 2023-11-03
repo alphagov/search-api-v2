@@ -14,12 +14,12 @@ module PublishingApiDocument
 
     # The content ID of the document.
     def content_id
-      document_hash.fetch("content_id")
+      document_hash.fetch(:content_id)
     end
 
     # The payload version of the document.
     def payload_version
-      document_hash.fetch("payload_version").to_i
+      document_hash.fetch(:payload_version).to_i
     end
 
   private

@@ -9,7 +9,7 @@ RSpec.describe PublishingApiMessageProcessor do
 
   describe "when receiving an incoming message" do
     let(:message) { GovukMessageQueueConsumer::MockMessage.new(payload) }
-    let(:payload) { { "I am" => "a message" } }
+    let(:payload) { { "I am": "a message" } }
     let(:logger) { instance_double(Logger, info: nil, error: nil) }
 
     before do
@@ -47,7 +47,7 @@ RSpec.describe PublishingApiMessageProcessor do
         expect(logger).to have_received(:error).with(<<~MSG)
           Failed to process incoming document message:
           RuntimeError: Could not process
-          Message content: {\"I am\"=>\"a message\"}
+          Message content: {:\"I am\"=>\"a message\"}
         MSG
       end
 
@@ -78,7 +78,7 @@ RSpec.describe PublishingApiMessageProcessor do
         expect(logger).to have_received(:error).with(<<~MSG)
           Failed to process incoming document message:
           RuntimeError: Could not synchronize
-          Message content: {\"I am\"=>\"a message\"}
+          Message content: {:\"I am\"=>\"a message\"}
         MSG
       end
 

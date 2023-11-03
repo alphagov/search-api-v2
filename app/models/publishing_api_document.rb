@@ -7,15 +7,15 @@ module PublishingApiDocument
   # Factory method returning a Document instance of an appropriate concrete type for the given
   # document hash.
   def self.for(document_hash)
-    case document_hash["document_type"]
+    case document_hash[:document_type]
     when *UNPUBLISH_DOCUMENT_TYPES
       Unpublish.new(document_hash)
     when *Rails.configuration.document_type_ignorelist
-      return Publish.new(document_hash) if force_add_path?(document_hash["base_path"])
+      return Publish.new(document_hash) if force_add_path?(document_hash[:base_path])
 
       Ignore.new(document_hash)
     else
-      return Ignore.new(document_hash) unless document_hash["locale"].in?(["en", nil])
+      return Ignore.new(document_hash) unless document_hash[:locale].in?(["en", nil])
 
       Publish.new(document_hash)
     end

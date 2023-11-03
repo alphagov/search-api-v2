@@ -4,9 +4,9 @@ RSpec.describe PublishingApiDocument do
 
     let(:document_hash) do
       {
-        "document_type" => document_type,
-        "base_path" => base_path,
-        "locale" => locale,
+        document_type:,
+        base_path:,
+        locale:,
       }
     end
     let(:base_path) { "/base-path" }

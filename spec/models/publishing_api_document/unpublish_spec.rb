@@ -6,9 +6,9 @@ RSpec.describe PublishingApiDocument::Unpublish do
   let(:document_type) { "gone" }
   let(:document_hash) do
     {
-      "content_id" => content_id,
-      "payload_version" => payload_version,
-      "document_type" => document_type,
+      content_id:,
+      payload_version:,
+      document_type:,
     }
   end
 
