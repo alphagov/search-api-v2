@@ -1,29 +1,63 @@
-module PublishingApiDocument
+class PublishingApiDocument
   # When a document is unpublished in the source system, its document type changes to one of
   # these values. While semantically different for other systems, we only need to know that they
   # imply removal from search.
   UNPUBLISH_DOCUMENT_TYPES = %w[gone redirect substitute vanish].freeze
 
-  # Factory method returning a Document instance of an appropriate concrete type for the given
-  # document hash.
-  def self.for(document_hash)
-    case document_hash[:document_type]
-    when *UNPUBLISH_DOCUMENT_TYPES
-      Unpublish.new(document_hash)
-    when *Rails.configuration.document_type_ignorelist
-      return Publish.new(document_hash) if force_add_path?(document_hash[:base_path])
+  # Currently, we only allow documents in English to be added to search because that is the
+  # behaviour of the existing search. This may change in the future.
+  PERMITTED_LOCALES = %w[en].freeze
 
-      Ignore.new(document_hash)
+  def initialize(document_hash)
+    @document_hash = document_hash
+
+    @document_type = document_hash[:document_type]
+    @base_path = document_hash[:base_path]
+    @external_link = document_hash.dig(:details, :url)
+    @locale = document_hash[:locale]
+  end
+
+  def action
+    if unpublish?
+      PublishingApiAction::Unpublish.new(document_hash)
+    elsif ignore?
+      PublishingApiAction::Ignore.new(document_hash)
     else
-      return Ignore.new(document_hash) unless document_hash[:locale].in?(["en", nil])
-
-      Publish.new(document_hash)
+      PublishingApiAction::Publish.new(document_hash)
     end
   end
 
-  # Returns whether the given base path should be added to the search index, even if its document
-  # type is on the ignorelist.
-  def self.force_add_path?(base_path)
+  delegate :synchronize, to: :action
+
+private
+
+  attr_reader :document_hash, :document_type, :base_path, :external_link, :locale
+
+  def unpublish?
+    UNPUBLISH_DOCUMENT_TYPES.include?(document_type)
+  end
+
+  def ignore?
+    on_ignorelist? || ignored_locale? || unaddressable?
+  end
+
+  def on_ignorelist?
+    return false if ignorelist_excepted_path?
+
+    Rails.configuration.document_type_ignorelist.any? { document_type.match?(_1) }
+  end
+
+  def ignorelist_excepted_path?
+    return false if base_path.blank?
+
     Rails.configuration.document_type_ignorelist_path_overrides.any? { _1.match?(base_path) }
+  end
+
+  def ignored_locale?
+    locale.present? && !PERMITTED_LOCALES.include?(locale)
+  end
+
+  def unaddressable?
+    base_path.blank? && external_link.blank?
   end
 end

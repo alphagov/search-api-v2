@@ -1,4 +1,4 @@
-RSpec.describe PublishingApiDocument::Unpublish do
+RSpec.describe PublishingApiAction::Unpublish do
   subject(:document) { described_class.new(document_hash) }
 
   let(:content_id) { "123" }

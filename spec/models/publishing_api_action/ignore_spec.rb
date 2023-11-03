@@ -1,4 +1,4 @@
-RSpec.describe PublishingApiDocument::Ignore do
+RSpec.describe PublishingApiAction::Ignore do
   subject(:document) { described_class.new(document_hash) }
 
   let(:content_id) { "123" }

@@ -1,4 +1,4 @@
-module PublishingApiDocument
+module PublishingApiAction
   class Unpublish < Base
     # Synchronize the document to the given service (i.e. delete it remotely).
     def synchronize(service: DiscoveryEngine::Delete.new)

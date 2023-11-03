@@ -11,9 +11,10 @@ RSpec.describe PublishingApiMessageProcessor do
     let(:message) { GovukMessageQueueConsumer::MockMessage.new(payload) }
     let(:payload) { { "I am": "a message" } }
     let(:logger) { instance_double(Logger, info: nil, error: nil) }
+    let(:document) { instance_double(PublishingApiDocument, synchronize: nil) }
 
     before do
-      allow(PublishingApiDocument).to receive(:for).with(payload).and_return(document)
+      allow(PublishingApiDocument).to receive(:new).with(payload).and_return(document)
 
       allow(Rails).to receive(:logger).and_return(logger)
       allow(Rails.logger).to receive(:info)
@@ -30,39 +31,6 @@ RSpec.describe PublishingApiMessageProcessor do
       processor.process(message)
 
       expect(document).to have_received(:synchronize)
-    end
-
-    context "when creating the document fails" do
-      let(:error) { RuntimeError.new("Could not process") }
-
-      before do
-        allow(PublishingApiDocument).to receive(:for).and_raise(error)
-
-        allow(GovukError).to receive(:notify)
-      end
-
-      it "logs the error" do
-        processor.process(message)
-
-        expect(logger).to have_received(:error).with(<<~MSG)
-          Failed to process incoming document message:
-          RuntimeError: Could not process
-          Message content: {:\"I am\"=>\"a message\"}
-        MSG
-      end
-
-      it "sends the error to Sentry" do
-        processor.process(message)
-
-        expect(GovukError).to have_received(:notify).with(error)
-      end
-
-      it "rejects the message" do
-        processor.process(message)
-
-        expect(message).not_to be_acked
-        expect(message).to be_discarded
-      end
     end
 
     context "when synchronising the document fails" do
