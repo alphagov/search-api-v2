@@ -14,6 +14,7 @@ module PublishingApi
       $.details.more_information
     ].map { JsonPath.new(_1, use_symbols: true) }.freeze
     INDEXABLE_CONTENT_SEPARATOR = "\n".freeze
+    INDEXABLE_CONTENT_MAX_BYTE_SIZE = 950.kilobytes
 
     # Extracts a single string of indexable unstructured content from the document.
     def content
@@ -24,10 +25,14 @@ module PublishingApi
         ["<h1>#{_1[:title]}</h1>", ContentWithMultipleTypes.new(_1[:body]).html_content]
       end
 
-      [
-        *values_from_json_paths,
-        *values_from_parts,
-      ].flatten.join(INDEXABLE_CONTENT_SEPARATOR)
+      [*values_from_json_paths, *values_from_parts]
+        .flatten
+        .join(INDEXABLE_CONTENT_SEPARATOR)
+        # Only take the first INDEXABLE_CONTENT_MAX_BYTE_SIZE bytes of the string
+        .byteslice(0, INDEXABLE_CONTENT_MAX_BYTE_SIZE)
+        # Remove any trailing invalid UTF-8 characters that might have been introduced through
+        # slicing the string
+        .scrub("")
     end
   end
 end
