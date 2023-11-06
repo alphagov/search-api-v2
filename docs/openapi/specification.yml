@@ -7,7 +7,29 @@ paths:
   /search:
     get:
       summary: Perform a search
-      description: Returns search results
+      description: Returns search results matching the user's query
+      parameters:
+        - name: q
+          in: query
+          required: false
+          description: The search query string.
+          schema:
+            type: string
+          example: "i want to fish"
+        - name: start
+          in: query
+          required: false
+          description: The starting index for the search results.
+          schema:
+            type: integer
+            default: 0
+        - name: count
+          in: query
+          required: false
+          description: The number of search results to return.
+          schema:
+            type: integer
+            default: 10
       responses:
         '200':
           description: Successful response
@@ -24,10 +46,50 @@ components:
         results:
           type: array
           items:
-            type: string
+            type: object
+            properties:
+              _id:
+                type: string
+              content_id:
+                type: string
+                format: uuid
+              title:
+                type: string
+              description_with_highlighting:
+                type: string
+              link:
+                type: string
+              public_timestamp:
+                type: string
+                format: date-time
+              government_name:
+                type: string
+              parts:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    title:
+                      type: string
+                    body:
+                      type: string
+                    slug:
+                      type: string
+              part_of_taxonomy_tree:
+                type: array
+                items:
+                  type: string
+                  format: uuid
+              format:
+                type: string
+              is_historic:
+                type: boolean
+              content_purpose_supergroup:
+                type: string
+              content_store_document_type:
+                type: string
           default: []
-          maxItems: 0
-          description: 'The array of search results. Currently always empty (not yet implemented).'
+          description: 'The array of search results.'
         total:
           type: integer
           description: 'The total number of items that match the search criteria.'
