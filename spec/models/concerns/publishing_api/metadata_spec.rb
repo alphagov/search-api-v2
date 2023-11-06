@@ -31,131 +31,19 @@ RSpec.describe PublishingApi::Metadata do
     describe "additional_searchable_text" do
       subject(:additional_searchable_text) { extracted_metadata[:additional_searchable_text] }
 
-      describe "with hidden search terms" do
-        let(:document_hash) do
-          {
-            details: {
-              hidden_search_terms: "a b c",
+      let(:document_hash) do
+        {
+          details: {
+            acronym: "BA",
+            metadata: {
+              registration: "G-CIVY",
+              aircraft_type: "Boeing 747-436",
             },
-          }
-        end
-
-        it { is_expected.to eq("a b c") }
+          },
+        }
       end
 
-      describe "with hidden indexable content as an array" do
-        let(:document_hash) do
-          {
-            details: {
-              metadata: {
-                hidden_indexable_content: %w[x y z],
-              },
-            },
-          }
-        end
-
-        it { is_expected.to eq("x\ny\nz") }
-      end
-
-      describe "with hidden indexable content as a string" do
-        let(:document_hash) do
-          {
-            details: {
-              metadata: {
-                hidden_indexable_content: "x y z",
-              },
-            },
-          }
-        end
-
-        it { is_expected.to eq("x y z") }
-      end
-
-      describe "with a project code" do
-        let(:document_hash) do
-          {
-            details: {
-              metadata: {
-                project_code: "PRINCE2",
-              },
-            },
-          }
-        end
-
-        it { is_expected.to eq("PRINCE2") }
-      end
-
-      describe "with an acronym" do
-        let(:document_hash) do
-          {
-            details: {
-              acronym: "LOL",
-            },
-          }
-        end
-
-        it { is_expected.to eq("LOL") }
-      end
-
-      describe "with a registration and aircraft type" do
-        let(:document_hash) do
-          {
-            details: {
-              metadata: {
-                registration: "G-CIVY",
-                aircraft_type: "Boeing 747-436",
-              },
-            },
-          }
-        end
-
-        it { is_expected.to eq("Boeing 747-436\nG-CIVY") }
-      end
-
-      describe "with tribunal decision details" do
-        let(:document_hash) do
-          {
-            details: {
-              metadata: {
-                tribunal_decision_categories_name: "A",
-                tribunal_decision_country_name: "B",
-                tribunal_decision_judges_name: "C",
-                tribunal_decision_category_name: "D",
-                tribunal_decision_sub_category_name: "E",
-                tribunal_decision_sub_categories_name: "F",
-                tribunal_decision_landmark_name: "G",
-              },
-            },
-          }
-        end
-
-        it { is_expected.to eq("A\nB\nC\nD\nE\nF\nG") }
-      end
-
-      describe "with attachments" do
-        let(:document_hash) do
-          {
-            details: {
-              attachments: [
-                {
-                  title: "A report",
-                  isbn: "1234567890123",
-                  unique_reference: "ABCDEF",
-                  command_paper_number: "",
-                },
-                {
-                  title: "Another report",
-                  isbn: "",
-                  command_paper_number: "CPN1234",
-                  hoc_paper_number: "ADHOC",
-                },
-              ],
-            },
-          }
-        end
-
-        it { is_expected.to eq("A report\n1234567890123\nABCDEF\nAnother report\nCPN1234\nADHOC") }
-      end
+      it { is_expected.to eq("BA\nBoeing 747-436\nG-CIVY") }
     end
 
     describe "link" do
