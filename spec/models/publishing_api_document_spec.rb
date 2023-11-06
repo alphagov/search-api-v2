@@ -17,7 +17,7 @@ RSpec.describe PublishingApiDocument do
       base_path:,
       details: { url: },
       locale:,
-      payload_version: 42,
+      payload_version: "42",
     }
   end
   let(:base_path) { "/base-path" }

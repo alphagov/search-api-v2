@@ -8,6 +8,9 @@ class PublishingApiDocument
   # behaviour of the existing search. This may change in the future.
   PERMITTED_LOCALES = %w[en].freeze
 
+  include ::PublishingApi::Metadata
+  include ::PublishingApi::Content
+
   attr_reader :content_id, :payload_version
 
   def initialize(
@@ -22,7 +25,7 @@ class PublishingApiDocument
     @base_path = document_hash[:base_path]
     @external_link = document_hash.dig(:details, :url)
     @locale = document_hash[:locale]
-    @payload_version = document_hash[:payload_version]
+    @payload_version = document_hash[:payload_version]&.to_i
 
     @put_service = put_service
     @delete_service = delete_service
@@ -34,7 +37,7 @@ class PublishingApiDocument
     elsif ignore?
       Rails.logger.info("Ignoring document '#{content_id}'")
     else
-      PublishingApiAction::Publish.new(document_hash).synchronize(service: put_service)
+      put_service.call(content_id, metadata, content:, payload_version:)
     end
   end
 
