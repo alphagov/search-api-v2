@@ -56,7 +56,7 @@ module PublishingApi
         organisation_state:,
         locale: document_hash[:locale],
         parts:,
-      }.compact
+      }.compact_blank
     end
 
     def link

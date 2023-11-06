@@ -154,7 +154,7 @@ RSpec.describe PublishingApi::Metadata do
       context "without taxon links" do
         let(:document_hash) { { "links": {} } }
 
-        it { is_expected.to be_empty }
+        it { is_expected.to be_nil }
       end
     end
 
