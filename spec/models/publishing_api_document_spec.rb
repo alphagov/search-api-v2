@@ -46,7 +46,9 @@ RSpec.describe PublishingApiDocument do
 
       it "does not publish the document and logs a message" do
         expect(put_service).not_to have_received(:call)
-        expect(Rails.logger).to have_received(:info).with("Ignoring document 'content-id'")
+        expect(Rails.logger).to have_received(:info).with(
+          "Ignoring document 'content-id': document_type on ignorelist (test_ignored_type)",
+        )
       end
     end
 
@@ -55,7 +57,9 @@ RSpec.describe PublishingApiDocument do
 
       it "does not publish the document and logs a message" do
         expect(put_service).not_to have_received(:call)
-        expect(Rails.logger).to have_received(:info).with("Ignoring document 'content-id'")
+        expect(Rails.logger).to have_received(:info).with(
+          "Ignoring document 'content-id': document_type on ignorelist (another_test_ignored_type_foo)",
+        )
       end
     end
 
@@ -66,7 +70,9 @@ RSpec.describe PublishingApiDocument do
 
       it "does not publish the document and logs a message" do
         expect(put_service).not_to have_received(:call)
-        expect(Rails.logger).to have_received(:info).with("Ignoring document 'content-id'")
+        expect(Rails.logger).to have_received(:info).with(
+          "Ignoring document 'content-id': unaddressable",
+        )
       end
     end
 
@@ -76,7 +82,9 @@ RSpec.describe PublishingApiDocument do
 
       it "does not publish the document and logs a message" do
         expect(put_service).not_to have_received(:call)
-        expect(Rails.logger).to have_received(:info).with("Ignoring document 'content-id'")
+        expect(Rails.logger).to have_received(:info).with(
+          "Ignoring document 'content-id': locale not permitted (de)",
+        )
       end
     end
 
