@@ -2,7 +2,7 @@ RSpec.describe DiscoveryEngine::Put do
   subject(:put) { described_class.new(client:) }
 
   let(:client) { double("DocumentService::Client", update_document: nil) }
-  let(:logger) { double("Logger", info: nil, error: nil) }
+  let(:logger) { double("Logger", add: nil) }
 
   before do
     allow(Rails).to receive(:logger).and_return(logger)
@@ -40,7 +40,10 @@ RSpec.describe DiscoveryEngine::Put do
     end
 
     it "logs the put operation" do
-      expect(logger).to have_received(:info).with("[GCDE][PUT some_content_id@v1] -> document-name")
+      expect(logger).to have_received(:add).with(
+        Logger::Severity::INFO,
+        "[DiscoveryEngine::Put] Successfully added/updated content_id:some_content_id payload_version:1",
+      )
     end
   end
 
@@ -54,7 +57,10 @@ RSpec.describe DiscoveryEngine::Put do
     end
 
     it "logs the failure" do
-      expect(logger).to have_received(:error).with("[GCDE][PUT some_content_id@v1] Something went wrong")
+      expect(logger).to have_received(:add).with(
+        Logger::Severity::ERROR,
+        "[DiscoveryEngine::Put] Failed to add/update document due to an error (Something went wrong) content_id:some_content_id payload_version:1",
+      )
     end
 
     it "send the error to Sentry" do
