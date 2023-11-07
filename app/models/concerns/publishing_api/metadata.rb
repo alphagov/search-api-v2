@@ -59,6 +59,8 @@ module PublishingApi
       }.compact_blank
     end
 
+  private
+
     def link
       document_hash[:base_path].presence || document_hash.dig(:details, :url)
     end
