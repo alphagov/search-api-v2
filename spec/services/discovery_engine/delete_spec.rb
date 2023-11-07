@@ -2,7 +2,7 @@ RSpec.describe DiscoveryEngine::Delete do
   subject(:delete) { described_class.new(client:) }
 
   let(:client) { double("DocumentService::Client", delete_document: nil) }
-  let(:logger) { double("Logger", info: nil, warn: nil, error: nil) }
+  let(:logger) { double("Logger", add: nil) }
 
   before do
     allow(Rails).to receive(:logger).and_return(logger)
@@ -23,7 +23,10 @@ RSpec.describe DiscoveryEngine::Delete do
     end
 
     it "logs the delete operation" do
-      expect(logger).to have_received(:info).with("[GCDE][DELETE some_content_id@v1]")
+      expect(logger).to have_received(:add).with(
+        Logger::Severity::INFO,
+        "[DiscoveryEngine::Delete] Successfully deleted content_id:some_content_id payload_version:1",
+      )
     end
   end
 
@@ -37,7 +40,10 @@ RSpec.describe DiscoveryEngine::Delete do
     end
 
     it "logs the failure" do
-      expect(logger).to have_received(:warn).with("[GCDE][DELETE some_content_id@v1] It got lost")
+      expect(logger).to have_received(:add).with(
+        Logger::Severity::WARN,
+        "[DiscoveryEngine::Delete] Failed to delete document as it doesn't exist remotely (It got lost) content_id:some_content_id payload_version:1",
+      )
     end
 
     it "does not send the error to Sentry" do
@@ -55,7 +61,10 @@ RSpec.describe DiscoveryEngine::Delete do
     end
 
     it "logs the failure" do
-      expect(logger).to have_received(:error).with("[GCDE][DELETE some_content_id@v1] Something went wrong")
+      expect(logger).to have_received(:add).with(
+        Logger::Severity::ERROR,
+        "[DiscoveryEngine::Delete] Failed to delete document due to an error (Something went wrong) content_id:some_content_id payload_version:1",
+      )
     end
 
     it "send the error to Sentry" do

@@ -3,13 +3,14 @@ module DiscoveryEngine
     MIME_TYPE = "text/html".freeze
 
     include DocumentName
+    include Logging
 
     def initialize(client: ::Google::Cloud::DiscoveryEngine.document_service(version: :v1))
       @client = client
     end
 
     def call(content_id, metadata, content: "", payload_version: nil)
-      doc = client.update_document(
+      client.update_document(
         document: {
           id: content_id,
           name: document_name(content_id),
@@ -23,9 +24,13 @@ module DiscoveryEngine
         allow_missing: true,
       )
 
-      Rails.logger.info(sprintf("[GCDE][PUT %s@v%s] -> %s", content_id, payload_version, doc.name))
+      log(Logger::Severity::INFO, "Successfully added/updated", content_id:, payload_version:)
     rescue Google::Cloud::Error => e
-      Rails.logger.error(sprintf("[GCDE][PUT %s@v%s] %s", content_id, payload_version, e.message))
+      log(
+        Logger::Severity::ERROR,
+        "Failed to add/update document due to an error (#{e.message})",
+        content_id:, payload_version:,
+      )
       GovukError.notify(e)
     end
 

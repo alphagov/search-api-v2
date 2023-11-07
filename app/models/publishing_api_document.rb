@@ -20,15 +20,29 @@ class PublishingApiDocument
 
   def synchronize
     if publish?
+      log("put")
       put_service.call(content_id, metadata, content:, payload_version:)
     elsif unpublish?
+      log("delete")
       delete_service.call(content_id, payload_version:)
     else
-      Rails.logger.info("Ignoring document '#{content_id}': #{ignore_reason}")
+      log("ignore (#{ignore_reason})")
     end
   end
 
 private
 
   attr_reader :document_hash, :put_service, :delete_service
+
+  def log(message)
+    combined_message = sprintf(
+      "[%s] Processing document to %s with content_id:%s link:%s payload_version:%d",
+      self.class.name,
+      message,
+      content_id,
+      link,
+      payload_version,
+    )
+    Rails.logger.info(combined_message)
+  end
 end
