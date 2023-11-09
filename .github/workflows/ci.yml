@@ -30,7 +30,7 @@ jobs:
       RAILS_ENV: test
       # All Google client library calls are mocked, but the application needs this set to boot
       DISCOVERY_ENGINE_SERVING_CONFIG: not-used
-      DISCOVERY_ENGINE_DATASTORE: not-used
+      DISCOVERY_ENGINE_DATASTORE_BRANCH: not-used
     steps:
       - uses: actions/checkout@v3
         with:

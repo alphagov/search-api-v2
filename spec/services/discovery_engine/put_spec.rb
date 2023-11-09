@@ -6,7 +6,7 @@ RSpec.describe DiscoveryEngine::Put do
 
   before do
     allow(Rails).to receive(:logger).and_return(logger)
-    allow(Rails.configuration).to receive(:discovery_engine_datastore).and_return("datastore-path")
+    allow(Rails.configuration).to receive(:discovery_engine_datastore_branch).and_return("branch")
     allow(GovukError).to receive(:notify)
   end
 
@@ -28,7 +28,7 @@ RSpec.describe DiscoveryEngine::Put do
       expect(client).to have_received(:update_document).with(
         document: {
           id: "some_content_id",
-          name: "datastore-path/branches/default_branch/documents/some_content_id",
+          name: "branch/documents/some_content_id",
           json_data: "{\"foo\":\"bar\",\"payload_version\":\"1\"}",
           content: {
             mime_type: "text/html",

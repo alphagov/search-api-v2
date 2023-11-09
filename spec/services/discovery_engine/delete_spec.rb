@@ -6,7 +6,7 @@ RSpec.describe DiscoveryEngine::Delete do
 
   before do
     allow(Rails).to receive(:logger).and_return(logger)
-    allow(Rails.configuration).to receive(:discovery_engine_datastore).and_return("datastore-path")
+    allow(Rails.configuration).to receive(:discovery_engine_datastore_branch).and_return("branch")
     allow(GovukError).to receive(:notify)
   end
 
@@ -19,7 +19,7 @@ RSpec.describe DiscoveryEngine::Delete do
 
     it "deletes the document" do
       expect(client).to have_received(:delete_document)
-        .with(name: "datastore-path/branches/default_branch/documents/some_content_id")
+        .with(name: "branch/documents/some_content_id")
     end
 
     it "logs the delete operation" do
