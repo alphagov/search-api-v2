@@ -33,17 +33,19 @@ module PublishingApi
 
   private
 
+    # rubocop:disable Style/CaseEquality (no semantically equal alternative to compare String/Regex)
     def on_ignorelist?
       return false if ignorelist_excepted_path?
 
-      Rails.configuration.document_type_ignorelist.any? { document_type.match?(_1) }
+      Rails.configuration.document_type_ignorelist.any? { _1 === document_type }
     end
 
     def ignorelist_excepted_path?
       return false if base_path.blank?
 
-      Rails.configuration.document_type_ignorelist_path_overrides.any? { _1.match?(base_path) }
+      Rails.configuration.document_type_ignorelist_path_overrides.any? { _1 === base_path }
     end
+    # rubocop:enable Style/CaseEquality
 
     def ignored_locale?
       locale.present? && !PERMITTED_LOCALES.include?(locale)

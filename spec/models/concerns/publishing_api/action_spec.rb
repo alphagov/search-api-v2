@@ -25,6 +25,18 @@ RSpec.describe PublishingApi::Action do
     end
   end
 
+  context "when part of (but not the whole) document type is on the ignore list as a string" do
+    let(:document_type) { "test_ignored_type_foo" } # see test section in YAML config
+
+    it { is_expected.to be_publish }
+  end
+
+  context "when a type is on the ignore list as a string that contains the document_type" do
+    let(:document_type) { "test_ignored" } # see test section in YAML config
+
+    it { is_expected.to be_publish }
+  end
+
   context "when the document type is on the ignore list as a pattern" do
     let(:document_type) { "another_test_ignored_type_foo" } # see test section in YAML config
 
@@ -65,6 +77,13 @@ RSpec.describe PublishingApi::Action do
     let(:base_path) { "/test_ignored_path_override" } # see test section in YAML config
 
     it { is_expected.to be_publish }
+  end
+
+  context "when the document type is on the ignore list and a non-exact subset of the path is excluded" do
+    let(:document_type) { "test_ignored_type" } # see test section in YAML config
+    let(:base_path) { "/test_ignored_path" } # see test section in YAML config
+
+    it { is_expected.to be_ignore }
   end
 
   context "when the document doesn't have a base path but does have a url" do
