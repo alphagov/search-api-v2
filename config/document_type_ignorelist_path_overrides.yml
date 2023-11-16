@@ -1,7 +1,9 @@
 # A set of paths for documents that should be added to search even if their document type is in the
 # ignorelist. This is used for document types that shouldn't show up in search in general, but that
 # do have a handful of exceptions.
-# This is compared using ===, so you may use regular expression tags
+#
+# Compared against base_path using `===` so either YAML regular expression tags or exact Strings can
+# be used.
 shared:
 - !ruby/regexp /^\/world/[^\/]+$/ # taxon
 - /cost-of-living # special_route

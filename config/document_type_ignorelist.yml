@@ -1,5 +1,8 @@
 # A set of document types that come through from Publishing API that we don't want to add to
 # Discovery Engine because they are not useful for search.
+#
+# Compared against document_type using `===` so either YAML regular expression tags or exact Strings
+# can be used.
 shared:
   - !ruby/regexp /^placeholder/ # any placeholder type
   - completed_transaction
