@@ -1,5 +1,7 @@
 # Represents an individual result as expected by Finder Frontend
 class Result
+  MAX_DESCRIPTION_WORDS = 30
+
   include ActiveModel::Model
 
   attr_accessor :_id, :content_id, :title, :description_with_highlighting, :link, :public_timestamp,
@@ -12,6 +14,7 @@ class Result
     attrs = document.symbolize_keys
 
     public_timestamp = Time.zone.at(attrs[:public_timestamp]).iso8601 if attrs[:public_timestamp]
+    description = attrs[:description]&.truncate_words(MAX_DESCRIPTION_WORDS)
 
     new(
       attrs
@@ -27,7 +30,7 @@ class Result
           _id: attrs[:link]&.start_with?("/") ? attrs[:link] : attrs[:content_id],
           # We're not currently using snippeting, and there is no way to get Discovery Engine to
           # highlight a description, but consumers expect this field to be present
-          description_with_highlighting: attrs[:description],
+          description_with_highlighting: description,
           # No longer relevant and equal to document type now, but here for backwards compatibility
           format: attrs[:document_type],
           # Stored as a timestamp in Discovery Engine, but we want to return an ISO8601 string
