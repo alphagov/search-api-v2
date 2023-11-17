@@ -14,7 +14,12 @@ module PublishingApi
       $.details.more_information
     ].map { JsonPath.new(_1, use_symbols: true) }.freeze
     INDEXABLE_CONTENT_SEPARATOR = "\n".freeze
-    INDEXABLE_CONTENT_MAX_BYTE_SIZE = 950.kilobytes
+
+    # The limit of content length on Discovery Engine API is currently 500KB, so we need to truncate
+    # the content to a reasonable size.
+    #
+    # TODO: Try and get limit increased?
+    INDEXABLE_CONTENT_MAX_BYTE_SIZE = 480.kilobytes
 
     # Extracts a single string of indexable unstructured content from the document.
     def content
@@ -28,11 +33,7 @@ module PublishingApi
       [*values_from_json_paths, *values_from_parts]
         .flatten
         .join(INDEXABLE_CONTENT_SEPARATOR)
-        # Only take the first INDEXABLE_CONTENT_MAX_BYTE_SIZE bytes of the string
-        .byteslice(0, INDEXABLE_CONTENT_MAX_BYTE_SIZE)
-        # Remove any trailing invalid UTF-8 characters that might have been introduced through
-        # slicing the string
-        .scrub("")
+        .truncate_bytes(INDEXABLE_CONTENT_MAX_BYTE_SIZE)
     end
   end
 end
