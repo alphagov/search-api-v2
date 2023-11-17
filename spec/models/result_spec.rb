@@ -82,5 +82,15 @@ RSpec.describe Result, type: :model do
         expect { result }.not_to raise_error
       end
     end
+
+    context "when the description is excessively long" do
+      let(:description) { "buffalo " * 50 }
+      let(:stored_document) { { description: } }
+
+      it "truncates the description" do
+        buffalos = ("buffalo " * 30).strip
+        expect(result.description_with_highlighting).to eq("#{buffalos}...")
+      end
+    end
   end
 end
