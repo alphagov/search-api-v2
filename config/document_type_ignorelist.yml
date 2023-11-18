@@ -11,7 +11,6 @@ shared:
   - facet
   - facet_group
   - facet_value
-  - field_of_operation
   - fields_of_operation
   - finder_email_signup
   - government
@@ -19,23 +18,17 @@ shared:
   - historic_appointments
   - homepage
   - html_publication
-  - ministers_index
   - national
   - need
   - official
-  - official_statistics_announcement
   - policy_area
   - search
   - service_sign_in
   - services_and_information
   - special_route
-  - take_part
   - taxon
-  - working_group
   - world_index
-  - world_location_news
   - worldwide_office
-  - worldwide_organisation
 
 test:
   - test_ignored_type
