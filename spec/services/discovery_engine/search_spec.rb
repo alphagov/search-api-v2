@@ -74,6 +74,50 @@ RSpec.describe DiscoveryEngine::Search do
           expect(result_set.start).to eq(11)
         end
       end
+
+      context "when searching for a query that has a single best bets defined" do
+        # see test section in YAML config
+        subject!(:result_set) { search.call("i want to test a single best bet") }
+
+        let(:expected_boost_specs) do
+          super() + [{
+            boost: 1,
+            condition: 'link: ANY("/here/you/go")',
+          }]
+        end
+
+        it "calls the client with the expected parameters" do
+          expect(client).to have_received(:search).with(
+            serving_config: "serving-config-path",
+            query: "i want to test a single best bet",
+            offset: 0,
+            page_size: 10,
+            boost_spec: { condition_boost_specs: expected_boost_specs },
+          )
+        end
+      end
+
+      context "when searching for a query that has multiple best bets defined" do
+        # see test section in YAML config
+        subject!(:result_set) { search.call("i want to test multiple best bets") }
+
+        let(:expected_boost_specs) do
+          super() + [{
+            boost: 1,
+            condition: 'link: ANY("/i-am-important","/i-am-also-important","/also-me")',
+          }]
+        end
+
+        it "calls the client with the expected parameters" do
+          expect(client).to have_received(:search).with(
+            serving_config: "serving-config-path",
+            query: "i want to test multiple best bets",
+            offset: 0,
+            page_size: 10,
+            boost_spec: { condition_boost_specs: expected_boost_specs },
+          )
+        end
+      end
     end
   end
 end
