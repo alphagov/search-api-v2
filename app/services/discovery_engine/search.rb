@@ -3,6 +3,8 @@ module DiscoveryEngine
     DEFAULT_COUNT = 10
     DEFAULT_START = 0
 
+    include NewsRecencyBoost
+
     def initialize(client: ::Google::Cloud::DiscoveryEngine.search_service(version: :v1))
       @client = client
     end
@@ -16,6 +18,7 @@ module DiscoveryEngine
         serving_config:,
         page_size: count,
         offset: start,
+        boost_spec:,
       ).response
 
       ResultSet.new(
@@ -31,6 +34,14 @@ module DiscoveryEngine
 
     def serving_config
       Rails.configuration.discovery_engine_serving_config
+    end
+
+    def boost_spec
+      {
+        condition_boost_specs: [
+          *news_recency_boost_specs,
+        ],
+      }
     end
   end
 end

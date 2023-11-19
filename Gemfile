@@ -22,6 +22,7 @@ group :test do
   gem "grpc_mock"
   gem "json_schemer"
   gem "simplecov", require: false
+  gem "timecop"
 end
 
 group :development, :test do
