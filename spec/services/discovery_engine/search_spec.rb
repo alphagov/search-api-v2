@@ -3,9 +3,26 @@ RSpec.describe DiscoveryEngine::Search do
 
   let(:client) { double("SearchService::Client", search: search_return_value) }
 
+  let(:expected_boost_specs) do
+    [{ boost: 0.2,
+       condition: "content_purpose_supergroup: ANY(\"news_and_communications\") AND public_timestamp: IN(628905600i,*)" },
+     { boost: 0.05,
+       condition: "content_purpose_supergroup: ANY(\"news_and_communications\") AND public_timestamp: IN(621644400i,628905600e)" },
+     { boost: -0.5,
+       condition: "content_purpose_supergroup: ANY(\"news_and_communications\") AND public_timestamp: IN(503280000i,597974400e)" },
+     { boost: -0.75,
+       condition: "content_purpose_supergroup: ANY(\"news_and_communications\") AND public_timestamp: IN(*,503280000e)" }]
+  end
+
   before do
     allow(Rails.configuration).to receive(:discovery_engine_serving_config)
       .and_return("serving-config-path")
+  end
+
+  around do |example|
+    Timecop.freeze(Time.zone.local(1989, 12, 13)) do
+      example.run
+    end
   end
 
   describe "#call" do
@@ -27,6 +44,7 @@ RSpec.describe DiscoveryEngine::Search do
           query: "garden centres",
           offset: 0,
           page_size: 10,
+          boost_spec: { condition_boost_specs: expected_boost_specs },
         )
       end
 
@@ -48,6 +66,7 @@ RSpec.describe DiscoveryEngine::Search do
             query: "garden centres",
             offset: 11,
             page_size: 22,
+            boost_spec: { condition_boost_specs: expected_boost_specs },
           )
         end
 
