@@ -25,5 +25,8 @@ module SearchApiV2
     config.document_type_ignorelist_path_overrides = config_for(
       :document_type_ignorelist_path_overrides,
     )
+
+    # Query configuration
+    config.best_bets = config_for(:best_bets)
   end
 end

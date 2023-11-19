@@ -1,0 +1,13 @@
+shared:
+  # TODO: Test data that we can delete once demo'ed
+  "i want to test best bets":
+    - /government/people/test-person
+    - /government/publications/test--150
+    - /service-manual/technology/test-your-services-performance
+
+test:
+  "i want to test a single best bet": /here/you/go
+  "i want to test multiple best bets":
+    - /i-am-important
+    - /i-am-also-important
+    - /also-me
