@@ -13,6 +13,7 @@ module DiscoveryEngine
     def call(query_string, start: nil, count: nil)
       count ||= DEFAULT_COUNT
       start ||= DEFAULT_START
+      query_string ||= ""
 
       response = client.search(
         query: query_string,
