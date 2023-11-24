@@ -291,7 +291,7 @@ RSpec.describe PublishingApi::Metadata do
         it "contains the expected body with HTML stripped and truncated" do
           expect(extracted_parts.map { _1[:body] }).to eq([
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur…",
-            "",
+            nil,
           ])
         end
       end

@@ -27,7 +27,7 @@ module PublishingApi
       values_from_parts = document_hash.dig(:details, :parts)&.map do
         # Add the part title as a heading to help the search model better understand the structure
         # of the content
-        ["<h1>#{_1[:title]}</h1>", ContentWithMultipleTypes.new(_1[:body]).html_content]
+        ["<h1>#{_1[:title]}</h1>", BodyContent.new(_1[:body]).html_content]
       end
 
       [*values_from_json_paths, *values_from_parts]
