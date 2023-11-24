@@ -23,15 +23,18 @@ module PublishingApi
 
     # Extracts a single string of indexable unstructured content from the document.
     def content
-      values_from_json_paths = INDEXABLE_CONTENT_VALUES_JSON_PATHS.map { _1.on(document_hash) }
-      values_from_parts = document_hash.dig(:details, :parts)&.map do
+      values_from_json_paths = INDEXABLE_CONTENT_VALUES_JSON_PATHS.map do |item|
+        item.on(document_hash).map { |body| BodyContent.new(body).html_content }
+      end
+      values_from_parts = document_hash.dig(:details, :parts)&.map do |part|
         # Add the part title as a heading to help the search model better understand the structure
         # of the content
-        ["<h1>#{_1[:title]}</h1>", BodyContent.new(_1[:body]).html_content]
+        ["<h1>#{part[:title]}</h1>", BodyContent.new(part[:body]).html_content]
       end
 
       [*values_from_json_paths, *values_from_parts]
         .flatten
+        .compact
         .join(INDEXABLE_CONTENT_SEPARATOR)
         .truncate_bytes(INDEXABLE_CONTENT_MAX_BYTE_SIZE)
     end
