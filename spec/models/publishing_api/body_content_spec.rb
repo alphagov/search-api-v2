@@ -75,4 +75,26 @@ RSpec.describe PublishingApi::BodyContent do
       it { is_expected.to be_nil }
     end
   end
+
+  context "when the content is an array of strings" do
+    let(:content) { %w[Hello world] }
+
+    describe "#html_content" do
+      subject(:html_content) { body_content.html_content }
+
+      it { is_expected.to eq("Hello world") }
+    end
+
+    describe "#text_content" do
+      subject(:text_content) { body_content.text_content }
+
+      it { is_expected.to eq("Hello world") }
+    end
+
+    describe "#summarized_text_content" do
+      subject(:summarized_text_content) { body_content.summarized_text_content(length: 6) }
+
+      it { is_expected.to eq("Hello…") }
+    end
+  end
 end

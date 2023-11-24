@@ -28,24 +28,6 @@ RSpec.describe PublishingApi::Metadata do
       it { is_expected.to eq("Lorem ipsum dolor sit amet.") }
     end
 
-    describe "additional_searchable_text" do
-      subject(:additional_searchable_text) { extracted_metadata[:additional_searchable_text] }
-
-      let(:document_hash) do
-        {
-          details: {
-            acronym: "BA",
-            metadata: {
-              registration: "G-CIVY",
-              aircraft_type: "Boeing 747-436",
-            },
-          },
-        }
-      end
-
-      it { is_expected.to eq("BA\nBoeing 747-436\nG-CIVY") }
-    end
-
     describe "link" do
       subject(:extracted_link) { extracted_metadata[:link] }
 

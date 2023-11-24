@@ -159,7 +159,6 @@ RSpec.describe "Document synchronization" do
           content_id: "6ba90ae6-972d-4d48-ad66-693bbb31496d",
           title: "Legal Aid Agency",
           description: "We provide civil and criminal legal aid and advice in England and Wales to help people deal with their legal problems. LAA is an executive agency, sponsored by the Ministry of Justice .",
-          additional_searchable_text: "LAA",
           link: "/government/organisations/legal-aid-agency",
           url: "http://www.dev.gov.uk/government/organisations/legal-aid-agency",
           public_timestamp: 1_695_391_634,
@@ -169,7 +168,7 @@ RSpec.describe "Document synchronization" do
           content_purpose_supergroup: "other",
           locale: "en",
         },
-        content: a_string_starting_with("<div class=\"govspeak\"><p>We provide civil"),
+        content: a_string_starting_with("LAA\n<div class=\"govspeak\"><p>We provide civil"),
         payload_version: 12_345,
       )
     end
@@ -185,11 +184,6 @@ RSpec.describe "Document synchronization" do
           content_id: "5d315ee8-7631-11e4-a3cb-005056011aef",
           title: "Directgov 2010 and beyond: revolution not evolution, a report by Martha Lane Fox",
           description: "A report from the Digital Champion Martha Lane Fox with recommendations for the future of Directgov.",
-          additional_searchable_text: <<~TEXT.chomp,
-            Directgov 2010 and Beyond: Revolution Not Evolution - Letter from Martha Lane Fox to Francis Maude
-            Francis Maude's reply to Martha Lane Fox's letter
-            Directgov Strategic Review - Executive Summary
-          TEXT
           link: "/government/publications/directgov-2010-and-beyond-revolution-not-evolution-a-report-by-martha-lane-fox",
           url: "http://www.dev.gov.uk/government/publications/directgov-2010-and-beyond-revolution-not-evolution-a-report-by-martha-lane-fox",
           public_timestamp: 1_290_470_400,
@@ -200,7 +194,12 @@ RSpec.describe "Document synchronization" do
           part_of_taxonomy_tree: %w[f3caf326-fe33-410f-b7f4-553f4011c81e],
           locale: "en",
         },
-        content: a_string_starting_with("<div class=\"govspeak\"><p>A report from the Digital"),
+        content: a_string_starting_with(<<~TEXT.chomp),
+          Directgov 2010 and Beyond: Revolution Not Evolution - Letter from Martha Lane Fox to Francis Maude
+          Francis Maude's reply to Martha Lane Fox's letter
+          Directgov Strategic Review - Executive Summary
+          <div class=\"govspeak\"><p>A report from the Digital
+        TEXT
         payload_version: 54_321,
       )
     end
@@ -240,7 +239,6 @@ RSpec.describe "Document synchronization" do
           content_id: "526d5caf-221b-4c7b-9e74-b3e0b189fc8d",
           title: "Brighton & Hove City Council",
           description: "Website of Brighton & Hove City Council",
-          additional_searchable_text: "Brighton & Hove City Council",
           link: "https://www.brighton-hove.gov.uk",
           url: "https://www.brighton-hove.gov.uk",
           public_timestamp: 1_695_912_979,
@@ -249,7 +247,7 @@ RSpec.describe "Document synchronization" do
           content_purpose_supergroup: "other",
           locale: "en",
         },
-        content: "",
+        content: "Brighton & Hove City Council",
         payload_version: 17,
       )
     end
