@@ -125,6 +125,30 @@ RSpec.describe "Document synchronization" do
     end
   end
 
+  describe "for a 'manual_section' message" do
+    let(:payload) { json_fixture_as_hash("message_queue/manual_section_message.json") }
+
+    it "is added to Discovery Engine through the Put service" do
+      expect(put_service).to have_received(:call).with(
+        "e1f47495-b58d-41ca-84bb-ccb2b751cc3f",
+        {
+          content_id: "e1f47495-b58d-41ca-84bb-ccb2b751cc3f",
+          title: "6. Body, structure and attachments",
+          description: "Structure and attachments (including exhaust system and bumpers), and body and interior (including doors and catches, seats and floor) rules and inspection for car and passenger vehicle MOT tests.",
+          link: "/guidance/mot-inspection-manual-for-private-passenger-and-light-commercial-vehicles/6-body-structure-and-attachments",
+          url: "http://www.dev.gov.uk/guidance/mot-inspection-manual-for-private-passenger-and-light-commercial-vehicles/6-body-structure-and-attachments",
+          public_timestamp: 1_646_221_134,
+          document_type: "manual_section",
+          is_historic: 0,
+          content_purpose_supergroup: "guidance_and_regulation",
+          locale: "en",
+        },
+        content: a_string_matching(/\A<h2 id="section-6-1">6\.1\. Structure.+<\/table>\n\n\z/m),
+        payload_version: 12_345,
+      )
+    end
+  end
+
   describe "for an 'organisation' message" do
     let(:payload) { json_fixture_as_hash("message_queue/organisation_message.json") }
 

@@ -3,6 +3,7 @@ RSpec.describe "PublishingApiDocument schema-compliant metadata generation" do
     external_content_message
     historic_news_story_message
     independent_report_message
+    manual_section_message
     organisation_message
     press_release_message
     travel_advice_message
