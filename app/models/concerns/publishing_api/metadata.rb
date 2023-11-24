@@ -117,7 +117,7 @@ module PublishingApi
           {
             slug: _1[:slug],
             title: _1[:title],
-            body: ContentWithMultipleTypes.new(_1[:body]).summarized_text_content,
+            body: BodyContent.new(_1[:body]).summarized_text_content,
           }
         end
     end
