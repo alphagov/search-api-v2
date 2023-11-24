@@ -1,49 +1,11 @@
 module PublishingApi
   module Metadata
-    # All the possible keys in the message hash that can contain additional keywords or other text
-    # that should be searchable but doesn't form part of the primary document content, represented
-    # as JsonPath path strings.
-    ADDITIONAL_SEARCHABLE_TEXT_VALUES_JSON_PATHS = %w[
-      $.details.acronym
-      $.details.attachments[*]['title','isbn','unique_reference','command_paper_number','hoc_paper_number']
-      $.details.hidden_search_terms
-      $.details.licence_short_description
-      $.details.metadata.aircraft_type
-      $.details.metadata.authors
-      $.details.metadata.business_sizes
-      $.details.metadata.business_stages
-      $.details.metadata.hidden_indexable_content
-      $.details.metadata.industries
-      $.details.metadata.keyword
-      $.details.metadata.licence_transaction_industry
-      $.details.metadata.project_code
-      $.details.metadata.reference_number
-      $.details.metadata.regions
-      $.details.metadata.registration
-      $.details.metadata.research_document_type
-      $.details.metadata.result
-      $.details.metadata.stage
-      $.details.metadata.theme
-      $.details.metadata.tribunal_decision_categories_name
-      $.details.metadata.tribunal_decision_category_name
-      $.details.metadata.tribunal_decision_country_name
-      $.details.metadata.tribunal_decision_judges_name
-      $.details.metadata.tribunal_decision_landmark_name
-      $.details.metadata.tribunal_decision_sub_categories_name
-      $.details.metadata.tribunal_decision_sub_category_name
-      $.details.metadata.types_of_support
-      $.details.metadata.virus_strain
-      $.details.metadata.year_adopted
-    ].map { JsonPath.new(_1, use_symbols: true) }.freeze
-    ADDITIONAL_SEARCHABLE_TEXT_VALUES_SEPARATOR = "\n".freeze
-
     # Extracts a hash of structured metadata about this document.
     def metadata
       {
         content_id: document_hash[:content_id],
         title: document_hash[:title],
         description: document_hash[:description],
-        additional_searchable_text:,
         link:,
         url:,
         public_timestamp:,
@@ -73,14 +35,6 @@ module PublishingApi
       return link unless link_relative?
 
       Plek.website_root + link
-    end
-
-    def additional_searchable_text
-      values = ADDITIONAL_SEARCHABLE_TEXT_VALUES_JSON_PATHS.map { _1.on(document_hash) }
-      values
-        .flatten
-        .compact_blank
-        .join(ADDITIONAL_SEARCHABLE_TEXT_VALUES_SEPARATOR)
     end
 
     def public_timestamp

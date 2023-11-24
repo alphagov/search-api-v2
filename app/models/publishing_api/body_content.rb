@@ -2,10 +2,14 @@ module PublishingApi
   class BodyContent
     def initialize(raw_content)
       @content = case raw_content
-                 when String
+                 in String
                    raw_content
-                 when Array
-                   raw_content.find { _1[:content_type] == "text/html" }&.dig(:content)
+                 in [*, { content_type: "text/html", content: html_content }, *]
+                   html_content
+                 in Array
+                   raw_content.join(" ") if raw_content.all? { _1.is_a?(String) }
+                 else
+                   nil
                  end
     end
 

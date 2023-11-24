@@ -8,14 +8,14 @@ RSpec.describe PublishingApi::Content do
       let(:document_hash) do
         {
           details: {
-            description: "a",
-            introduction: "b",
-            introductory_paragraph: "c",
-            title: "d",
-            summary: "e",
-            body: "f",
-            need_to_know: "g",
-            more_information: "h",
+            body: "a",
+            description: "b",
+            introduction: "c",
+            introductory_paragraph: "d",
+            more_information: "e",
+            need_to_know: "f",
+            summary: "g",
+            title: "h",
           },
         }
       end
@@ -76,13 +76,13 @@ RSpec.describe PublishingApi::Content do
       let(:document_hash) do
         {
           details: {
-            body: "a" * 1.1.megabytes,
+            body: "a" * 600.kilobytes,
           },
         }
       end
 
       it "truncates the content" do
-        expect(extracted_content.bytesize).to be <= 1.megabyte
+        expect(extracted_content.bytesize).to be <= 500.kilobytes
       end
     end
 
