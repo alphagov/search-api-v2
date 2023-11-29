@@ -4,7 +4,7 @@ RSpec.describe "Document synchronization" do
   let(:message) { GovukMessageQueueConsumer::MockMessage.new(payload) }
 
   let(:put_service) { instance_double(DiscoveryEngine::Put, call: nil) }
-  let(:delete_service) { instance_double(DiscoveryEngine::Put, call: nil) }
+  let(:delete_service) { instance_double(DiscoveryEngine::Delete, call: nil) }
 
   before do
     allow(DiscoveryEngine::Put).to receive(:new).and_return(put_service)
@@ -249,6 +249,17 @@ RSpec.describe "Document synchronization" do
         },
         content: "Brighton & Hove City Council",
         payload_version: 17,
+      )
+    end
+  end
+
+  describe "for an 'html_publication' message" do
+    let(:payload) { json_fixture_as_hash("message_queue/html_publication_message.json") }
+
+    it "is ignored and deleted from Discovery Engine through the Delete service" do
+      expect(delete_service).to have_received(:call).with(
+        "1f1f2c96-5a14-4d2a-9d0c-be6ac6c62c3b",
+        payload_version: 12_345,
       )
     end
   end

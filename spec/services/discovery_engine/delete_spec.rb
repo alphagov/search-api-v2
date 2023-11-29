@@ -41,8 +41,8 @@ RSpec.describe DiscoveryEngine::Delete do
 
     it "logs the failure" do
       expect(logger).to have_received(:add).with(
-        Logger::Severity::WARN,
-        "[DiscoveryEngine::Delete] Failed to delete document as it doesn't exist remotely (It got lost) content_id:some_content_id payload_version:1",
+        Logger::Severity::INFO,
+        "[DiscoveryEngine::Delete] Did not delete document as it doesn't exist remotely (It got lost). content_id:some_content_id payload_version:1",
       )
     end
 
