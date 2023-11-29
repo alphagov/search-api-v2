@@ -72,20 +72,6 @@ RSpec.describe PublishingApi::Content do
       it { is_expected.to eq("<h1>Foo</h1>\nbar\n<h1>Bar</h1>\n<blink>baz</blink>") }
     end
 
-    describe "with excessively large content" do
-      let(:document_hash) do
-        {
-          details: {
-            body: "a" * 600.kilobytes,
-          },
-        }
-      end
-
-      it "truncates the content" do
-        expect(extracted_content.bytesize).to be <= 500.kilobytes
-      end
-    end
-
     describe "without any fields" do
       let(:document_hash) do
         {
