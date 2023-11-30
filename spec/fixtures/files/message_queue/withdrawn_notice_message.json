@@ -1,0 +1,358 @@
+{
+  "title": "Walton Reach Regatta 2019: river restriction notice",
+  "public_updated_at": "2019-06-07T10:39:22Z",
+  "publishing_app": "whitehall",
+  "rendering_app": "government-frontend",
+  "update_type": "republish",
+  "phase": "live",
+  "analytics_identifier": null,
+  "document_type": "notice",
+  "schema_name": "publication",
+  "first_published_at": "2019-06-07T10:39:22Z",
+  "base_path": "/government/publications/walton-reach-regatta-2019-river-restriction-notice",
+  "description": "Information on the restrictions affecting the navigation on the River Thames.",
+  "details": {
+    "body": "\u003cdiv class=\"govspeak\"\u003e\u003cp\u003eRiver Thames restriction information for Saturday 17 August 2019.\u003c/p\u003e\n\u003c/div\u003e",
+    "tags": {
+      "topics": [],
+      "browse_pages": []
+    },
+    "documents": [
+      "\u003csection class=\"gem-c-attachment govuk-!-display-none-print govuk-!-margin-bottom-6\" data-module=\"ga4-link-tracker\"\u003e\n  \u003cdiv class=\"gem-c-attachment__thumbnail\"\u003e\n    \u003ca class=\"govuk-link\" target=\"_self\" tabindex=\"-1\" aria-hidden=\"true\" data-ga4-link=\"{\u0026quot;event_name\u0026quot;:\u0026quot;navigation\u0026quot;,\u0026quot;type\u0026quot;:\u0026quot;attachment\u0026quot;}\" href=\"/government/publications/walton-reach-regatta-2019-river-restriction-notice/walton-reach-regatta-2019-river-restriction-notice\"\u003e\n        \u003csvg class=\"gem-c-attachment__thumbnail-image gem-c-attachment__thumbnail-image--html\" version=\"1.1\" viewBox=\"0 0 99 140\" width=\"99\" height=\"140\" aria-hidden=\"true\"\u003e\n  \u003cpath d=\"M30,95h57v9H30V95z M30,77v9h39v-9H30z M30,122h48v-9H30V122z M12,68h9v-9h-9V68z M12,104h9v-9h-9V104z M12,86h9v-9h-9V86z M12,122h9v-9h-9V122z M87,12v27H12V12H87z M33,17h-4v8h-6v-8h-4v18h4v-7l6,0v7l4,0V17z M49,17H35l0,3h5v15h4V20l5,0V17z M68,17h-4 l-5,6l-5-6h-4v18h4l0-12l5,6l5-6l0,12h4V17z M81,32h-6V17h-4v18h10V32z M30,68h57v-9H30V68z\" stroke-width=\"0\"/\u003e\n\u003c/svg\u003e\n\n\u003c/a\u003e\u003c/div\u003e\n  \u003cdiv class=\"gem-c-attachment__details\"\u003e\n    \u003ch2 class=\"gem-c-attachment__title\"\u003e\n      \u003ca class=\"govuk-link gem-c-attachment__link\" target=\"_self\" data-ga4-link=\"{\u0026quot;event_name\u0026quot;:\u0026quot;navigation\u0026quot;,\u0026quot;type\u0026quot;:\u0026quot;attachment\u0026quot;}\" href=\"/government/publications/walton-reach-regatta-2019-river-restriction-notice/walton-reach-regatta-2019-river-restriction-notice\"\u003eWalton Reach Regatta 2019: river restriction notice\u003c/a\u003e\n\u003c/h2\u003e\n\n\n      \u003cp class=\"gem-c-attachment__metadata\"\u003e\u003cspan class=\"gem-c-attachment__attribute\"\u003eHTML\u003c/span\u003e\u003c/p\u003e\n\n\n\n\n\u003c/div\u003e\u003c/section\u003e"
+    ],
+    "political": false,
+    "attachments": [
+      {
+        "id": "3435894",
+        "url": "/government/publications/walton-reach-regatta-2019-river-restriction-notice/walton-reach-regatta-2019-river-restriction-notice",
+        "isbn": "",
+        "title": "Walton Reach Regatta 2019: river restriction notice",
+        "attachment_type": "html",
+        "hoc_paper_number": "",
+        "unique_reference": "",
+        "command_paper_number": "",
+        "unnumbered_hoc_paper": false,
+        "unnumbered_command_paper": false
+      }
+    ],
+    "change_history": [
+      {
+        "note": "First published.",
+        "public_timestamp": "2019-06-07T11:39:22.000+01:00"
+      }
+    ],
+    "first_public_at": "2019-06-07T11:39:22.000+01:00",
+    "featured_attachments": [
+      "3435894"
+    ],
+    "emphasised_organisations": [
+      "16628142-57b2-4611-bc03-5912785acee3"
+    ]
+  },
+  "routes": [
+    {
+      "path": "/government/publications/walton-reach-regatta-2019-river-restriction-notice",
+      "type": "exact"
+    }
+  ],
+  "redirects": [],
+  "content_id": "e3b7c15d-1928-4101-9912-c9b40a6d6e78",
+  "locale": "en",
+  "expanded_links": {
+    "children": [
+      {
+        "content_id": "281db48f-e08a-400b-b5fc-23bf8db06650",
+        "title": "Walton Reach Regatta 2019: river restriction notice",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/government/publications/walton-reach-regatta-2019-river-restriction-notice/walton-reach-regatta-2019-river-restriction-notice",
+        "base_path": "/government/publications/walton-reach-regatta-2019-river-restriction-notice/walton-reach-regatta-2019-river-restriction-notice",
+        "document_type": "html_publication",
+        "public_updated_at": "2019-06-06T10:04:28Z",
+        "schema_name": "html_publication",
+        "withdrawn": true,
+        "links": {
+          "parent": [
+            {
+              "content_id": "e3b7c15d-1928-4101-9912-c9b40a6d6e78",
+              "title": "Walton Reach Regatta 2019: river restriction notice",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/government/publications/walton-reach-regatta-2019-river-restriction-notice",
+              "base_path": "/government/publications/walton-reach-regatta-2019-river-restriction-notice",
+              "document_type": "notice",
+              "public_updated_at": "2019-06-07T10:39:22Z",
+              "schema_name": "publication",
+              "withdrawn": false,
+              "links": {}
+            }
+          ]
+        }
+      }
+    ],
+    "government": [
+      {
+        "content_id": "d4fbc1b9-d47d-4386-af04-ac909f868f92",
+        "title": "2015 Conservative government",
+        "locale": "en",
+        "api_path": "/api/content/government/2015-conservative-government",
+        "base_path": "/government/2015-conservative-government",
+        "document_type": "government",
+        "details": {
+          "started_on": "2015-05-08T00:00:00+00:00",
+          "ended_on": null,
+          "current": true
+        },
+        "links": {}
+      }
+    ],
+    "organisations": [
+      {
+        "content_id": "16628142-57b2-4611-bc03-5912785acee3",
+        "title": "Environment Agency",
+        "locale": "en",
+        "analytics_identifier": "EA199",
+        "api_path": "/api/content/government/organisations/environment-agency",
+        "base_path": "/government/organisations/environment-agency",
+        "document_type": "organisation",
+        "schema_name": "organisation",
+        "withdrawn": false,
+        "details": {
+          "acronym": "EA",
+          "logo": {
+            "image": {
+              "url": "https://assets.publishing.service.gov.uk/media/61fd3365e90e0768a8e97523/environment-agency-logo-480w.png",
+              "alt_text": "Environment Agency"
+            },
+            "formatted_title": "Environment Agency"
+          },
+          "brand": "department-for-environment-food-rural-affairs",
+          "default_news_image": {
+            "url": "https://assets.publishing.service.gov.uk/media/62c56ed9d3bf7f30034430da/s300_EA-officer-high-viz-jacket_960x640.jpg",
+            "high_resolution_url": "https://assets.publishing.service.gov.uk/media/62c56ed9e90e0774833f5583/s960_EA-officer-high-viz-jacket_960x640.jpg"
+          },
+          "organisation_govuk_status": {
+            "url": null,
+            "status": "live",
+            "updated_at": null
+          }
+        },
+        "links": {}
+      }
+    ],
+    "original_primary_publishing_organisation": [
+      {
+        "content_id": "16628142-57b2-4611-bc03-5912785acee3",
+        "title": "Environment Agency",
+        "locale": "en",
+        "analytics_identifier": "EA199",
+        "api_path": "/api/content/government/organisations/environment-agency",
+        "base_path": "/government/organisations/environment-agency",
+        "document_type": "organisation",
+        "schema_name": "organisation",
+        "withdrawn": false,
+        "details": {
+          "acronym": "EA",
+          "logo": {
+            "image": {
+              "url": "https://assets.publishing.service.gov.uk/media/61fd3365e90e0768a8e97523/environment-agency-logo-480w.png",
+              "alt_text": "Environment Agency"
+            },
+            "formatted_title": "Environment Agency"
+          },
+          "brand": "department-for-environment-food-rural-affairs",
+          "default_news_image": {
+            "url": "https://assets.publishing.service.gov.uk/media/62c56ed9d3bf7f30034430da/s300_EA-officer-high-viz-jacket_960x640.jpg",
+            "high_resolution_url": "https://assets.publishing.service.gov.uk/media/62c56ed9e90e0774833f5583/s960_EA-officer-high-viz-jacket_960x640.jpg"
+          },
+          "organisation_govuk_status": {
+            "url": null,
+            "status": "live",
+            "updated_at": null
+          }
+        },
+        "links": {}
+      }
+    ],
+    "primary_publishing_organisation": [
+      {
+        "content_id": "16628142-57b2-4611-bc03-5912785acee3",
+        "title": "Environment Agency",
+        "locale": "en",
+        "analytics_identifier": "EA199",
+        "api_path": "/api/content/government/organisations/environment-agency",
+        "base_path": "/government/organisations/environment-agency",
+        "document_type": "organisation",
+        "schema_name": "organisation",
+        "withdrawn": false,
+        "details": {
+          "acronym": "EA",
+          "logo": {
+            "image": {
+              "url": "https://assets.publishing.service.gov.uk/media/61fd3365e90e0768a8e97523/environment-agency-logo-480w.png",
+              "alt_text": "Environment Agency"
+            },
+            "formatted_title": "Environment Agency"
+          },
+          "brand": "department-for-environment-food-rural-affairs",
+          "default_news_image": {
+            "url": "https://assets.publishing.service.gov.uk/media/62c56ed9d3bf7f30034430da/s300_EA-officer-high-viz-jacket_960x640.jpg",
+            "high_resolution_url": "https://assets.publishing.service.gov.uk/media/62c56ed9e90e0774833f5583/s960_EA-officer-high-viz-jacket_960x640.jpg"
+          },
+          "organisation_govuk_status": {
+            "url": null,
+            "status": "live",
+            "updated_at": null
+          }
+        },
+        "links": {}
+      }
+    ],
+    "suggested_ordered_related_items": [
+      {
+        "content_id": "3f1d36bb-6aaa-4e37-b156-6257aae4566e",
+        "title": "Lost or stolen items",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/government/publications/lost-or-stolen-items",
+        "base_path": "/government/publications/lost-or-stolen-items",
+        "document_type": "foi_release",
+        "public_updated_at": "2015-08-12T10:33:12Z",
+        "schema_name": "publication",
+        "withdrawn": false,
+        "links": {}
+      }
+    ],
+    "taxons": [
+      {
+        "content_id": "1f0d0dcf-a5c0-4116-9ece-b7d7d46b3e3e",
+        "title": "Boats and waterways",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/environment/boats-waterways",
+        "base_path": "/environment/boats-waterways",
+        "document_type": "taxon",
+        "public_updated_at": "2018-09-05T16:13:11Z",
+        "schema_name": "taxon",
+        "withdrawn": false,
+        "description": null,
+        "details": {
+          "internal_name": "Boats and waterways [M]",
+          "notes_for_editors": "",
+          "visible_to_departmental_editors": false
+        },
+        "phase": "live",
+        "links": {
+          "parent_taxons": [
+            {
+              "content_id": "9949c2c1-ff96-4b4f-b584-c700e316c9de",
+              "title": "Rural and countryside",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/environment/rural-and-countryside",
+              "base_path": "/environment/rural-and-countryside",
+              "document_type": "taxon",
+              "public_updated_at": "2018-09-05T16:13:10Z",
+              "schema_name": "taxon",
+              "withdrawn": false,
+              "description": null,
+              "details": {
+                "internal_name": "Rural and countryside (merged, level 2)",
+                "notes_for_editors": "",
+                "visible_to_departmental_editors": false
+              },
+              "phase": "live",
+              "links": {
+                "parent_taxons": [
+                  {
+                    "content_id": "3cf97f69-84de-41ae-bc7b-7e2cc238fa58",
+                    "title": "Environment",
+                    "locale": "en",
+                    "analytics_identifier": null,
+                    "api_path": "/api/content/environment",
+                    "base_path": "/environment",
+                    "document_type": "taxon",
+                    "public_updated_at": "2018-09-16T13:39:00Z",
+                    "schema_name": "taxon",
+                    "withdrawn": false,
+                    "description": "",
+                    "details": {
+                      "internal_name": "Environment",
+                      "notes_for_editors": "",
+                      "visible_to_departmental_editors": true
+                    },
+                    "phase": "live",
+                    "links": {
+                      "root_taxon": [
+                        {
+                          "content_id": "f3bbdec2-0e62-4520-a7fd-6ffd5d36e03a",
+                          "title": "GOV.UK homepage",
+                          "locale": "en",
+                          "analytics_identifier": null,
+                          "api_path": "/api/content/",
+                          "base_path": "/",
+                          "document_type": "homepage",
+                          "public_updated_at": "2023-06-28T09:32:34Z",
+                          "schema_name": "homepage",
+                          "withdrawn": false,
+                          "links": {}
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ],
+    "available_translations": [
+      {
+        "title": "Walton Reach Regatta 2019: river restriction notice",
+        "public_updated_at": "2019-06-07T10:39:22Z",
+        "analytics_identifier": null,
+        "document_type": "notice",
+        "schema_name": "publication",
+        "base_path": "/government/publications/walton-reach-regatta-2019-river-restriction-notice",
+        "api_path": "/api/content/government/publications/walton-reach-regatta-2019-river-restriction-notice",
+        "withdrawn": true,
+        "content_id": "e3b7c15d-1928-4101-9912-c9b40a6d6e78",
+        "locale": "en"
+      }
+    ]
+  },
+  "user_journey_document_supertype": "thing",
+  "email_document_supertype": "publications",
+  "government_document_supertype": "notices",
+  "content_purpose_subgroup": "guidance",
+  "content_purpose_supergroup": "guidance_and_regulation",
+  "withdrawn_notice": {
+    "explanation": "\u003cdiv class=\"govspeak\"\u003e\u003cp\u003eThis notice has expired.\u003c/p\u003e\n\u003c/div\u003e",
+    "withdrawn_at": "2019-08-23T12:13:01Z"
+  },
+  "publishing_request_id": "21-1695990810.629-10.13.27.71-698",
+  "govuk_request_id": null,
+  "links": {
+    "government": [
+      "d4fbc1b9-d47d-4386-af04-ac909f868f92"
+    ],
+    "organisations": [
+      "16628142-57b2-4611-bc03-5912785acee3"
+    ],
+    "original_primary_publishing_organisation": [
+      "16628142-57b2-4611-bc03-5912785acee3"
+    ],
+    "primary_publishing_organisation": [
+      "16628142-57b2-4611-bc03-5912785acee3"
+    ],
+    "suggested_ordered_related_items": [
+      "6e7df4b2-d4a3-43a8-830b-85681495fa04",
+      "3f1d36bb-6aaa-4e37-b156-6257aae4566e"
+    ],
+    "taxons": [
+      "1f0d0dcf-a5c0-4116-9ece-b7d7d46b3e3e"
+    ]
+  },
+  "payload_version": "12345"
+}

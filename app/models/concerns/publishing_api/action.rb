@@ -18,7 +18,7 @@ module PublishingApi
     end
 
     def ignore?
-      on_ignorelist? || ignored_locale? || unaddressable?
+      on_ignorelist? || ignored_locale? || unaddressable? || withdrawn?
     end
 
     def ignore_reason
@@ -28,6 +28,8 @@ module PublishingApi
         "locale not permitted (#{locale})"
       elsif unaddressable?
         "unaddressable"
+      elsif withdrawn?
+        "withdrawn"
       end
     end
 
@@ -53,6 +55,10 @@ module PublishingApi
 
     def unaddressable?
       base_path.blank? && external_link.blank?
+    end
+
+    def withdrawn?
+      document_hash[:withdrawn_notice].present?
     end
 
     def document_type
