@@ -2,10 +2,11 @@ RSpec.describe PublishingApi::Action do
   subject(:action) { concern_consumer.new(document_hash) }
 
   let(:concern_consumer) { Struct.new(:document_hash).include(described_class) }
-  let(:document_hash) { { document_type:, base_path:, locale:, details: { url: } } }
+  let(:document_hash) { { document_type:, base_path:, locale:, details: { url: }, withdrawn_notice: } }
   let(:base_path) { "/test_base_path" }
   let(:url) { nil }
   let(:locale) { "en" }
+  let(:withdrawn_notice) { nil }
 
   %w[gone redirect substitute vanish].each do |document_type|
     context "when the document type is #{document_type}" do
@@ -84,6 +85,17 @@ RSpec.describe PublishingApi::Action do
     let(:base_path) { "/test_ignored_path" } # see test section in YAML config
 
     it { is_expected.to be_ignore }
+  end
+
+  context "when the document is withdrawn" do
+    let(:document_type) { "notice" }
+    let(:withdrawn_notice) { { explanation: "test" } }
+
+    it { is_expected.to be_ignore }
+
+    it "has the expected ignore_reason" do
+      expect(action.ignore_reason).to eq("withdrawn")
+    end
   end
 
   context "when the document doesn't have a base path but does have a url" do

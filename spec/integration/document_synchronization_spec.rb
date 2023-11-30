@@ -18,25 +18,23 @@ RSpec.describe "Document synchronization" do
 
     it "is added to Discovery Engine through the Put service" do
       expect(put_service).to have_received(:call).with(
-        "f75d26a3-25a4-4c31-beea-a77cada4ce12",
+        "5941cb22-5d52-4212-83b6-255d75d2c680",
         {
-          content_id: "f75d26a3-25a4-4c31-beea-a77cada4ce12",
-          title: "Ebola medal for over 3000 heroes",
-          description: "A new medal has been created to recognise the bravery and hard work of people who have helped to stop the spread of Ebola.",
-          link: "/government/news/ebola-medal-for-over-3000-heroes",
-          url: "http://www.dev.gov.uk/government/news/ebola-medal-for-over-3000-heroes",
-          public_timestamp: 1_434_021_240,
+          content_id: "5941cb22-5d52-4212-83b6-255d75d2c680",
+          title: "UK and Japan strengthen cooperation in the area of digital government",
+          description: "On Monday 31 October 2022, the UK and Japan signed a Memorandum of Cooperation (MoC) to deepen ties on digital government transformation.",
+          link: "/government/news/uk-and-japan-strengthen-cooperation-in-the-area-of-digital-government",
+          url: "http://www.dev.gov.uk/government/news/uk-and-japan-strengthen-cooperation-in-the-area-of-digital-government",
+          public_timestamp: 1_667_217_614,
           document_type: "press_release",
           is_historic: 0,
           government_name: "2015 Conservative government",
           content_purpose_supergroup: "news_and_communications",
-          part_of_taxonomy_tree: %w[
-            668cd623-c7a8-4159-9575-90caac36d4b4 c31256e8-f328-462b-993f-dce50b7892e9
-          ],
+          part_of_taxonomy_tree: %w[37d0fa26-abed-4c74-8835-b3b51ae1c8b2],
           locale: "en",
         },
-        content: a_string_starting_with("<div class=\"govspeak\"><p>The government has today"),
-        payload_version: 65_861_808,
+        content: a_string_starting_with("<div class=\"govspeak\"><p>The UK was represented remotely"),
+        payload_version: 12_345,
       )
     end
   end
@@ -249,6 +247,17 @@ RSpec.describe "Document synchronization" do
         },
         content: "Brighton & Hove City Council",
         payload_version: 17,
+      )
+    end
+  end
+
+  describe "for a withdrawn 'notice' message" do
+    let(:payload) { json_fixture_as_hash("message_queue/withdrawn_notice_message.json") }
+
+    it "is ignored and deleted from Discovery Engine through the Delete service" do
+      expect(delete_service).to have_received(:call).with(
+        "e3b7c15d-1928-4101-9912-c9b40a6d6e78",
+        payload_version: 12_345,
       )
     end
   end
