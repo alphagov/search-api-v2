@@ -27,9 +27,6 @@ class PublishingApiDocument
       delete_service.call(content_id, payload_version:)
     else
       log("skip (#{action_reason})")
-      # Eagerly attempt to delete the document anyway in case it has been previously synchronised
-      # (for example, if the ignorelist has changed and it should now no longer be in search)
-      delete_service.call(content_id, payload_version:)
     end
   end
 

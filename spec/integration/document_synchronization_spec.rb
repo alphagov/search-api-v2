@@ -254,18 +254,15 @@ RSpec.describe "Document synchronization" do
   describe "for a non-English 'worldwide_organisation' message" do
     let(:payload) { json_fixture_as_hash("message_queue/non_english_worldwide_organisation_message.json") }
 
-    it "is ignored and deleted from Discovery Engine through the Delete service" do
-      expect(delete_service).to have_received(:call).with(
-        "f4c394f9-7a30-11e4-a3cb-005056011aef",
-        payload_version: 12_345,
-      )
+    it "is skipped completely and not deleted" do
+      expect(delete_service).not_to have_received(:call)
     end
   end
 
   describe "for a withdrawn 'notice' message" do
     let(:payload) { json_fixture_as_hash("message_queue/withdrawn_notice_message.json") }
 
-    it "is ignored and deleted from Discovery Engine through the Delete service" do
+    it "is proactively deleted from Discovery Engine through the Delete service" do
       expect(delete_service).to have_received(:call).with(
         "e3b7c15d-1928-4101-9912-c9b40a6d6e78",
         payload_version: 12_345,
@@ -276,7 +273,7 @@ RSpec.describe "Document synchronization" do
   describe "for an 'html_publication' message" do
     let(:payload) { json_fixture_as_hash("message_queue/html_publication_message.json") }
 
-    it "is ignored and deleted from Discovery Engine through the Delete service" do
+    it "is proactively deleted from Discovery Engine through the Delete service" do
       expect(delete_service).to have_received(:call).with(
         "1f1f2c96-5a14-4d2a-9d0c-be6ac6c62c3b",
         payload_version: 12_345,
