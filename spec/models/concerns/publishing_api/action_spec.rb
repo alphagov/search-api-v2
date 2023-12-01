@@ -19,7 +19,7 @@ RSpec.describe PublishingApi::Action do
   context "when the document type is on the ignore list as a string" do
     let(:document_type) { "test_ignored_type" } # see test section in YAML config
 
-    it { is_expected.to be_skip }
+    it { is_expected.to be_desync }
 
     it "has the expected action_reason" do
       expect(action.action_reason).to eq("document_type on ignorelist (test_ignored_type)")
@@ -41,7 +41,7 @@ RSpec.describe PublishingApi::Action do
   context "when the document type is on the ignore list as a pattern" do
     let(:document_type) { "another_test_ignored_type_foo" } # see test section in YAML config
 
-    it { is_expected.to be_skip }
+    it { is_expected.to be_desync }
 
     it "has the expected action_reason" do
       expect(action.action_reason).to eq(
@@ -55,7 +55,7 @@ RSpec.describe PublishingApi::Action do
     let(:base_path) { nil }
     let(:url) { nil }
 
-    it { is_expected.to be_skip }
+    it { is_expected.to be_desync }
 
     it "has the expected action_reason" do
       expect(action.action_reason).to eq("unaddressable")
@@ -84,14 +84,14 @@ RSpec.describe PublishingApi::Action do
     let(:document_type) { "test_ignored_type" } # see test section in YAML config
     let(:base_path) { "/test_ignored_path" } # see test section in YAML config
 
-    it { is_expected.to be_skip }
+    it { is_expected.to be_desync }
   end
 
   context "when the document is withdrawn" do
     let(:document_type) { "notice" }
     let(:withdrawn_notice) { { explanation: "test" } }
 
-    it { is_expected.to be_skip }
+    it { is_expected.to be_desync }
 
     it "has the expected action_reason" do
       expect(action.action_reason).to eq("withdrawn")

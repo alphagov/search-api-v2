@@ -14,15 +14,19 @@ module PublishingApi
     end
 
     def desync?
-      UNPUBLISH_DOCUMENT_TYPES.include?(document_type)
+      unpublish_type? || on_ignorelist? || unaddressable? || withdrawn?
     end
 
     def skip?
-      on_ignorelist? || ignored_locale? || unaddressable? || withdrawn?
+      # Do not proactively desync documents with an ignored locale, as they may have content with a
+      # non-ignored locale with the same content_id.
+      ignored_locale?
     end
 
     def action_reason
-      if on_ignorelist?
+      if unpublish_type?
+        "unpublish type (#{document_type})"
+      elsif on_ignorelist?
         "document_type on ignorelist (#{document_type})"
       elsif ignored_locale?
         "locale not permitted (#{locale})"
@@ -34,6 +38,10 @@ module PublishingApi
     end
 
   private
+
+    def unpublish_type?
+      UNPUBLISH_DOCUMENT_TYPES.include?(document_type)
+    end
 
     # rubocop:disable Style/CaseEquality (no semantically equal alternative to compare String/Regex)
     def on_ignorelist?
