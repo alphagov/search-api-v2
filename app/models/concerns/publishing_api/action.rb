@@ -9,19 +9,19 @@ module PublishingApi
     # behaviour of the existing search. This may change in the future.
     PERMITTED_LOCALES = %w[en].freeze
 
-    def publish?
-      !unpublish? && !ignore?
+    def sync?
+      !desync? && !skip?
     end
 
-    def unpublish?
+    def desync?
       UNPUBLISH_DOCUMENT_TYPES.include?(document_type)
     end
 
-    def ignore?
+    def skip?
       on_ignorelist? || ignored_locale? || unaddressable? || withdrawn?
     end
 
-    def ignore_reason
+    def action_reason
       if on_ignorelist?
         "document_type on ignorelist (#{document_type})"
       elsif ignored_locale?

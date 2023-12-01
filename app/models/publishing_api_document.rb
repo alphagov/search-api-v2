@@ -19,14 +19,14 @@ class PublishingApiDocument
   end
 
   def synchronize
-    if publish?
-      log("put")
+    if sync?
+      log("sync")
       put_service.call(content_id, metadata, content:, payload_version:)
-    elsif unpublish?
-      log("delete")
+    elsif desync?
+      log("desync (#{action_reason}))")
       delete_service.call(content_id, payload_version:)
     else
-      log("ignore and delete (#{ignore_reason})")
+      log("skip (#{action_reason})")
       # Eagerly attempt to delete the document anyway in case it has been previously synchronised
       # (for example, if the ignorelist has changed and it should now no longer be in search)
       delete_service.call(content_id, payload_version:)
