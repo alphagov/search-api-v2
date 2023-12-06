@@ -1,5 +1,5 @@
 RSpec.describe DiscoveryEngine::Search do
-  subject(:search) { described_class.new(client:) }
+  subject(:search) { described_class.new(query_params, client:) }
 
   let(:client) { double("SearchService::Client", search: search_return_value) }
 
@@ -25,9 +25,11 @@ RSpec.describe DiscoveryEngine::Search do
     end
   end
 
-  describe "#call" do
+  describe "#result_set" do
+    subject!(:result_set) { search.result_set }
+
     context "when the search is successful" do
-      subject!(:result_set) { search.call("garden centres") }
+      let(:query_params) { { q: "garden centres" } }
 
       let(:search_return_value) { double(response: search_response) }
       let(:search_response) { double(total_size: 42, results:) }
@@ -58,7 +60,7 @@ RSpec.describe DiscoveryEngine::Search do
       end
 
       context "when start and count are specified" do
-        subject!(:result_set) { search.call("garden centres", start: 11, count: 22) }
+        let(:query_params) { { q: "garden centres", start: "11", count: "22" } }
 
         it "calls the client with the expected parameters" do
           expect(client).to have_received(:search).with(
@@ -77,7 +79,7 @@ RSpec.describe DiscoveryEngine::Search do
 
       context "when searching for a query that has a single best bets defined" do
         # see test section in YAML config
-        subject!(:result_set) { search.call("i want to test a single best bet") }
+        let(:query_params) { { q: "i want to test a single best bet" } }
 
         let(:expected_boost_specs) do
           super() + [{
@@ -99,7 +101,7 @@ RSpec.describe DiscoveryEngine::Search do
 
       context "when searching for a query that has multiple best bets defined" do
         # see test section in YAML config
-        subject!(:result_set) { search.call("i want to test multiple best bets") }
+        let(:query_params) { { q: "i want to test multiple best bets" } }
 
         let(:expected_boost_specs) do
           super() + [{
