@@ -16,7 +16,6 @@ gem "govuk_message_queue_consumer"
 gem "jsonpath"
 gem "loofah"
 gem "oj"
-gem "plek"
 
 group :test do
   gem "grpc_mock"

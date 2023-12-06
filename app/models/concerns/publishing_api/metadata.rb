@@ -1,5 +1,7 @@
 module PublishingApi
   module Metadata
+    WEBSITE_ROOT = "https://www.gov.uk".freeze
+
     # Extracts a hash of structured metadata about this document.
     def metadata
       {
@@ -34,7 +36,7 @@ module PublishingApi
     def url
       return link unless link_relative?
 
-      Plek.website_root + link
+      WEBSITE_ROOT + link
     end
 
     def public_timestamp

@@ -61,16 +61,10 @@ RSpec.describe PublishingApi::Metadata do
     describe "url" do
       subject(:extracted_url) { extracted_metadata[:url] }
 
-      before do
-        allow(Plek).to receive(:new).and_return(
-          instance_double(Plek, website_root: "https://test.gov.uk"),
-        )
-      end
-
       context "with a base_path" do
         let(:document_hash) { { base_path: "/test" } }
 
-        it { is_expected.to eq("https://test.gov.uk/test") }
+        it { is_expected.to eq("https://www.gov.uk/test") }
       end
 
       context "with an external URL" do
@@ -84,7 +78,7 @@ RSpec.describe PublishingApi::Metadata do
           { base_path: "/test", details: { url: "https://liverpool.gov.uk/" } }
         end
 
-        it { is_expected.to eq("https://test.gov.uk/test") }
+        it { is_expected.to eq("https://www.gov.uk/test") }
       end
 
       context "without a base_path or external URL" do
