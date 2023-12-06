@@ -1,48 +1,60 @@
 module DiscoveryEngine
   class Search
-    DEFAULT_COUNT = 10
-    DEFAULT_START = 0
+    DEFAULT_PAGE_SIZE = 10
+    DEFAULT_OFFSET = 0
 
     include BestBetsBoost
     include NewsRecencyBoost
 
-    def initialize(client: ::Google::Cloud::DiscoveryEngine.search_service(version: :v1))
+    def initialize(
+      query_params,
+      client: ::Google::Cloud::DiscoveryEngine.search_service(version: :v1)
+    )
+      @query_params = query_params
       @client = client
     end
 
-    def call(query_string, start: nil, count: nil)
-      count ||= DEFAULT_COUNT
-      start ||= DEFAULT_START
-      query_string ||= ""
-
+    def result_set
       response = client.search(
-        query: query_string,
+        query:,
         serving_config:,
-        page_size: count,
-        offset: start,
-        boost_spec: boost_spec(query_string),
+        page_size:,
+        offset:,
+        boost_spec:,
       ).response
 
       ResultSet.new(
         results: response.results.map { Result.from_stored_document(_1.document.struct_data.to_h) },
         total: response.total_size,
-        start:,
+        start: offset,
       )
     end
 
   private
 
-    attr_reader :client
+    attr_reader :query_params, :client
+
+    def query
+      query_params[:q].presence || ""
+    end
+
+    def page_size
+      query_params[:count].presence&.to_i || DEFAULT_PAGE_SIZE
+    end
+
+    def offset
+      query_params[:start].presence&.to_i || DEFAULT_OFFSET
+    end
 
     def serving_config
       Rails.configuration.discovery_engine_serving_config
     end
 
-    def boost_spec(query_string)
+    def boost_spec
       {
         condition_boost_specs: [
           *news_recency_boost_specs,
-          *best_bets_boost_specs(query_string),
+          *best_bets_boost_specs(query),
         ],
       }
     end
