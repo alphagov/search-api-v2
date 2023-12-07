@@ -3,9 +3,6 @@ module DiscoveryEngine
     DEFAULT_PAGE_SIZE = 10
     DEFAULT_OFFSET = 0
 
-    include BestBetsBoost
-    include NewsRecencyBoost
-
     def initialize(
       query_params,
       client: ::Google::Cloud::DiscoveryEngine.search_service(version: :v1)
@@ -53,8 +50,8 @@ module DiscoveryEngine
     def boost_spec
       {
         condition_boost_specs: [
-          *news_recency_boost_specs,
-          *best_bets_boost_specs(query),
+          *Boosts::NewsRecency.new.boost_specs,
+          *Boosts::BestBets.new(query).boost_specs,
         ],
       }
     end
