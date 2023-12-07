@@ -33,7 +33,7 @@ RSpec.describe "Document synchronization" do
           part_of_taxonomy_tree: %w[37d0fa26-abed-4c74-8835-b3b51ae1c8b2],
           locale: "en",
         },
-        content: a_string_starting_with("<div class=\"govspeak\"><p>The UK was represented remotely"),
+        content: a_string_including("<div class=\"govspeak\"><p>The UK was represented remotely"),
         payload_version: 12_345,
       )
     end
@@ -87,7 +87,7 @@ RSpec.describe "Document synchronization" do
             },
           ],
         },
-        content: a_string_starting_with("<h1>Warnings and insurance</h1>\n<p>The Foreign"),
+        content: a_string_including("<h1>Warnings and insurance</h1>\n<p>The Foreign"),
         payload_version: 12_345,
       )
     end
@@ -117,7 +117,7 @@ RSpec.describe "Document synchronization" do
           ],
           locale: "en",
         },
-        content: a_string_starting_with("<div class=\"govspeak\"><p>In the UEFA Champions"),
+        content: a_string_including("<div class=\"govspeak\"><p>In the UEFA Champions"),
         payload_version: 12_345,
       )
     end
@@ -141,7 +141,7 @@ RSpec.describe "Document synchronization" do
           content_purpose_supergroup: "guidance_and_regulation",
           locale: "en",
         },
-        content: a_string_matching(/\A<h2 id="section-6-1">6\.1\. Structure.+<\/table>\n\n\z/m),
+        content: a_string_matching(/<h2 id="section-6-1">6\.1\. Structure.+<\/table>\n\n/m),
         payload_version: 12_345,
       )
     end
@@ -166,7 +166,7 @@ RSpec.describe "Document synchronization" do
           content_purpose_supergroup: "other",
           locale: "en",
         },
-        content: a_string_starting_with("LAA\n<div class=\"govspeak\"><p>We provide civil"),
+        content: a_string_including("LAA\n<div class=\"govspeak\"><p>We provide civil"),
         payload_version: 12_345,
       )
     end
@@ -192,7 +192,9 @@ RSpec.describe "Document synchronization" do
           part_of_taxonomy_tree: %w[f3caf326-fe33-410f-b7f4-553f4011c81e],
           locale: "en",
         },
-        content: a_string_starting_with(<<~TEXT.chomp),
+        content: a_string_including(<<~TEXT.chomp),
+          Directgov 2010 and beyond: revolution not evolution, a report by Martha Lane Fox
+          A report from the Digital Champion Martha Lane Fox with recommendations for the future of Directgov.
           Directgov 2010 and Beyond: Revolution Not Evolution - Letter from Martha Lane Fox to Francis Maude
           Francis Maude's reply to Martha Lane Fox's letter
           Directgov Strategic Review - Executive Summary
@@ -221,7 +223,10 @@ RSpec.describe "Document synchronization" do
           content_purpose_supergroup: "other",
           locale: "en",
         },
-        content: "",
+        content: <<~TEXT.chomp,
+          UK help and services in Switzerland
+          Services if you're visiting, studying, working or living in Switzerland. Includes information about trading with and doing business in the UK and Switzerland, and your rights after the UK’s exit from the EU.
+        TEXT
         payload_version: 12_345,
       )
     end
@@ -245,7 +250,7 @@ RSpec.describe "Document synchronization" do
           content_purpose_supergroup: "other",
           locale: "en",
         },
-        content: "Brighton & Hove City Council",
+        content: a_string_including("Brighton & Hove City Council"),
         payload_version: 17,
       )
     end
