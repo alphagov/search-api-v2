@@ -2,7 +2,14 @@ module PublishingApi
   module Content
     # All the possible keys in the message hash that can contain the primary unstructured document
     # content that we want to index, represented as JsonPath path strings.
+    #
+    # Note that this also indexes some things that are in metadata attributes (e.g. title,
+    # description) as it seems that the engine is better at picking up on them if they are in the
+    # unstructured content.
     INDEXABLE_CONTENT_VALUES_JSON_PATHS = %w[
+      $.title
+      $.description
+
       $.details.acronym
       $.details.attachments[*]['title','isbn','unique_reference','command_paper_number','hoc_paper_number']
       $.details.body
