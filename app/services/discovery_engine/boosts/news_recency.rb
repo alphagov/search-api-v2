@@ -1,11 +1,11 @@
-module DiscoveryEngine
-  module NewsRecencyBoost
+module DiscoveryEngine::Boosts
+  class NewsRecency
     FRESH_AGE = 1.week
     RECENT_AGE = 3.months
     OLD_AGE = 1.year
     ANCIENT_AGE = 4.years
 
-    def news_recency_boost_specs
+    def boost_specs
       [
         {
           boost: 0.2,
