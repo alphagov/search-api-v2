@@ -1,4 +1,4 @@
-RSpec.describe DiscoveryEngine::Filters do
+RSpec.describe DiscoveryEngine::Query::Filters do
   describe "#filter_expression" do
     subject(:filter_expression) { described_class.new(query_params).filter_expression }
 

@@ -7,8 +7,8 @@ class PublishingApiDocument
 
   def initialize(
     document_hash,
-    put_service: DiscoveryEngine::Put.new,
-    delete_service: DiscoveryEngine::Delete.new
+    put_service: DiscoveryEngine::Sync::Put.new,
+    delete_service: DiscoveryEngine::Sync::Delete.new
   )
     @document_hash = document_hash
     @put_service = put_service

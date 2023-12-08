@@ -1,4 +1,4 @@
-module DiscoveryEngine
+module DiscoveryEngine::Query
   class Filters
     def initialize(query_params)
       @query_params = query_params

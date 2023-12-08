@@ -1,5 +1,5 @@
-module DiscoveryEngine::Boosts
-  class BestBets
+module DiscoveryEngine::Query
+  class BestBetsBoost
     def initialize(query_string)
       @query_string = query_string
     end

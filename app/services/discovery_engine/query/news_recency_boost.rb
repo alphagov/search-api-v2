@@ -1,5 +1,5 @@
-module DiscoveryEngine::Boosts
-  class NewsRecency
+module DiscoveryEngine::Query
+  class NewsRecencyBoost
     FRESH_AGE = 1.week
     RECENT_AGE = 3.months
     OLD_AGE = 1.year
