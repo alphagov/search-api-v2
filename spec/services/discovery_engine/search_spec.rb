@@ -77,6 +77,36 @@ RSpec.describe DiscoveryEngine::Search do
         end
       end
 
+      context "when sorting by ascending public timestamp" do
+        let(:query_params) { { q: "garden centres", order: "public_timestamp" } }
+
+        it "calls the client with the expected parameters" do
+          expect(client).to have_received(:search).with(
+            hash_including(order_by: "public_timestamp"),
+          )
+        end
+      end
+
+      context "when sorting by descending public timestamp" do
+        let(:query_params) { { q: "garden centres", order: "-public_timestamp" } }
+
+        it "calls the client with the expected parameters" do
+          expect(client).to have_received(:search).with(
+            hash_including(order_by: "public_timestamp desc"),
+          )
+        end
+      end
+
+      context "when attempting to sort by an unexpected value" do
+        let(:query_params) { { q: "garden centres", order: "foobarbaz" } }
+
+        it "calls the client with the expected parameters" do
+          expect(client).to have_received(:search).with(
+            hash_not_including(:order_by),
+          )
+        end
+      end
+
       context "when searching for a query that has a single best bets defined" do
         # see test section in YAML config
         let(:query_params) { { q: "i want to test a single best bet" } }
