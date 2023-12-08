@@ -107,6 +107,26 @@ RSpec.describe DiscoveryEngine::Search do
         end
       end
 
+      context "with a single reject_link parameter" do
+        let(:query_params) { { q: "garden centres", reject_link: "/foo" } }
+
+        it "calls the client with the expected parameters" do
+          expect(client).to have_received(:search).with(
+            hash_including(filter: 'NOT link: ANY("/foo")'),
+          )
+        end
+      end
+
+      context "with several reject_link parameter" do
+        let(:query_params) { { q: "garden centres", reject_link: ["/foo", "/bar"] } }
+
+        it "calls the client with the expected parameters" do
+          expect(client).to have_received(:search).with(
+            hash_including(filter: 'NOT link: ANY("/foo","/bar")'),
+          )
+        end
+      end
+
       context "when searching for a query that has a single best bets defined" do
         # see test section in YAML config
         let(:query_params) { { q: "i want to test a single best bet" } }

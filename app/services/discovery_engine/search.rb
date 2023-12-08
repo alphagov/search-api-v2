@@ -33,6 +33,7 @@ module DiscoveryEngine
         page_size:,
         offset:,
         order_by:,
+        filter:,
         boost_spec:,
       }.compact
     end
@@ -66,6 +67,17 @@ module DiscoveryEngine
         Rails.logger.warn("Unexpected order_by value: #{query_params[:order].inspect}")
         DEFAULT_ORDER_BY
       end
+    end
+
+    def filter
+      reject_links_filter
+    end
+
+    def reject_links_filter
+      return nil if query_params[:reject_link].blank?
+
+      reject_links = Array(query_params[:reject_link]).map { "\"#{_1}\"" }.join(",")
+      "NOT link: ANY(#{reject_links})"
     end
 
     def serving_config
