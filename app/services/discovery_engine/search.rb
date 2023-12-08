@@ -70,14 +70,7 @@ module DiscoveryEngine
     end
 
     def filter
-      reject_links_filter
-    end
-
-    def reject_links_filter
-      return nil if query_params[:reject_link].blank?
-
-      reject_links = Array(query_params[:reject_link]).map { "\"#{_1}\"" }.join(",")
-      "NOT link: ANY(#{reject_links})"
+      Filters.new(query_params).filter_expression
     end
 
     def serving_config

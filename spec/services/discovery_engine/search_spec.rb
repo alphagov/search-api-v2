@@ -2,6 +2,7 @@ RSpec.describe DiscoveryEngine::Search do
   subject(:search) { described_class.new(query_params, client:) }
 
   let(:client) { double("SearchService::Client", search: search_return_value) }
+  let(:filters) { double(filter_expression: "filter-expression") }
 
   let(:expected_boost_specs) do
     [{ boost: 0.2,
@@ -17,6 +18,7 @@ RSpec.describe DiscoveryEngine::Search do
   before do
     allow(Rails.configuration).to receive(:discovery_engine_serving_config)
       .and_return("serving-config-path")
+    allow(DiscoveryEngine::Filters).to receive(:new).and_return(filters)
   end
 
   around do |example|
@@ -46,6 +48,7 @@ RSpec.describe DiscoveryEngine::Search do
           query: "garden centres",
           offset: 0,
           page_size: 10,
+          filter: "filter-expression",
           boost_spec: { condition_boost_specs: expected_boost_specs },
         )
       end
@@ -68,6 +71,7 @@ RSpec.describe DiscoveryEngine::Search do
             query: "garden centres",
             offset: 11,
             page_size: 22,
+            filter: "filter-expression",
             boost_spec: { condition_boost_specs: expected_boost_specs },
           )
         end
@@ -107,22 +111,12 @@ RSpec.describe DiscoveryEngine::Search do
         end
       end
 
-      context "with a single reject_link parameter" do
-        let(:query_params) { { q: "garden centres", reject_link: "/foo" } }
+      context "when no filter expression is returned" do
+        let(:filters) { double(filter_expression: nil) }
 
-        it "calls the client with the expected parameters" do
+        it "calls the client without a filter parameter" do
           expect(client).to have_received(:search).with(
-            hash_including(filter: 'NOT link: ANY("/foo")'),
-          )
-        end
-      end
-
-      context "with several reject_link parameter" do
-        let(:query_params) { { q: "garden centres", reject_link: ["/foo", "/bar"] } }
-
-        it "calls the client with the expected parameters" do
-          expect(client).to have_received(:search).with(
-            hash_including(filter: 'NOT link: ANY("/foo","/bar")'),
+            hash_not_including(:filter),
           )
         end
       end
@@ -140,11 +134,7 @@ RSpec.describe DiscoveryEngine::Search do
 
         it "calls the client with the expected parameters" do
           expect(client).to have_received(:search).with(
-            serving_config: "serving-config-path",
-            query: "i want to test a single best bet",
-            offset: 0,
-            page_size: 10,
-            boost_spec: { condition_boost_specs: expected_boost_specs },
+            hash_including(boost_spec: { condition_boost_specs: expected_boost_specs }),
           )
         end
       end
@@ -162,11 +152,7 @@ RSpec.describe DiscoveryEngine::Search do
 
         it "calls the client with the expected parameters" do
           expect(client).to have_received(:search).with(
-            serving_config: "serving-config-path",
-            query: "i want to test multiple best bets",
-            offset: 0,
-            page_size: 10,
-            boost_spec: { condition_boost_specs: expected_boost_specs },
+            hash_including(boost_spec: { condition_boost_specs: expected_boost_specs }),
           )
         end
       end
