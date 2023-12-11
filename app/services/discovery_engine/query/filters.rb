@@ -14,7 +14,7 @@ module DiscoveryEngine::Query
       ].compact
 
       expressions
-        .map { surround(_1, delimiter: "(", delimiter_end: ")") }
+        .map { "(#{_1})" }
         .join(" AND ")
         .presence
     end
@@ -46,19 +46,10 @@ module DiscoveryEngine::Query
     end
 
     def string_filter_expression(field, value_or_values, negate: false)
-      values = Array(value_or_values).map do |value|
-        # Input strings need to be wrapped in double quotes and have double quotes or backslashes
-        # escaped for Discovery Engine's filter syntax
-        escaped_value = value.gsub(/(["\\])/, '\\\\\1')
-        surround(escaped_value, delimiter: '"')
-      end
+      values = Array(value_or_values).map { FilterExpressions::StringValue.new(_1) }
       return if values.blank?
 
       "#{negate ? 'NOT ' : ''}#{field}: ANY(#{values.join(',')})"
-    end
-
-    def surround(str, delimiter:, delimiter_end: delimiter)
-      "#{delimiter}#{str}#{delimiter_end}"
     end
   end
 end
