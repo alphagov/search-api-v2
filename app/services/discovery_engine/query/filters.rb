@@ -1,17 +1,19 @@
 module DiscoveryEngine::Query
   class Filters
+    FILTERABLE_FIELDS = %i[content_purpose_supergroup link part_of_taxonomy_tree].freeze
+
     def initialize(query_params)
       @query_params = query_params
     end
 
     def filter_expression
       expressions = [
-        reject_links_filter,
-        content_purpose_supergroup_filter,
-      ]
+        *query_params_of_type(:reject).map { reject_filter(_1, _2) },
+        *query_params_of_type(:filter).map { any_filter(_1, _2) },
+        *query_params_of_type(:filter_all).map { all_filter(_1, _2) },
+      ].compact
 
       expressions
-        .compact
         .map { surround(_1, delimiter: "(", delimiter_end: ")") }
         .join(" AND ")
         .presence
@@ -21,31 +23,38 @@ module DiscoveryEngine::Query
 
     attr_reader :query_params
 
-    def reject_links_filter
-      return nil if query_params[:reject_link].blank?
-
-      values = Array(query_params[:reject_link])
-        .map { filter_string_value(_1) }
-        .join(",")
-
-      "NOT link: ANY(#{values})"
+    def query_params_of_type(type)
+      FILTERABLE_FIELDS
+        .filter_map { [_1, query_params["#{type}_#{_1}".to_sym]] }
+        .to_h
+        .compact_blank
     end
 
-    def content_purpose_supergroup_filter
-      return nil if query_params[:filter_content_purpose_supergroup].blank?
-
-      values = Array(query_params[:filter_content_purpose_supergroup])
-        .map { filter_string_value(_1) }
-        .join(",")
-
-      "content_purpose_supergroup: ANY(#{values})"
+    def reject_filter(field, value_or_values)
+      string_filter_expression(field, value_or_values, negate: true)
     end
 
-    # Input strings need to be wrapped in double quotes and have double quotes or backslashes
-    # escaped for Discovery Engine's filter syntax
-    def filter_string_value(str)
-      escaped_str = str.gsub(/(["\\])/, '\\\\\1')
-      surround(escaped_str, delimiter: '"')
+    def all_filter(field, value_or_values)
+      Array(value_or_values)
+        .map { string_filter_expression(field, _1) }
+        .join(" AND ")
+        .presence
+    end
+
+    def any_filter(field, value_or_values)
+      string_filter_expression(field, value_or_values)
+    end
+
+    def string_filter_expression(field, value_or_values, negate: false)
+      values = Array(value_or_values).map do |value|
+        # Input strings need to be wrapped in double quotes and have double quotes or backslashes
+        # escaped for Discovery Engine's filter syntax
+        escaped_value = value.gsub(/(["\\])/, '\\\\\1')
+        surround(escaped_value, delimiter: '"')
+      end
+      return if values.blank?
+
+      "#{negate ? 'NOT ' : ''}#{field}: ANY(#{values.join(',')})"
     end
 
     def surround(str, delimiter:, delimiter_end: delimiter)
