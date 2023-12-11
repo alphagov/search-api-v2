@@ -5,10 +5,16 @@ module DiscoveryEngine::Query
     end
 
     def filter_expression
-      surround_and_join([
+      expressions = [
         reject_links_filter,
         content_purpose_supergroup_filter,
-      ], between: " AND ", surround: "(", surround_end: ")")
+      ]
+
+      expressions
+        .compact
+        .map { surround(_1, delimiter: "(", delimiter_end: ")") }
+        .join(" AND ")
+        .presence
     end
 
   private
@@ -18,25 +24,32 @@ module DiscoveryEngine::Query
     def reject_links_filter
       return nil if query_params[:reject_link].blank?
 
-      values = surround_and_join(query_params[:reject_link], between: ",", surround: '"')
+      values = Array(query_params[:reject_link])
+        .map { filter_string_value(_1) }
+        .join(",")
+
       "NOT link: ANY(#{values})"
     end
 
     def content_purpose_supergroup_filter
       return nil if query_params[:filter_content_purpose_supergroup].blank?
 
-      values = surround_and_join(
-        query_params[:filter_content_purpose_supergroup], between: ",", surround: '"'
-      )
+      values = Array(query_params[:filter_content_purpose_supergroup])
+        .map { filter_string_value(_1) }
+        .join(",")
+
       "content_purpose_supergroup: ANY(#{values})"
     end
 
-    def surround_and_join(string_or_strings, between:, surround:, surround_end: surround)
-      Array(string_or_strings)
-        .compact
-        .map { "#{surround}#{_1}#{surround_end}" }
-        .join(between)
-        .presence
+    # Input strings need to be wrapped in double quotes and have double quotes or backslashes
+    # escaped for Discovery Engine's filter syntax
+    def filter_string_value(str)
+      escaped_str = str.gsub(/(["\\])/, '\\\\\1')
+      surround(escaped_str, delimiter: '"')
+    end
+
+    def surround(str, delimiter:, delimiter_end: delimiter)
+      "#{delimiter}#{str}#{delimiter_end}"
     end
   end
 end
