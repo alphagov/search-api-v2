@@ -3,12 +3,12 @@ require "govuk_message_queue_consumer/test_helpers"
 RSpec.describe "Document synchronization" do
   let(:message) { GovukMessageQueueConsumer::MockMessage.new(payload) }
 
-  let(:put_service) { instance_double(DiscoveryEngine::Put, call: nil) }
-  let(:delete_service) { instance_double(DiscoveryEngine::Delete, call: nil) }
+  let(:put_service) { instance_double(DiscoveryEngine::Sync::Put, call: nil) }
+  let(:delete_service) { instance_double(DiscoveryEngine::Sync::Delete, call: nil) }
 
   before do
-    allow(DiscoveryEngine::Put).to receive(:new).and_return(put_service)
-    allow(DiscoveryEngine::Delete).to receive(:new).and_return(delete_service)
+    allow(DiscoveryEngine::Sync::Put).to receive(:new).and_return(put_service)
+    allow(DiscoveryEngine::Sync::Delete).to receive(:new).and_return(delete_service)
 
     PublishingApiMessageProcessor.new.process(message)
   end

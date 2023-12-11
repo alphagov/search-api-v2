@@ -1,4 +1,4 @@
-module DiscoveryEngine
+module DiscoveryEngine::Sync
   class Put
     MIME_TYPE = "text/html".freeze
 

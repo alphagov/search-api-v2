@@ -1,4 +1,4 @@
-module DiscoveryEngine
+module DiscoveryEngine::Query
   class Search
     DEFAULT_PAGE_SIZE = 10
     DEFAULT_OFFSET = 0
@@ -80,8 +80,8 @@ module DiscoveryEngine
     def boost_spec
       {
         condition_boost_specs: [
-          *Boosts::NewsRecency.new.boost_specs,
-          *Boosts::BestBets.new(query).boost_specs,
+          *NewsRecencyBoost.new.boost_specs,
+          *BestBetsBoost.new(query).boost_specs,
         ],
       }
     end

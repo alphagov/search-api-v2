@@ -1,4 +1,4 @@
-module DiscoveryEngine
+module DiscoveryEngine::Sync
   class Delete
     include DocumentName
     include Logging

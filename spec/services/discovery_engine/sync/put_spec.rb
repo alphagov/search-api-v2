@@ -1,4 +1,4 @@
-RSpec.describe DiscoveryEngine::Put do
+RSpec.describe DiscoveryEngine::Sync::Put do
   subject(:put) { described_class.new(client:) }
 
   let(:client) { double("DocumentService::Client", update_document: nil) }
@@ -42,7 +42,7 @@ RSpec.describe DiscoveryEngine::Put do
     it "logs the put operation" do
       expect(logger).to have_received(:add).with(
         Logger::Severity::INFO,
-        "[DiscoveryEngine::Put] Successfully added/updated content_id:some_content_id payload_version:1",
+        "[DiscoveryEngine::Sync::Put] Successfully added/updated content_id:some_content_id payload_version:1",
       )
     end
   end
@@ -59,7 +59,7 @@ RSpec.describe DiscoveryEngine::Put do
     it "logs the failure" do
       expect(logger).to have_received(:add).with(
         Logger::Severity::ERROR,
-        "[DiscoveryEngine::Put] Failed to add/update document due to an error (Something went wrong) content_id:some_content_id payload_version:1",
+        "[DiscoveryEngine::Sync::Put] Failed to add/update document due to an error (Something went wrong) content_id:some_content_id payload_version:1",
       )
     end
 

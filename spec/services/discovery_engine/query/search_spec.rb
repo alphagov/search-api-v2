@@ -1,4 +1,4 @@
-RSpec.describe DiscoveryEngine::Search do
+RSpec.describe DiscoveryEngine::Query::Search do
   subject(:search) { described_class.new(query_params, client:) }
 
   let(:client) { double("SearchService::Client", search: search_return_value) }
@@ -18,7 +18,7 @@ RSpec.describe DiscoveryEngine::Search do
   before do
     allow(Rails.configuration).to receive(:discovery_engine_serving_config)
       .and_return("serving-config-path")
-    allow(DiscoveryEngine::Filters).to receive(:new).and_return(filters)
+    allow(DiscoveryEngine::Query::Filters).to receive(:new).and_return(filters)
   end
 
   around do |example|

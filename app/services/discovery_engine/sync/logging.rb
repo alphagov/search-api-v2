@@ -1,4 +1,4 @@
-module DiscoveryEngine
+module DiscoveryEngine::Sync
   module Logging
     def log(level, message, content_id:, payload_version:)
       combined_message = sprintf(
