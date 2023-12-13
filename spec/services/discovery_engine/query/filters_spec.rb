@@ -8,7 +8,7 @@ RSpec.describe DiscoveryEngine::Query::Filters do
       it { is_expected.to be_nil }
     end
 
-    context "with a reject filter" do
+    context "with a reject string filter" do
       context "with an empty parameter" do
         let(:query_params) { { q: "garden centres", reject_link: "" } }
 
@@ -28,7 +28,7 @@ RSpec.describe DiscoveryEngine::Query::Filters do
       end
     end
 
-    context "with an 'any' filter" do
+    context "with an 'any' string filter" do
       context "with an empty parameter" do
         let(:query_params) { { q: "garden centres", filter_content_purpose_supergroup: "" } }
 
@@ -52,7 +52,7 @@ RSpec.describe DiscoveryEngine::Query::Filters do
       end
     end
 
-    context "with an 'all' filter" do
+    context "with an 'all' string filter" do
       context "with an empty parameter" do
         let(:query_params) { { q: "garden centres", filter_all_part_of_taxonomy_tree: "" } }
 
@@ -74,6 +74,44 @@ RSpec.describe DiscoveryEngine::Query::Filters do
       end
     end
 
+    context "with a timestamp filter" do
+      context "with an empty parameter" do
+        let(:query_params) { { q: "garden centres", filter_public_timestamp: "" } }
+
+        it { is_expected.to be_nil }
+      end
+
+      context "with a from parameter" do
+        let(:query_params) { { q: "garden centres", filter_public_timestamp: "from:1989-12-13" } }
+
+        it { is_expected.to eq("public_timestamp: IN(629510400,*)") }
+      end
+
+      context "with a to parameter" do
+        let(:query_params) { { q: "garden centres", filter_public_timestamp: "to:1989-12-13" } }
+
+        it { is_expected.to eq("public_timestamp: IN(*,629596799)") }
+      end
+
+      context "with both from and to parameters" do
+        let(:query_params) { { q: "garden centres", filter_public_timestamp: "from:1989-12-13,to:1989-12-13" } }
+
+        it { is_expected.to eq("public_timestamp: IN(629510400,629596799)") }
+      end
+
+      context "with an invalid from parameter" do
+        let(:query_params) { { q: "garden centres", filter_public_timestamp: "from:1989" } }
+
+        it { is_expected.to be_nil }
+      end
+
+      context "with an invalid to parameter" do
+        let(:query_params) { { q: "garden centres", filter_public_timestamp: "to:12-13" } }
+
+        it { is_expected.to be_nil }
+      end
+    end
+
     context "with several filters specified" do
       let(:query_params) do
         {
@@ -81,10 +119,11 @@ RSpec.describe DiscoveryEngine::Query::Filters do
           reject_link: "/foo",
           filter_content_purpose_supergroup: "services",
           filter_all_part_of_taxonomy_tree: %w[cafe-1234 face-5678],
+          filter_public_timestamp: "from:1989-12-13,to:1989-12-13",
         }
       end
 
-      it { is_expected.to eq('(NOT link: ANY("/foo")) AND (content_purpose_supergroup: ANY("services")) AND ((part_of_taxonomy_tree: ANY("cafe-1234")) AND (part_of_taxonomy_tree: ANY("face-5678")))') }
+      it { is_expected.to eq('(NOT link: ANY("/foo")) AND (content_purpose_supergroup: ANY("services")) AND ((part_of_taxonomy_tree: ANY("cafe-1234")) AND (part_of_taxonomy_tree: ANY("face-5678"))) AND (public_timestamp: IN(629510400,629596799))') }
     end
 
     context "with filters containing escapable characters" do
