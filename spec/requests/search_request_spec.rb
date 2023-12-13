@@ -23,10 +23,15 @@ RSpec.describe "Making a search request" do
     end
 
     it "passes any query parameters to the search service in the expected format" do
-      get "/search.json?q=garden+centres&start=11&count=22"
+      get "/search.json?q=garden+centres&start=11&count=22&filter_public_timestamp=from:2019-01-01"
 
       expect(DiscoveryEngine::Query::Search).to have_received(:new).with(
-        hash_including(q: "garden centres", start: "11", count: "22"),
+        hash_including(
+          q: "garden centres",
+          start: "11",
+          count: "22",
+          filter_public_timestamp: "from:2019-01-01",
+        ),
       )
     end
   end

@@ -8,7 +8,7 @@ module DiscoveryEngine::Query
     include FilterExpressionHelpers
 
     def initialize(query_params)
-      @query_params = query_params
+      @query_params = query_params.to_h
     end
 
     def filter_expression
