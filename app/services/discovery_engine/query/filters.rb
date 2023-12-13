@@ -2,21 +2,20 @@ module DiscoveryEngine::Query
   class Filters
     FILTERABLE_FIELDS = %i[content_purpose_supergroup link part_of_taxonomy_tree].freeze
 
+    include FilterExpressionHelpers
+
     def initialize(query_params)
       @query_params = query_params
     end
 
     def filter_expression
       expressions = [
-        *query_params_of_type(:reject).map { FilterExpressions::AnyStringFilterExpression.new(_1, _2).negated_expression },
-        *query_params_of_type(:filter).map { FilterExpressions::AnyStringFilterExpression.new(_1, _2).expression },
-        *query_params_of_type(:filter_all).map { FilterExpressions::AllStringFilterExpression.new(_1, _2).expression },
+        *query_params_of_type(:reject).map { not_string(_1, _2) },
+        *query_params_of_type(:filter).map { any_string(_1, _2) },
+        *query_params_of_type(:filter_all).map { all_string(_1, _2) },
       ].compact
 
-      expressions
-        .map { "(#{_1})" }
-        .join(" AND ")
-        .presence
+      conjunction(expressions)
     end
 
   private
