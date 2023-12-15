@@ -19,6 +19,7 @@ module DiscoveryEngine::Query
         results: response.results.map { Result.from_stored_document(_1.document.struct_data.to_h) },
         total: response.total_size,
         start: offset,
+        discovery_engine_attribution_token: response.attribution_token,
       )
     end
 
