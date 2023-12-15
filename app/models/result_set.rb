@@ -2,5 +2,5 @@
 class ResultSet
   include ActiveModel::Model
 
-  attr_accessor :results, :total, :start
+  attr_accessor :results, :total, :start, :discovery_engine_attribution_token
 end

@@ -34,7 +34,7 @@ RSpec.describe DiscoveryEngine::Query::Search do
       let(:query_params) { { q: "garden centres" } }
 
       let(:search_return_value) { double(response: search_response) }
-      let(:search_response) { double(total_size: 42, results:) }
+      let(:search_response) { double(total_size: 42, attribution_token: "footobar", results:) }
       let(:results) do
         [
           double(document: double(struct_data: { title: "Louth Garden Centre" })),
@@ -54,6 +54,7 @@ RSpec.describe DiscoveryEngine::Query::Search do
       end
 
       it "returns a result set with the correct contents" do
+        expect(result_set.discovery_engine_attribution_token).to eq("footobar")
         expect(result_set.start).to eq(0)
         expect(result_set.total).to eq(42)
         expect(result_set.results.map(&:title)).to eq([
