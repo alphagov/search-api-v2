@@ -28,7 +28,8 @@ GEM
     base64 (0.2.0)
     bootsnap (1.17.0)
       msgpack (~> 1.2)
-    brakeman (6.1.0)
+    brakeman (6.1.1)
+      racc
     builder (3.2.4)
     bunny (2.22.0)
       amq-protocol (~> 2.3, >= 2.3.1)
