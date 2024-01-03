@@ -215,6 +215,29 @@ RSpec.describe PublishingApi::Metadata do
       it { is_expected.to eq("en") }
     end
 
+    describe "world_locations" do
+      subject(:extracted_world_locations) { extracted_metadata[:world_locations] }
+
+      let(:document_hash) { { expanded_links: { world_locations: } } }
+
+      context "without world locations" do
+        let(:world_locations) { nil }
+
+        it { is_expected.to be_nil }
+      end
+
+      context "with world locations" do
+        let(:world_locations) do
+          [
+            { title: "World Location 1" },
+            { title: "World Location 2" },
+          ]
+        end
+
+        it { is_expected.to eq(%w[world-location-1 world-location-2]) }
+      end
+    end
+
     describe "parts" do
       subject(:extracted_parts) { extracted_metadata[:parts] }
 
