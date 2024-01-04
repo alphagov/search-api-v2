@@ -21,6 +21,7 @@ module PublishingApi
         locale: document_hash[:locale],
         world_locations:,
         organisations:,
+        topical_events:,
         parts:,
       }.compact_blank
     end
@@ -89,6 +90,15 @@ module PublishingApi
             links << document_hash[:base_path].split("/").last
           end
         end
+    end
+
+    def topical_events
+      # This isn't great, but there is no slug coming through from publishing-api and the v1
+      # search-api also manually generates slugs for topical events by taking the last part of the
+      # base_path.
+      document_hash
+        .dig(:expanded_links, :topical_events)
+        &.map { _1[:base_path].split("/").last }
     end
 
     def parts

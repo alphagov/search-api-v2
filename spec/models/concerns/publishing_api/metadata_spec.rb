@@ -267,6 +267,29 @@ RSpec.describe PublishingApi::Metadata do
       end
     end
 
+    describe "topical_events" do
+      subject(:extracted_topical_events) { extracted_metadata[:topical_events] }
+
+      let(:document_hash) { { expanded_links: { topical_events: } } }
+
+      context "without topical events" do
+        let(:topical_events) { nil }
+
+        it { is_expected.to be_nil }
+      end
+
+      context "with topical events" do
+        let(:topical_events) do
+          [
+            { base_path: "/government/topical-events/harry-potter-convention" },
+            { base_path: "/government/topical-events/eras-tour" },
+          ]
+        end
+
+        it { is_expected.to eq(%w[harry-potter-convention eras-tour]) }
+      end
+    end
+
     describe "parts" do
       subject(:extracted_parts) { extracted_metadata[:parts] }
 

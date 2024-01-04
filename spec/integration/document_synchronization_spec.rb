@@ -267,6 +267,35 @@ RSpec.describe "Document synchronization" do
     end
   end
 
+  describe "for a 'speech' message" do
+    let(:payload) { json_fixture_as_hash("message_queue/speech_message.json") }
+
+    it "is added to Discovery Engine through the Put service" do
+      expect(put_service).to have_received(:call).with(
+        "5fac6be0-146e-40ea-a899-c3299f62eff9",
+        {
+          content_id: "5fac6be0-146e-40ea-a899-c3299f62eff9",
+          title: "Service of thanksgiving for the life of Her Majesty Queen Elizabeth II at the Washington National Cathedral",
+          description: "British Ambassador to the USA Dame Karen Pierce DCMG, spoke at the service of thanksgiving for the life of Her Majesty Queen Elizabeth II.",
+          link: "/government/speeches/a-service-of-thanksgiving-for-the-life-of-her-majesty-queen-elizabeth-ii-at-the-washington-national-cathedral",
+          url: "https://www.gov.uk/government/speeches/a-service-of-thanksgiving-for-the-life-of-her-majesty-queen-elizabeth-ii-at-the-washington-national-cathedral",
+          public_timestamp: 1_663_794_900,
+          government_name: "2015 Conservative government",
+          organisations: %w[foreign-commonwealth-development-office],
+          document_type: "speech",
+          is_historic: 0,
+          part_of_taxonomy_tree: %w[d6dba75a-42bd-4e1e-984c-2bddb6b41951],
+          world_locations: %w[usa],
+          topical_events: %w[her-majesty-queen-elizabeth-ii],
+          content_purpose_supergroup: "news_and_communications",
+          locale: "en",
+        },
+        content: a_string_including("Service of thanksgiving for the life of Her Majesty Queen Elizabeth II"),
+        payload_version: 12_345,
+      )
+    end
+  end
+
   describe "for an 'external_content' message" do
     let(:payload) { json_fixture_as_hash("message_queue/external_content_message.json") }
 

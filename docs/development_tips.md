@@ -7,5 +7,5 @@ to add a new integration test JSON fixture.
 ```ruby
 edition = Document.find_by(content_id: "<CONTENT-UUID>").live
 payload = DownstreamPayload.new(edition, "12345").message_queue_payload # "12345" is the payload ID
-payload.to_json
+puts payload.to_json
 ```
