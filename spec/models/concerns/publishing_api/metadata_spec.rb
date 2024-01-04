@@ -238,6 +238,35 @@ RSpec.describe PublishingApi::Metadata do
       end
     end
 
+    describe "organisations" do
+      subject(:extracted_organisations) { extracted_metadata[:organisations] }
+
+      let(:document_hash) { { expanded_links: { organisations: } } }
+
+      context "without organisations" do
+        let(:organisations) { nil }
+
+        it { is_expected.to be_nil }
+      end
+
+      context "with organisations" do
+        let(:organisations) do
+          [
+            { base_path: "/government/organisations/ministry-of-magic" },
+            { base_path: "/government/organisations/ministry-of-silly-walks" },
+          ]
+        end
+
+        it { is_expected.to eq(%w[ministry-of-magic ministry-of-silly-walks]) }
+      end
+
+      context "when the document itself is an organisation" do
+        let(:document_hash) { { document_type: "organisation", base_path: "/government/foo/ministry-of-sound" } }
+
+        it { is_expected.to eq(%w[ministry-of-sound]) }
+      end
+    end
+
     describe "parts" do
       subject(:extracted_parts) { extracted_metadata[:parts] }
 
