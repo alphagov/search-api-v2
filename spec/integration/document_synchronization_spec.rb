@@ -172,6 +172,35 @@ RSpec.describe "Document synchronization" do
     end
   end
 
+  describe "for an 'worldwide_organisation' message" do
+    let(:payload) { json_fixture_as_hash("message_queue/worldwide_organisation_message.json") }
+
+    it "is added to Discovery Engine through the Put service" do
+      expect(put_service).to have_received(:call).with(
+        "f4c394f9-7a30-11e4-a3cb-005056011aef",
+        {
+          content_id: "f4c394f9-7a30-11e4-a3cb-005056011aef",
+          title: "British Embassy Vienna",
+          description: "The British Embassy in Vienna maintains and develops relations between the UK and Austria.",
+          link: "/world/organisations/british-embassy-vienna",
+          url: "https://www.gov.uk/world/organisations/british-embassy-vienna",
+          public_timestamp: 1_372_436_926,
+          document_type: "worldwide_organisation",
+          is_historic: 0,
+          part_of_taxonomy_tree: %w[
+            f1744c25-bbae-42d5-b0fa-452ccea8f802
+            ca97c97d-30c3-4c31-86d5-a84fb37f919a
+          ],
+          world_locations: %w[austria],
+          content_purpose_supergroup: "other",
+          locale: "en",
+        },
+        content: a_string_including("maintains and develops relations between the UK and Austria"),
+        payload_version: 12_345,
+      )
+    end
+  end
+
   describe "for an 'independent_report' message" do
     let(:payload) { json_fixture_as_hash("message_queue/independent_report_message.json") }
 

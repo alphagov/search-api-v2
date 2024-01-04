@@ -19,6 +19,7 @@ module PublishingApi
         government_name:,
         organisation_state:,
         locale: document_hash[:locale],
+        world_locations:,
         parts:,
       }.compact_blank
     end
@@ -64,6 +65,14 @@ module PublishingApi
     def organisation_state
       document_hash
         .dig(:details, :organisation_govuk_status, :status)
+    end
+
+    def world_locations
+      # This isn't great, but there is no slug coming through from publishing-api and the v1
+      # search-api also manually generates slugs for world locations by parameterizing the title.
+      document_hash
+        .dig(:expanded_links, :world_locations)
+        &.map { _1[:title].parameterize }
     end
 
     def parts
