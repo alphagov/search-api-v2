@@ -31,6 +31,7 @@ RSpec.describe "Document synchronization" do
           government_name: "2015 Conservative government",
           content_purpose_supergroup: "news_and_communications",
           part_of_taxonomy_tree: %w[37d0fa26-abed-4c74-8835-b3b51ae1c8b2],
+          organisations: %w[government-digital-service],
           locale: "en",
         },
         content: a_string_including("<div class=\"govspeak\"><p>The UK was represented remotely"),
@@ -58,6 +59,7 @@ RSpec.describe "Document synchronization" do
           part_of_taxonomy_tree: %w[
             8f78544f-a4ed-46b4-8163-889679d119b9 71cd9f51-f492-4c3f-91ca-5ad694c26592
           ],
+          organisations: %w[foreign-commonwealth-development-office],
           locale: "en",
           parts: [
             {
@@ -115,6 +117,7 @@ RSpec.describe "Document synchronization" do
             ce9e9802-6138-4fe9-9f33-045ef213be29
             3dbeb4a3-33c0-4bda-bd21-b721b0f8736f
           ],
+          organisations: %w[foreign-commonwealth-office],
           locale: "en",
         },
         content: a_string_including("<div class=\"govspeak\"><p>In the UEFA Champions"),
@@ -139,6 +142,7 @@ RSpec.describe "Document synchronization" do
           document_type: "manual_section",
           is_historic: 0,
           content_purpose_supergroup: "guidance_and_regulation",
+          organisations: %w[driver-and-vehicle-standards-agency],
           locale: "en",
         },
         content: a_string_matching(/<h2 id="section-6-1">6\.1\. Structure.+<\/table>\n\n/m),
@@ -164,6 +168,7 @@ RSpec.describe "Document synchronization" do
           is_historic: 0,
           organisation_state: "live",
           content_purpose_supergroup: "other",
+          organisations: %w[legal-aid-agency],
           locale: "en",
         },
         content: a_string_including("LAA\n<div class=\"govspeak\"><p>We provide civil"),
@@ -219,6 +224,7 @@ RSpec.describe "Document synchronization" do
           government_name: "2010 to 2015 Conservative and Liberal Democrat coalition government",
           content_purpose_supergroup: "research_and_statistics",
           part_of_taxonomy_tree: %w[f3caf326-fe33-410f-b7f4-553f4011c81e],
+          organisations: %w[cabinet-office efficiency-and-reform-group government-digital-service],
           locale: "en",
         },
         content: a_string_including(<<~TEXT.chomp),

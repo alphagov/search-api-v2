@@ -20,6 +20,7 @@ module PublishingApi
         organisation_state:,
         locale: document_hash[:locale],
         world_locations:,
+        organisations:,
         parts:,
       }.compact_blank
     end
@@ -73,6 +74,21 @@ module PublishingApi
       document_hash
         .dig(:expanded_links, :world_locations)
         &.map { _1[:title].parameterize }
+    end
+
+    def organisations
+      # This isn't great, but it replicates the behaviour of the v1 search-api which also takes the
+      # last part of the slug and adds in an organisation value if the document itself represents an
+      # organisation.
+      organisation_links = document_hash.dig(:expanded_links, :organisations) || []
+
+      organisation_links
+        .map { _1[:base_path].split("/").last }
+        .tap do |links|
+          if document_hash[:document_type] == "organisation"
+            links << document_hash[:base_path].split("/").last
+          end
+        end
     end
 
     def parts
