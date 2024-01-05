@@ -143,6 +143,7 @@ RSpec.describe "Document synchronization" do
           is_historic: 0,
           content_purpose_supergroup: "guidance_and_regulation",
           organisations: %w[driver-and-vehicle-standards-agency],
+          manual: "/guidance/mot-inspection-manual-for-private-passenger-and-light-commercial-vehicles",
           locale: "en",
         },
         content: a_string_matching(/<h2 id="section-6-1">6\.1\. Structure.+<\/table>\n\n/m),

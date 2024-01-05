@@ -290,6 +290,24 @@ RSpec.describe PublishingApi::Metadata do
       end
     end
 
+    describe "manual" do
+      subject(:extracted_manual) { extracted_metadata[:manual] }
+
+      let(:document_hash) { { expanded_links: { manual: } } }
+
+      context "without a manual" do
+        let(:manual) { nil }
+
+        it { is_expected.to be_nil }
+      end
+
+      context "with a manual" do
+        let(:manual) { [{ base_path: "/guidance/reticulating-splines" }] }
+
+        it { is_expected.to eq("/guidance/reticulating-splines") }
+      end
+    end
+
     describe "parts" do
       subject(:extracted_parts) { extracted_metadata[:parts] }
 
