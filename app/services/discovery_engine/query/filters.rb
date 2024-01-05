@@ -2,7 +2,15 @@ module DiscoveryEngine::Query
   class Filters
     FILTER_PARAM_KEY_REGEX = /\A(filter_all|filter|reject)_(.+)\z/
 
-    FILTERABLE_STRING_FIELDS = %w[content_purpose_supergroup link part_of_taxonomy_tree].freeze
+    FILTERABLE_STRING_FIELDS = %w[
+      content_purpose_supergroup
+      link
+      manual
+      organisations
+      part_of_taxonomy_tree
+      topical_events
+      world_locations
+    ].freeze
     FILTERABLE_TIMESTAMP_FIELDS = %w[public_timestamp].freeze
 
     include FilterExpressionHelpers

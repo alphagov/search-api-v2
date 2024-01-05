@@ -13,6 +13,7 @@ module DiscoveryEngine::Query
     end
 
     def result_set
+      Rails.logger.debug { "#{self.class.name}: Query: #{discovery_engine_params}" }
       response = client.search(discovery_engine_params).response
 
       ResultSet.new(
