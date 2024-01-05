@@ -22,6 +22,7 @@ module PublishingApi
         world_locations:,
         organisations:,
         topical_events:,
+        manual:,
         parts:,
       }.compact_blank
     end
@@ -99,6 +100,13 @@ module PublishingApi
       document_hash
         .dig(:expanded_links, :topical_events)
         &.map { _1[:base_path].split("/").last }
+    end
+
+    def manual
+      document_hash
+        .dig(:expanded_links, :manual)
+        &.first
+        &.dig(:base_path)
     end
 
     def parts
