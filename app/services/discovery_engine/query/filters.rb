@@ -30,7 +30,18 @@ module DiscoveryEngine::Query
       when *FILTERABLE_STRING_FIELDS
         string_filter_expression(filter_type, filter_field, value)
       when *FILTERABLE_TIMESTAMP_FIELDS
+        if filter_type != "filter"
+          Rails.logger.warn(
+            "#{self.class.name}: Cannot filter on timestamp field '#{filter_field}' " \
+            "with filter type '#{filter_type}'",
+          )
+          return nil
+        end
+
         filter_timestamp(filter_field, value)
+      else
+        Rails.logger.info("#{self.class.name}: Ignoring unknown filter field: '#{filter_field}'")
+        nil
       end
     end
 

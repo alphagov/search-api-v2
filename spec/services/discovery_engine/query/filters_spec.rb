@@ -26,6 +26,12 @@ RSpec.describe DiscoveryEngine::Query::Filters do
 
         it { is_expected.to eq('NOT link: ANY("/foo","/bar")') }
       end
+
+      context "with an unknown field" do
+        let(:query_params) { { q: "garden centres", reject_foo: "bar" } }
+
+        it { is_expected.to be_nil }
+      end
     end
 
     context "with an 'any' string filter" do
@@ -50,6 +56,12 @@ RSpec.describe DiscoveryEngine::Query::Filters do
 
         it { is_expected.to eq('content_purpose_supergroup: ANY("services","guidance")') }
       end
+
+      context "with an unknown field" do
+        let(:query_params) { { q: "garden centres", filter_foo: "bar" } }
+
+        it { is_expected.to be_nil }
+      end
     end
 
     context "with an 'all' string filter" do
@@ -71,6 +83,12 @@ RSpec.describe DiscoveryEngine::Query::Filters do
         end
 
         it { is_expected.to eq('(part_of_taxonomy_tree: ANY("cafe-1234")) AND (part_of_taxonomy_tree: ANY("face-5678"))') }
+      end
+
+      context "with an unknown field" do
+        let(:query_params) { { q: "garden centres", filter_all_foo: "bar" } }
+
+        it { is_expected.to be_nil }
       end
     end
 
@@ -107,6 +125,18 @@ RSpec.describe DiscoveryEngine::Query::Filters do
 
       context "with an invalid to parameter" do
         let(:query_params) { { q: "garden centres", filter_public_timestamp: "to:12-13" } }
+
+        it { is_expected.to be_nil }
+      end
+
+      context "with an invalid filter_all type" do
+        let(:query_params) { { q: "garden centres", filter_all_public_timestamp: "from:1989-12-13" } }
+
+        it { is_expected.to be_nil }
+      end
+
+      context "with an invalid reject type" do
+        let(:query_params) { { q: "garden centres", reject_public_timestamp: "from:1989-12-13" } }
 
         it { is_expected.to be_nil }
       end

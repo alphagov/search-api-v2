@@ -29,7 +29,10 @@ module DiscoveryEngine::Query
     # timestamp_value
     def filter_timestamp(timestamp_field, timestamp_value)
       match = timestamp_value.match(TIMESTAMP_VALUE_REGEX)
-      return nil unless match && (match[:from] || match[:to])
+      unless match && (match[:from] || match[:to])
+        Rails.logger.warn("#{self.class.name}: Invalid timestamp value: '#{timestamp_value}'")
+        return nil
+      end
 
       from = match[:from] ? Date.parse(match[:from]).beginning_of_day.to_i : "*"
       to = match[:to] ? Date.parse(match[:to]).end_of_day.to_i : "*"
