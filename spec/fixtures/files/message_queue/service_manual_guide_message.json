@@ -1,0 +1,162 @@
+{
+  "title": "5. Make sure everyone can use the service",
+  "public_updated_at": "2022-05-30T10:20:28Z",
+  "publishing_app": "service-manual-publisher",
+  "rendering_app": "government-frontend",
+  "update_type": "major",
+  "phase": "beta",
+  "analytics_identifier": null,
+  "document_type": "service_manual_guide",
+  "schema_name": "service_manual_guide",
+  "first_published_at": "2019-05-08T08:31:27Z",
+  "base_path": "/service-manual/service-standard/point-5-make-sure-everyone-can-use-the-service",
+  "description": "Provide a service that everyone can use, including disabled people and people with other legally protected characteristics. And people who do not have access to the internet or lack the skills or confidence to use it.",
+  "details": {
+    "body": "\u003ch2 id=\"why-its-important\"\u003eWhy it’s important\u003c/h2\u003e\n\n\u003cp\u003eGovernment services must work for everyone who needs to use them. Public sector organisations have a legal duty to consider everyone’s needs when they’re designing and delivering services.\u003c/p\u003e\n\n\u003cp\u003eInclusive, accessible services are better for everyone. For example, using simple words helps people who are in a hurry as well as people who have a learning disability.\u003c/p\u003e\n\n\u003ch2 id=\"what-it-means\"\u003eWhat it means\u003c/h2\u003e\n\n\u003cp\u003eService teams should:\u003c/p\u003e\n\n\u003cul\u003e\n  \u003cli\u003emeet accessibility standards, including both online and offline parts\u003c/li\u003e\n  \u003cli\u003eavoid excluding any groups within the audience they’re intended to serve\u003c/li\u003e\n  \u003cli\u003ecarry out research with participants who represent the potential audience for the service, including people with access needs\u003c/li\u003e\n  \u003cli\u003emake sure that people are not excluded from being able to use the service because they lack digital skills or internet access, providing appropriate assisted digital support to cover any gaps\u003c/li\u003e\n\u003c/ul\u003e\n\n\u003ch2 id=\"related-guidance\"\u003eRelated guidance\u003c/h2\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/helping-people-to-use-your-service/making-your-service-accessible-an-introduction\"\u003eMaking your service accessible: an introduction\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/design/making-your-service-more-inclusive\"\u003eMaking your service more inclusive\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/user-research/find-user-research-participants\"\u003eFinding participants for user research\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/helping-people-to-use-your-service/designing-assisted-digital\"\u003eDesigning assisted digital support\u003c/a\u003e\u003c/p\u003e\n\n\u003ch2 id=\"service-standard-points\"\u003eService standard points\u003c/h2\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/service-standard/point-1-understand-user-needs\"\u003e1. Understand users and their needs\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/service-standard/point-2-solve-a-whole-problem\"\u003e2. Solve a whole problem for users\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/service-standard/point-3-join-up-across-channels\"\u003e3. Provide a joined up experience across all channels\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/service-standard/point-4-make-the-service-simple-to-use\"\u003e4. Make the service simple to use\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/service-standard/point-5-make-sure-everyone-can-use-the-service\"\u003e5. Make sure everyone can use the service\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/service-standard/point-6-have-a-multidisciplinary-team\"\u003e6. Have a multidisciplinary team\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/service-standard/point-7-use-agile-ways-of-working\"\u003e7. Use agile ways of working\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/service-standard/point-8-iterate-and-improve-frequently\"\u003e8. Iterate and improve frequently\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/service-standard/point-9-create-a-secure-service\"\u003e9. Create a secure service which protects users’ privacy\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/service-standard/point-10-define-success-publish-performance-data\"\u003e10. Define what success looks like and publish performance data\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/service-standard/point-11-choose-the-right-tools-and-technology\"\u003e11. Choose the right tools and technology\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/service-standard/point-12-make-new-source-code-open\"\u003e12. Make new source code open\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/service-standard/point-13-use-common-standards-components-patterns\"\u003e13. Use and contribute to open standards, common components and patterns\u003c/a\u003e\u003c/p\u003e\n\n\u003cp\u003e\u003ca href=\"https://www.gov.uk/service-manual/service-standard/point-14-operate-a-reliable-service\"\u003e14. Operate a reliable service\u003c/a\u003e\u003c/p\u003e\n",
+    "change_note": "Added links to related guidance and other standard points. There is no change to the content of the standard point itself.",
+    "header_links": [
+      {
+        "href": "#why-its-important",
+        "title": "Why it's important"
+      },
+      {
+        "href": "#what-it-means",
+        "title": "What it means"
+      },
+      {
+        "href": "#related-guidance",
+        "title": "Related guidance"
+      },
+      {
+        "href": "#service-standard-points",
+        "title": "Service standard points"
+      }
+    ],
+    "change_history": [
+      {
+        "note": "Added links to related guidance and other standard points. There is no change to the content of the standard point itself.",
+        "public_timestamp": "2022-05-30T10:20:28Z"
+      },
+      {
+        "note": "Guidance first published",
+        "public_timestamp": "2019-05-08T08:31:27Z"
+      }
+    ],
+    "show_description": true
+  },
+  "routes": [
+    {
+      "path": "/service-manual/service-standard/point-5-make-sure-everyone-can-use-the-service",
+      "type": "exact"
+    }
+  ],
+  "redirects": [],
+  "content_id": "174c41e0-3316-4e9d-be46-6555d52f3cb7",
+  "locale": "en",
+  "expanded_links": {
+    "organisations": [
+      {
+        "content_id": "af07d5a5-df63-4ddc-9383-6a666845ebe9",
+        "title": "Government Digital Service",
+        "locale": "en",
+        "analytics_identifier": "OT1056",
+        "api_path": "/api/content/government/organisations/government-digital-service",
+        "base_path": "/government/organisations/government-digital-service",
+        "document_type": "organisation",
+        "schema_name": "organisation",
+        "withdrawn": false,
+        "details": {
+          "acronym": "GDS",
+          "logo": {
+            "crest": "single-identity",
+            "formatted_title": "Government Digital Service"
+          },
+          "brand": "cabinet-office",
+          "default_news_image": null,
+          "organisation_govuk_status": {
+            "url": null,
+            "status": "live",
+            "updated_at": null
+          }
+        },
+        "links": {}
+      }
+    ],
+    "parent": [
+      {
+        "content_id": "00f693d4-866a-4fe6-a8d6-09cd7db8980b",
+        "title": "Service Standard",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/service-manual/service-standard",
+        "base_path": "/service-manual/service-standard",
+        "document_type": "service_manual_service_standard",
+        "public_updated_at": "2019-06-07T11:32:06Z",
+        "schema_name": "service_manual_service_standard",
+        "withdrawn": false,
+        "links": {}
+      }
+    ],
+    "primary_publishing_organisation": [
+      {
+        "content_id": "af07d5a5-df63-4ddc-9383-6a666845ebe9",
+        "title": "Government Digital Service",
+        "locale": "en",
+        "analytics_identifier": "OT1056",
+        "api_path": "/api/content/government/organisations/government-digital-service",
+        "base_path": "/government/organisations/government-digital-service",
+        "document_type": "organisation",
+        "schema_name": "organisation",
+        "withdrawn": false,
+        "details": {
+          "acronym": "GDS",
+          "logo": {
+            "crest": "single-identity",
+            "formatted_title": "Government Digital Service"
+          },
+          "brand": "cabinet-office",
+          "default_news_image": null,
+          "organisation_govuk_status": {
+            "url": null,
+            "status": "live",
+            "updated_at": null
+          }
+        },
+        "links": {}
+      }
+    ],
+    "available_translations": [
+      {
+        "title": "5. Make sure everyone can use the service",
+        "public_updated_at": "2022-05-30T10:20:28Z",
+        "analytics_identifier": null,
+        "document_type": "service_manual_guide",
+        "schema_name": "service_manual_guide",
+        "base_path": "/service-manual/service-standard/point-5-make-sure-everyone-can-use-the-service",
+        "api_path": "/api/content/service-manual/service-standard/point-5-make-sure-everyone-can-use-the-service",
+        "withdrawn": false,
+        "content_id": "174c41e0-3316-4e9d-be46-6555d52f3cb7",
+        "locale": "en"
+      }
+    ]
+  },
+  "user_journey_document_supertype": "thing",
+  "email_document_supertype": "other",
+  "government_document_supertype": "other",
+  "content_purpose_subgroup": "other",
+  "content_purpose_supergroup": "other",
+  "publishing_request_id": "20499-1676478916.532-10.13.6.111-548",
+  "govuk_request_id": null,
+  "links": {
+    "organisations": [
+      "af07d5a5-df63-4ddc-9383-6a666845ebe9"
+    ],
+    "parent": [
+      "00f693d4-866a-4fe6-a8d6-09cd7db8980b"
+    ],
+    "primary_publishing_organisation": [
+      "af07d5a5-df63-4ddc-9383-6a666845ebe9"
+    ]
+  },
+  "payload_version": "1989"
+}

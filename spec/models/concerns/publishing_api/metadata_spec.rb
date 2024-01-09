@@ -293,7 +293,7 @@ RSpec.describe PublishingApi::Metadata do
     describe "manual" do
       subject(:extracted_manual) { extracted_metadata[:manual] }
 
-      let(:document_hash) { { expanded_links: { manual: } } }
+      let(:document_hash) { { details: { manual: } } }
 
       context "without a manual" do
         let(:manual) { nil }
@@ -302,9 +302,17 @@ RSpec.describe PublishingApi::Metadata do
       end
 
       context "with a manual" do
-        let(:manual) { [{ base_path: "/guidance/reticulating-splines" }] }
+        let(:manual) { { base_path: "/guidance/reticulating-splines" } }
 
         it { is_expected.to eq("/guidance/reticulating-splines") }
+      end
+
+      context "with an implicit manual of '/service-manual'" do
+        let(:document_hash) do
+          { base_path: "/service-manual/guidance/dont-run-waterfall-programmes" }
+        end
+
+        it { is_expected.to eq("/service-manual") }
       end
     end
 
