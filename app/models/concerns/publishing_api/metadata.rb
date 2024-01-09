@@ -2,6 +2,12 @@ module PublishingApi
   module Metadata
     WEBSITE_ROOT = "https://www.gov.uk".freeze
 
+    # Some manuals are special in that the documents contained within do not include the path of
+    # their parent manual in their `details` field. Instead, the path of the parent manual is
+    # implicit in the path of the document itself. Any document whose path starts with one of the
+    # paths in this list will have its `manual` field set accordingly.
+    IMPLICIT_MANUAL_PATHS = %w[/service-manual].freeze
+
     # Extracts a hash of structured metadata about this document.
     def metadata
       {
@@ -103,10 +109,8 @@ module PublishingApi
     end
 
     def manual
-      document_hash
-        .dig(:expanded_links, :manual)
-        &.first
-        &.dig(:base_path)
+      document_hash.dig(:details, :manual, :base_path) ||
+        IMPLICIT_MANUAL_PATHS.find { document_hash[:base_path]&.start_with?(_1) }
     end
 
     def parts

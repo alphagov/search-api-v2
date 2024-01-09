@@ -152,6 +152,32 @@ RSpec.describe "Document synchronization" do
     end
   end
 
+  describe "for a 'service_manual_guide' message" do
+    let(:payload) { json_fixture_as_hash("message_queue/service_manual_guide_message.json") }
+
+    it "is added to Discovery Engine through the Put service" do
+      expect(put_service).to have_received(:call).with(
+        "174c41e0-3316-4e9d-be46-6555d52f3cb7",
+        {
+          content_id: "174c41e0-3316-4e9d-be46-6555d52f3cb7",
+          title: "5. Make sure everyone can use the service",
+          description: "Provide a service that everyone can use, including disabled people and people with other legally protected characteristics. And people who do not have access to the internet or lack the skills or confidence to use it.",
+          link: "/service-manual/service-standard/point-5-make-sure-everyone-can-use-the-service",
+          url: "https://www.gov.uk/service-manual/service-standard/point-5-make-sure-everyone-can-use-the-service",
+          public_timestamp: 1_653_906_028,
+          document_type: "service_manual_guide",
+          is_historic: 0,
+          content_purpose_supergroup: "other",
+          organisations: %w[government-digital-service],
+          manual: "/service-manual",
+          locale: "en",
+        },
+        content: a_string_matching(/Make sure everyone can use the service/),
+        payload_version: 1989,
+      )
+    end
+  end
+
   describe "for an 'organisation' message" do
     let(:payload) { json_fixture_as_hash("message_queue/organisation_message.json") }
 
