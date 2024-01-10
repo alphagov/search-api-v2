@@ -1,6 +1,6 @@
 RSpec.describe "Making a search request" do
   let(:search_service) { instance_double(DiscoveryEngine::Query::Search, result_set:) }
-  let(:result_set) { ResultSet.new(results:, total: 42, start: 21) }
+  let(:result_set) { ResultSet.new(results:, total: 42, start: 21, suggested_queries: %w[foo]) }
   let(:results) { [Result.new(content_id: "123"), Result.new(content_id: "456")] }
 
   before do
@@ -19,6 +19,7 @@ RSpec.describe "Making a search request" do
         ],
         "total" => 42,
         "start" => 21,
+        "suggested_queries" => %w[foo],
       })
     end
 
