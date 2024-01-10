@@ -133,11 +133,14 @@ RSpec.describe DiscoveryEngine::Query::Search do
       context "when searching for a query where the client returns a corrected query" do
         let(:corrected_query) { "graden crentres" }
 
-        context "and the suggest parameter is 'spelling'" do
-          let(:query_params) { { q: "garden centres", suggest: "spelling" } }
+        context "and the suggest parameter is 'spelling_with_highlighting'" do
+          let(:query_params) { { q: "garden centres", suggest: "spelling_with_highlighting" } }
 
           it "returns the corrected query in the result set" do
-            expect(result_set.suggested_queries).to eq([corrected_query])
+            expect(result_set.suggested_queries).to eq([{
+              text: "graden crentres",
+              highlighted: "<mark>graden crentres</mark>",
+            }])
           end
         end
 

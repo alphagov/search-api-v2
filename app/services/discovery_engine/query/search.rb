@@ -10,16 +10,11 @@ module DiscoveryEngine::Query
     )
       @query_params = query_params
       @client = client
+
+      Rails.logger.debug { "Instantiated #{self.class.name}: Query: #{discovery_engine_params}" }
     end
 
     def result_set
-      Rails.logger.debug { "#{self.class.name}: Query: #{discovery_engine_params}" }
-      response = client.search(discovery_engine_params).response
-
-      # Suggested queries always expects an array on the client side, even if there are no
-      # suggestions.
-      suggested_queries = suggest_correction? ? [response.corrected_query].compact_blank : []
-
       ResultSet.new(
         results: response.results.map { Result.from_stored_document(_1.document.struct_data.to_h) },
         total: response.total_size,
@@ -32,6 +27,10 @@ module DiscoveryEngine::Query
   private
 
     attr_reader :query_params, :client
+
+    def response
+      @response ||= client.search(discovery_engine_params).response
+    end
 
     def discovery_engine_params
       {
@@ -47,6 +46,10 @@ module DiscoveryEngine::Query
 
     def query
       query_params[:q].presence || ""
+    end
+
+    def serving_config
+      Rails.configuration.discovery_engine_serving_config
     end
 
     def page_size
@@ -80,14 +83,6 @@ module DiscoveryEngine::Query
       Filters.new(query_params).filter_expression
     end
 
-    def suggest_correction?
-      query_params[:suggest] == "spelling"
-    end
-
-    def serving_config
-      Rails.configuration.discovery_engine_serving_config
-    end
-
     def boost_spec
       {
         condition_boost_specs: [
@@ -95,6 +90,21 @@ module DiscoveryEngine::Query
           *BestBetsBoost.new(query).boost_specs,
         ],
       }
+    end
+
+    def suggested_queries
+      # TODO: Highlighting isn't actually supported by Discovery Engine, and this _always_ returns a
+      # single suggestion, but we need to do this for API compatibility with Finder Frontend.
+      # Eventually this should be improved.
+      return [] unless query_params[:suggest] == "spelling_with_highlighting"
+
+      # Gotcha: Discovery Engine returns an empty string rather than null if there is no correction.
+      return [] if response.corrected_query.blank?
+
+      [{
+        text: response.corrected_query,
+        highlighted: "<mark>#{response.corrected_query}</mark>",
+      }]
     end
   end
 end
