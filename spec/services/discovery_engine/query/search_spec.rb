@@ -34,13 +34,21 @@ RSpec.describe DiscoveryEngine::Query::Search do
       let(:query_params) { { q: "garden centres" } }
 
       let(:search_return_value) { double(response: search_response) }
-      let(:search_response) { double(total_size: 42, attribution_token: "footobar", results:) }
+      let(:search_response) do
+        double(
+          total_size: 42,
+          attribution_token: "footobar",
+          results:,
+          corrected_query:,
+        )
+      end
       let(:results) do
         [
           double(document: double(struct_data: { title: "Louth Garden Centre" })),
           double(document: double(struct_data: { title: "Cleethorpes Garden Centre" })),
         ]
       end
+      let(:corrected_query) { nil }
 
       it "calls the client with the expected parameters" do
         expect(client).to have_received(:search).with(
@@ -119,6 +127,26 @@ RSpec.describe DiscoveryEngine::Query::Search do
           expect(client).to have_received(:search).with(
             hash_not_including(:filter),
           )
+        end
+      end
+
+      context "when searching for a query where the client returns a corrected query" do
+        let(:corrected_query) { "graden crentres" }
+
+        context "and the suggest parameter is 'spelling'" do
+          let(:query_params) { { q: "garden centres", suggest: "spelling" } }
+
+          it "returns the corrected query in the result set" do
+            expect(result_set.suggested_queries).to eq([corrected_query])
+          end
+        end
+
+        context "and the suggest parameter is not set" do
+          let(:query_params) { { q: "garden centres" } }
+
+          it "does not return a corrected query in the result set" do
+            expect(result_set.suggested_queries).to be_empty
+          end
         end
       end
 

@@ -16,10 +16,15 @@ module DiscoveryEngine::Query
       Rails.logger.debug { "#{self.class.name}: Query: #{discovery_engine_params}" }
       response = client.search(discovery_engine_params).response
 
+      # Suggested queries always expects an array on the client side, even if there are no
+      # suggestions.
+      suggested_queries = suggest_correction? ? [response.corrected_query].compact_blank : []
+
       ResultSet.new(
         results: response.results.map { Result.from_stored_document(_1.document.struct_data.to_h) },
         total: response.total_size,
         start: offset,
+        suggested_queries:,
         discovery_engine_attribution_token: response.attribution_token,
       )
     end
@@ -73,6 +78,10 @@ module DiscoveryEngine::Query
 
     def filter
       Filters.new(query_params).filter_expression
+    end
+
+    def suggest_correction?
+      query_params[:suggest] == "spelling"
     end
 
     def serving_config
