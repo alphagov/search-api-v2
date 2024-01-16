@@ -10,7 +10,9 @@ RSpec.describe "Document synchronization" do
     allow(DiscoveryEngine::Sync::Put).to receive(:new).and_return(put_service)
     allow(DiscoveryEngine::Sync::Delete).to receive(:new).and_return(delete_service)
 
-    PublishingApiMessageProcessor.new.process(message)
+    Timecop.freeze(Time.zone.local(1989, 12, 13, 1, 2, 3)) do
+      PublishingApiMessageProcessor.new.process(message)
+    end
   end
 
   describe "for a 'press_release' message" do
@@ -33,6 +35,10 @@ RSpec.describe "Document synchronization" do
           part_of_taxonomy_tree: %w[37d0fa26-abed-4c74-8835-b3b51ae1c8b2],
           organisations: %w[government-digital-service],
           locale: "en",
+          debug: {
+            last_synced_at: "1989-12-13T01:02:03+00:00",
+            payload_version: 12_345,
+          },
         },
         content: a_string_including("<div class=\"govspeak\"><p>The UK was represented remotely"),
         payload_version: 12_345,
@@ -88,6 +94,10 @@ RSpec.describe "Document synchronization" do
               body: "The Foreign, Commonwealth & Development Office (FCDO) cannot provide…",
             },
           ],
+          debug: {
+            last_synced_at: "1989-12-13T01:02:03+00:00",
+            payload_version: 12_345,
+          },
         },
         content: a_string_including("<h1>Warnings and insurance</h1>\n<p>The Foreign"),
         payload_version: 12_345,
@@ -119,6 +129,10 @@ RSpec.describe "Document synchronization" do
           ],
           organisations: %w[foreign-commonwealth-office],
           locale: "en",
+          debug: {
+            last_synced_at: "1989-12-13T01:02:03+00:00",
+            payload_version: 12_345,
+          },
         },
         content: a_string_including("<div class=\"govspeak\"><p>In the UEFA Champions"),
         payload_version: 12_345,
@@ -145,6 +159,10 @@ RSpec.describe "Document synchronization" do
           organisations: %w[driver-and-vehicle-standards-agency],
           manual: "/guidance/mot-inspection-manual-for-private-passenger-and-light-commercial-vehicles",
           locale: "en",
+          debug: {
+            last_synced_at: "1989-12-13T01:02:03+00:00",
+            payload_version: 12_345,
+          },
         },
         content: a_string_matching(/<h2 id="section-6-1">6\.1\. Structure.+<\/table>\n\n/m),
         payload_version: 12_345,
@@ -171,6 +189,10 @@ RSpec.describe "Document synchronization" do
           organisations: %w[government-digital-service],
           manual: "/service-manual",
           locale: "en",
+          debug: {
+            last_synced_at: "1989-12-13T01:02:03+00:00",
+            payload_version: 1989,
+          },
         },
         content: a_string_matching(/Make sure everyone can use the service/),
         payload_version: 1989,
@@ -197,6 +219,10 @@ RSpec.describe "Document synchronization" do
           content_purpose_supergroup: "other",
           organisations: %w[legal-aid-agency],
           locale: "en",
+          debug: {
+            last_synced_at: "1989-12-13T01:02:03+00:00",
+            payload_version: 12_345,
+          },
         },
         content: a_string_including("LAA\n<div class=\"govspeak\"><p>We provide civil"),
         payload_version: 12_345,
@@ -226,6 +252,10 @@ RSpec.describe "Document synchronization" do
           world_locations: %w[austria],
           content_purpose_supergroup: "other",
           locale: "en",
+          debug: {
+            last_synced_at: "1989-12-13T01:02:03+00:00",
+            payload_version: 12_345,
+          },
         },
         content: a_string_including("maintains and develops relations between the UK and Austria"),
         payload_version: 12_345,
@@ -253,6 +283,10 @@ RSpec.describe "Document synchronization" do
           part_of_taxonomy_tree: %w[f3caf326-fe33-410f-b7f4-553f4011c81e],
           organisations: %w[cabinet-office efficiency-and-reform-group government-digital-service],
           locale: "en",
+          debug: {
+            last_synced_at: "1989-12-13T01:02:03+00:00",
+            payload_version: 54_321,
+          },
         },
         content: a_string_including(<<~TEXT.chomp),
           Directgov 2010 and beyond: revolution not evolution, a report by Martha Lane Fox
@@ -307,6 +341,10 @@ RSpec.describe "Document synchronization" do
               slug: "disability-quick-start-guide-for-service-providers-html",
             },
           ],
+          debug: {
+            last_synced_at: "1989-12-13T01:02:03+00:00",
+            payload_version: 12_345,
+          },
         },
         content: a_string_starting_with("Equality Act 2010: how it might affect you"),
         payload_version: 12_345,
@@ -331,6 +369,10 @@ RSpec.describe "Document synchronization" do
           is_historic: 0,
           content_purpose_supergroup: "other",
           locale: "en",
+          debug: {
+            last_synced_at: "1989-12-13T01:02:03+00:00",
+            payload_version: 12_345,
+          },
         },
         content: <<~TEXT.chomp,
           UK help and services in Switzerland
@@ -363,6 +405,10 @@ RSpec.describe "Document synchronization" do
           topical_events: %w[her-majesty-queen-elizabeth-ii],
           content_purpose_supergroup: "news_and_communications",
           locale: "en",
+          debug: {
+            last_synced_at: "1989-12-13T01:02:03+00:00",
+            payload_version: 12_345,
+          },
         },
         content: a_string_including("Service of thanksgiving for the life of Her Majesty Queen Elizabeth II"),
         payload_version: 12_345,
@@ -387,6 +433,10 @@ RSpec.describe "Document synchronization" do
           is_historic: 0,
           content_purpose_supergroup: "other",
           locale: "en",
+          debug: {
+            last_synced_at: "1989-12-13T01:02:03+00:00",
+            payload_version: 17,
+          },
         },
         content: a_string_including("Brighton & Hove City Council"),
         payload_version: 17,

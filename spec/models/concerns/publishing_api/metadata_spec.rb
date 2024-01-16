@@ -411,5 +411,21 @@ RSpec.describe PublishingApi::Metadata do
         end
       end
     end
+
+    describe "debug" do
+      subject(:extracted_debug) { extracted_metadata[:debug] }
+
+      let(:document_hash) { { payload_version: "42" } }
+
+      it "includes the last sync timestamp" do
+        Timecop.freeze(Time.zone.local(1989, 12, 13, 11, 22, 33)) do
+          expect(extracted_debug[:last_synced_at]).to eq("1989-12-13T11:22:33+00:00")
+        end
+      end
+
+      it "includes the payload version as an integer" do
+        expect(extracted_debug[:payload_version]).to eq(42)
+      end
+    end
   end
 end
