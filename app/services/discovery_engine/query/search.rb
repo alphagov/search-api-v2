@@ -29,7 +29,10 @@ module DiscoveryEngine::Query
     attr_reader :query_params, :client
 
     def response
-      @response ||= client.search(discovery_engine_params).response
+      @response ||= begin
+        Metrics.increment_counter(:search_requests)
+        client.search(discovery_engine_params).response
+      end
     end
 
     def discovery_engine_params

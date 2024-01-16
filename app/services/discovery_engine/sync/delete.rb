@@ -11,6 +11,7 @@ module DiscoveryEngine::Sync
       client.delete_document(name: document_name(content_id))
 
       log(Logger::Severity::INFO, "Successfully deleted", content_id:, payload_version:)
+      Metrics.increment_counter(:delete_requests)
     rescue Google::Cloud::NotFoundError => e
       log(
         Logger::Severity::INFO,
@@ -24,6 +25,7 @@ module DiscoveryEngine::Sync
         content_id:, payload_version:,
       )
       GovukError.notify(e)
+      Metrics.increment_counter(:failed_delete_requests)
     end
 
   private
