@@ -30,6 +30,7 @@ module PublishingApi
         topical_events:,
         manual:,
         parts:,
+        debug:,
       }.compact_blank
     end
 
@@ -151,6 +152,14 @@ module PublishingApi
             body: "",
           }
         }&.compact_blank
+    end
+
+    # Useful information about the document that is not intended to be exposed to the end user.
+    def debug
+      {
+        last_synced_at: Time.zone.now.iso8601,
+        payload_version: document_hash[:payload_version]&.to_i,
+      }
     end
   end
 end
