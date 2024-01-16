@@ -8,7 +8,7 @@ module Metrics
       :counter, "search_api_v2_put_requests", "number of put requests to Discovery Engine"
     ),
     delete_requests: CLIENT.register(
-      :counter, "search_api_v2_put_requests", "number of delete requests to Discovery Engine"
+      :counter, "search_api_v2_delete_requests", "number of delete requests to Discovery Engine"
     ),
   }.freeze
 
