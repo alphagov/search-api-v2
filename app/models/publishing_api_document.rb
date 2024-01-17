@@ -39,10 +39,11 @@ private
 
   def log(message)
     combined_message = sprintf(
-      "[%s] Processing document to %s with content_id:%s link:%s payload_version:%d",
+      "[%s] Processing document to %s with content_id:%s update_type:%s link:%s payload_version:%d",
       self.class.name,
       message,
       content_id,
+      update_type,
       link,
       payload_version,
     )
