@@ -69,6 +69,10 @@ module PublishingApi
       document_hash[:withdrawn_notice].present?
     end
 
+    def update_type
+      document_hash[:update_type]
+    end
+
     def document_type
       document_hash.fetch(:document_type)
     end
