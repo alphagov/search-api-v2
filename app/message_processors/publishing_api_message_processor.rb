@@ -3,9 +3,11 @@ class PublishingApiMessageProcessor
   def process(message)
     Metrics.increment_counter(:incoming_messages)
 
-    document_hash = message.payload.deep_symbolize_keys
-    document = PublishingApiDocument.new(document_hash)
-    document.synchronize
+    Metrics.observe_duration(:total_processing_duration) do
+      document_hash = message.payload.deep_symbolize_keys
+      document = PublishingApiDocument.new(document_hash)
+      document.synchronize
+    end
 
     message.ack
   rescue StandardError => e
