@@ -416,6 +416,32 @@ RSpec.describe "Document synchronization" do
     end
   end
 
+  describe "for an 'html_publication' message" do
+    let(:payload) { json_fixture_as_hash("message_queue/html_publication_message.json") }
+
+    it "is proactively deleted from Discovery Engine through the Delete service" do
+      expect(put_service).to have_received(:call).with(
+        "1f1f2c96-5a14-4d2a-9d0c-be6ac6c62c3b",
+        {
+          content_id: "1f1f2c96-5a14-4d2a-9d0c-be6ac6c62c3b",
+          content_purpose_supergroup: "other",
+          debug: { last_synced_at: "1989-12-13T01:02:03+00:00", payload_version: 12_345 },
+          document_type: "html_publication",
+          government_name: "2015 Conservative government",
+          is_historic: 0,
+          link: "/government/publications/access-consultation-forum-terms-of-reference/access-consultation-forum-terms-of-reference",
+          locale: "en",
+          organisations: %w[ofqual],
+          public_timestamp: 1_663_851_889,
+          title: "Access Consultation Forum terms of reference",
+          url: "https://www.gov.uk/government/publications/access-consultation-forum-terms-of-reference/access-consultation-forum-terms-of-reference",
+        },
+        content: a_string_starting_with("Access Consultation Forum terms of reference"),
+        payload_version: 12_345,
+      )
+    end
+  end
+
   describe "for an 'external_content' message" do
     let(:payload) { json_fixture_as_hash("message_queue/external_content_message.json") }
 
@@ -458,17 +484,6 @@ RSpec.describe "Document synchronization" do
     it "is proactively deleted from Discovery Engine through the Delete service" do
       expect(delete_service).to have_received(:call).with(
         "e3b7c15d-1928-4101-9912-c9b40a6d6e78",
-        payload_version: 12_345,
-      )
-    end
-  end
-
-  describe "for an 'html_publication' message" do
-    let(:payload) { json_fixture_as_hash("message_queue/html_publication_message.json") }
-
-    it "is proactively deleted from Discovery Engine through the Delete service" do
-      expect(delete_service).to have_received(:call).with(
-        "1f1f2c96-5a14-4d2a-9d0c-be6ac6c62c3b",
         payload_version: 12_345,
       )
     end
