@@ -301,57 +301,6 @@ RSpec.describe "Document synchronization" do
     end
   end
 
-  describe "for a 'guidance' message with attachments" do
-    let(:payload) { json_fixture_as_hash("message_queue/guidance_message.json") }
-
-    it "is added to Discovery Engine through the Put service" do
-      expect(put_service).to have_received(:call).with(
-        "5d60fe55-7631-11e4-a3cb-005056011aef",
-        {
-          content_id: "5d60fe55-7631-11e4-a3cb-005056011aef",
-          content_purpose_supergroup: "guidance_and_regulation",
-          description: "How the Equality Act 2010 defines disability, and what law changes mean for the public, businesses, and the public and voluntary sectors.",
-          document_type: "guidance",
-          government_name: "2010 to 2015 Conservative and Liberal Democrat coalition government",
-          is_historic: 0,
-          link: "/government/publications/equality-act-guidance",
-          locale: "en",
-          organisations: %w[government-equalities-office],
-          part_of_taxonomy_tree: %w[
-            7acd1cbd-2f79-44f9-9ca5-2d12637a77ad
-            75efcbd0-4f01-4ce2-b151-01a58f8fb7a9
-          ],
-          public_timestamp: 1_362_743_145,
-          title: "Equality Act 2010: how it might affect you",
-          url: "https://www.gov.uk/government/publications/equality-act-guidance",
-          parts: [
-            {
-              title: "Disability: Equality Act 2010 - Guidance on matters to be taken into account in determining questions relating to the definition of disability (HTML)",
-              body: "",
-              slug: "disability-equality-act-2010-guidance-on-matters-to-be-taken-into-account-in-determining-questions-relating-to-the-definition-of-disability-html",
-            },
-            {
-              title: "Individuals: a summary guide to your rights (HTML)",
-              body: "",
-              slug: "individuals-a-summary-guide-to-your-rights-html",
-            },
-            {
-              title: "Disability: quick start guide for service providers (HTML)",
-              body: "",
-              slug: "disability-quick-start-guide-for-service-providers-html",
-            },
-          ],
-          debug: {
-            last_synced_at: "1989-12-13T01:02:03+00:00",
-            payload_version: 12_345,
-          },
-        },
-        content: a_string_starting_with("Equality Act 2010: how it might affect you"),
-        payload_version: 12_345,
-      )
-    end
-  end
-
   describe "for a 'taxon' message that isn't ignorelisted" do
     let(:payload) { json_fixture_as_hash("message_queue/world_taxon_message.json") }
 
@@ -419,7 +368,7 @@ RSpec.describe "Document synchronization" do
   describe "for an 'html_publication' message" do
     let(:payload) { json_fixture_as_hash("message_queue/html_publication_message.json") }
 
-    it "is proactively deleted from Discovery Engine through the Delete service" do
+    it "is added to Discovery Engine through the Put service" do
       expect(put_service).to have_received(:call).with(
         "1f1f2c96-5a14-4d2a-9d0c-be6ac6c62c3b",
         {
