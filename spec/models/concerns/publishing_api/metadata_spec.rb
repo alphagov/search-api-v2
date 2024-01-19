@@ -319,11 +319,10 @@ RSpec.describe PublishingApi::Metadata do
     describe "parts" do
       subject(:extracted_parts) { extracted_metadata[:parts] }
 
-      let(:document_hash) { { base_path: "/parent", details: { parts:, attachments: } } }
+      let(:document_hash) { { base_path: "/parent", details: { parts: } } }
 
-      context "when the document has no parts or attachments" do
+      context "when the document has no parts" do
         let(:parts) { nil }
-        let(:attachments) { nil }
 
         it { is_expected.to be_nil }
       end
@@ -357,7 +356,6 @@ RSpec.describe PublishingApi::Metadata do
             },
           ]
         end
-        let(:attachments) { nil }
 
         it "contains the expected titles" do
           expect(extracted_parts.map { _1[:title] }).to eq(["Part 1", "Part 2"])
@@ -372,42 +370,6 @@ RSpec.describe PublishingApi::Metadata do
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur…",
             nil,
           ])
-        end
-      end
-
-      context "when the document has attachments" do
-        let(:parts) { nil }
-        let(:attachments) do
-          [
-            {
-              url: "http://example.org/external-url",
-              title: "External URL that shouldn't be indexed",
-            },
-            {
-              url: "/different-parent/attachment",
-              title: "Attachment with different parent that shouldn't be indexed",
-            },
-            {
-              url: "/parent/attachment-1",
-              title: "Attachment 1",
-            },
-            {
-              url: "/parent/attachment-2",
-              title: "Attachment 2",
-            },
-          ]
-        end
-
-        it "contains the expected titles" do
-          expect(extracted_parts.map { _1[:title] }).to eq(["Attachment 1", "Attachment 2"])
-        end
-
-        it "contains the expected slugs" do
-          expect(extracted_parts.map { _1[:slug] }).to eq(%w[attachment-1 attachment-2])
-        end
-
-        it "contains blank bodies for all parts" do
-          expect(extracted_parts.map { _1[:body] }).to eq(["", ""])
         end
       end
     end

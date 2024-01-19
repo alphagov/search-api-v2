@@ -115,10 +115,6 @@ module PublishingApi
     end
 
     def parts
-      parts_from_parts || parts_from_attachments
-    end
-
-    def parts_from_parts
       document_hash
         .dig(:details, :parts)
         &.map do
@@ -128,30 +124,6 @@ module PublishingApi
             body: BodyContent.new(_1[:body]).summarized_text_content,
           }
         end
-    end
-
-    def parts_from_attachments
-      document_hash
-        .dig(:details, :attachments)
-        &.map {
-          # Skip any attachments that aren't directly nested underneath this document
-          #
-          # This is replicated from v1 search-api behaviour, and is a workaround for the fact that
-          # the consumers always expect a slug rather than a URL, so parts cannot have a URL that
-          # doesn't match the document's base path.
-          next unless _1[:url].start_with?(document_hash[:base_path])
-
-          # The slug for a part from an attachment is the part of the URL that comes after the
-          # parent document's base path.
-          slug = _1[:url].sub(document_hash[:base_path], "").sub(%r{^/}, "").sub(%r{/$}, "")
-          {
-            slug:,
-            title: _1[:title],
-            # TODO: We don't receive any body content for attachments as part of the message from
-            # publishing-api. This needs to be fetched from publishing-api separately.
-            body: "",
-          }
-        }&.compact_blank
     end
 
     # Useful information about the document that is not intended to be exposed to the end user.
