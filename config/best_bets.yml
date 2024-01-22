@@ -4,6 +4,8 @@ shared:
     - /government/people/test-person
     - /government/publications/test--150
     - /service-manual/technology/test-your-services-performance
+  "self assessment":
+    - /log-in-file-self-assessment-tax-return
 
 test:
   "i want to test a single best bet": /here/you/go
