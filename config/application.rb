@@ -28,5 +28,8 @@ module SearchApiV2
 
     # Query configuration
     config.best_bets = config_for(:best_bets)
+
+    # Quality monitoring configuration
+    config.result_invariants = config_for(:result_invariants)
   end
 end
