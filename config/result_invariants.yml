@@ -7,7 +7,6 @@ production: &production
   "apprenticeships": /apply-apprenticeship
   "attendance allowance": /attendance-allowance
   "band check": /council-tax-bands
-  "battery": /guidance/mot-inspection-manual-for-private-passenger-and-light-commercial-vehicles/4-lamps-reflectors-and-electrical-equipment
   "birth certificate": /order-copy-birth-death-marriage-certificate
   "blue badge": /apply-blue-badge
   "bno visa": /british-national-overseas-bno-visa
@@ -167,7 +166,7 @@ production: &production
   "share code":
   - /view-prove-immigration-status
   - /prove-right-to-work
-  - /prove-right-to-work/get-a-share-code-online
+  - /prove-right-to-work/get-a-share-code
   - /view-right-to-work
   "sharecode": /view-prove-immigration-status
   "sign in":
@@ -203,7 +202,6 @@ production: &production
   - /guidance/sign-in-to-your-hmrc-business-tax-account
   - /check-vehicle-tax
   - /log-in-file-self-assessment-tax-return
-  - /government/organisations/hm-revenue-customs/contact/income-tax-enquiries-for-individuals-pensioners-and-employees
   - /check-income-tax-current-year
   "theory test": /book-theory-test
   "theory": /book-theory-test
@@ -231,8 +229,6 @@ production: &production
   - /check-uk-visa
   - /apply-to-come-to-the-uk
   - /sign-in-visa
-  # TODO: Remove me soon, just used to validate post-deployment
-  "i am a broken invariant for validation": /i-am-a-path/that-does-not-exist
 development:
   <<: *production
 test:
