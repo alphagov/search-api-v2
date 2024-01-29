@@ -3,6 +3,7 @@
 # external content). These are run regularly through `QualityMonitoring::CheckInvariants` to ensure
 # we catch high-impact regressions as early as possible.
 production: &production
+  "64-8": /government/publications/tax-agents-and-advisers-authorising-your-agent-64-8
   "apprenticeship": /apply-apprenticeship
   "apprenticeships": /apply-apprenticeship
   "attendance allowance": /attendance-allowance
@@ -32,7 +33,9 @@ production: &production
   "companies house": /government/organisations/companies-house
   "company house": /government/organisations/companies-house
   "company tax returns": /file-your-company-accounts-and-tax-return
-  "contact hmrc": /contact-hmrc
+  "contact hmrc":
+  - /contact-hmrc
+  - /government/organisations/hm-revenue-customs/contact/self-assessment
   "contact": /contact-hmrc
   "corporation tax":
   - /pay-corporation-tax
@@ -74,6 +77,7 @@ production: &production
   "graduate visa": /graduate-visa
   "help to save": /sign-in-help-to-save
   "hmrc login": /log-in-register-hmrc-online-services
+  "hmrc services": /log-in-register-hmrc-online-services
   "hmrc sign in": /log-in-register-hmrc-online-services
   "hmrc":
   - /log-in-register-hmrc-online-services
@@ -109,6 +113,7 @@ production: &production
   - /get-a-child-passport
   "pay corporation tax": /pay-corporation-tax
   "pay self assessment": /pay-self-assessment-tax-bill
+  "pay tax": /pay-self-assessment-tax-bill
   "pay your corporation tax bill": /pay-corporation-tax
   "paye": /log-in-register-hmrc-online-services
   "paying hmrc":
@@ -135,7 +140,9 @@ production: &production
   "provisional license": /apply-first-provisional-driving-licence
   "provisional": /apply-first-provisional-driving-licence
   "psw": /graduate-visa
-  "pta": /personal-tax-account
+  "pta":
+  - /register-for-self-assessment
+  - /guidance/register-for-self-assessment-if-you-are-not-self-employed
   "register for self assessment": /register-for-self-assessment
   "register to vote": /register-to-vote
   "renew driving licence": /renew-driving-licence
@@ -150,18 +157,22 @@ production: &production
   "rp02a": /government/publications/apply-for-rectification-by-the-registrar-of-companies-rp02a
   "rp07": /government/publications/apply-to-change-a-companys-disputed-registered-office-address-rp07
   "sa1": /guidance/register-for-self-assessment-if-you-are-not-self-employed
-  "sa100": /self-assessment-tax-return-forms
+  "sa100":
+  - /self-assessment-tax-return-forms
+  - /government/publications/self-assessment-tax-return-sa100
   "sa302": /sa302-tax-calculation
+  "self": /log-in-file-self-assessment-tax-return
   "self assesment":
   - /log-in-file-self-assessment-tax-return
   - /self-assessment-tax-returns
-  "self assessment tax return": /log-in-file-self-assessment-tax-return
-  "self assessment tax returns": /self-assessment-tax-returns
   "self assessment":
   - /log-in-file-self-assessment-tax-return
   - /self-assessment-tax-returns
   - /log-in-register-hmrc-online-services
   - /pay-self-assessment-tax-bill
+  "self assessment login": /log-in-file-self-assessment-tax-return
+  "self assessment tax return": /log-in-file-self-assessment-tax-return
+  "self assessment tax returns": /self-assessment-tax-returns
   "self employed": /set-up-self-employed
   "share code":
   - /view-prove-immigration-status
@@ -203,6 +214,8 @@ production: &production
   - /check-vehicle-tax
   - /log-in-file-self-assessment-tax-return
   - /check-income-tax-current-year
+  - /self-assessment-tax-returns
+  "tell hmrc about underpaid tax from previous years": /guidance/tell-hmrc-about-underpaid-tax-from-previous-years
   "theory test": /book-theory-test
   "theory": /book-theory-test
   "travel": /foreign-travel-advice
