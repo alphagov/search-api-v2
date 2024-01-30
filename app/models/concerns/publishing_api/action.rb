@@ -10,10 +10,14 @@ module PublishingApi
     PERMITTED_LOCALES = %w[en].freeze
 
     def sync?
-      !desync? && !skip?
+      return false if skip?
+
+      !desync?
     end
 
     def desync?
+      return false if skip?
+
       unpublish_type? || on_ignorelist? || unaddressable? || withdrawn?
     end
 
@@ -24,12 +28,12 @@ module PublishingApi
     end
 
     def action_reason
-      if unpublish_type?
+      if ignored_locale?
+        "locale not permitted (#{locale})"
+      elsif unpublish_type?
         "unpublish type (#{document_type})"
       elsif on_ignorelist?
         "document_type on ignorelist (#{document_type})"
-      elsif ignored_locale?
-        "locale not permitted (#{locale})"
       elsif unaddressable?
         "unaddressable"
       elsif withdrawn?
