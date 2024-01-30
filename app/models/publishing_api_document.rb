@@ -19,7 +19,10 @@ class PublishingApiDocument
   end
 
   def synchronize
-    if sync?
+    if skip?
+      Metrics.increment_counter(:documents_skipped)
+      log("skip (#{action_reason})")
+    elsif sync?
       log("sync")
       Metrics.increment_counter(:documents_synced)
       put_service.call(content_id, metadata, content:, payload_version:)
@@ -28,8 +31,7 @@ class PublishingApiDocument
       Metrics.increment_counter(:documents_desynced)
       delete_service.call(content_id, payload_version:)
     else
-      Metrics.increment_counter(:documents_skipped)
-      log("skip (#{action_reason})")
+      raise "Cannot determine action for document: #{content_id}"
     end
   end
 

@@ -443,8 +443,8 @@ RSpec.describe "Document synchronization" do
 
     it "is deleted from Discovery Engine through the Delete service" do
       expect(delete_service).to have_received(:call).with(
-        "966bae6d-223e-4102-a6e5-e874012390e5",
-        payload_version: 65_893_230,
+        "0dd44b7a-3c10-5a3b-8bda-6ccb736102e0",
+        payload_version: 12_345,
       )
     end
   end

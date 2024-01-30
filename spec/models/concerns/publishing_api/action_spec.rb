@@ -12,13 +12,25 @@ RSpec.describe PublishingApi::Action do
     context "when the document type is #{document_type}" do
       let(:document_type) { document_type }
 
+      it { is_expected.not_to be_skip }
+      it { is_expected.not_to be_sync }
       it { is_expected.to be_desync }
+
+      context "and it is in a non-English locale" do
+        let(:locale) { "de" }
+
+        it { is_expected.to be_skip }
+        it { is_expected.not_to be_sync }
+        it { is_expected.not_to be_desync }
+      end
     end
   end
 
   context "when the document type is on the ignore list as a string" do
     let(:document_type) { "test_ignored_type" } # see test section in YAML config
 
+    it { is_expected.not_to be_skip }
+    it { is_expected.not_to be_sync }
     it { is_expected.to be_desync }
 
     it "has the expected action_reason" do
@@ -29,18 +41,24 @@ RSpec.describe PublishingApi::Action do
   context "when part of (but not the whole) document type is on the ignore list as a string" do
     let(:document_type) { "test_ignored_type_foo" } # see test section in YAML config
 
+    it { is_expected.not_to be_skip }
     it { is_expected.to be_sync }
+    it { is_expected.not_to be_desync }
   end
 
   context "when a type is on the ignore list as a string that contains the document_type" do
     let(:document_type) { "test_ignored" } # see test section in YAML config
 
+    it { is_expected.not_to be_skip }
     it { is_expected.to be_sync }
+    it { is_expected.not_to be_desync }
   end
 
   context "when the document type is on the ignore list as a pattern" do
     let(:document_type) { "another_test_ignored_type_foo" } # see test section in YAML config
 
+    it { is_expected.not_to be_skip }
+    it { is_expected.not_to be_sync }
     it { is_expected.to be_desync }
 
     it "has the expected action_reason" do
@@ -55,6 +73,8 @@ RSpec.describe PublishingApi::Action do
     let(:base_path) { nil }
     let(:url) { nil }
 
+    it { is_expected.not_to be_skip }
+    it { is_expected.not_to be_sync }
     it { is_expected.to be_desync }
 
     it "has the expected action_reason" do
@@ -67,6 +87,8 @@ RSpec.describe PublishingApi::Action do
     let(:locale) { "de" }
 
     it { is_expected.to be_skip }
+    it { is_expected.not_to be_sync }
+    it { is_expected.not_to be_desync }
 
     it "has the expected action_reason" do
       expect(action.action_reason).to eq("locale not permitted (de)")
@@ -77,13 +99,17 @@ RSpec.describe PublishingApi::Action do
     let(:document_type) { "test_ignored_type" } # see test section in YAML config
     let(:base_path) { "/test_ignored_path_override" } # see test section in YAML config
 
+    it { is_expected.not_to be_skip }
     it { is_expected.to be_sync }
+    it { is_expected.not_to be_desync }
   end
 
   context "when the document type is on the ignore list and a non-exact subset of the path is excluded" do
     let(:document_type) { "test_ignored_type" } # see test section in YAML config
     let(:base_path) { "/test_ignored_path" } # see test section in YAML config
 
+    it { is_expected.not_to be_skip }
+    it { is_expected.not_to be_sync }
     it { is_expected.to be_desync }
   end
 
@@ -91,6 +117,8 @@ RSpec.describe PublishingApi::Action do
     let(:document_type) { "notice" }
     let(:withdrawn_notice) { { explanation: "test" } }
 
+    it { is_expected.not_to be_skip }
+    it { is_expected.not_to be_sync }
     it { is_expected.to be_desync }
 
     it "has the expected action_reason" do
@@ -103,19 +131,25 @@ RSpec.describe PublishingApi::Action do
     let(:base_path) { nil }
     let(:url) { "https://www.example.com" }
 
+    it { is_expected.not_to be_skip }
     it { is_expected.to be_sync }
+    it { is_expected.not_to be_desync }
   end
 
   context "when the document has a blank locale but otherwise should be added" do
     let(:document_type) { "stuff" }
     let(:locale) { nil }
 
+    it { is_expected.not_to be_skip }
     it { is_expected.to be_sync }
+    it { is_expected.not_to be_desync }
   end
 
   context "when the document type is anything else" do
     let(:document_type) { "anything-else" }
 
+    it { is_expected.not_to be_skip }
     it { is_expected.to be_sync }
+    it { is_expected.not_to be_desync }
   end
 end
