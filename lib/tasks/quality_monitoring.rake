@@ -1,24 +1,17 @@
 namespace :quality_monitoring do
-  desc "Check result invariants and log and report violations to Sentry"
-  task check_result_invariants: :environment do
-    violations = QualityMonitoring::CheckResultInvariants.new.violations
-    violation_count_text = "#{violations.count} #{'violation'.pluralize(violations.count)}"
+  desc "Runs the invariant dataset and validates 100% recall"
+  task assert_invariants: :environment do
+    dir = Rails.root.join("config/quality_monitoring_datasets/invariants")
+    invariant_dataset_files = Dir.glob("#{dir}/*.csv")
 
-    if violations.any?
-      violations.each do |violation|
-        Rails.logger.error(<<~MSG)
-          Result invariant violated for '#{violation.query}'
-          Expected to find link: #{violation.expected_link}
-        MSG
-      end
-
-      GovukError.notify(
-        "⚠️ Result invariants check: #{violation_count_text}",
-        extra: {
-          violations: violations.map { "'#{_1.query}': missing #{_1.expected_link}" }.join("\n"),
-        },
-      )
+    invariant_dataset_files.each do |file|
+      QualityMonitoring::Runner.new(
+        file,
+        :invariants,
+        cutoff: 10,
+        report_query_below_score: 1.0,
+        judge_by: :recall,
+      ).run
     end
-    Rails.logger.info("Result invariant check complete, #{violation_count_text} found")
   end
 end
