@@ -62,7 +62,10 @@ module QualityMonitoring
           "Quality monitoring: #{failure_details.size} failures encountered " \
           "for #{type} dataset #{dataset_name}",
         )
-        GovukError.notify(err, extra: { dataset_name:, type:, failure_details: })
+        GovukError.notify(
+          err,
+          extra: { dataset_name:, type:, failure_details: failure_details.join("\n") },
+        )
       end
     end
 
