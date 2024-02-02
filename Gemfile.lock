@@ -27,7 +27,7 @@ GEM
     ast (2.4.2)
     bootsnap (1.17.1)
       msgpack (~> 1.2)
-    brakeman (6.1.1)
+    brakeman (6.1.2)
       racc
     builder (3.2.4)
     bunny (2.22.0)
