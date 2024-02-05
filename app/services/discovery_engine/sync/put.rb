@@ -25,7 +25,9 @@ module DiscoveryEngine::Sync
       )
 
       log(Logger::Severity::INFO, "Successfully added/updated", content_id:, payload_version:)
-      Metrics.increment_counter(:discovery_engine_requests, type: "put", status: "success")
+      Metrics::Exported.increment_counter(
+        :discovery_engine_requests, type: "put", status: "success"
+      )
     rescue Google::Cloud::Error => e
       log(
         Logger::Severity::ERROR,
@@ -33,7 +35,7 @@ module DiscoveryEngine::Sync
         content_id:, payload_version:,
       )
       GovukError.notify(e)
-      Metrics.increment_counter(:discovery_engine_requests, type: "put", status: "error")
+      Metrics::Exported.increment_counter(:discovery_engine_requests, type: "put", status: "error")
     end
 
   private

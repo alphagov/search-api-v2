@@ -1,9 +1,9 @@
-RSpec.describe Metrics do
+RSpec.describe Metrics::Exported do
   describe ".increment_counter" do
     let(:counter) { double(observe: nil) }
 
     before do
-      stub_const("Metrics::COUNTERS", { foo: counter })
+      stub_const("Metrics::Exported::COUNTERS", { foo: counter })
     end
 
     it "observes an increment of 1 for the given counter with the given labels" do
@@ -27,7 +27,7 @@ RSpec.describe Metrics do
     let(:histogram) { double(observe: nil) }
 
     before do
-      stub_const("Metrics::HISTOGRAMS", { foo: histogram })
+      stub_const("Metrics::Exported::HISTOGRAMS", { foo: histogram })
     end
 
     it "observes the duration of the given block for the given histogram with the given labels" do
