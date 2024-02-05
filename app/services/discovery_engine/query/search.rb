@@ -30,7 +30,7 @@ module DiscoveryEngine::Query
 
     def response
       @response ||= client.search(discovery_engine_params).response.tap do
-        Metrics.increment_counter(
+        Metrics::Exported.increment_counter(
           :search_requests,
           query_present: query.present?,
           filter_present: filter.present?,
