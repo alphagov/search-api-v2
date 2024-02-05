@@ -15,6 +15,7 @@ gem "govuk_app_config"
 gem "govuk_message_queue_consumer"
 gem "jsonpath"
 gem "loofah"
+gem "prometheus-client"
 
 group :test do
   gem "grpc_mock"
