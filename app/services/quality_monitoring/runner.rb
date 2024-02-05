@@ -2,15 +2,23 @@ module QualityMonitoring
   class Runner
     class FailuresEncountered < StandardError; end
 
-    attr_reader :file, :type, :cutoff, :report_query_below_score, :judge_by
+    attr_reader :file, :type, :cutoff, :report_query_below_score, :judge_by, :metric_collector
 
-    def initialize(file, type, cutoff: 10, report_query_below_score: nil, judge_by: :recall)
+    def initialize(
+      file,
+      type,
+      cutoff: 10,
+      report_query_below_score: nil,
+      judge_by: :recall,
+      metric_collector: nil
+    )
       @file = Pathname.new(file)
       @type = type
 
       @cutoff = cutoff
       @report_query_below_score = report_query_below_score
       @judge_by = judge_by
+      @metric_collector = metric_collector
     end
 
     def run
@@ -44,7 +52,7 @@ module QualityMonitoring
           mean_score,
         ),
       )
-      # TODO: Send to Prometheus as `quality_monitoring_score{dataset: dataset_name, type: type}`
+      metric_collector.record_score(type, dataset_name, mean_score) if metric_collector
 
       if failure_details.any?
         Rails.logger.warn(
@@ -66,6 +74,10 @@ module QualityMonitoring
           err,
           extra: { dataset_name:, type:, failure_details: failure_details.join("\n") },
         )
+      end
+
+      if metric_collector
+        metric_collector.record_failure_count(type, dataset_name, failure_details.size)
       end
     end
 
