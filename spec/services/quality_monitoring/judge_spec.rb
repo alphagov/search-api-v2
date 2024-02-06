@@ -3,33 +3,6 @@ RSpec.describe QualityMonitoring::Judge do
 
   let(:expected_links) { %w[A B C D E F G H I J] }
 
-  describe ".for_query" do
-    subject(:judge) { described_class.for_query(query, expected_links, cutoff:) }
-
-    let(:query) { "query" }
-    let(:cutoff) { 10 }
-
-    let(:search) { instance_double(DiscoveryEngine::Query::Search, result_set:) }
-    let(:result_set) { ResultSet.new(results:) }
-    let(:results) do
-      [
-        Result.new(link: "X"),
-        Result.new(link: "Y"),
-        Result.new(link: "Z"),
-      ]
-    end
-
-    before do
-      allow(DiscoveryEngine::Query::Search).to receive(:new)
-        .with({ q: query }).and_return(search)
-    end
-
-    it "returns a correctly set up instance of Judge" do
-      expect(judge.result_links).to eq(%w[X Y Z])
-      expect(judge.expected_links).to eq(expected_links)
-    end
-  end
-
   describe "#initialize" do
     context "when expected links is empty" do
       let(:result_links) { [] }
