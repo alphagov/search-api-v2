@@ -1,6 +1,6 @@
 # Represents an individual result as expected by Finder Frontend
 class Result
-  MAX_DESCRIPTION_WORDS = 30
+  MAX_DESCRIPTION_WORDS = 40
 
   include ActiveModel::Model
 
