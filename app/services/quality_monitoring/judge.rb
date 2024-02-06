@@ -2,18 +2,6 @@ module QualityMonitoring
   class Judge
     attr_reader :result_links, :expected_links
 
-    # Returns a new instance of Judge for a given query and expected links and a cutoff
-    def self.for_query(query, expected_links, cutoff: 10)
-      if expected_links.count > cutoff
-        raise ArgumentError,  "cannot have more than cutoff (#{cutoff}) expected links"
-      end
-
-      query_params = { q: query }
-      result_links = DiscoveryEngine::Query::Search.new(query_params).result_set.results.map(&:link)
-
-      new(result_links, expected_links)
-    end
-
     # Initializes a new instance of Judge for a given set of result links and expected links
     def initialize(result_links, expected_links)
       @result_links = Array(result_links)

@@ -26,7 +26,11 @@ module QualityMonitoring
       failure_details = []
 
       data.each do |query, expected_links|
-        judge = Judge.for_query(query, expected_links, cutoff:)
+        query_params = { q: query, page_size: cutoff }
+        result_set = DiscoveryEngine::Query::Search.new(query_params).result_set
+        result_links = result_set.results.map(&:link)
+
+        judge = Judge.new(result_links, expected_links)
         score = judge.public_send(judge_by)
 
         scores << score
@@ -36,6 +40,7 @@ module QualityMonitoring
         failure_details << <<~DETAIL
           '#{query}' #{judge_by}:#{score} is below #{report_query_below_score}, missing:
             • #{missing_links.join("\n  • ")}
+            -> Attribution token: #{result_set.attribution_token}
         DETAIL
       rescue StandardError => e
         GovukError.notify(e)
