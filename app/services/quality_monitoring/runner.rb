@@ -40,7 +40,7 @@ module QualityMonitoring
         failure_details << <<~DETAIL
           '#{query}' #{judge_by}:#{score} is below #{report_query_below_score}, missing:
             • #{missing_links.join("\n  • ")}
-            -> Attribution token: #{result_set.attribution_token}
+            -> Attribution token: #{result_set.discovery_engine_attribution_token}
         DETAIL
       rescue StandardError => e
         GovukError.notify(e)
