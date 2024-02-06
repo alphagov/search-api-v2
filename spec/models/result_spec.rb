@@ -88,7 +88,7 @@ RSpec.describe Result, type: :model do
       let(:stored_document) { { description: } }
 
       it "truncates the description" do
-        buffalos = ("buffalo " * 30).strip
+        buffalos = ("buffalo " * 40).strip
         expect(result.description_with_highlighting).to eq("#{buffalos}...")
       end
     end
