@@ -37,6 +37,14 @@ module DiscoveryEngine::Query
       from = match[:from] ? Date.parse(match[:from]).beginning_of_day.to_i : "*"
       to = match[:to] ? Date.parse(match[:to]).end_of_day.to_i : "*"
 
+      # Finder Frontend does not validate that the from date is before the to date, so we need to
+      # handle this case gracefully because Discovery Engine will return an error. The easiest way
+      # to do this is to just swap the dates if they are in the wrong order.
+      if match[:from] && match[:to] && from > to
+        from = Date.parse(match[:to]).beginning_of_day.to_i
+        to = Date.parse(match[:from]).end_of_day.to_i
+      end
+
       "#{timestamp_field}: IN(#{from},#{to})"
     end
 
