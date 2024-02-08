@@ -117,6 +117,12 @@ RSpec.describe DiscoveryEngine::Query::Filters do
         it { is_expected.to eq("public_timestamp: IN(629510400,629596799)") }
       end
 
+      context "with both from and to parameters but the wrong way around" do
+        let(:query_params) { { q: "garden centres", filter_public_timestamp: "from:1989-12-14,to:1989-12-13" } }
+
+        it { is_expected.to eq("public_timestamp: IN(629510400,629683199)") }
+      end
+
       context "with an invalid from parameter" do
         let(:query_params) { { q: "garden centres", filter_public_timestamp: "from:1989" } }
 
