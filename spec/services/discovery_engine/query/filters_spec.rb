@@ -57,6 +57,14 @@ RSpec.describe DiscoveryEngine::Query::Filters do
         it { is_expected.to eq('content_purpose_supergroup: ANY("services","guidance")') }
       end
 
+      context "with common garbled query parameters" do
+        let(:query_params) do
+          { q: "garden centres", filter_content_purpose_supergroup: { "\\\\\\\\" => "oops" } }
+        end
+
+        it { is_expected.to be_nil }
+      end
+
       context "with an unknown field" do
         let(:query_params) { { q: "garden centres", filter_foo: "bar" } }
 
@@ -83,6 +91,14 @@ RSpec.describe DiscoveryEngine::Query::Filters do
         end
 
         it { is_expected.to eq('(part_of_taxonomy_tree: ANY("cafe-1234")) AND (part_of_taxonomy_tree: ANY("face-5678"))') }
+      end
+
+      context "with common nonsencial hash query parameters" do
+        let(:query_params) do
+          { q: "garden centres", filter_all_part_of_taxonomy_tree: { "\\\\\\\\" => "oops" } }
+        end
+
+        it { is_expected.to be_nil }
       end
 
       context "with an unknown field" do
