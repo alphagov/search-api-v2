@@ -33,6 +33,7 @@ module DiscoveryEngine::Query
     def parse_param(key, value)
       filter_type, filter_field = key.match(FILTER_PARAM_KEY_REGEX)&.captures
       return nil unless filter_type && value.present?
+      return nil unless valid_filter_value?(value)
 
       case filter_field
       when *FILTERABLE_STRING_FIELDS
@@ -62,6 +63,16 @@ module DiscoveryEngine::Query
       when "reject"
         filter_not_string(filter_field, value)
       end
+    end
+
+    def valid_filter_value?(value)
+      # Finder Frontend should be more resilient to invalid filter values, but we can't rely on that
+      # for the time being. This ensures that occasionally observed garbage parameters such as:
+      #
+      #   filter_world_locations[\\\\]=all
+      #
+      # are ignored by checking that the value is either a string or an array of strings.
+      Array(value).all? { _1.is_a?(String) }
     end
   end
 end
