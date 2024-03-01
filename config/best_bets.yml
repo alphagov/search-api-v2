@@ -4,8 +4,13 @@ shared:
     - /government/people/test-person
     - /government/publications/test--150
     - /service-manual/technology/test-your-services-performance
-  "self assessment":
-    - /log-in-file-self-assessment-tax-return
+  "budget": /government/topical-events/spring-budget-2024
+  "budget 2024": /government/topical-events/spring-budget-2024
+  "spring budget": /government/topical-events/spring-budget-2024
+  "spring budget 2024": /government/topical-events/spring-budget-2024
+  "2024 budget": /government/topical-events/spring-budget-2024
+  "budget statement": /government/topical-events/spring-budget-2024
+  "the budget": /government/topical-events/spring-budget-2024
 
 test:
   "i want to test a single best bet": /here/you/go
