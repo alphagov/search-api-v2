@@ -11,6 +11,14 @@ shared:
   "2024 budget": /government/topical-events/spring-budget-2024
   "budget statement": /government/topical-events/spring-budget-2024
   "the budget": /government/topical-events/spring-budget-2024
+  "gaza":
+    - /foreign-travel-advice/the-occupied-palestinian-territories
+    - /government/news/gaza-what-you-can-do-to-help
+    - /government/publications/humanitarian-situation-in-gaza-the-uk-governments-response/humanitarian-situation-in-gaza-the-uk-governments-response
+  "palestine":
+    - /foreign-travel-advice/the-occupied-palestinian-territories
+    - /government/news/gaza-what-you-can-do-to-help
+    - /government/publications/humanitarian-situation-in-gaza-the-uk-governments-response/humanitarian-situation-in-gaza-the-uk-governments-response
 
 test:
   "i want to test a single best bet": /here/you/go
