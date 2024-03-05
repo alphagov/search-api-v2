@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby "3.2.3"
 
-RAILS_GEMS_VERSION = "7.1.3".freeze
+RAILS_GEMS_VERSION = "~> 7.1.3".freeze
 gem "actionpack", RAILS_GEMS_VERSION
 gem "activemodel", RAILS_GEMS_VERSION
 gem "activesupport", RAILS_GEMS_VERSION
