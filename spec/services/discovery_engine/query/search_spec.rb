@@ -153,9 +153,27 @@ RSpec.describe DiscoveryEngine::Query::Search do
         end
       end
 
-      context "when searching for a query that has a single best bets defined" do
+      context "when searching for a query that has a single best bet defined" do
         # see test section in YAML config
         let(:query_params) { { q: "i want to test a single best bet" } }
+
+        let(:expected_boost_specs) do
+          super() + [{
+            boost: 1,
+            condition: 'link: ANY("/here/you/go")',
+          }]
+        end
+
+        it "calls the client with the expected parameters" do
+          expect(client).to have_received(:search).with(
+            hash_including(boost_spec: { condition_boost_specs: expected_boost_specs }),
+          )
+        end
+      end
+
+      context "when searching for a query with a best bet in a different case and whitespace" do
+        # see test section in YAML config
+        let(:query_params) { { q: " I want to        TEST   a sInGlE best bET   " } }
 
         let(:expected_boost_specs) do
           super() + [{
