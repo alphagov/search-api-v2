@@ -21,7 +21,7 @@ jobs:
       contents: read
       security-events: write
       actions: read
-  
+
   codeql-sast:
     name: CodeQL SAST scan
     uses: alphagov/govuk-infrastructure/.github/workflows/codeql-analysis.yml@main
@@ -31,7 +31,7 @@ jobs:
   dependency-review:
     name: Dependency Review scan
     uses: alphagov/govuk-infrastructure/.github/workflows/dependency-review.yml@main
-  
+
   lint-ruby:
     name: Lint Ruby
     uses: alphagov/govuk-infrastructure/.github/workflows/rubocop.yml@main
@@ -50,6 +50,8 @@ jobs:
       # All Google client library calls are mocked, but the application needs this set to boot
       DISCOVERY_ENGINE_SERVING_CONFIG: not-used
       DISCOVERY_ENGINE_DATASTORE_BRANCH: not-used
+      # Redis running through govuk-infrastructure action
+      REDIS_URL: redis://localhost:6379
     steps:
       - uses: actions/checkout@v3
         with:
@@ -57,4 +59,6 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      - name: Setup Redis
+        uses: alphagov/govuk-infrastructure/.github/actions/setup-redis@main
       - run: bin/rake
