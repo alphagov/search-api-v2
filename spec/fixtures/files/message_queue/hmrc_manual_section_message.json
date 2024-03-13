@@ -1,0 +1,135 @@
+{
+  "title": "Pre-trading expenses – Overview ",
+  "public_updated_at": "2017-01-28T22:38:12Z",
+  "publishing_app": "hmrc-manuals-api",
+  "rendering_app": "government-frontend",
+  "update_type": "major",
+  "phase": "beta",
+  "analytics_identifier": null,
+  "document_type": "hmrc_manual_section",
+  "schema_name": "hmrc_manual_section",
+  "first_published_at": "2017-01-28T22:38:16Z",
+  "base_path": "/hmrc-internal-manuals/business-income-manual/bim60660",
+  "description": "",
+  "details": {
+    "body": "\u003cp\u003eThe normal rules apply when determining if a company has started to trade. This means a company is treated as starting to carry on a trade when it starts to be within the charge to corporation tax (S41 CTA 2009). To determine if the company has started to trade the same factors should be considered as would be considered with a UK resident company.\u003c/p\u003e\n\n\u003cp\u003eWhere there are write-downs in the value of a property before 5th July 2016 - and the company then falls within the new charge - the opening value of the property would follow UK GAAP or IFRS. Subsequently, the opening value of the property would take into account the write-down, but the costs represented by the write-downs are to be treated as pre-trading expenses if incurred in the seven years prior to the deemed commencement of a trade. To the extent that the write-down is reversed, there should be a corresponding adjustment to the value of pre-trading expenses.\u003c/p\u003e\n\n\u003cp\u003eExpenditure may have been incurred prior to this date and in most instances relief for pre trading expenditure will be obtained under the normal rules in S57 Income Tax (Trading and Other Income) Act 2005 (ITTOIA 2005) or S61 Corporation Tax Act 2009 (CTA 2009)). Guidance on these rules can be found at BIM46350.\u003c/p\u003e\n\n\u003cp\u003eWhere a company was already within the charge to corporation tax as a result of carrying on the relevant trade through a permanent establishment in the UK, a deduction would not have been given to any element of expenditure which was not related to the UK PE. Without the introduction of specific rules no relief would be given under the pre trading rules as the trade would have already commenced.\u003c/p\u003e\n\n\u003cp\u003eSpecific rules have been introduced in Section 80 of FA 2016 to ensure Section 61 will apply to provide relief for this expenditure.\u003c/p\u003e\n\n\u003cp\u003eWhere the conditions listed below are met, Section 61 CTA 2009 will apply as if the company had started to carry on the relevant trade at the point the company is first within the charge to corporation tax.\u003c/p\u003e\n\n\u003cp\u003eThe following conditions must be met:\u003c/p\u003e\n\n\u003cp\u003e- No deduction would otherwise be available for the expenses in question.\u003c/p\u003e\n\n\u003cp\u003e- The company would have been eligible for a deduction under Section 41 or 61 of CTA 2009, if it had not been carrying on a relevant trade before coming within the charge to corporation tax as a consequence of dealing in or developing UK land.\u003c/p\u003e\n\n\u003cp\u003e- No relief can have been obtained for these expenses under the law of any other country other than the UK. HMRC consider relief to have been given where there is any reduction in the tax payable in any country other than the UK.\u003c/p\u003e\n\n\u003cp\u003eFor the purposes of this legislation ‘The relevant trade’ means the trade of dealing in or developing UK land – see Section 5(2) and Section 5B of CTA 2009.\u003c/p\u003e\n\n\u003cp\u003eExample\u003c/p\u003e\n\n\u003cp\u003eCompany A has been developing land in the UK for many years through a UK permanent establishment.\u003c/p\u003e\n\n\u003cp\u003eIn 2014, Company A commenced ‘Project X’ in the UK. Company A incurred employee expenses of £2m in respect of Project X in 2014, none of which were attributable to the UK permanent establishment. Company A disposes of Project X in August 2016.\u003c/p\u003e\n\n\u003cp\u003eBecause Company A already had a UK permanent establishment, it fell within the charge to corporation tax. Because Company A was trading prior to the introduction of the new legislation on 5 July 2016, the £2m employee expenses would not be ‘pre-trading expenditure’ were it not for special provisions.\u003c/p\u003e\n\n\u003cp\u003eSo long as relief has not already been given, Company A can have relief for the £2m, to be taken into account as pre-trading expenditure under the assumption that Company A had first started trading in the UK from the commencement date of the new legislation (5 July 2016).\u003c/p\u003e\n",
+    "manual": {
+      "base_path": "/hmrc-internal-manuals/business-income-manual"
+    },
+    "section_id": "bim60660",
+    "breadcrumbs": [
+      {
+        "base_path": "/hmrc-internal-manuals/business-income-manual/bim50000",
+        "section_id": "BIM50000"
+      },
+      {
+        "base_path": "/hmrc-internal-manuals/business-income-manual/bim60510",
+        "section_id": "BIM60510"
+      }
+    ],
+    "child_section_groups": []
+  },
+  "routes": [
+    {
+      "path": "/hmrc-internal-manuals/business-income-manual/bim60660",
+      "type": "exact"
+    }
+  ],
+  "redirects": [],
+  "content_id": "f1cb1b1f-d619-5694-9822-0e5ff9bfcb09",
+  "locale": "en",
+  "expanded_links": {
+    "organisations": [
+      {
+        "content_id": "6667cce2-e809-4e21-ae09-cb0bdc1ddda3",
+        "title": "HM Revenue \u0026 Customs",
+        "locale": "en",
+        "analytics_identifier": "D25",
+        "api_path": "/api/content/government/organisations/hm-revenue-customs",
+        "base_path": "/government/organisations/hm-revenue-customs",
+        "document_type": "organisation",
+        "schema_name": "organisation",
+        "withdrawn": false,
+        "details": {
+          "acronym": "HMRC",
+          "logo": {
+            "crest": "hmrc",
+            "formatted_title": "HM Revenue\u003cbr/\u003e\u0026amp; Customs"
+          },
+          "brand": "hm-revenue-customs",
+          "default_news_image": {
+            "url": "https://assets.publishing.service.gov.uk/media/5efdb7ac3a6f4023cb365a65/s300_HMRC_sign__media_library_-_alternative__GOVUK_960.jpg",
+            "high_resolution_url": "https://assets.publishing.service.gov.uk/media/5efdb7ace90e075c58556288/s960_HMRC_sign__media_library_-_alternative__GOVUK_960.jpg"
+          },
+          "organisation_govuk_status": {
+            "url": null,
+            "status": "live",
+            "updated_at": null
+          }
+        },
+        "links": {}
+      }
+    ],
+    "primary_publishing_organisation": [
+      {
+        "content_id": "6667cce2-e809-4e21-ae09-cb0bdc1ddda3",
+        "title": "HM Revenue \u0026 Customs",
+        "locale": "en",
+        "analytics_identifier": "D25",
+        "api_path": "/api/content/government/organisations/hm-revenue-customs",
+        "base_path": "/government/organisations/hm-revenue-customs",
+        "document_type": "organisation",
+        "schema_name": "organisation",
+        "withdrawn": false,
+        "details": {
+          "acronym": "HMRC",
+          "logo": {
+            "crest": "hmrc",
+            "formatted_title": "HM Revenue\u003cbr/\u003e\u0026amp; Customs"
+          },
+          "brand": "hm-revenue-customs",
+          "default_news_image": {
+            "url": "https://assets.publishing.service.gov.uk/media/5efdb7ac3a6f4023cb365a65/s300_HMRC_sign__media_library_-_alternative__GOVUK_960.jpg",
+            "high_resolution_url": "https://assets.publishing.service.gov.uk/media/5efdb7ace90e075c58556288/s960_HMRC_sign__media_library_-_alternative__GOVUK_960.jpg"
+          },
+          "organisation_govuk_status": {
+            "url": null,
+            "status": "live",
+            "updated_at": null
+          }
+        },
+        "links": {}
+      }
+    ],
+    "available_translations": [
+      {
+        "title": "Pre-trading expenses – Overview ",
+        "public_updated_at": "2017-01-28T22:38:12Z",
+        "analytics_identifier": null,
+        "document_type": "hmrc_manual_section",
+        "schema_name": "hmrc_manual_section",
+        "base_path": "/hmrc-internal-manuals/business-income-manual/bim60660",
+        "api_path": "/api/content/hmrc-internal-manuals/business-income-manual/bim60660",
+        "withdrawn": false,
+        "content_id": "f1cb1b1f-d619-5694-9822-0e5ff9bfcb09",
+        "locale": "en"
+      }
+    ]
+  },
+  "user_journey_document_supertype": "thing",
+  "email_document_supertype": "other",
+  "government_document_supertype": "other",
+  "content_purpose_subgroup": "other",
+  "content_purpose_supergroup": "other",
+  "publishing_request_id": "29444-1638480804.835-10.13.2.197-4508",
+  "govuk_request_id": null,
+  "links": {
+    "organisations": [
+      "6667cce2-e809-4e21-ae09-cb0bdc1ddda3"
+    ],
+    "primary_publishing_organisation": [
+      "6667cce2-e809-4e21-ae09-cb0bdc1ddda3"
+    ]
+  },
+  "payload_version": "12345"
+}

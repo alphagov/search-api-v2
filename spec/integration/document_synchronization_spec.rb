@@ -170,6 +170,35 @@ RSpec.describe "Document synchronization" do
     end
   end
 
+  describe "for an 'hmrc_manual_section' message" do
+    let(:payload) { json_fixture_as_hash("message_queue/hmrc_manual_section_message.json") }
+
+    it "is added to Discovery Engine through the Put service" do
+      expect(put_service).to have_received(:call).with(
+        "f1cb1b1f-d619-5694-9822-0e5ff9bfcb09",
+        {
+          content_id: "f1cb1b1f-d619-5694-9822-0e5ff9bfcb09",
+          title: "BIM60660 - Pre-trading expenses – Overview",
+          link: "/hmrc-internal-manuals/business-income-manual/bim60660",
+          url: "https://www.gov.uk/hmrc-internal-manuals/business-income-manual/bim60660",
+          public_timestamp: 1_485_643_092,
+          document_type: "hmrc_manual_section",
+          is_historic: 0,
+          content_purpose_supergroup: "other",
+          organisations: %w[hm-revenue-customs],
+          manual: "/hmrc-internal-manuals/business-income-manual",
+          locale: "en",
+          debug: {
+            last_synced_at: "1989-12-13T01:02:03+00:00",
+            payload_version: 12_345,
+          },
+        },
+        content: a_string_starting_with("Pre-trading expenses – Overview \n<p>The normal rules"),
+        payload_version: 12_345,
+      )
+    end
+  end
+
   describe "for a 'service_manual_guide' message" do
     let(:payload) { json_fixture_as_hash("message_queue/service_manual_guide_message.json") }
 
