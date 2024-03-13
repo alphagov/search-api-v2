@@ -18,6 +18,24 @@ RSpec.describe PublishingApi::Metadata do
       let(:document_hash) { { title: "Hello world" } }
 
       it { is_expected.to eq("Hello world") }
+
+      context "when the title contains leading and trailing whitespace" do
+        let(:document_hash) { { title: "  Hello world  " } }
+
+        it { is_expected.to eq("Hello world") }
+      end
+
+      context "when the document is an HMRC manual" do
+        let(:document_hash) do
+          {
+            title: "How to make money",
+            document_type: "hmrc_manual_section",
+            details: { section_id: "bimbam87" },
+          }
+        end
+
+        it { is_expected.to eq("BIMBAM87 - How to make money") }
+      end
     end
 
     describe "description" do

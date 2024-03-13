@@ -1,6 +1,7 @@
 module PublishingApi
   module Metadata
     WEBSITE_ROOT = "https://www.gov.uk".freeze
+    TITLE_PREFIX_SEPARATOR = " - ".freeze
 
     # Some manuals are special in that the documents contained within do not include the path of
     # their parent manual in their `details` field. Instead, the path of the parent manual is
@@ -12,7 +13,7 @@ module PublishingApi
     def metadata
       {
         content_id: document_hash[:content_id],
-        title: document_hash[:title],
+        title:,
         description: document_hash[:description],
         link:,
         url:,
@@ -39,6 +40,19 @@ module PublishingApi
     end
 
   private
+
+    def title
+      [
+        title_prefix,
+        document_hash[:title],
+      ].compact.join(TITLE_PREFIX_SEPARATOR).strip
+    end
+
+    def title_prefix
+      if document_hash[:document_type] == "hmrc_manual_section"
+        document_hash.dig(:details, :section_id)&.upcase
+      end
+    end
 
     def link_relative?
       link&.start_with?("/")
