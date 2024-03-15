@@ -9,6 +9,17 @@ module PublishingApi
     # paths in this list will have its `manual` field set accordingly.
     IMPLICIT_MANUAL_PATHS = %w[/service-manual].freeze
 
+    # Taxons can be deeply nested, so we need to make sure we extract all of their content IDs all
+    # the way down.
+    TAXON_VALUES_JSON_PATHS = [
+      # Direct taxons
+      "$.expanded_links.taxons[*].content_id",
+      # Parent taxons
+      "$.expanded_links.taxons..links.parent_taxons[*].content_id",
+      # Root taxon (note: that's still an array!)
+      "$.expanded_links.taxons..links.root_taxon[*].content_id",
+    ].map { JsonPath.new(_1, use_symbols: true) }.freeze
+
     # Extracts a hash of structured metadata about this document.
     def metadata
       {
@@ -20,7 +31,7 @@ module PublishingApi
         public_timestamp:,
         document_type: document_hash[:document_type],
         content_purpose_supergroup: document_hash[:content_purpose_supergroup],
-        part_of_taxonomy_tree: document_hash.dig(:links, :taxons) || [],
+        part_of_taxonomy_tree:,
         # Vertex can only currently boost on numeric fields, not booleans
         is_historic: historic? ? 1 : 0,
         government_name:,
@@ -70,6 +81,13 @@ module PublishingApi
       # rubocop:disable Rails/TimeZone (string already contains timezone info which would be lost)
       Time.parse(document_hash[:public_updated_at]).to_i
       # rubocop:enable Rails/TimeZone
+    end
+
+    def part_of_taxonomy_tree
+      TAXON_VALUES_JSON_PATHS
+        .flat_map { _1.on(document_hash) }
+        .compact
+        .uniq
     end
 
     def historic?
