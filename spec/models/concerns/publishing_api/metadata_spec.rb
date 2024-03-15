@@ -139,10 +139,41 @@ RSpec.describe PublishingApi::Metadata do
     describe "part_of_taxonomy_tree" do
       subject(:extracted_part_of_taxonomy_tree) { extracted_metadata[:part_of_taxonomy_tree] }
 
-      context "with a set of taxon links" do
-        let(:document_hash) { { links: { taxons: %w[0000 ffff] } } }
+      context "with a set of taxon links and their details in expanded links" do
+        let(:document_hash) do
+          {
+            expanded_links: {
+              taxons: [
+                { content_id: "0000" },
+                {
+                  content_id: "1111",
+                  links: {},
+                },
+                {
+                  content_id: "2222",
+                  links: { root_taxon: [{ content_id: "0000" }] },
+                },
+                {
+                  content_id: "3333",
+                  links: {
+                    parent_taxons: [
+                      {
+                        content_id: "4444",
+                        links: {
+                          parent_taxons: [
+                            { content_id: "5555" },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          }
+        end
 
-        it { is_expected.to eq(%w[0000 ffff]) }
+        it { is_expected.to match_array(%w[0000 1111 2222 3333 4444 5555]) }
       end
 
       context "without taxon links" do

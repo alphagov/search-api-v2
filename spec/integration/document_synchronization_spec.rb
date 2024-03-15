@@ -32,7 +32,10 @@ RSpec.describe "Document synchronization" do
           is_historic: 0,
           government_name: "2015 Conservative government",
           content_purpose_supergroup: "news_and_communications",
-          part_of_taxonomy_tree: %w[37d0fa26-abed-4c74-8835-b3b51ae1c8b2],
+          part_of_taxonomy_tree: an_array_matching(%w[
+            37d0fa26-abed-4c74-8835-b3b51ae1c8b2
+            f3bbdec2-0e62-4520-a7fd-6ffd5d36e03a
+          ]),
           organisations: %w[government-digital-service],
           locale: "en",
           debug: {
@@ -62,9 +65,12 @@ RSpec.describe "Document synchronization" do
           document_type: "travel_advice",
           is_historic: 0,
           content_purpose_supergroup: "guidance_and_regulation",
-          part_of_taxonomy_tree: %w[
-            8f78544f-a4ed-46b4-8163-889679d119b9 71cd9f51-f492-4c3f-91ca-5ad694c26592
-          ],
+          part_of_taxonomy_tree: an_array_matching(%w[
+            91b8ef20-74e7-4552-880c-50e6d73c2ff9
+            862fdd81-0b52-41c1-9aa0-e208ac86b763
+            8f78544f-a4ed-46b4-8163-889679d119b9
+            71cd9f51-f492-4c3f-91ca-5ad694c26592
+          ]),
           organisations: %w[foreign-commonwealth-development-office],
           locale: "en",
           parts: [
@@ -122,11 +128,13 @@ RSpec.describe "Document synchronization" do
           is_historic: 1,
           government_name: "2010 to 2015 Conservative and Liberal Democrat coalition government",
           content_purpose_supergroup: "news_and_communications",
-          part_of_taxonomy_tree: %w[
-            06ad07f7-1e79-462f-a192-6b2c9d92089c
+          part_of_taxonomy_tree: an_array_matching(%w[
+            6e3f3cfb-142a-41f4-a03a-fea504cc1f79
             ce9e9802-6138-4fe9-9f33-045ef213be29
+            f3bbdec2-0e62-4520-a7fd-6ffd5d36e03a
+            9597c30a-605a-4e36-8bc1-47e5cdae41b3
             3dbeb4a3-33c0-4bda-bd21-b721b0f8736f
-          ],
+          ]),
           organisations: %w[foreign-commonwealth-office],
           locale: "en",
           debug: {
@@ -274,10 +282,12 @@ RSpec.describe "Document synchronization" do
           public_timestamp: 1_372_436_926,
           document_type: "worldwide_organisation",
           is_historic: 0,
-          part_of_taxonomy_tree: %w[
+          part_of_taxonomy_tree: an_array_matching(%w[
+            862fdd81-0b52-41c1-9aa0-e208ac86b763
             f1744c25-bbae-42d5-b0fa-452ccea8f802
+            91b8ef20-74e7-4552-880c-50e6d73c2ff9
             ca97c97d-30c3-4c31-86d5-a84fb37f919a
-          ],
+          ]),
           world_locations: %w[austria],
           content_purpose_supergroup: "other",
           locale: "en",
@@ -309,7 +319,12 @@ RSpec.describe "Document synchronization" do
           is_historic: 0,
           government_name: "2010 to 2015 Conservative and Liberal Democrat coalition government",
           content_purpose_supergroup: "research_and_statistics",
-          part_of_taxonomy_tree: %w[f3caf326-fe33-410f-b7f4-553f4011c81e],
+          part_of_taxonomy_tree: an_array_matching(%w[
+            f3bbdec2-0e62-4520-a7fd-6ffd5d36e03a
+            e48ab80a-de80-4e83-bf59-26316856a5f9
+            f3f4b5d3-49c4-487b-bd5b-be75f11ec8c5
+            f3caf326-fe33-410f-b7f4-553f4011c81e
+          ]),
           organisations: %w[cabinet-office efficiency-and-reform-group government-digital-service],
           locale: "en",
           debug: {
@@ -378,7 +393,11 @@ RSpec.describe "Document synchronization" do
           organisations: %w[foreign-commonwealth-development-office],
           document_type: "speech",
           is_historic: 0,
-          part_of_taxonomy_tree: %w[d6dba75a-42bd-4e1e-984c-2bddb6b41951],
+          part_of_taxonomy_tree: an_array_matching(%w[
+            f3bbdec2-0e62-4520-a7fd-6ffd5d36e03a
+            37d0fa26-abed-4c74-8835-b3b51ae1c8b2
+            d6dba75a-42bd-4e1e-984c-2bddb6b41951
+          ]),
           world_locations: %w[usa],
           topical_events: %w[her-majesty-queen-elizabeth-ii],
           content_purpose_supergroup: "news_and_communications",
