@@ -13,6 +13,9 @@ require "grpc_mock/rspec"
 
 Timecop.safe_mode = true
 
+require "redlock/testing"
+Redlock::Client.testing_mode = :bypass
+
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   config.default_formatter = "doc" if config.files_to_run.one?

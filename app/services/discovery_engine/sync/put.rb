@@ -3,6 +3,7 @@ module DiscoveryEngine::Sync
     MIME_TYPE = "text/html".freeze
 
     include DocumentName
+    include Locking
     include Logging
 
     def initialize(client: ::Google::Cloud::DiscoveryEngine.document_service(version: :v1))
@@ -10,23 +11,35 @@ module DiscoveryEngine::Sync
     end
 
     def call(content_id, metadata, content: "", payload_version: nil)
-      client.update_document(
-        document: {
-          id: content_id,
-          name: document_name(content_id),
-          json_data: metadata.merge(payload_version:).to_json,
-          content: {
-            mime_type: MIME_TYPE,
-            # The Google client expects an IO object to extract raw byte content from
-            raw_bytes: StringIO.new(content),
+      with_locked_document(content_id, payload_version:) do
+        client.update_document(
+          document: {
+            id: content_id,
+            name: document_name(content_id),
+            json_data: metadata.merge(payload_version:).to_json,
+            content: {
+              mime_type: MIME_TYPE,
+              # The Google client expects an IO object to extract raw byte content from
+              raw_bytes: StringIO.new(content),
+            },
           },
-        },
-        allow_missing: true,
-      )
+          allow_missing: true,
+        )
+      end
 
       log(Logger::Severity::INFO, "Successfully added/updated", content_id:, payload_version:)
       Metrics::Exported.increment_counter(
         :discovery_engine_requests, type: "put", status: "success"
+      )
+    rescue FailedToAcquireLockError => e
+      log(
+        Logger::Severity::ERROR,
+        "Failed to add/update document as lock not acquirable",
+        content_id:, payload_version:,
+      )
+      GovukError.notify(e)
+      Metrics::Exported.increment_counter(
+        :discovery_engine_requests, type: "put", status: "lock_error"
       )
     rescue Google::Cloud::Error => e
       log(

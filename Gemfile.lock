@@ -432,6 +432,10 @@ GEM
     rbtree (0.4.6)
     rdoc (6.6.3.1)
       psych (>= 4.0.0)
+    redis-client (0.21.0)
+      connection_pool
+    redlock (2.0.6)
+      redis-client (>= 0.14.1, < 1.0.0)
     regexp_parser (2.9.0)
     reline (0.4.3)
       io-console (~> 0.5)
@@ -559,6 +563,7 @@ DEPENDENCIES
   loofah
   prometheus-client
   railties (~> 7.1.3)
+  redlock
   rspec-rails
   rubocop-govuk
   simplecov
