@@ -10,12 +10,15 @@ gem "activesupport", RAILS_GEMS_VERSION
 gem "railties", RAILS_GEMS_VERSION
 
 gem "bootsnap", require: false
+gem "connection_pool"
 gem "google-cloud-discovery_engine"
 gem "govuk_app_config"
 gem "govuk_message_queue_consumer"
 gem "jsonpath"
 gem "loofah"
 gem "prometheus-client"
+gem "redis"
+gem "redlock"
 
 group :test do
   gem "grpc_mock"
