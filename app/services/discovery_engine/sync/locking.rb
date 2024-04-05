@@ -49,15 +49,15 @@ module DiscoveryEngine::Sync
       critical_section.call
     end
 
-    def payload_newer_than_remote?(content_id, payload_version:)
+    def outdated_payload_version?(content_id, payload_version:)
       # Sense check: This shouldn't ever come through as nil from Publishing API, but if it does,
       # the only really useful thing we can do is ignore this check entirely because we can't
       # meaningfully make a comparison.
-      return true if payload_version.nil?
+      return false if payload_version.nil?
 
       # If there is no remote version yet, our version is always newer by definition
       remote_version = latest_synced_version(content_id)
-      return true if remote_version.nil?
+      return false if remote_version.nil?
 
       remote_version.to_i >= payload_version.to_i
     end

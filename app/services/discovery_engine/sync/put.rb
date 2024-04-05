@@ -12,7 +12,7 @@ module DiscoveryEngine::Sync
 
     def call(content_id, metadata, content: "", payload_version: nil)
       with_locked_document(content_id, payload_version:) do
-        if payload_newer_than_remote?(content_id, payload_version:)
+        if outdated_payload_version?(content_id, payload_version:)
           log(
             Logger::Severity::INFO,
             "Ignored as newer version (#{latest_synced_version(content_id)}) already synced",

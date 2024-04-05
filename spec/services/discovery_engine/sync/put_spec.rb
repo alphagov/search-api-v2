@@ -99,6 +99,38 @@ RSpec.describe DiscoveryEngine::Sync::Put do
     end
   end
 
+  context "when there is no remote version yet" do
+    before do
+      allow(redis_client).to receive(:get)
+        .with("search_api_v2:latest_synced_version:some_content_id").and_return(nil)
+
+      put.call(
+        "some_content_id",
+        { foo: "bar" },
+        content: "some content",
+        payload_version: "1",
+      )
+    end
+
+    it "updates the document" do
+      expect(client).to have_received(:update_document)
+    end
+
+    it "sets the new latest remote version" do
+      expect(redis_client).to have_received(:set).with(
+        "search_api_v2:latest_synced_version:some_content_id",
+        "1",
+      )
+    end
+
+    it "logs the put operation" do
+      expect(logger).to have_received(:add).with(
+        Logger::Severity::INFO,
+        "[DiscoveryEngine::Sync::Put] Successfully added/updated content_id:some_content_id payload_version:1",
+      )
+    end
+  end
+
   context "when locking the document fails" do
     let(:error) { Redlock::LockError.new("resource") }
 
