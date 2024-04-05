@@ -432,6 +432,12 @@ GEM
     rbtree (0.4.6)
     rdoc (6.6.3.1)
       psych (>= 4.0.0)
+    redis (5.1.0)
+      redis-client (>= 0.17.0)
+    redis-client (0.21.0)
+      connection_pool
+    redlock (2.0.6)
+      redis-client (>= 0.14.1, < 1.0.0)
     regexp_parser (2.9.0)
     reline (0.5.0)
       io-console (~> 0.5)
@@ -551,6 +557,7 @@ DEPENDENCIES
   activesupport (~> 7.1.3)
   bootsnap
   brakeman
+  connection_pool
   debug
   google-cloud-discovery_engine
   govuk_app_config
@@ -562,6 +569,8 @@ DEPENDENCIES
   loofah
   prometheus-client
   railties (~> 7.1.3)
+  redis
+  redlock
   rspec-rails
   rubocop-govuk
   simplecov

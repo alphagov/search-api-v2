@@ -28,5 +28,15 @@ module SearchApiV2
 
     # Query configuration
     config.best_bets = config_for(:best_bets)
+
+    # Redis configuration
+    config.redis_url = ENV.fetch("REDIS_URL")
+    config.redis_pool = ConnectionPool.new(size: 5, timeout: 5) { Redis.new(url: config.redis_url) }
+
+    # Redlock configuration
+    ## Note: Redlock allows us to specify multiple Redis URLs for distributed locking, but we're
+    ## currently only using a single instance (the Publishing "shared" Redis). If we ever need to
+    ## use multiple Redis instances, this is the only place that needs updating.
+    config.redlock_redis_instances = [config.redis_url]
   end
 end

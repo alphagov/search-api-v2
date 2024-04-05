@@ -1,6 +1,7 @@
 module DiscoveryEngine::Sync
   class Delete
     include DocumentName
+    include Locking
     include Logging
 
     def initialize(client: ::Google::Cloud::DiscoveryEngine.document_service(version: :v1))
@@ -8,7 +9,23 @@ module DiscoveryEngine::Sync
     end
 
     def call(content_id, payload_version: nil)
-      client.delete_document(name: document_name(content_id))
+      with_locked_document(content_id, payload_version:) do
+        if payload_newer_than_remote?(content_id, payload_version:)
+          log(
+            Logger::Severity::INFO,
+            "Ignored as newer version (#{latest_synced_version(content_id)}) already synced",
+            content_id:, payload_version:,
+          )
+          Metrics::Exported.increment_counter(
+            :discovery_engine_requests, type: "delete", status: "ignored_outdated"
+          )
+          return
+        end
+
+        client.delete_document(name: document_name(content_id))
+
+        set_latest_synced_version(content_id, payload_version)
+      end
 
       log(Logger::Severity::INFO, "Successfully deleted", content_id:, payload_version:)
       Metrics::Exported.increment_counter(
