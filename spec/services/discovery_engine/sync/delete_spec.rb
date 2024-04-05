@@ -68,6 +68,34 @@ RSpec.describe DiscoveryEngine::Sync::Delete do
     end
   end
 
+  context "when there is no remote version yet" do
+    before do
+      allow(redis_client).to receive(:get)
+        .with("search_api_v2:latest_synced_version:some_content_id").and_return(nil)
+
+      delete.call("some_content_id", payload_version: "1")
+    end
+
+    it "deletes the document" do
+      expect(client).to have_received(:delete_document)
+        .with(name: "branch/documents/some_content_id")
+    end
+
+    it "sets the new latest remote version" do
+      expect(redis_client).to have_received(:set).with(
+        "search_api_v2:latest_synced_version:some_content_id",
+        "1",
+      )
+    end
+
+    it "logs the delete operation" do
+      expect(logger).to have_received(:add).with(
+        Logger::Severity::INFO,
+        "[DiscoveryEngine::Sync::Delete] Successfully deleted content_id:some_content_id payload_version:1",
+      )
+    end
+  end
+
   context "when locking the document fails" do
     let(:error) { Redlock::LockError.new("resource") }
 
