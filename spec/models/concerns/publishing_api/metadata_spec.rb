@@ -173,7 +173,21 @@ RSpec.describe PublishingApi::Metadata do
           }
         end
 
-        it { is_expected.to match_array(%w[0000 1111 2222 3333 4444 5555]) }
+        it { is_expected.to eq(%w[0000 4444 5555 1111 2222 3333]) }
+      end
+
+      context "with an excessive number of taxon links" do
+        let(:document_hash) do
+          {
+            expanded_links: {
+              taxons: Array.new(260) { { content_id: sprintf("%04d", _1) } },
+            },
+          }
+        end
+
+        it "is truncated to 250 taxons" do
+          expect(extracted_part_of_taxonomy_tree.count).to eq(250)
+        end
       end
 
       context "without taxon links" do
