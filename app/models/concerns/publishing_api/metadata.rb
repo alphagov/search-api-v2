@@ -12,13 +12,17 @@ module PublishingApi
     # Taxons can be deeply nested, so we need to make sure we extract all of their content IDs all
     # the way down.
     TAXON_VALUES_JSON_PATHS = [
+      # Root and parent taxons
+      #
+      # Note: these come *before* the direct taxons on purpose, as the top two levels of taxons are
+      # facetable, and we set a limit on the maximum number of taxons to index. This way, they are
+      # less at risk of being truncated.
+      "$.expanded_links.taxons..links.root_taxon[*].content_id",
+      "$.expanded_links.taxons..links.parent_taxons[*].content_id",
       # Direct taxons
       "$.expanded_links.taxons[*].content_id",
-      # Parent taxons
-      "$.expanded_links.taxons..links.parent_taxons[*].content_id",
-      # Root taxon (note: that's still an array!)
-      "$.expanded_links.taxons..links.root_taxon[*].content_id",
     ].map { JsonPath.new(_1, use_symbols: true) }.freeze
+    MAX_TAXON_COUNT = 250
 
     # Extracts a hash of structured metadata about this document.
     def metadata
@@ -88,6 +92,7 @@ module PublishingApi
         .flat_map { _1.on(document_hash) }
         .compact
         .uniq
+        .first(MAX_TAXON_COUNT)
     end
 
     def historic?
