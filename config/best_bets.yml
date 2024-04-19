@@ -19,6 +19,9 @@ shared:
     - /foreign-travel-advice/the-occupied-palestinian-territories
     - /government/news/gaza-what-you-can-do-to-help
     - /government/publications/humanitarian-situation-in-gaza-the-uk-governments-response/humanitarian-situation-in-gaza-the-uk-governments-response
+  "antisocial behaviour": /how-report-antisocial-behaviour
+  "anti social behaviour": /how-report-antisocial-behaviour
+  "anti-social behaviour": /how-report-antisocial-behaviour
 
 test:
   "i want to test a single best bet": /here/you/go
