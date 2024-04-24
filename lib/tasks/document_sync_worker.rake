@@ -19,6 +19,7 @@ namespace :document_sync_worker do
     GovukMessageQueueConsumer::Consumer.new(
       queue_name: ENV.fetch("PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_NAME"),
       processor: PublishingApiMessageProcessor.new,
+      worker_threads: ENV.fetch("PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_THREADS", 1),
     ).run
   rescue Interrupt
     Rails.logger.info("Stopping document sync worker (received interrupt)")
