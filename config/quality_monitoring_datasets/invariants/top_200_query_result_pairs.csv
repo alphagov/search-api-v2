@@ -71,7 +71,7 @@ income tax,/check-income-tax-current-year
 tax return,/log-in-file-self-assessment-tax-return
 uc50,/government/publications/uc50-form-universal-credit-capability-for-work-questionnaire
 cost of living,/guidance/cost-of-living-payment
-vat,/log-in-register-hmrc-online-services
+vat,/sign-in-vat-account
 cold weather payment,/cold-weather-payment
 visa,/apply-to-come-to-the-uk
 sa100,/self-assessment-tax-return-forms
@@ -187,7 +187,6 @@ dbs,/guidance/dbs-online-account-guidance
 national insurance number,/government/publications/national-insurance-get-your-national-insurance-number-in-writing-ca5403
 book driving test,/book-driving-test
 esta,https://esta.cbp.dhs.gov/
-rp02a,/government/publications/apply-for-rectification-by-the-registrar-of-companies-rp02a
 family visa,/uk-family-visa
 hmrc login,/log-in-register-hmrc-online-services
 band check,/council-tax-bands
