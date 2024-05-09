@@ -11,6 +11,7 @@ gem "railties", RAILS_GEMS_VERSION
 
 gem "bootsnap", require: false
 gem "connection_pool"
+gem "csv"
 gem "google-cloud-discovery_engine"
 gem "govuk_app_config"
 gem "govuk_message_queue_consumer"
