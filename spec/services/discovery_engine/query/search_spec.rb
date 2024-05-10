@@ -4,17 +4,6 @@ RSpec.describe DiscoveryEngine::Query::Search do
   let(:client) { double("SearchService::Client", search: search_return_value) }
   let(:filters) { double(filter_expression: "filter-expression") }
 
-  let(:expected_boost_specs) do
-    [{ boost: 0.2,
-       condition: "content_purpose_supergroup: ANY(\"news_and_communications\") AND public_timestamp: IN(628905600i,*)" },
-     { boost: 0.05,
-       condition: "content_purpose_supergroup: ANY(\"news_and_communications\") AND public_timestamp: IN(621644400i,628905600e)" },
-     { boost: -0.5,
-       condition: "content_purpose_supergroup: ANY(\"news_and_communications\") AND public_timestamp: IN(503280000i,597974400e)" },
-     { boost: -0.75,
-       condition: "content_purpose_supergroup: ANY(\"news_and_communications\") AND public_timestamp: IN(*,503280000e)" }]
-  end
-
   before do
     allow(Rails.configuration).to receive(:discovery_engine_serving_config)
       .and_return("serving-config-path")
@@ -57,7 +46,7 @@ RSpec.describe DiscoveryEngine::Query::Search do
           offset: 0,
           page_size: 10,
           filter: "filter-expression",
-          boost_spec: { condition_boost_specs: expected_boost_specs },
+          boost_spec: { condition_boost_specs: [] },
         )
       end
 
@@ -81,7 +70,7 @@ RSpec.describe DiscoveryEngine::Query::Search do
             offset: 11,
             page_size: 22,
             filter: "filter-expression",
-            boost_spec: { condition_boost_specs: expected_boost_specs },
+            boost_spec: { condition_boost_specs: [] },
           )
         end
 
@@ -158,7 +147,7 @@ RSpec.describe DiscoveryEngine::Query::Search do
         let(:query_params) { { q: "i want to test a single best bet" } }
 
         let(:expected_boost_specs) do
-          super() + [{
+          [{
             boost: 1,
             condition: 'link: ANY("/here/you/go")',
           }]
@@ -176,7 +165,7 @@ RSpec.describe DiscoveryEngine::Query::Search do
         let(:query_params) { { q: " I want to        TEST   a sInGlE best bET   " } }
 
         let(:expected_boost_specs) do
-          super() + [{
+          [{
             boost: 1,
             condition: 'link: ANY("/here/you/go")',
           }]
@@ -194,7 +183,7 @@ RSpec.describe DiscoveryEngine::Query::Search do
         let(:query_params) { { q: "i want to test multiple best bets" } }
 
         let(:expected_boost_specs) do
-          super() + [{
+          [{
             boost: 1,
             condition: 'link: ANY("/i-am-important","/i-am-also-important","/also-me")',
           }]

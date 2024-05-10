@@ -93,7 +93,6 @@ module DiscoveryEngine::Query
     def boost_spec
       {
         condition_boost_specs: [
-          *NewsRecencyBoost.new.boost_specs,
           *best_bets_boost_specs,
         ],
       }
