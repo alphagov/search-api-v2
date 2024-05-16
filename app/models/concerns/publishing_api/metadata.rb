@@ -33,6 +33,7 @@ module PublishingApi
         link:,
         url:,
         public_timestamp:,
+        public_timestamp_datetime: document_hash[:public_updated_at],
         document_type: document_hash[:document_type],
         content_purpose_supergroup: document_hash[:content_purpose_supergroup],
         part_of_taxonomy_tree:,
