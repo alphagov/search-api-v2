@@ -120,6 +120,20 @@ RSpec.describe PublishingApi::Metadata do
       end
     end
 
+    describe "public_timestamp_datetime" do
+      subject(:extracted_public_timestamp_datetime) { extracted_metadata[:public_timestamp_datetime] }
+
+      let(:document_hash) { { public_updated_at: "2012-02-01T00:00:00Z" } }
+
+      it { is_expected.to eq("2012-02-01T00:00:00Z") }
+
+      context "without a public_timestamp" do
+        let(:document_hash) { {} }
+
+        it { is_expected.to be_nil }
+      end
+    end
+
     describe "document_type" do
       subject(:extracted_document_type) { extracted_metadata[:document_type] }
 
