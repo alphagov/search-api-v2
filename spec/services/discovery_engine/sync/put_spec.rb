@@ -181,4 +181,58 @@ RSpec.describe DiscoveryEngine::Sync::Put do
       expect(GovukError).to have_received(:notify).with(err)
     end
   end
+
+  context "when updating the document fails due to Google resource exhaustion" do
+    let(:client) { double("DocumentService::Client") }
+    let(:err) { Google::Cloud::ResourceExhaustedError.new("Too frequent update") }
+    let(:failures_before_success) { 2 }
+
+    before do
+      failures_remaining = failures_before_success
+      allow(client).to receive(:update_document) do
+        failures_remaining -= 1
+        raise err if failures_remaining.positive?
+
+        double(name: "document-name")
+      end
+
+      allow(Kernel).to receive(:sleep).and_return(0)
+
+      put.call("some_content_id", {}, payload_version: "1")
+    end
+
+    it "logs the failure" do
+      expect(logger).to have_received(:add).with(
+        Logger::Severity::WARN,
+        "[DiscoveryEngine::Sync::Put] Failed to add/update document due to resource exhaustion, trying again in 3 seconds content_id:some_content_id payload_version:1",
+      )
+    end
+
+    it "retries the update" do
+      expect(client).to have_received(:update_document).twice
+    end
+
+    it "sleeps before retrying" do
+      expect(Kernel).to have_received(:sleep).with(3)
+    end
+
+    context "and the error occurs more than three times" do
+      let(:failures_before_success) { 4 }
+
+      it "gives up after the third attempt" do
+        expect(client).to have_received(:update_document).exactly(3).times
+      end
+
+      it "logs the failure" do
+        expect(logger).to have_received(:add).with(
+          Logger::Severity::ERROR,
+          "[DiscoveryEngine::Sync::Put] Failed to add/update document due to an error (Too frequent update) content_id:some_content_id payload_version:1",
+        )
+      end
+
+      it "sends the error to Sentry" do
+        expect(GovukError).to have_received(:notify).with(err)
+      end
+    end
+  end
 end

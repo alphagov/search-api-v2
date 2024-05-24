@@ -1,6 +1,8 @@
 module DiscoveryEngine::Sync
   class Put
     MIME_TYPE = "text/html".freeze
+    MAX_RETRIES_ON_RESOURCE_EXHAUSTION = 3
+    RESOURCE_EXHAUSTION_BACKOFF_SECONDS = 3
 
     include DocumentName
     include Locking
@@ -24,19 +26,32 @@ module DiscoveryEngine::Sync
           return
         end
 
-        client.update_document(
-          document: {
-            id: content_id,
-            name: document_name(content_id),
-            json_data: metadata.merge(payload_version:).to_json,
-            content: {
-              mime_type: MIME_TYPE,
-              # The Google client expects an IO object to extract raw byte content from
-              raw_bytes: StringIO.new(content),
+        MAX_RETRIES_ON_RESOURCE_EXHAUSTION.times do |attempt|
+          client.update_document(
+            document: {
+              id: content_id,
+              name: document_name(content_id),
+              json_data: metadata.merge(payload_version:).to_json,
+              content: {
+                mime_type: MIME_TYPE,
+                # The Google client expects an IO object to extract raw byte content from
+                raw_bytes: StringIO.new(content),
+              },
             },
-          },
-          allow_missing: true,
-        )
+            allow_missing: true,
+          )
+          break
+        rescue Google::Cloud::ResourceExhaustedError
+          # Do not retry on the last attempt
+          raise if attempt == MAX_RETRIES_ON_RESOURCE_EXHAUSTION - 1
+
+          log(
+            Logger::Severity::WARN,
+            "Failed to add/update document due to resource exhaustion, trying again in #{RESOURCE_EXHAUSTION_BACKOFF_SECONDS} seconds",
+            content_id:, payload_version:,
+          )
+          Kernel.sleep(RESOURCE_EXHAUSTION_BACKOFF_SECONDS)
+        end
 
         set_latest_synced_version(content_id, payload_version)
       end
