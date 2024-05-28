@@ -25,7 +25,7 @@ class PublishingApiDocument
     elsif sync?
       log("sync")
       Metrics::Exported.increment_counter(:documents_synced)
-      put_service.new(content_id, metadata, content:, payload_version:).call(content_id, metadata, content:, payload_version:)
+      put_service.new(content_id, metadata, content:, payload_version:).call
     elsif desync?
       log("desync (#{action_reason}))")
       Metrics::Exported.increment_counter(:documents_desynced)
