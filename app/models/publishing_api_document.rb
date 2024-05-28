@@ -25,11 +25,11 @@ class PublishingApiDocument
     elsif sync?
       log("sync")
       Metrics::Exported.increment_counter(:documents_synced)
-      put_service.new.call(content_id, metadata, content:, payload_version:)
+      put_service.new(content_id, metadata, content:, payload_version:).call(content_id, metadata, content:, payload_version:)
     elsif desync?
       log("desync (#{action_reason}))")
       Metrics::Exported.increment_counter(:documents_desynced)
-      delete_service.new.call(content_id, payload_version:)
+      delete_service.new(content_id, payload_version:).call(content_id, payload_version:)
     else
       raise "Cannot determine action for document: #{content_id}"
     end
