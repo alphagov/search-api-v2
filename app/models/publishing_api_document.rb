@@ -7,8 +7,8 @@ class PublishingApiDocument
 
   def initialize(
     document_hash,
-    put_service: DiscoveryEngine::Sync::Put.new,
-    delete_service: DiscoveryEngine::Sync::Delete.new
+    put_service: DiscoveryEngine::Sync::Put,
+    delete_service: DiscoveryEngine::Sync::Delete
   )
     @document_hash = document_hash
     @put_service = put_service
@@ -25,11 +25,11 @@ class PublishingApiDocument
     elsif sync?
       log("sync")
       Metrics::Exported.increment_counter(:documents_synced)
-      put_service.call(content_id, metadata, content:, payload_version:)
+      put_service.new.call(content_id, metadata, content:, payload_version:)
     elsif desync?
       log("desync (#{action_reason}))")
       Metrics::Exported.increment_counter(:documents_desynced)
-      delete_service.call(content_id, payload_version:)
+      delete_service.new.call(content_id, payload_version:)
     else
       raise "Cannot determine action for document: #{content_id}"
     end
