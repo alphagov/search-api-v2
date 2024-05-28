@@ -14,7 +14,7 @@ module DiscoveryEngine::Sync
       @client = client
     end
 
-    def call(content_id, payload_version: nil)
+    def call
       with_locked_document(content_id, payload_version:) do
         if outdated_payload_version?(content_id, payload_version:)
           log(

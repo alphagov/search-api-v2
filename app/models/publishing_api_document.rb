@@ -29,7 +29,7 @@ class PublishingApiDocument
     elsif desync?
       log("desync (#{action_reason}))")
       Metrics::Exported.increment_counter(:documents_desynced)
-      delete_service.new(content_id, payload_version:).call(content_id, payload_version:)
+      delete_service.new(content_id, payload_version:).call
     else
       raise "Cannot determine action for document: #{content_id}"
     end

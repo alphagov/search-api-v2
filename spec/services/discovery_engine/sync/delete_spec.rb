@@ -1,6 +1,4 @@
 RSpec.describe DiscoveryEngine::Sync::Delete do
-  subject(:delete) { described_class.new(client:) }
-
   let(:client) { double("DocumentService::Client", delete_document: nil) }
   let(:logger) { double("Logger", add: nil) }
   let(:redlock_client) { instance_double(Redlock::Client) }
@@ -21,7 +19,7 @@ RSpec.describe DiscoveryEngine::Sync::Delete do
 
   context "when the delete succeeds" do
     before do
-      delete.call("some_content_id", payload_version: "1")
+      described_class.new("some_content_id", payload_version: "1", client:).call
     end
 
     it "deletes the document" do
@@ -49,7 +47,7 @@ RSpec.describe DiscoveryEngine::Sync::Delete do
       allow(redis_client).to receive(:get)
         .with("search_api_v2:latest_synced_version:some_content_id").and_return("42")
 
-      delete.call("some_content_id", payload_version: "1")
+      described_class.new("some_content_id", payload_version: "1", client:).call
     end
 
     it "does not delete the document" do
@@ -73,7 +71,7 @@ RSpec.describe DiscoveryEngine::Sync::Delete do
       allow(redis_client).to receive(:get)
         .with("search_api_v2:latest_synced_version:some_content_id").and_return(nil)
 
-      delete.call("some_content_id", payload_version: "1")
+      described_class.new("some_content_id", payload_version: "1", client:).call
     end
 
     it "deletes the document" do
@@ -102,7 +100,7 @@ RSpec.describe DiscoveryEngine::Sync::Delete do
     before do
       allow(redlock_client).to receive(:lock!).and_raise(error)
 
-      delete.call("some_content_id", payload_version: "1")
+      described_class.new("some_content_id", payload_version: "1", client:).call
     end
 
     it "deletes the document regardless" do
@@ -127,7 +125,7 @@ RSpec.describe DiscoveryEngine::Sync::Delete do
     before do
       allow(client).to receive(:delete_document).and_raise(err)
 
-      delete.call("some_content_id", payload_version: "1")
+      described_class.new("some_content_id", payload_version: "1", client:).call
     end
 
     it "logs the failure" do
@@ -148,7 +146,7 @@ RSpec.describe DiscoveryEngine::Sync::Delete do
     before do
       allow(client).to receive(:delete_document).and_raise(err)
 
-      delete.call("some_content_id", payload_version: "1")
+      described_class.new("some_content_id", payload_version: "1", client:).call
     end
 
     it "logs the failure" do
