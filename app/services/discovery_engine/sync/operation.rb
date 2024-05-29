@@ -13,5 +13,16 @@ module DiscoveryEngine::Sync
     def document_name
       "#{Rails.configuration.discovery_engine_datastore_branch}/documents/#{content_id}"
     end
+
+    def log(level, message)
+      combined_message = sprintf(
+        "[%s] %s content_id:%s payload_version:%d",
+        self.class.name,
+        message,
+        content_id,
+        payload_version,
+      )
+      Rails.logger.add(level, combined_message)
+    end
   end
 end

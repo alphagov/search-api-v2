@@ -3,7 +3,6 @@ module DiscoveryEngine::Sync
     MIME_TYPE = "text/html".freeze
 
     include Locking
-    include Logging
 
     def initialize(content_id = nil, metadata = nil, content: "", payload_version: nil, client: nil)
       super(content_id, payload_version:, client:)
@@ -18,7 +17,6 @@ module DiscoveryEngine::Sync
           log(
             Logger::Severity::INFO,
             "Ignored as newer version (#{latest_synced_version(content_id)}) already synced",
-            content_id:, payload_version:,
           )
           Metrics::Exported.increment_counter(
             :discovery_engine_requests, type: "put", status: "ignored_outdated"
@@ -43,7 +41,7 @@ module DiscoveryEngine::Sync
         set_latest_synced_version(content_id, payload_version)
       end
 
-      log(Logger::Severity::INFO, "Successfully added/updated", content_id:, payload_version:)
+      log(Logger::Severity::INFO, "Successfully added/updated")
       Metrics::Exported.increment_counter(
         :discovery_engine_requests, type: "put", status: "success"
       )
@@ -51,7 +49,6 @@ module DiscoveryEngine::Sync
       log(
         Logger::Severity::ERROR,
         "Failed to add/update document due to an error (#{e.message})",
-        content_id:, payload_version:,
       )
       GovukError.notify(e)
       Metrics::Exported.increment_counter(:discovery_engine_requests, type: "put", status: "error")
