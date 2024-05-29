@@ -1,5 +1,5 @@
 module DiscoveryEngine::Sync
-  class Delete
+  class Delete < Operation
     include DocumentName
     include Locking
     include Logging
@@ -8,6 +8,8 @@ module DiscoveryEngine::Sync
       content_id = nil, payload_version: nil,
       client: ::Google::Cloud::DiscoveryEngine.document_service(version: :v1)
     )
+      super()
+
       @content_id = content_id
       @payload_version = payload_version
 

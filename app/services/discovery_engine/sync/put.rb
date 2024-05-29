@@ -1,5 +1,5 @@
 module DiscoveryEngine::Sync
-  class Put
+  class Put < Operation
     MIME_TYPE = "text/html".freeze
 
     include DocumentName
@@ -10,6 +10,8 @@ module DiscoveryEngine::Sync
       content_id = nil, metadata = nil, content: "", payload_version: nil,
       client: ::Google::Cloud::DiscoveryEngine.document_service(version: :v1)
     )
+      super()
+
       @content_id = content_id
       @metadata = metadata
       @content = content
