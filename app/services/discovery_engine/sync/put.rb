@@ -2,7 +2,6 @@ module DiscoveryEngine::Sync
   class Put < Operation
     MIME_TYPE = "text/html".freeze
 
-    include DocumentName
     include Locking
     include Logging
 
@@ -30,7 +29,7 @@ module DiscoveryEngine::Sync
         client.update_document(
           document: {
             id: content_id,
-            name: document_name(content_id),
+            name: document_name,
             json_data: metadata.merge(payload_version:).to_json,
             content: {
               mime_type: MIME_TYPE,

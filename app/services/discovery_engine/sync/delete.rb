@@ -1,6 +1,5 @@
 module DiscoveryEngine::Sync
   class Delete < Operation
-    include DocumentName
     include Locking
     include Logging
 
@@ -25,7 +24,7 @@ module DiscoveryEngine::Sync
           return
         end
 
-        client.delete_document(name: document_name(content_id))
+        client.delete_document(name: document_name)
 
         set_latest_synced_version(content_id, payload_version)
       end

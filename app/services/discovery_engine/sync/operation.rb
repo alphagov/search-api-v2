@@ -9,5 +9,9 @@ module DiscoveryEngine::Sync
   private
 
     attr_reader :content_id, :payload_version, :client
+
+    def document_name
+      "#{Rails.configuration.discovery_engine_datastore_branch}/documents/#{content_id}"
+    end
   end
 end
