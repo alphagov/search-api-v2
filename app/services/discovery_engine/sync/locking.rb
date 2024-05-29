@@ -70,9 +70,9 @@ module DiscoveryEngine::Sync
     end
 
     # Sets the latest synced version for a document in Redis
-    def set_latest_synced_version(content_id, version)
+    def set_latest_synced_version
       Rails.application.config.redis_pool.with do |redis|
-        redis.set("#{VERSION_KEY_PREFIX}:#{content_id}", version)
+        redis.set("#{VERSION_KEY_PREFIX}:#{content_id}", payload_version)
       end
     end
 

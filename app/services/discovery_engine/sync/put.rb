@@ -36,7 +36,7 @@ module DiscoveryEngine::Sync
           allow_missing: true,
         )
 
-        set_latest_synced_version(content_id, payload_version)
+        set_latest_synced_version
       end
 
       log(Logger::Severity::INFO, "Successfully added/updated")

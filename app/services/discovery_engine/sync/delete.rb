@@ -22,7 +22,7 @@ module DiscoveryEngine::Sync
 
         client.delete_document(name: document_name)
 
-        set_latest_synced_version(content_id, payload_version)
+        set_latest_synced_version
       end
 
       log(Logger::Severity::INFO, "Successfully deleted")
