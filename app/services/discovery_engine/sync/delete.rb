@@ -4,11 +4,17 @@ module DiscoveryEngine::Sync
     include Locking
     include Logging
 
-    def initialize(client: ::Google::Cloud::DiscoveryEngine.document_service(version: :v1))
+    def initialize(
+      content_id = nil, payload_version: nil,
+      client: ::Google::Cloud::DiscoveryEngine.document_service(version: :v1)
+    )
+      @content_id = content_id
+      @payload_version = payload_version
+
       @client = client
     end
 
-    def call(content_id, payload_version: nil)
+    def call
       with_locked_document(content_id, payload_version:) do
         if outdated_payload_version?(content_id, payload_version:)
           log(
@@ -54,6 +60,6 @@ module DiscoveryEngine::Sync
 
   private
 
-    attr_reader :client
+    attr_reader :content_id, :payload_version, :client
   end
 end

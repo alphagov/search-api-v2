@@ -1,6 +1,4 @@
 RSpec.describe DiscoveryEngine::Sync::Put do
-  subject(:put) { described_class.new(client:) }
-
   let(:client) { double("DocumentService::Client", update_document: nil) }
   let(:logger) { double("Logger", add: nil) }
   let(:redlock_client) { instance_double(Redlock::Client) }
@@ -25,12 +23,13 @@ RSpec.describe DiscoveryEngine::Sync::Put do
         double(name: "document-name"),
       )
 
-      put.call(
+      described_class.new(
         "some_content_id",
         { foo: "bar" },
         content: "some content",
         payload_version: "1",
-      )
+        client:,
+      ).call
     end
 
     it "updates the document" do
@@ -75,12 +74,13 @@ RSpec.describe DiscoveryEngine::Sync::Put do
       allow(redis_client).to receive(:get)
         .with("search_api_v2:latest_synced_version:some_content_id").and_return("42")
 
-      put.call(
+      described_class.new(
         "some_content_id",
         { foo: "bar" },
         content: "some content",
         payload_version: "1",
-      )
+        client:,
+      ).call
     end
 
     it "does not update the document" do
@@ -104,12 +104,13 @@ RSpec.describe DiscoveryEngine::Sync::Put do
       allow(redis_client).to receive(:get)
         .with("search_api_v2:latest_synced_version:some_content_id").and_return(nil)
 
-      put.call(
+      described_class.new(
         "some_content_id",
         { foo: "bar" },
         content: "some content",
         payload_version: "1",
-      )
+        client:,
+      ).call
     end
 
     it "updates the document" do
@@ -137,12 +138,13 @@ RSpec.describe DiscoveryEngine::Sync::Put do
     before do
       allow(redlock_client).to receive(:lock!).and_raise(error)
 
-      put.call(
+      described_class.new(
         "some_content_id",
         { foo: "bar" },
         content: "some content",
         payload_version: "1",
-      )
+        client:,
+      ).call
     end
 
     it "updates the document regardless" do
@@ -167,7 +169,7 @@ RSpec.describe DiscoveryEngine::Sync::Put do
     before do
       allow(client).to receive(:update_document).and_raise(err)
 
-      put.call("some_content_id", {}, payload_version: "1")
+      described_class.new("some_content_id", {}, payload_version: "1", client:).call
     end
 
     it "logs the failure" do

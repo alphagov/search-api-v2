@@ -19,7 +19,7 @@ RSpec.describe "Document synchronization" do
     let(:payload) { json_fixture_as_hash("message_queue/press_release_message.json") }
 
     it "is added to Discovery Engine through the Put service" do
-      expect(put_service).to have_received(:call).with(
+      expect(DiscoveryEngine::Sync::Put).to have_received(:new).with(
         "5941cb22-5d52-4212-83b6-255d75d2c680",
         {
           content_id: "5941cb22-5d52-4212-83b6-255d75d2c680",
@@ -47,6 +47,7 @@ RSpec.describe "Document synchronization" do
         content: a_string_including("<div class=\"govspeak\"><p>The UK was represented remotely"),
         payload_version: 12_345,
       )
+      expect(put_service).to have_received(:call)
     end
   end
 
@@ -54,7 +55,7 @@ RSpec.describe "Document synchronization" do
     let(:payload) { json_fixture_as_hash("message_queue/travel_advice_message.json") }
 
     it "is added to Discovery Engine through the Put service" do
-      expect(put_service).to have_received(:call).with(
+      expect(DiscoveryEngine::Sync::Put).to have_received(:new).with(
         "b662d0a3-c20d-4167-8056-b9c7d058d860",
         {
           content_id: "b662d0a3-c20d-4167-8056-b9c7d058d860",
@@ -110,6 +111,7 @@ RSpec.describe "Document synchronization" do
         content: a_string_including("<h1>Warnings and insurance</h1>\n<p>The Foreign"),
         payload_version: 12_345,
       )
+      expect(put_service).to have_received(:call)
     end
   end
 
@@ -117,7 +119,7 @@ RSpec.describe "Document synchronization" do
     let(:payload) { json_fixture_as_hash("message_queue/historic_news_story_message.json") }
 
     it "is added to Discovery Engine through the Put service" do
-      expect(put_service).to have_received(:call).with(
+      expect(DiscoveryEngine::Sync::Put).to have_received(:new).with(
         "5c880596-7631-11e4-a3cb-005056011aef",
         {
           content_id: "5c880596-7631-11e4-a3cb-005056011aef",
@@ -148,6 +150,7 @@ RSpec.describe "Document synchronization" do
         content: a_string_including("<div class=\"govspeak\"><p>In the UEFA Champions"),
         payload_version: 12_345,
       )
+      expect(put_service).to have_received(:call)
     end
   end
 
@@ -155,7 +158,7 @@ RSpec.describe "Document synchronization" do
     let(:payload) { json_fixture_as_hash("message_queue/manual_section_message.json") }
 
     it "is added to Discovery Engine through the Put service" do
-      expect(put_service).to have_received(:call).with(
+      expect(DiscoveryEngine::Sync::Put).to have_received(:new).with(
         "e1f47495-b58d-41ca-84bb-ccb2b751cc3f",
         {
           content_id: "e1f47495-b58d-41ca-84bb-ccb2b751cc3f",
@@ -179,6 +182,7 @@ RSpec.describe "Document synchronization" do
         content: a_string_matching(/<h2 id="section-6-1">6\.1\. Structure.+<\/table>\n\n/m),
         payload_version: 12_345,
       )
+      expect(put_service).to have_received(:call)
     end
   end
 
@@ -186,7 +190,7 @@ RSpec.describe "Document synchronization" do
     let(:payload) { json_fixture_as_hash("message_queue/hmrc_manual_section_message.json") }
 
     it "is added to Discovery Engine through the Put service" do
-      expect(put_service).to have_received(:call).with(
+      expect(DiscoveryEngine::Sync::Put).to have_received(:new).with(
         "f1cb1b1f-d619-5694-9822-0e5ff9bfcb09",
         {
           content_id: "f1cb1b1f-d619-5694-9822-0e5ff9bfcb09",
@@ -209,6 +213,7 @@ RSpec.describe "Document synchronization" do
         content: a_string_starting_with("Pre-trading expenses – Overview \n<p>The normal rules"),
         payload_version: 12_345,
       )
+      expect(put_service).to have_received(:call)
     end
   end
 
@@ -216,7 +221,7 @@ RSpec.describe "Document synchronization" do
     let(:payload) { json_fixture_as_hash("message_queue/service_manual_guide_message.json") }
 
     it "is added to Discovery Engine through the Put service" do
-      expect(put_service).to have_received(:call).with(
+      expect(DiscoveryEngine::Sync::Put).to have_received(:new).with(
         "174c41e0-3316-4e9d-be46-6555d52f3cb7",
         {
           content_id: "174c41e0-3316-4e9d-be46-6555d52f3cb7",
@@ -240,6 +245,7 @@ RSpec.describe "Document synchronization" do
         content: a_string_matching(/Make sure everyone can use the service/),
         payload_version: 1989,
       )
+      expect(put_service).to have_received(:call)
     end
   end
 
@@ -247,7 +253,7 @@ RSpec.describe "Document synchronization" do
     let(:payload) { json_fixture_as_hash("message_queue/organisation_message.json") }
 
     it "is added to Discovery Engine through the Put service" do
-      expect(put_service).to have_received(:call).with(
+      expect(DiscoveryEngine::Sync::Put).to have_received(:new).with(
         "6ba90ae6-972d-4d48-ad66-693bbb31496d",
         {
           content_id: "6ba90ae6-972d-4d48-ad66-693bbb31496d",
@@ -271,6 +277,7 @@ RSpec.describe "Document synchronization" do
         content: a_string_including("LAA\n<div class=\"govspeak\"><p>We provide civil"),
         payload_version: 12_345,
       )
+      expect(put_service).to have_received(:call)
     end
   end
 
@@ -278,7 +285,7 @@ RSpec.describe "Document synchronization" do
     let(:payload) { json_fixture_as_hash("message_queue/worldwide_organisation_message.json") }
 
     it "is added to Discovery Engine through the Put service" do
-      expect(put_service).to have_received(:call).with(
+      expect(DiscoveryEngine::Sync::Put).to have_received(:new).with(
         "f4c394f9-7a30-11e4-a3cb-005056011aef",
         {
           content_id: "f4c394f9-7a30-11e4-a3cb-005056011aef",
@@ -307,6 +314,7 @@ RSpec.describe "Document synchronization" do
         content: a_string_including("maintains and develops relations between the UK and Austria"),
         payload_version: 12_345,
       )
+      expect(put_service).to have_received(:call)
     end
   end
 
@@ -314,7 +322,7 @@ RSpec.describe "Document synchronization" do
     let(:payload) { json_fixture_as_hash("message_queue/independent_report_message.json") }
 
     it "is added to Discovery Engine through the Put service" do
-      expect(put_service).to have_received(:call).with(
+      expect(DiscoveryEngine::Sync::Put).to have_received(:new).with(
         "5d315ee8-7631-11e4-a3cb-005056011aef",
         {
           content_id: "5d315ee8-7631-11e4-a3cb-005056011aef",
@@ -351,6 +359,7 @@ RSpec.describe "Document synchronization" do
         TEXT
         payload_version: 54_321,
       )
+      expect(put_service).to have_received(:call)
     end
   end
 
@@ -358,7 +367,7 @@ RSpec.describe "Document synchronization" do
     let(:payload) { json_fixture_as_hash("message_queue/world_taxon_message.json") }
 
     it "is added to Discovery Engine through the Put service" do
-      expect(put_service).to have_received(:call).with(
+      expect(DiscoveryEngine::Sync::Put).to have_received(:new).with(
         "f1724368-504f-4b3c-9dc2-41121046de9f",
         {
           content_id: "f1724368-504f-4b3c-9dc2-41121046de9f",
@@ -383,6 +392,7 @@ RSpec.describe "Document synchronization" do
         TEXT
         payload_version: 12_345,
       )
+      expect(put_service).to have_received(:call)
     end
   end
 
@@ -390,7 +400,7 @@ RSpec.describe "Document synchronization" do
     let(:payload) { json_fixture_as_hash("message_queue/speech_message.json") }
 
     it "is added to Discovery Engine through the Put service" do
-      expect(put_service).to have_received(:call).with(
+      expect(DiscoveryEngine::Sync::Put).to have_received(:new).with(
         "5fac6be0-146e-40ea-a899-c3299f62eff9",
         {
           content_id: "5fac6be0-146e-40ea-a899-c3299f62eff9",
@@ -421,6 +431,7 @@ RSpec.describe "Document synchronization" do
         content: a_string_including("Service of thanksgiving for the life of Her Majesty Queen Elizabeth II"),
         payload_version: 12_345,
       )
+      expect(put_service).to have_received(:call)
     end
   end
 
@@ -428,7 +439,7 @@ RSpec.describe "Document synchronization" do
     let(:payload) { json_fixture_as_hash("message_queue/html_publication_message.json") }
 
     it "is added to Discovery Engine through the Put service" do
-      expect(put_service).to have_received(:call).with(
+      expect(DiscoveryEngine::Sync::Put).to have_received(:new).with(
         "1f1f2c96-5a14-4d2a-9d0c-be6ac6c62c3b",
         {
           content_id: "1f1f2c96-5a14-4d2a-9d0c-be6ac6c62c3b",
@@ -448,6 +459,7 @@ RSpec.describe "Document synchronization" do
         content: a_string_starting_with("Access Consultation Forum terms of reference"),
         payload_version: 12_345,
       )
+      expect(put_service).to have_received(:call)
     end
   end
 
@@ -455,7 +467,7 @@ RSpec.describe "Document synchronization" do
     let(:payload) { json_fixture_as_hash("message_queue/external_content_message.json") }
 
     it "is added to Discovery Engine through the Put service" do
-      expect(put_service).to have_received(:call).with(
+      expect(DiscoveryEngine::Sync::Put).to have_received(:new).with(
         "526d5caf-221b-4c7b-9e74-b3e0b189fc8d",
         {
           content_id: "526d5caf-221b-4c7b-9e74-b3e0b189fc8d",
@@ -477,6 +489,7 @@ RSpec.describe "Document synchronization" do
         content: a_string_including("Brighton & Hove City Council"),
         payload_version: 17,
       )
+      expect(put_service).to have_received(:call)
     end
   end
 
@@ -492,10 +505,11 @@ RSpec.describe "Document synchronization" do
     let(:payload) { json_fixture_as_hash("message_queue/withdrawn_notice_message.json") }
 
     it "is proactively deleted from Discovery Engine through the Delete service" do
-      expect(delete_service).to have_received(:call).with(
+      expect(DiscoveryEngine::Sync::Delete).to have_received(:new).with(
         "e3b7c15d-1928-4101-9912-c9b40a6d6e78",
         payload_version: 12_345,
       )
+      expect(delete_service).to have_received(:call)
     end
   end
 
@@ -503,10 +517,11 @@ RSpec.describe "Document synchronization" do
     let(:payload) { json_fixture_as_hash("message_queue/gone_message.json") }
 
     it "is deleted from Discovery Engine through the Delete service" do
-      expect(delete_service).to have_received(:call).with(
+      expect(DiscoveryEngine::Sync::Delete).to have_received(:new).with(
         "0dd44b7a-3c10-5a3b-8bda-6ccb736102e0",
         payload_version: 12_345,
       )
+      expect(delete_service).to have_received(:call)
     end
   end
 end
