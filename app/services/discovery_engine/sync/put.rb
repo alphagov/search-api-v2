@@ -4,7 +4,7 @@ module DiscoveryEngine::Sync
 
     include Locking
 
-    def initialize(content_id = nil, metadata = nil, content: "", payload_version: nil, client: nil)
+    def initialize(content_id, metadata = nil, content: "", payload_version: nil, client: nil)
       super(content_id, payload_version:, client:)
 
       @metadata = metadata

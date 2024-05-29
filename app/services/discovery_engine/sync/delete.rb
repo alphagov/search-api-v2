@@ -2,7 +2,7 @@ module DiscoveryEngine::Sync
   class Delete < Operation
     include Locking
 
-    def initialize(content_id = nil, payload_version: nil, client: nil)
+    def initialize(content_id, payload_version: nil, client: nil)
       super(content_id, payload_version:, client:)
 
       @content_id = content_id
