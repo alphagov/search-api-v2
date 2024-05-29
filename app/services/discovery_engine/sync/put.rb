@@ -6,16 +6,11 @@ module DiscoveryEngine::Sync
     include Locking
     include Logging
 
-    def initialize(
-      content_id = nil, metadata = nil, content: "", payload_version: nil,
-      client: ::Google::Cloud::DiscoveryEngine.document_service(version: :v1)
-    )
-      super(content_id, payload_version:)
+    def initialize(content_id = nil, metadata = nil, content: "", payload_version: nil, client: nil)
+      super(content_id, payload_version:, client:)
 
       @metadata = metadata
       @content = content
-
-      @client = client
     end
 
     def call
@@ -65,6 +60,6 @@ module DiscoveryEngine::Sync
 
   private
 
-    attr_reader :metadata, :content, :client
+    attr_reader :metadata, :content
   end
 end

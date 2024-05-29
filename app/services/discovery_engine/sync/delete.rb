@@ -4,16 +4,11 @@ module DiscoveryEngine::Sync
     include Locking
     include Logging
 
-    def initialize(
-      content_id = nil, payload_version: nil,
-      client: ::Google::Cloud::DiscoveryEngine.document_service(version: :v1)
-    )
-      super(content_id, payload_version:)
+    def initialize(content_id = nil, payload_version: nil, client: nil)
+      super(content_id, payload_version:, client:)
 
       @content_id = content_id
       @payload_version = payload_version
-
-      @client = client
     end
 
     def call
@@ -59,9 +54,5 @@ module DiscoveryEngine::Sync
         :discovery_engine_requests, type: "delete", status: "error"
       )
     end
-
-  private
-
-    attr_reader :client
   end
 end
