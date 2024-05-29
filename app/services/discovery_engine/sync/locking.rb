@@ -16,7 +16,7 @@ module DiscoveryEngine::Sync
 
     # Locks a document while a critical section block is executed to avoid multiple workers
     # competing to update the same document.
-    def with_locked_document(content_id, payload_version:, &critical_section)
+    def with_locked_document(&critical_section)
       redlock_client.lock!(
         "#{LOCK_KEY_PREFIX}:#{content_id}",
         DOCUMENT_LOCK_TTL,
