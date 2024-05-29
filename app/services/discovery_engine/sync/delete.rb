@@ -9,7 +9,7 @@ module DiscoveryEngine::Sync
 
     def call
       with_locked_document do
-        if outdated_payload_version?(content_id, payload_version:)
+        if outdated_payload_version?
           log(
             Logger::Severity::INFO,
             "Ignored as newer version (#{latest_synced_version}) already synced",

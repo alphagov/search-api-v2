@@ -12,7 +12,7 @@ RSpec.describe DiscoveryEngine::Sync::Locking do
   end
 
   describe "#outdated_payload_version?" do
-    subject(:outdated_payload_version) { lockable.outdated_payload_version?(content_id, payload_version:) }
+    subject(:outdated_payload_version) { lockable.outdated_payload_version? }
 
     let(:remote_version) { 42 }
 

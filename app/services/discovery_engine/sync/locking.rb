@@ -49,7 +49,7 @@ module DiscoveryEngine::Sync
       critical_section.call
     end
 
-    def outdated_payload_version?(content_id, payload_version:)
+    def outdated_payload_version?
       # Sense check: This shouldn't ever come through as nil from Publishing API, but if it does,
       # the only really useful thing we can do is ignore this check entirely because we can't
       # meaningfully make a comparison.
