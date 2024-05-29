@@ -8,7 +8,7 @@ module DiscoveryEngine::Sync
       content_id = nil, payload_version: nil,
       client: ::Google::Cloud::DiscoveryEngine.document_service(version: :v1)
     )
-      super()
+      super(content_id, payload_version:)
 
       @content_id = content_id
       @payload_version = payload_version
@@ -62,6 +62,6 @@ module DiscoveryEngine::Sync
 
   private
 
-    attr_reader :content_id, :payload_version, :client
+    attr_reader :client
   end
 end
