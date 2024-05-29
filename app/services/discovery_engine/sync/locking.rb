@@ -56,14 +56,13 @@ module DiscoveryEngine::Sync
       return false if payload_version.nil?
 
       # If there is no remote version yet, our version is always newer by definition
-      remote_version = latest_synced_version(content_id)
-      return false if remote_version.nil?
+      return false if latest_synced_version.nil?
 
-      remote_version.to_i >= payload_version.to_i
+      latest_synced_version.to_i >= payload_version.to_i
     end
 
     # Gets the latest synced version for a document from Redis
-    def latest_synced_version(content_id)
+    def latest_synced_version
       Rails.application.config.redis_pool.with do |redis|
         redis.get("#{VERSION_KEY_PREFIX}:#{content_id}")&.to_i
       end

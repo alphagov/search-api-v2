@@ -12,7 +12,7 @@ module DiscoveryEngine::Sync
         if outdated_payload_version?(content_id, payload_version:)
           log(
             Logger::Severity::INFO,
-            "Ignored as newer version (#{latest_synced_version(content_id)}) already synced",
+            "Ignored as newer version (#{latest_synced_version}) already synced",
           )
           Metrics::Exported.increment_counter(
             :discovery_engine_requests, type: "delete", status: "ignored_outdated"

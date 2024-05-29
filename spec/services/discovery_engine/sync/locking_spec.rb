@@ -1,8 +1,9 @@
 RSpec.describe DiscoveryEngine::Sync::Locking do
-  subject(:lockable) { Class.new.include(described_class).new }
+  subject(:lockable) { DiscoveryEngine::Sync::Operation.new(content_id, payload_version:, client:) }
 
   let(:content_id) { "some-content-id" }
   let(:payload_version) { 10 }
+  let(:client) { double("Google::Cloud::DiscoveryEngine::V1::DocumentService") }
 
   let(:redis_client) { double("Redis Client") }
 
