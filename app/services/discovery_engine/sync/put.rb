@@ -2,8 +2,6 @@ module DiscoveryEngine::Sync
   class Put < Operation
     MIME_TYPE = "text/html".freeze
 
-    include Locking
-
     def initialize(content_id, metadata = nil, content: "", payload_version: nil, client: nil)
       super(content_id, payload_version:, client:)
 

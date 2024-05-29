@@ -1,7 +1,5 @@
 module DiscoveryEngine::Sync
   class Delete < Operation
-    include Locking
-
     def initialize(content_id, payload_version: nil, client: nil)
       super(content_id, payload_version:, client:)
 
