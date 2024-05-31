@@ -12,6 +12,10 @@ module DiscoveryEngine::Sync
 
     attr_reader :content_id, :payload_version, :client
 
+    def lock
+      @lock ||= Coordination::DocumentLock.new(content_id)
+    end
+
     def document_name
       "#{Rails.configuration.discovery_engine_datastore_branch}/documents/#{content_id}"
     end
