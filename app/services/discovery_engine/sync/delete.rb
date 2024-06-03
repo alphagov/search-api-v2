@@ -1,12 +1,5 @@
 module DiscoveryEngine::Sync
   class Delete < Operation
-    def initialize(content_id, payload_version: nil, client: nil)
-      super(content_id, payload_version:, client:)
-
-      @content_id = content_id
-      @payload_version = payload_version
-    end
-
     def call
       with_locked_document do
         if outdated_payload_version?
