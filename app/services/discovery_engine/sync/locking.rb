@@ -16,7 +16,7 @@ module DiscoveryEngine::Sync
 
     # Locks a document while a critical section block is executed to avoid multiple workers
     # competing to update the same document.
-    def with_locked_document(content_id, payload_version:, &critical_section)
+    def with_locked_document(&critical_section)
       redlock_client.lock!(
         "#{LOCK_KEY_PREFIX}:#{content_id}",
         DOCUMENT_LOCK_TTL,
@@ -49,30 +49,29 @@ module DiscoveryEngine::Sync
       critical_section.call
     end
 
-    def outdated_payload_version?(content_id, payload_version:)
+    def outdated_payload_version?
       # Sense check: This shouldn't ever come through as nil from Publishing API, but if it does,
       # the only really useful thing we can do is ignore this check entirely because we can't
       # meaningfully make a comparison.
       return false if payload_version.nil?
 
       # If there is no remote version yet, our version is always newer by definition
-      remote_version = latest_synced_version(content_id)
-      return false if remote_version.nil?
+      return false if latest_synced_version.nil?
 
-      remote_version.to_i >= payload_version.to_i
+      latest_synced_version.to_i >= payload_version.to_i
     end
 
     # Gets the latest synced version for a document from Redis
-    def latest_synced_version(content_id)
+    def latest_synced_version
       Rails.application.config.redis_pool.with do |redis|
         redis.get("#{VERSION_KEY_PREFIX}:#{content_id}")&.to_i
       end
     end
 
     # Sets the latest synced version for a document in Redis
-    def set_latest_synced_version(content_id, version)
+    def set_latest_synced_version
       Rails.application.config.redis_pool.with do |redis|
-        redis.set("#{VERSION_KEY_PREFIX}:#{content_id}", version)
+        redis.set("#{VERSION_KEY_PREFIX}:#{content_id}", payload_version)
       end
     end
 
