@@ -1,6 +1,6 @@
 module DiscoveryEngine::Sync
   class Operation
-    include Locking
+    include Versioning
 
     def initialize(content_id, payload_version: nil, client: nil)
       @content_id = content_id

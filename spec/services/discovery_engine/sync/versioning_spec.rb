@@ -1,4 +1,4 @@
-RSpec.describe DiscoveryEngine::Sync::Locking do
+RSpec.describe DiscoveryEngine::Sync::Versioning do
   subject(:lockable) { DiscoveryEngine::Sync::Operation.new(content_id, payload_version:, client:) }
 
   let(:content_id) { "some-content-id" }

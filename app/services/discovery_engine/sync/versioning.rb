@@ -1,7 +1,5 @@
 module DiscoveryEngine::Sync
-  # Mixin providing a mechanism for sync operations (`Put`, `Delete`) to lock documents while they
-  # are being operated on so that other workers cannot simultaneously update the same document.
-  module Locking
+  module Versioning
     # Redis key prefix for versions
     VERSION_KEY_PREFIX = "search_api_v2:latest_synced_version".freeze
 
