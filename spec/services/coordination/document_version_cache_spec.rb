@@ -45,4 +45,13 @@ RSpec.describe Coordination::DocumentVersionCache do
       it { is_expected.to be false }
     end
   end
+
+  describe "set_as_latest_synced_version" do
+    it "sets the latest synced version" do
+      document_version_cache.set_as_latest_synced_version
+
+      expect(redis_client).to have_received(:set)
+        .with("search_api_v2:latest_synced_version:content-id", 1234)
+    end
+  end
 end

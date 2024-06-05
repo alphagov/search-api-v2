@@ -23,6 +23,17 @@ module Coordination
       latest_synced_version.to_i >= payload_version.to_i
     end
 
+    # Sets the latest synced version to the current payload version, for example after a successful
+    # sync operation.
+    #
+    # Note that this method should only be called when holding a lock on the document through
+    # `DocumentLock` as it does not guarantee any locking of its own.
+    def set_as_latest_synced_version
+      Rails.application.config.redis_pool.with do |redis|
+        redis.set("#{VERSION_KEY_PREFIX}:#{content_id}", payload_version)
+      end
+    end
+
   private
 
     attr_reader :content_id, :payload_version
