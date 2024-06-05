@@ -1,7 +1,7 @@
 RSpec.describe DiscoveryEngine::Sync::Put do
   let(:client) { double("DocumentService::Client", update_document: nil) }
   let(:logger) { double("Logger", add: nil) }
-  let(:redlock_client) { instance_double(Redlock::Client) }
+  let(:lock) { instance_double(Coordination::DocumentLock, acquire: true, release: true) }
   let(:redis_client) { instance_double(Redis, get: "0", set: nil) }
 
   before do
@@ -9,10 +9,7 @@ RSpec.describe DiscoveryEngine::Sync::Put do
     allow(Rails.configuration).to receive(:discovery_engine_datastore_branch).and_return("branch")
     allow(GovukError).to receive(:notify)
 
-    allow(Redlock::Client).to receive(:new).and_return(redlock_client)
-    allow(redlock_client).to receive(:lock!)
-      .with("search_api_v2:sync_lock:some_content_id", anything)
-      .and_yield
+    allow(Coordination::DocumentLock).to receive(:new).with("some_content_id").and_return(lock)
 
     allow(Rails.application.config.redis_pool).to receive(:with).and_yield(redis_client)
   end
@@ -47,11 +44,9 @@ RSpec.describe DiscoveryEngine::Sync::Put do
       )
     end
 
-    it "locks the document by content_id during the update call" do
-      expect(redlock_client).to have_received(:lock!).with(
-        "search_api_v2:sync_lock:some_content_id",
-        anything,
-      )
+    it "acquires and releases the lock" do
+      expect(lock).to have_received(:acquire)
+      expect(lock).to have_received(:release)
     end
 
     it "sets the new latest remote version" do
@@ -133,10 +128,8 @@ RSpec.describe DiscoveryEngine::Sync::Put do
   end
 
   context "when locking the document fails" do
-    let(:error) { Redlock::LockError.new("resource") }
-
     before do
-      allow(redlock_client).to receive(:lock!).and_raise(error)
+      allow(lock).to receive(:acquire).and_return(false)
 
       described_class.new(
         "some_content_id",
@@ -149,17 +142,6 @@ RSpec.describe DiscoveryEngine::Sync::Put do
 
     it "updates the document regardless" do
       expect(client).to have_received(:update_document)
-    end
-
-    it "logs the failure" do
-      expect(logger).to have_received(:add).with(
-        Logger::Severity::ERROR,
-        "[DiscoveryEngine::Sync::Put] Failed to acquire lock for document: some_content_id, payload_version: 1. Continuing without lock.",
-      )
-    end
-
-    it "sends the error to Sentry" do
-      expect(GovukError).to have_received(:notify).with(error)
     end
   end
 
