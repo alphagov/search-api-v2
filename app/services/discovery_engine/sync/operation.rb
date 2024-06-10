@@ -16,6 +16,10 @@ module DiscoveryEngine::Sync
       @lock ||= Coordination::DocumentLock.new(content_id)
     end
 
+    def version_cache
+      @version_cache ||= Coordination::DocumentVersionCache.new(content_id, payload_version:)
+    end
+
     def document_name
       "#{Rails.configuration.discovery_engine_datastore_branch}/documents/#{content_id}"
     end
