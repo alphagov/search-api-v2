@@ -5,14 +5,16 @@ RSpec.describe DiscoveryEngine::Query::Search do
   let(:filters) { double(filter_expression: "filter-expression") }
 
   let(:expected_boost_specs) do
-    [{ boost: 0.2,
-       condition: "content_purpose_supergroup: ANY(\"news_and_communications\") AND public_timestamp: IN(628905600i,*)" },
-     { boost: 0.05,
-       condition: "content_purpose_supergroup: ANY(\"news_and_communications\") AND public_timestamp: IN(621644400i,628905600e)" },
-     { boost: -0.5,
-       condition: "content_purpose_supergroup: ANY(\"news_and_communications\") AND public_timestamp: IN(503280000i,597974400e)" },
-     { boost: -0.75,
-       condition: "content_purpose_supergroup: ANY(\"news_and_communications\") AND public_timestamp: IN(*,503280000e)" }]
+    [
+      hash_including(
+        condition: "content_purpose_supergroup: ANY(\"news_and_communications\")",
+        boost_control_spec: hash_including({
+          field_name: "public_timestamp_datetime",
+          attribute_type: "FRESHNESS",
+          interpolation_type: "LINEAR",
+        }),
+      ),
+    ]
   end
 
   before do

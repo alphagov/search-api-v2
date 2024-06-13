@@ -6,7 +6,8 @@ module DiscoveryEngine::Query
 
     def initialize(
       query_params,
-      client: ::Google::Cloud::DiscoveryEngine.search_service(version: :v1)
+      # TODO: Move back to stable `:v1` client when freshness boost API is available there.
+      client: ::Google::Cloud::DiscoveryEngine.search_service(version: :v1beta)
     )
       @query_params = query_params
       @client = client
@@ -93,7 +94,7 @@ module DiscoveryEngine::Query
     def boost_spec
       {
         condition_boost_specs: [
-          *NewsRecencyBoost.new.boost_specs,
+          news_freshness_boost_spec,
           *best_bets_boost_specs,
         ],
       }
@@ -101,6 +102,40 @@ module DiscoveryEngine::Query
 
     def best_bets_boost_specs
       @best_bets_boost_specs ||= BestBetsBoost.new(query).boost_specs
+    end
+
+    def news_freshness_boost_spec
+      # Use Discovery Engine "freshness boost":
+      # https://cloud.google.com/generative-ai-app-builder/docs/boost-search-results#freshness-boost
+      #
+      # Note that only duration values with units of days (`d`) and shorter are accepted by
+      # Discovery Engine.
+      {
+        condition: "content_purpose_supergroup: ANY(\"news_and_communications\")",
+        boost_control_spec: {
+          field_name: "public_timestamp_datetime",
+          attribute_type: "FRESHNESS",
+          interpolation_type: "LINEAR",
+          control_points: [
+            {
+              attribute_value: "7d", # 1 week
+              boost_amount: 0.2,
+            },
+            {
+              attribute_value: "90d", # 3 months
+              boost_amount: 0.05,
+            },
+            {
+              attribute_value: "365d", # 1 year
+              boost_amount: -0.5,
+            },
+            {
+              attribute_value: "1460d", # 4 years
+              boost_amount: -0.75,
+            },
+          ],
+        },
+      }
     end
 
     def suggested_queries
