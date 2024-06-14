@@ -22,6 +22,7 @@ shared:
   "antisocial behaviour": /how-report-antisocial-behaviour
   "anti social behaviour": /how-report-antisocial-behaviour
   "anti-social behaviour": /how-report-antisocial-behaviour
+  "contact hmrc": /contact-hmrc
 
 test:
   "i want to test a single best bet": /here/you/go
