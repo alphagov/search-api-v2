@@ -3,8 +3,8 @@ RSpec.describe DiscoveryEngine::Sync::Put do
   let(:logger) { double("Logger", add: nil) }
 
   let(:lock) { instance_double(Coordination::DocumentLock, acquire: true, release: true) }
-  let(:version_cache) { instance_double(Coordination::DocumentVersionCache, outdated?: outdated, set_as_latest_synced_version: nil) }
-  let(:outdated) { false }
+  let(:version_cache) { instance_double(Coordination::DocumentVersionCache, sync_required?: sync_required, set_as_latest_synced_version: nil) }
+  let(:sync_required) { true }
 
   before do
     allow(Rails).to receive(:logger).and_return(logger)
@@ -64,8 +64,8 @@ RSpec.describe DiscoveryEngine::Sync::Put do
     end
   end
 
-  context "when the incoming document is outdated" do
-    let(:outdated) { true }
+  context "when the incoming document doesn't need syncing" do
+    let(:sync_required) { false }
 
     before do
       described_class.new(

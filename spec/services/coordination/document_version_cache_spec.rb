@@ -12,37 +12,37 @@ RSpec.describe Coordination::DocumentVersionCache do
         .with("search_api_v2:latest_synced_version:content-id").and_return(remote_version)
   end
 
-  describe "outdated?" do
-    subject(:outdated) { document_version_cache.outdated? }
+  describe "sync_required?" do
+    subject(:sync_required) { document_version_cache.sync_required? }
 
     context "when the remote version is newer" do
       let(:remote_version) { payload_version + 1 }
 
-      it { is_expected.to be true }
+      it { is_expected.to be false }
     end
 
     context "when the remote version is the same" do
       let(:remote_version) { payload_version }
 
-      it { is_expected.to be true }
+      it { is_expected.to be false }
     end
 
     context "when the remote version is older" do
       let(:remote_version) { payload_version - 1 }
 
-      it { is_expected.to be false }
+      it { is_expected.to be true }
     end
 
     context "when there is no remote version" do
       let(:remote_version) { nil }
 
-      it { is_expected.to be false }
+      it { is_expected.to be true }
     end
 
     context "when there is no payload version" do
       let(:payload_version) { nil }
 
-      it { is_expected.to be false }
+      it { is_expected.to be true }
     end
   end
 

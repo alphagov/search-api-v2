@@ -10,17 +10,18 @@ module Coordination
       @payload_version = payload_version
     end
 
-    # Checks whether this document version is outdated (because the cache tracks a newer version).
-    def outdated?
+    # Checks whether this document should be synced based on the current payload version and the
+    # latest synced version in the cache (if any).
+    def sync_required?
       # Sense check: This shouldn't ever come through as nil from Publishing API, but if it does,
       # the only really useful thing we can do is ignore this check entirely because we can't
       # meaningfully make a comparison.
-      return false if payload_version.nil?
+      return true if payload_version.nil?
 
-      # If there is no remote version yet, our version is always newer by definition
-      return false if latest_synced_version.nil?
+      # If there is no remote version yet (or the cache has expired), we always want to sync.
+      return true if latest_synced_version.nil?
 
-      latest_synced_version.to_i >= payload_version.to_i
+      payload_version.to_i > latest_synced_version.to_i
     end
 
     # Sets the latest synced version to the current payload version, for example after a successful
