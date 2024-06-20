@@ -3,10 +3,10 @@ module DiscoveryEngine::Sync
     def call
       lock.acquire
 
-      if outdated_payload_version?
+      if version_cache.outdated?
         log(
           Logger::Severity::INFO,
-          "Ignored as newer version (#{latest_synced_version}) already synced",
+          "Ignored as newer version already synced",
         )
         Metrics::Exported.increment_counter(
           :discovery_engine_requests, type: "delete", status: "ignored_outdated"
@@ -16,7 +16,7 @@ module DiscoveryEngine::Sync
 
       client.delete_document(name: document_name)
 
-      set_latest_synced_version
+      version_cache.set_as_latest_synced_version
 
       log(Logger::Severity::INFO, "Successfully deleted")
       Metrics::Exported.increment_counter(

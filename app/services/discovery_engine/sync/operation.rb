@@ -1,7 +1,5 @@
 module DiscoveryEngine::Sync
   class Operation
-    include Versioning
-
     def initialize(content_id, payload_version: nil, client: nil)
       @content_id = content_id
       @payload_version = payload_version
@@ -14,6 +12,10 @@ module DiscoveryEngine::Sync
 
     def lock
       @lock ||= Coordination::DocumentLock.new(content_id)
+    end
+
+    def version_cache
+      @version_cache ||= Coordination::DocumentVersionCache.new(content_id, payload_version:)
     end
 
     def document_name

@@ -1,8 +1,10 @@
 RSpec.describe DiscoveryEngine::Sync::Put do
   let(:client) { double("DocumentService::Client", update_document: nil) }
   let(:logger) { double("Logger", add: nil) }
+
   let(:lock) { instance_double(Coordination::DocumentLock, acquire: true, release: true) }
-  let(:redis_client) { instance_double(Redis, get: "0", set: nil) }
+  let(:version_cache) { instance_double(Coordination::DocumentVersionCache, outdated?: outdated, set_as_latest_synced_version: nil) }
+  let(:outdated) { false }
 
   before do
     allow(Rails).to receive(:logger).and_return(logger)
@@ -11,7 +13,8 @@ RSpec.describe DiscoveryEngine::Sync::Put do
 
     allow(Coordination::DocumentLock).to receive(:new).with("some_content_id").and_return(lock)
 
-    allow(Rails.application.config.redis_pool).to receive(:with).and_yield(redis_client)
+    allow(Coordination::DocumentVersionCache).to receive(:new)
+      .with("some_content_id", payload_version: "1").and_return(version_cache)
   end
 
   context "when updating the document succeeds" do
@@ -50,10 +53,7 @@ RSpec.describe DiscoveryEngine::Sync::Put do
     end
 
     it "sets the new latest remote version" do
-      expect(redis_client).to have_received(:set).with(
-        "search_api_v2:latest_synced_version:some_content_id",
-        "1",
-      )
+      expect(version_cache).to have_received(:set_as_latest_synced_version)
     end
 
     it "logs the put operation" do
@@ -64,11 +64,10 @@ RSpec.describe DiscoveryEngine::Sync::Put do
     end
   end
 
-  context "when the incoming document is older than the remote version" do
-    before do
-      allow(redis_client).to receive(:get)
-        .with("search_api_v2:latest_synced_version:some_content_id").and_return("42")
+  context "when the incoming document is outdated" do
+    let(:outdated) { true }
 
+    before do
       described_class.new(
         "some_content_id",
         { foo: "bar" },
@@ -83,46 +82,13 @@ RSpec.describe DiscoveryEngine::Sync::Put do
     end
 
     it "does not set the remote version" do
-      expect(redis_client).not_to have_received(:set)
+      expect(version_cache).not_to have_received(:set_as_latest_synced_version)
     end
 
     it "logs that the document hasn't been updated" do
       expect(logger).to have_received(:add).with(
         Logger::Severity::INFO,
-        "[DiscoveryEngine::Sync::Put] Ignored as newer version (42) already synced content_id:some_content_id payload_version:1",
-      )
-    end
-  end
-
-  context "when there is no remote version yet" do
-    before do
-      allow(redis_client).to receive(:get)
-        .with("search_api_v2:latest_synced_version:some_content_id").and_return(nil)
-
-      described_class.new(
-        "some_content_id",
-        { foo: "bar" },
-        content: "some content",
-        payload_version: "1",
-        client:,
-      ).call
-    end
-
-    it "updates the document" do
-      expect(client).to have_received(:update_document)
-    end
-
-    it "sets the new latest remote version" do
-      expect(redis_client).to have_received(:set).with(
-        "search_api_v2:latest_synced_version:some_content_id",
-        "1",
-      )
-    end
-
-    it "logs the put operation" do
-      expect(logger).to have_received(:add).with(
-        Logger::Severity::INFO,
-        "[DiscoveryEngine::Sync::Put] Successfully added/updated content_id:some_content_id payload_version:1",
+        "[DiscoveryEngine::Sync::Put] Ignored as newer version already synced content_id:some_content_id payload_version:1",
       )
     end
   end
