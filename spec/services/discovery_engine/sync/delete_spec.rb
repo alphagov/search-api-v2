@@ -4,8 +4,8 @@ RSpec.describe DiscoveryEngine::Sync::Delete do
 
   let(:lock) { instance_double(Coordination::DocumentLock, acquire: true, release: true) }
 
-  let(:version_cache) { instance_double(Coordination::DocumentVersionCache, outdated?: outdated, set_as_latest_synced_version: nil) }
-  let(:outdated) { false }
+  let(:version_cache) { instance_double(Coordination::DocumentVersionCache, sync_required?: sync_required, set_as_latest_synced_version: nil) }
+  let(:sync_required) { true }
 
   before do
     allow(Rails).to receive(:logger).and_return(logger)
@@ -44,8 +44,8 @@ RSpec.describe DiscoveryEngine::Sync::Delete do
     end
   end
 
-  context "when the incoming document is outdated" do
-    let(:outdated) { true }
+  context "when the incoming document doesn't require syncing" do
+    let(:sync_required) { false }
 
     before do
       described_class.new("some_content_id", payload_version: "1", client:).call

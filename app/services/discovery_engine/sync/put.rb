@@ -12,7 +12,7 @@ module DiscoveryEngine::Sync
     def call
       lock.acquire
 
-      if version_cache.outdated?
+      unless version_cache.sync_required?
         log(
           Logger::Severity::INFO,
           "Ignored as newer version already synced",
