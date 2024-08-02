@@ -13,7 +13,7 @@ Bundler.require(*Rails.groups)
 module SearchApiV2
   class Application < Rails::Application
     config.load_defaults 7.0
-    config.time_zone = "London"
+    config.govuk_time_zone = "London"
     config.api_only = true
 
     # Google Discovery Engine configuration
