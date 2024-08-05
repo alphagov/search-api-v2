@@ -4,12 +4,15 @@ RSpec.describe Metrics::QualityMonitoring do
   let(:registry) { double("registry") }
   let(:score_gauge) { double("score gauge") }
   let(:failure_gauge) { double("failure gauge") }
+  let(:total_gauge) { double("total gauge") }
 
   before do
     allow(registry).to receive(:gauge)
       .with(:search_api_v2_quality_monitoring_score, anything).and_return(score_gauge)
     allow(registry).to receive(:gauge)
       .with(:search_api_v2_quality_monitoring_failures, anything).and_return(failure_gauge)
+    allow(registry).to receive(:gauge)
+      .with(:search_api_v2_quality_monitoring_total, anything).and_return(total_gauge)
 
     allow(score_gauge).to receive(:set)
   end
@@ -29,6 +32,15 @@ RSpec.describe Metrics::QualityMonitoring do
         .with(50, labels: { dataset_type: "foo", dataset_name: "bar" })
 
       quality_monitoring.record_failure_count(:foo, "bar", 50)
+    end
+  end
+
+  describe "#record_total_count" do
+    it "records the total count" do
+      expect(total_gauge).to receive(:set)
+        .with(100, labels: { dataset_type: "foo", dataset_name: "bar" })
+
+      quality_monitoring.record_total_count(:foo, "bar", 100)
     end
   end
 end

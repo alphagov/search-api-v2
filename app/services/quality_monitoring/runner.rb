@@ -57,7 +57,6 @@ module QualityMonitoring
           mean_score,
         ),
       )
-      metric_collector.record_score(type, dataset_name, mean_score) if metric_collector
 
       if failure_details.any?
         Rails.logger.warn(
@@ -70,19 +69,12 @@ module QualityMonitoring
             failure_details.join("\n"),
           ),
         )
-
-        err = FailuresEncountered.new(
-          "Quality monitoring: #{failure_details.size} failures encountered " \
-          "for #{type} dataset #{dataset_name}",
-        )
-        GovukError.notify(
-          err,
-          extra: { dataset_name:, type:, failure_details: failure_details.join("\n") },
-        )
       end
 
       if metric_collector
+        metric_collector.record_score(type, dataset_name, mean_score)
         metric_collector.record_failure_count(type, dataset_name, failure_details.size)
+        metric_collector.record_total_count(type, dataset_name, scores.size)
       end
     end
 
