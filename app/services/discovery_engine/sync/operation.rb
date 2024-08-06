@@ -1,6 +1,7 @@
 module DiscoveryEngine::Sync
   class Operation
-    def initialize(content_id, payload_version: nil, client: nil)
+    def initialize(type, content_id, payload_version: nil, client: nil)
+      @type = type
       @content_id = content_id
       @payload_version = payload_version
       @client = client || ::Google::Cloud::DiscoveryEngine.document_service(version: :v1)
@@ -8,7 +9,29 @@ module DiscoveryEngine::Sync
 
   private
 
-    attr_reader :content_id, :payload_version, :client
+    attr_reader :type, :content_id, :payload_version, :client
+
+    def sync
+      lock.acquire
+
+      if version_cache.sync_required?
+        yield
+
+        version_cache.set_as_latest_synced_version
+
+        increment_counter("success")
+        log(Logger::Severity::INFO, "Successful #{type}")
+      else
+        increment_counter("ignored_outdated")
+        log(Logger::Severity::INFO, "Ignored as newer version already synced")
+      end
+    rescue Google::Cloud::Error => e
+      increment_counter("error")
+      log(Logger::Severity::ERROR, "Failed to #{type} document due to an error (#{e.message})")
+      GovukError.notify(e)
+    ensure
+      lock.release
+    end
 
     def lock
       @lock ||= Coordination::DocumentLock.new(content_id)
@@ -31,6 +54,10 @@ module DiscoveryEngine::Sync
         payload_version,
       )
       Rails.logger.add(level, combined_message)
+    end
+
+    def increment_counter(status)
+      Metrics::Exported.increment_counter(:discovery_engine_requests, type:, status:)
     end
   end
 end
