@@ -1,8 +1,6 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.3.3"
-
 RAILS_GEMS_VERSION = "~> 7.1.3".freeze
 gem "actionpack", RAILS_GEMS_VERSION
 gem "activemodel", RAILS_GEMS_VERSION
