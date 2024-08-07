@@ -34,7 +34,7 @@ RSpec.describe DiscoveryEngine::Sync::Delete do
     it "logs the delete operation" do
       expect(logger).to have_received(:add).with(
         Logger::Severity::INFO,
-        "[DiscoveryEngine::Sync::Delete] Successfully deleted content_id:some_content_id payload_version:1",
+        "[DiscoveryEngine::Sync::Delete] Successful delete content_id:some_content_id payload_version:1",
       )
     end
 

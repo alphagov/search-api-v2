@@ -59,7 +59,7 @@ RSpec.describe DiscoveryEngine::Sync::Put do
     it "logs the put operation" do
       expect(logger).to have_received(:add).with(
         Logger::Severity::INFO,
-        "[DiscoveryEngine::Sync::Put] Successfully added/updated content_id:some_content_id payload_version:1",
+        "[DiscoveryEngine::Sync::Put] Successful put content_id:some_content_id payload_version:1",
       )
     end
   end
@@ -123,7 +123,7 @@ RSpec.describe DiscoveryEngine::Sync::Put do
     it "logs the failure" do
       expect(logger).to have_received(:add).with(
         Logger::Severity::ERROR,
-        "[DiscoveryEngine::Sync::Put] Failed to add/update document due to an error (Something went wrong) content_id:some_content_id payload_version:1",
+        "[DiscoveryEngine::Sync::Put] Failed to put document due to an error (Something went wrong) content_id:some_content_id payload_version:1",
       )
     end
 
