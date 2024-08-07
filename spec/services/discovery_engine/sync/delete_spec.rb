@@ -8,6 +8,7 @@ RSpec.describe DiscoveryEngine::Sync::Delete do
   let(:sync_required) { true }
 
   before do
+    allow(Kernel).to receive(:sleep).and_return(nil)
     allow(Rails).to receive(:logger).and_return(logger)
     allow(Rails.configuration).to receive(:discovery_engine_datastore_branch).and_return("branch")
     allow(GovukError).to receive(:notify)
@@ -100,7 +101,7 @@ RSpec.describe DiscoveryEngine::Sync::Delete do
     end
   end
 
-  context "when the delete fails for another reason" do
+  context "when failing consistently for the maximum number of attempts" do
     let(:err) { Google::Cloud::Error.new("Something went wrong") }
 
     before do
@@ -109,15 +110,60 @@ RSpec.describe DiscoveryEngine::Sync::Delete do
       described_class.new("some_content_id", payload_version: "1", client:).call
     end
 
-    it "logs the failure" do
+    it "logs the failed attempts" do
+      expect(logger).to have_received(:add).with(
+        Logger::Severity::WARN,
+        "[DiscoveryEngine::Sync::Delete] Failed attempt 1 to delete document (Something went wrong), retrying content_id:some_content_id payload_version:1",
+      )
+      expect(logger).to have_received(:add).with(
+        Logger::Severity::WARN,
+        "[DiscoveryEngine::Sync::Delete] Failed attempt 2 to delete document (Something went wrong), retrying content_id:some_content_id payload_version:1",
+      )
       expect(logger).to have_received(:add).with(
         Logger::Severity::ERROR,
-        "[DiscoveryEngine::Sync::Delete] Failed to delete document due to an error (Something went wrong) content_id:some_content_id payload_version:1",
+        "[DiscoveryEngine::Sync::Delete] Failed on attempt 3 to delete document (Something went wrong), giving up content_id:some_content_id payload_version:1",
       )
     end
 
     it "send the error to Sentry" do
       expect(GovukError).to have_received(:notify).with(err)
+    end
+  end
+
+  context "when failing transiently but succeeding within the maximum attempts" do
+    let(:err) { Google::Cloud::Error.new("Something went wrong") }
+
+    before do
+      allow(client).to receive(:delete_document).and_invoke(
+        ->(_) { raise err },
+        ->(_) { raise err },
+        ->(_) { double(name: "document-name") },
+      )
+
+      described_class.new("some_content_id", payload_version: "1", client:).call
+    end
+
+    it "tries three times" do
+      expect(client).to have_received(:delete_document).exactly(3).times
+    end
+
+    it "logs the failed and successful attempts" do
+      expect(logger).to have_received(:add).with(
+        Logger::Severity::WARN,
+        "[DiscoveryEngine::Sync::Delete] Failed attempt 1 to delete document (Something went wrong), retrying content_id:some_content_id payload_version:1",
+      ).ordered
+      expect(logger).to have_received(:add).with(
+        Logger::Severity::WARN,
+        "[DiscoveryEngine::Sync::Delete] Failed attempt 2 to delete document (Something went wrong), retrying content_id:some_content_id payload_version:1",
+      ).ordered
+      expect(logger).to have_received(:add).with(
+        Logger::Severity::INFO,
+        "[DiscoveryEngine::Sync::Delete] Successful delete content_id:some_content_id payload_version:1",
+      ).ordered
+    end
+
+    it "does not send an error to Sentry" do
+      expect(GovukError).not_to have_received(:notify)
     end
   end
 end
