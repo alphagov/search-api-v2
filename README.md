@@ -13,7 +13,9 @@ two core pieces of functionality:
 The official way of running this application locally is through [GOV.UK Docker][govuk-docker], where
 a project is defined for it. Because this application is deeply integrated with a SaaS product, you
 will have to have access to a GCP Discovery Engine engine to be able to do anything more meaningful
-than running the test suite. `govuk-docker` will do this for you by configuring the `DISCOVERY_ENGINE_SERVING_CONFIG` and `DISCOVERY_ENGINE_DATASTORE_BRANCH` environment variables your in local set-up to point to integration.
+than running the test suite. `govuk-docker` will do this for you by configuring the environment to
+point to integration. If you want to run the application without GOV.UK Docker, you can reference
+the required [environment variables][env] from there.
 
 You can run the application from within the `govuk-docker` repository directory as follows:
 
@@ -80,6 +82,7 @@ as some other marketing terms used in some project artefacts.
 [vertex-docs]: https://cloud.google.com/generative-ai-app-builder/docs/introduction
 [search-all-finder]: https://www.gov.uk/search/all
 [govuk-docker]: https://github.com/alphagov/govuk-docker
+[env]: https://github.com/alphagov/govuk-docker/blob/main/projects/search-api-v2/docker-compose.yml
 [finder-frontend]: https://github.com/alphagov/finder-frontend
 [search-api]: https://github.com/alphagov/search-api
 [search-v2-infrastructure]: https://github.com/alphagov/search-v2-infrastructure
