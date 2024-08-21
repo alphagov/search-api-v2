@@ -1,35 +1,296 @@
 openapi: '3.0.0'
 info:
-  title: GOV.UK Search API
+  title: GOV.UK Search API v2
   version: 2.0.0-alpha
 
 paths:
   /search:
     get:
-      summary: Perform a search
-      description: Returns search results matching the user's query
+      summary: Search for content
+      description: Returns search results matching a user query, optionally filtered and ordered
+      tags:
+        - Querying
       parameters:
         - name: q
           in: query
           required: false
-          description: The search query string.
+          description: |-
+            The search query string.
+
+            Note that while not _strictly_ required, results may not be exhaustive or meaningful
+            without a query (in other words, you cannot use this endpoint to reliably retrieve a
+            filtered/ordered list of all documents).
           schema:
             type: string
           example: "i want to fish"
         - name: start
           in: query
           required: false
-          description: The starting index for the search results.
+          description: The starting offset for the search results.
           schema:
             type: integer
             default: 0
         - name: count
           in: query
           required: false
-          description: The number of search results to return.
+          description: The number of search results to return from the starting offset.
           schema:
             type: integer
             default: 10
+        - name: order
+          in: query
+          required: false
+          description: |-
+            The order of the search results.
+
+            Note that `popularity` is supported for backwards compatibility with v1, but behaves
+            identically to `relevance`. `public_timestamp` may be specified with (descending) or
+            without (ascending) a leading `-`.
+          schema:
+            type: string
+            enum: [public_timestamp, -public_timestamp, relevance, popularity]
+            default: relevance
+        - name: suggest
+          in: query
+          required: false
+          description: |-
+            Whether to include spelling suggestions.
+
+            Note that only `spelling_with_highlighting` is supported out of the possible options of
+            the v1 API.
+          schema:
+            type: string
+            enum: [spelling_with_highlighting]
+        - name: filter_content_purpose_supergroup
+          in: query
+          required: false
+          description: |-
+            Filter results to include only documents where the `content_purpose_supergroup` field
+            contains _any_ of the provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: filter_link
+          in: query
+          required: false
+          description: |-
+            Filter results to include only documents where the `link` field contains _any_ of the
+            provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: filter_manual
+          in: query
+          required: false
+          description: |-
+            Filter results to include only documents where the `manual` field contains _any_ of the
+            provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: filter_organisations
+          in: query
+          required: false
+          description: |-
+            Filter results to include only documents where the `organisations` field contains _any_
+            of the provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: filter_part_of_taxonomy_tree
+          in: query
+          required: false
+          description: |-
+            Filter results to include only documents where the `part_of_taxonomy_tree` field
+            contains _any_ of the provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: filter_topical_events
+          in: query
+          required: false
+          description: |-
+            Filter results to include only documents where the `topical_events` field contains _any_
+            of the provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: filter_world_locations
+          in: query
+          required: false
+          description: |-
+            Filter results to include only documents where the `world_locations` field contains
+            _any_ of the provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: filter_public_timestamp
+          in: query
+          required: false
+          description: |-
+            Filter results to include only documents where the `public_timestamp` field is within
+            the date range specified.
+
+            The value should be a range string using the v1 API's date range format, for example
+            `from:1989-12-13,to:2024-08-17` or `from:1989-12-13` or `to:2024-08-17`.
+          schema:
+            type: string
+        - name: filter_all_content_purpose_supergroup
+          in: query
+          required: false
+          description: |-
+            Filter results to include only documents where the `content_purpose_supergroup` field
+            contains _all_ of the provided values.
+
+            Note that the `content_purpose_supergroup` field is a single value on documents, so
+            using this parameter with multiple values will always result in an empty set of results.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: filter_all_link
+          in: query
+          required: false
+          description: |-
+            Filter results to include only documents where the `link` field contains _all_ of the
+            provided values.
+
+            Note that the `link` field is a single value on documents, so using this parameter with
+            multiple values will always result in an empty set of results.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: filter_all_manual
+          in: query
+          required: false
+          description: |-
+            Filter results to include only documents where the `manual` field contains _all_ of the
+            provided values.
+
+            Note that the `manual` field is a single value on documents, so using this parameter
+            with multiple values will always result in an empty set of results.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: filter_all_organisations
+          in: query
+          required: false
+          description: |-
+            Filter results to include only documents where the `organisations` field contains _all_
+            of the provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: filter_all_part_of_taxonomy_tree
+          in: query
+          required: false
+          description: |-
+            Filter results to include only documents where the `part_of_taxonomy_tree` field
+            contains _all_ of the provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: filter_all_topical_events
+          in: query
+          required: false
+          description: |-
+            Filter results to include only documents where the `topical_events` field contains _all_
+            of the provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: filter_all_world_locations
+          in: query
+          required: false
+          description: |-
+            Filter results to include only documents where the `world_locations` field contains
+            _all_ of the provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: reject_content_purpose_supergroup
+          in: query
+          required: false
+          description: |-
+            Filter results to exclude documents where the `content_purpose_supergroup` field is
+            equal to _any_ of the provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: reject_link
+          in: query
+          required: false
+          description: |-
+            Filter results to exclude documents where the `link` field is equal to _any_ of the
+            provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: reject_manual
+          in: query
+          required: false
+          description: |-
+            Filter results to exclude documents where the `manual` field is equal to _any_ of the
+            provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: reject_organisations
+          in: query
+          required: false
+          description: |-
+            Filter results to exclude documents where the `organisations` field contains _any_ of
+            the provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: reject_part_of_taxonomy_tree
+          in: query
+          required: false
+          description: |-
+            Filter results to exclude documents where the `part_of_taxonomy_tree` field contains
+            _any_ of the provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: reject_topical_events
+          in: query
+          required: false
+          description: |-
+            Filter results to exclude documents where the `topical_events` field contains _any_ of
+            the provided values.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: reject_world_locations
+          in: query
+          required: false
+          description: |-
+            Filter results to exclude documents where the `world_locations` field contains _any_ of
+            the provided values.
+          schema:
+            type: array
+            items:
+              type: string
       responses:
         '200':
           description: Successful response
@@ -37,6 +298,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/SearchResponse'
+
+  /autocomplete:
+    get:
+      summary: Complete a partial search query
+      description: Returns a list of suggestions for completing a user's partial search query
+      tags:
+        - Querying
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: The partial search query to autocomplete
+          schema:
+            type: string
+          example: "test"
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutocompleteResponse'
+
 
 components:
   schemas:
@@ -46,53 +330,160 @@ components:
         results:
           type: array
           items:
-            type: object
-            properties:
-              _id:
-                type: string
-              content_id:
-                type: string
-                format: uuid
-              title:
-                type: string
-              description_with_highlighting:
-                type: string
-              link:
-                type: string
-              public_timestamp:
-                type: string
-                format: date-time
-              government_name:
-                type: string
-              parts:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    title:
-                      type: string
-                    body:
-                      type: string
-                    slug:
-                      type: string
-              part_of_taxonomy_tree:
-                type: array
-                items:
-                  type: string
-                  format: uuid
-              format:
-                type: string
-              is_historic:
-                type: boolean
-              content_purpose_supergroup:
-                type: string
-              content_store_document_type:
-                type: string
-          default: []
-          description: 'The array of search results.'
+            $ref: '#/components/schemas/SearchResult'
+          description: The array of search results.
         total:
           type: integer
-          description: 'The total number of items that match the search criteria.'
+          description: |-
+            The total number of items that match the search criteria.
+
+            Note that this is an approximation and is unlikely to be completely accurate even when
+            repeating the same query in quick succession.
+          example: 123
         start:
           type: integer
-          description: 'The starting index for the returned search results.'
+          description: The starting offset for the returned search results.
+          example: 0
+        suggested_queries:
+          type: array
+          items:
+            $ref: '#/components/schemas/SuggestedQuery'
+          description: |-
+            Suggested queries for spelling corrections.
+
+            Note that this is an array for compatibility with v1, but will only ever have at most
+            one element (or zero if there are no meaningful completions).
+        discovery_engine_attribution_token:
+          type: string
+          description: |-
+            Attribution token from Discovery Engine.
+
+            This is used for analytics purposes to uniquely identify the search request.
+          example: >-
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+    SearchResult:
+      type: object
+      required:
+        - content_id
+        - title
+        - link
+        - content_purpose_supergroup
+        - description_with_highlighting
+        - public_timestamp
+        - content_store_document_type
+        - is_historic
+      properties:
+        _id:
+          type: string
+          deprecated: true
+          description: |-
+            Legacy Elasticsearch implementation detail for backwards compatibility with v1 in Finder
+            Frontend. Equal to `link` field for internal content, `content_id` field for external
+            content.
+          example: "/guidance/a-flexible-article-pool-noodle-tariff-notice-6"
+        content_id:
+          type: string
+          format: uuid
+          description: Unique identifier for this item in Publishing API.
+          example: 4e08b829-016b-4ea9-812c-4ed66fc7df4b
+        title:
+          type: string
+          description: The title of the content.
+          example: A flexible article (pool noodle) (Tariff notice 6)
+        description_with_highlighting:
+          type: string
+          description: 'The description of the content. Currently not highlighted by Discovery Engine, but included for backwards compatibility.'
+          example: |-
+            Check the tariff classification for a flexible article made of cellular plastics in the
+            shape of a hollow tube.
+        link:
+          type: string
+          description: |-
+            The URL **or** relative path of the content.
+
+            Will be an absolute URL for content outside GOV.UK, a relative path underneath
+            `https://www.gov.uk` otherwise.
+          example: /guidance/a-flexible-article-pool-noodle-tariff-notice-6
+        public_timestamp:
+          type: string
+          format: date-time
+          description: The public timestamp of the document, in ISO8601 format.
+          example: 2022-03-22T12:11:29+00:00
+        government_name:
+          type: string
+          description: |-
+            The name of the government associated with the content.
+
+            Only present for certain types of content, and then only when they are associated with a
+            specific previous government.
+          example: "2010 to 2015 Conservative and Liberal Democrat coalition government"
+        parts:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                description: The title of the part.
+                example: Sign in to HMRC online services
+              body:
+                type: string
+                description: A brief description of the part.
+                example: Once you’ve set up an account, you can sign in for things like your…
+              slug:
+                type: string
+                description: The slug of the part (to be appended to the link)
+                example: sign-in
+          description: |-
+            Sections or parts of the content to be shown as sub-results underneath this result, if
+            applicable.
+        format:
+          type: string
+          deprecated: true
+          description: |-
+            On v2, this field is **always** equal to the value of the `content_store_document_type`
+            field, and is included only for v1 backwards compatibility for Finder Frontend.
+          example: guidance
+        is_historic:
+          type: boolean
+          description: |-
+            Indicates whether the content is considered historic, i.e. published under a previous
+            government with content that may relate to government policies.
+
+            Note that this field being `false` doesn't necessarily mean this content is current, it
+            is only relevant for some content types.
+        content_purpose_supergroup:
+          type: string
+          description: The high-level purpose or category of the content from the Publishing API.
+          example: guidance_and_regulation
+        content_store_document_type:
+          type: string
+          description: The document type from Publishing API.
+          example: guidance
+
+    SuggestedQuery:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The suggested query text.
+          example: "driving test"
+        highlighted:
+          type: string
+          description: |-
+            The suggested query text with highlighting.
+
+            Note that this is always just the entire `text` property wrapped in `<mark>` tags as
+            Vertex AI Search does not provide highlighting for individual parts of the query.
+          example: "<mark>driving test</mark>"
+
+    AutocompleteResponse:
+      type: object
+      properties:
+        suggestions:
+          type: array
+          items:
+            type: string
+          description: An array of suggested query completions
+          example: ["driving test","theory test","book driving test","change driving test","book theory test"]
