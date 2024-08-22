@@ -6,6 +6,9 @@ module Metrics
       search_requests: CLIENT.register(
         :counter, "search_api_v2_search_requests", "number of incoming search requests"
       ),
+      autocomplete_requests: CLIENT.register(
+        :counter, "search_api_v2_autocomplete_requests", "number of incoming autocomplete requests"
+      ),
       ### Synchronisation counters
       incoming_messages: CLIENT.register(
         :counter, "search_api_v2_incoming_messages", "number of incoming messages from Publishing API"
