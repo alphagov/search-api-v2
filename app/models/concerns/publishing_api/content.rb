@@ -62,17 +62,41 @@ module PublishingApi
       values_from_json_paths = INDEXABLE_CONTENT_VALUES_JSON_PATHS.map do |item|
         item.on(document_hash).map { |body| BodyContent.new(body).html_content }
       end
+
       values_from_parts = document_hash.dig(:details, :parts)&.map do |part|
         # Add the part title as a heading to help the search model better understand the structure
         # of the content
         ["<h1>#{part[:title]}</h1>", BodyContent.new(part[:body]).html_content]
       end
 
-      [*values_from_json_paths, *values_from_parts]
+      [*values_from_json_paths, *values_from_parts, *values_from_blocks(document_hash)]
         .flatten
         .compact_blank
         .join(INDEXABLE_CONTENT_SEPARATOR)
         .truncate_bytes(INDEXABLE_CONTENT_MAX_BYTE_SIZE)
+    end
+
+    def values_from_blocks(document_hash)
+      matches = JsonPath.new("$.details.blocks..content", use_symbols: true).on(document_hash)
+      return [] unless matches.any?
+
+      ignore_set = []
+      values = []
+      matches.each do |match|
+        case match
+        in Array
+          match.each { |m| ignore_set << m[:content] if m[:content].present? }
+          values << BodyContent.new(match).html_content
+        else
+          if ignore_set.index(match).present?
+            ignore_set.delete_at(ignore_set.index(match))
+          else
+            values << BodyContent.new(match).html_content
+          end
+        end
+      end
+
+      values
     end
   end
 end

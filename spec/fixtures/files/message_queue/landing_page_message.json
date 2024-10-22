@@ -1,0 +1,265 @@
+{
+  "title": "Landing Page Fixture",
+  "public_updated_at": "2024-10-21T23:00:00Z",
+  "publishing_app": "whitehall",
+  "rendering_app": "frontend",
+  "update_type": "minor",
+  "phase": "live",
+  "analytics_identifier": null,
+  "document_type": "landing_page",
+  "schema_name": "landing_page",
+  "first_published_at": "2024-10-21T23:00:00Z",
+  "base_path": "/landing-page/search-test",
+  "description": "Landing page description",
+  "details": {
+    "blocks": [
+      {
+        "type": "hero",
+        "image": {
+          "alt": "Placeholder alt text",
+          "sources": {
+            "mobile": "landing_page/placeholder/mobile.png"
+          }
+        },
+        "hero_content": {
+          "blocks": [
+            {
+              "type": "govspeak",
+              "content": [
+                {
+                  "content": "## Govspeak in Hero Example\n\nTHIS SHOULD NOT APPEAR!\n",
+                  "content_type": "text/govspeak"
+                },
+                {
+                  "content_type": "text/html",
+                  "content": "\u003ch2 id=\"govspeak-in-hero-example\"\u003eGovspeak in Hero Example\u003c/h2\u003e\n\n\u003cp\u003eMore text\u003c/p\u003e\n"
+                }
+              ],
+              "inverse": true
+            }
+          ]
+        }
+      },
+      {
+        "type": "featured",
+        "image": {
+          "alt": "example alt text",
+          "sources": {
+            "mobile": "landing_page/placeholder/mobile.png"
+          }
+        },
+        "featured_content": {
+          "blocks": [
+            {
+              "type": "govspeak",
+              "content": "\u003ch2\u003eGovspeak in featured example\u003c/h2\u003e\n\u003cp\u003eLorem ipsum.\u003c/p\u003e\n",
+              "inverse": true
+            }
+          ]
+        }
+      },
+      {
+        "type": "header",
+        "content": "Header block example"
+      },
+      {
+        "type": "tabs",
+        "tab_items": [
+          {
+            "id": "tab-1",
+            "label": "Item 1",
+            "content": "Content in tab example one"
+          },
+          {
+            "id": "tab-2",
+            "label": "Item 2",
+            "content": "Content in tab example two"
+          }
+        ]
+      },
+      {
+        "type": "govspeak",
+        "content": "\u003cp\u003eHand-crafted Govspeak example\u003c/p\u003e"
+      },
+      {
+        "type": "two_column_layout",
+        "theme": "two_thirds_one_third",
+        "blocks": [
+          {
+            "type": "govspeak",
+            "content": "\u003cp\u003eGovspeak in two column example left\u003c/p\u003e"
+          }
+        ]
+      }
+    ]
+  },
+  "routes": [
+    {
+      "path": "/landing-page/search-test",
+      "type": "exact"
+    }
+  ],
+  "redirects": [],
+  "content_id": "4423de24-06d2-454c-8fc1-2bd9c43087f0",
+  "locale": "en",
+  "expanded_links": {
+    "taxons": [
+      {
+        "content_id": "e48ab80a-de80-4e83-bf59-26316856a5f9",
+        "title": "Government",
+        "locale": "en",
+        "analytics_identifier": null,
+        "api_path": "/api/content/government/all",
+        "base_path": "/government/all",
+        "document_type": "taxon",
+        "public_updated_at": "2018-09-16T20:29:39Z",
+        "schema_name": "taxon",
+        "withdrawn": false,
+        "description": "",
+        "details": {
+          "internal_name": "Government",
+          "notes_for_editors": "",
+          "visible_to_departmental_editors": true
+        },
+        "phase": "live",
+        "links": {
+          "root_taxon": [
+            {
+              "content_id": "f3bbdec2-0e62-4520-a7fd-6ffd5d36e03a",
+              "title": "GOV.UK homepage",
+              "locale": "en",
+              "analytics_identifier": null,
+              "api_path": "/api/content/",
+              "base_path": "/",
+              "document_type": "homepage",
+              "public_updated_at": "2023-06-28T09:32:34Z",
+              "schema_name": "homepage",
+              "withdrawn": false,
+              "links": {}
+            }
+          ]
+        }
+      }
+    ],
+    "organisations": [
+      {
+        "content_id": "af07d5a5-df63-4ddc-9383-6a666845ebe9",
+        "title": "Government Digital Service",
+        "locale": "en",
+        "analytics_identifier": "OT1056",
+        "api_path": "/api/content/government/organisations/government-digital-service",
+        "base_path": "/government/organisations/government-digital-service",
+        "document_type": "organisation",
+        "schema_name": "organisation",
+        "withdrawn": false,
+        "details": {
+          "acronym": "GDS",
+          "logo": {
+            "crest": "single-identity",
+            "formatted_title": "Government Digital Service"
+          },
+          "brand": "department-for-science-innovation-and-technology",
+          "default_news_image": null,
+          "organisation_govuk_status": {
+            "url": null,
+            "status": "live",
+            "updated_at": null
+          }
+        },
+        "links": {}
+      }
+    ],
+    "original_primary_publishing_organisation": [
+      {
+        "content_id": "af07d5a5-df63-4ddc-9383-6a666845ebe9",
+        "title": "Government Digital Service",
+        "locale": "en",
+        "analytics_identifier": "OT1056",
+        "api_path": "/api/content/government/organisations/government-digital-service",
+        "base_path": "/government/organisations/government-digital-service",
+        "document_type": "organisation",
+        "schema_name": "organisation",
+        "withdrawn": false,
+        "details": {
+          "acronym": "GDS",
+          "logo": {
+            "crest": "single-identity",
+            "formatted_title": "Government Digital Service"
+          },
+          "brand": "department-for-science-innovation-and-technology",
+          "default_news_image": null,
+          "organisation_govuk_status": {
+            "url": null,
+            "status": "live",
+            "updated_at": null
+          }
+        },
+        "links": {}
+      }
+    ],
+    "primary_publishing_organisation": [
+      {
+        "content_id": "af07d5a5-df63-4ddc-9383-6a666845ebe9",
+        "title": "Government Digital Service",
+        "locale": "en",
+        "analytics_identifier": "OT1056",
+        "api_path": "/api/content/government/organisations/government-digital-service",
+        "base_path": "/government/organisations/government-digital-service",
+        "document_type": "organisation",
+        "schema_name": "organisation",
+        "withdrawn": false,
+        "details": {
+          "acronym": "GDS",
+          "logo": {
+            "crest": "single-identity",
+            "formatted_title": "Government Digital Service"
+          },
+          "brand": "department-for-science-innovation-and-technology",
+          "default_news_image": null,
+          "organisation_govuk_status": {
+            "url": null,
+            "status": "live",
+            "updated_at": null
+          }
+        },
+        "links": {}
+      }
+    ],
+    "available_translations": [
+      {
+        "title": "Search test",
+        "public_updated_at": "2024-10-21T23:00:00Z",
+        "analytics_identifier": null,
+        "document_type": "landing_page",
+        "schema_name": "landing_page",
+        "base_path": "/landing-page/search-test",
+        "api_path": "/api/content/landing-page/search-test",
+        "withdrawn": false,
+        "content_id": "4423de24-06d2-454c-8fc1-2bd9c43087f0",
+        "locale": "en"
+      }
+    ]
+  },
+  "user_journey_document_supertype": "thing",
+  "email_document_supertype": "other",
+  "government_document_supertype": "other",
+  "content_purpose_subgroup": "other",
+  "content_purpose_supergroup": "other",
+  "publishing_request_id": "21-1729602038.916-10.1.21.246-2547",
+  "govuk_request_id": null,
+  "links": {
+    "taxons": [
+      "e48ab80a-de80-4e83-bf59-26316856a5f9"
+    ],
+    "organisations": [
+      "af07d5a5-df63-4ddc-9383-6a666845ebe9"
+    ],
+    "original_primary_publishing_organisation": [
+      "af07d5a5-df63-4ddc-9383-6a666845ebe9"
+    ],
+    "primary_publishing_organisation": [
+      "af07d5a5-df63-4ddc-9383-6a666845ebe9"
+    ]
+  },
+  "payload_version": "12345"
+}
