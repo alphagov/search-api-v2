@@ -463,6 +463,38 @@ RSpec.describe "Document synchronization" do
     end
   end
 
+  describe "for a 'landing_page' message" do
+    let(:payload) { json_fixture_as_hash("message_queue/landing_page_message.json") }
+
+    it "is added to Discovery Engine through the Put service" do
+      expect(DiscoveryEngine::Sync::Put).to have_received(:new).with(
+        "4423de24-06d2-454c-8fc1-2bd9c43087f0",
+        {
+          content_id: "4423de24-06d2-454c-8fc1-2bd9c43087f0",
+          content_purpose_supergroup: "other",
+          debug: {
+            last_synced_at: "1989-12-13T01:02:03+00:00",
+            payload_version: 12_345,
+          },
+          description: "Landing page description",
+          document_type: "landing_page",
+          is_historic: 0,
+          link: "/landing-page/search-test",
+          locale: "en",
+          organisations: %w[government-digital-service],
+          part_of_taxonomy_tree: %w[f3bbdec2-0e62-4520-a7fd-6ffd5d36e03a e48ab80a-de80-4e83-bf59-26316856a5f9],
+          public_timestamp: 1_729_551_600,
+          public_timestamp_datetime: "2024-10-21T23:00:00Z",
+          title: "Landing Page Fixture",
+          url: "https://www.gov.uk/landing-page/search-test",
+        },
+        content: "Landing Page Fixture\nLanding page description\n<h2 id=\"govspeak-in-hero-example\">Govspeak in Hero Example</h2>\n\n<p>More text</p>\n\n<h2>Govspeak in featured example</h2>\n<p>Lorem ipsum.</p>\n\nHeader block example\nContent in tab example one\nContent in tab example two\n<p>Hand-crafted Govspeak example</p>\n<p>Govspeak in two column example left</p>",
+        payload_version: 12_345,
+      )
+      expect(put_service).to have_received(:call)
+    end
+  end
+
   describe "for an 'external_content' message" do
     let(:payload) { json_fixture_as_hash("message_queue/external_content_message.json") }
 
