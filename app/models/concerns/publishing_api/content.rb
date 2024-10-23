@@ -69,34 +69,35 @@ module PublishingApi
         ["<h1>#{part[:title]}</h1>", BodyContent.new(part[:body]).html_content]
       end
 
-      [*values_from_json_paths, *values_from_parts, *values_from_blocks(document_hash)]
+      [*values_from_json_paths, *values_from_parts, *values_from_blocks_document(document_hash)]
         .flatten
         .compact_blank
         .join(INDEXABLE_CONTENT_SEPARATOR)
         .truncate_bytes(INDEXABLE_CONTENT_MAX_BYTE_SIZE)
     end
 
-    def values_from_blocks(document_hash)
-      matches = JsonPath.new("$.details.blocks..content", use_symbols: true).on(document_hash)
-      return [] unless matches.any?
-
-      ignore_set = []
-      values = []
-      matches.each do |match|
-        case match
-        in Array
-          match.each { |m| ignore_set << m[:content] if m[:content].present? }
-          values << BodyContent.new(match).html_content
-        else
-          if ignore_set.index(match).present?
-            ignore_set.delete_at(ignore_set.index(match))
-          else
-            values << BodyContent.new(match).html_content
-          end
-        end
+    def values_from_blocks_document(document_hash)
+      if document_hash in { details: { blocks: [*blocks] } }
+        blocks.flat_map { values_from_blocks(_1) }
+      else
+        []
       end
+    end
 
-      values
+    def values_from_blocks(input)
+      case input
+      in {content_type:, content:}
+        content_type == "text/html" ? [content] : []
+      in {content: String => content}
+        [content]
+      in Hash => h
+        h.values.flat_map { values_from_blocks(_1) }
+      in Array => a
+        a.flat_map { values_from_blocks(_1) }
+      else
+        # Other kinds of values can't include content, so ignore those
+        []
+      end
     end
   end
 end
