@@ -5,18 +5,18 @@ shared:
     - /government/publications/test--150
     - /service-manual/technology/test-your-services-performance
   "budget": 
-    - /government/topical-events/autumn-budget-and-spending-round-2024
-    - /government/publications/autumn-budget-and-spending-round-2024
+    - /government/topical-events/autumn-budget-2024
+    - /government/publications/autumn-budget-2024
   "budget 2024":
-    - /government/topical-events/autumn-budget-and-spending-round-2024
-    - /government/publications/autumn-budget-and-spending-round-2024
-  "autumn budget": /government/topical-events/autumn-budget-and-spending-round-2024
-  "autumn budget 2024": /government/topical-events/autumn-budget-and-spending-round-2024
-  "2024 budget": /government/topical-events/autumn-budget-and-spending-round-2024
-  "budget statement": /government/topical-events/autumn-budget-and-spending-round-2024
-  "autumn statement": /government/topical-events/autumn-budget-and-spending-round-2024
-  "autumn statement 2024": /government/topical-events/autumn-budget-and-spending-round-2024
-  "the budget": /government/topical-events/autumn-budget-and-spending-round-2024
+    - /government/topical-events/autumn-budget-2024
+    - /government/publications/autumn-budget-2024
+  "autumn budget": /government/topical-events/autumn-budget-2024
+  "autumn budget 2024": /government/topical-events/autumn-budget-2024
+  "2024 budget": /government/topical-events/autumn-budget-2024
+  "budget statement": /government/topical-events/autumn-budget-2024
+  "autumn statement": /government/topical-events/autumn-budget-2024
+  "autumn statement 2024": /government/topical-events/autumn-budget-2024
+  "the budget": /government/topical-events/autumn-budget-2024
   "gaza":
     - /foreign-travel-advice/the-occupied-palestinian-territories
     - /government/news/gaza-what-you-can-do-to-help
