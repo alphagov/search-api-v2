@@ -66,13 +66,17 @@ module DiscoveryEngine::Query
     end
 
     def valid_filter_value?(value)
-      # Finder Frontend should be more resilient to invalid filter values, but we can't rely on that
-      # for the time being. This ensures that occasionally observed garbage parameters such as:
+      # Finder Frontend should be more resilient to invalid filter values and send through perfectly
+      # formatted requests, but we can't rely on that for the time being. This ensures that
+      # occasionally observed garbage parameters such as:
       #
       #   filter_world_locations[\\\\]=all
       #
-      # are ignored by checking that the value is either a string or an array of strings.
-      Array(value).all? { _1.is_a?(String) }
+      # as well as empty params that Finder Frontend will send through (particularly for
+      # `part_of_taxonomy_tree`) are ignored by checking that the value is either a string or an
+      # array of strings, and each individual value is present.
+      values = Array(value)
+      values.all? { _1.is_a?(String) && _1.present? }
     end
   end
 end

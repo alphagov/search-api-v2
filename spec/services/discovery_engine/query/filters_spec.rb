@@ -65,6 +65,14 @@ RSpec.describe DiscoveryEngine::Query::Filters do
         it { is_expected.to be_nil }
       end
 
+      context "with empty string filters" do
+        let(:query_params) do
+          { q: "garden centres", filter_content_purpose_supergroup: ["", ""] }
+        end
+
+        it { is_expected.to be_nil }
+      end
+
       context "with an unknown field" do
         let(:query_params) { { q: "garden centres", filter_foo: "bar" } }
 
