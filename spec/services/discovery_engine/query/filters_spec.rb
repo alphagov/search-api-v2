@@ -32,6 +32,12 @@ RSpec.describe DiscoveryEngine::Query::Filters do
 
         it { is_expected.to be_nil }
       end
+
+      context "with invalid characters in the filter value" do
+        let(:query_params) { { q: "garden centres", reject_link: "foo\u0000bar" } }
+
+        it { is_expected.to be_nil }
+      end
     end
 
     context "with an 'any' string filter" do
@@ -61,6 +67,12 @@ RSpec.describe DiscoveryEngine::Query::Filters do
         let(:query_params) do
           { q: "garden centres", filter_content_purpose_supergroup: { "\\\\\\\\" => "oops" } }
         end
+
+        it { is_expected.to be_nil }
+      end
+
+      context "with invalid characters in the filter value" do
+        let(:query_params) { { q: "garden centres", filter_link: "foo\u0000bar" } }
 
         it { is_expected.to be_nil }
       end
@@ -97,6 +109,12 @@ RSpec.describe DiscoveryEngine::Query::Filters do
         let(:query_params) do
           { q: "garden centres", filter_all_part_of_taxonomy_tree: { "\\\\\\\\" => "oops" } }
         end
+
+        it { is_expected.to be_nil }
+      end
+
+      context "with invalid characters in the filter value" do
+        let(:query_params) { { q: "garden centres", filter_all_link: "foo\u0000bar" } }
 
         it { is_expected.to be_nil }
       end
@@ -176,12 +194,6 @@ RSpec.describe DiscoveryEngine::Query::Filters do
       end
 
       it { is_expected.to eq('(NOT link: ANY("/foo")) AND (content_purpose_supergroup: ANY("services")) AND ((part_of_taxonomy_tree: ANY("cafe-1234")) AND (part_of_taxonomy_tree: ANY("face-5678"))) AND (public_timestamp: IN(629510400,629596799))') }
-    end
-
-    context "with filters containing escapable characters" do
-      let(:query_params) { { q: "garden centres", filter_content_purpose_supergroup: "foo\"\\bar" } }
-
-      it { is_expected.to eq('content_purpose_supergroup: ANY("foo\\"\\\\bar")') }
     end
   end
 end
