@@ -1,6 +1,7 @@
 module DiscoveryEngine::Query
   class Filters
     FILTER_PARAM_KEY_REGEX = /\A(filter_all|filter|reject)_(.+)\z/
+    ACCEPTABLE_VALUE_REGEX = /\A[a-zA-Z0-9_:,\-\/]+\z/
 
     FILTERABLE_STRING_FIELDS = %w[
       content_purpose_supergroup
@@ -70,9 +71,11 @@ module DiscoveryEngine::Query
       # for the time being. This ensures that occasionally observed garbage parameters such as:
       #
       #   filter_world_locations[\\\\]=all
+      #   filter_something=blah%00blah
       #
-      # are ignored by checking that the value is either a string or an array of strings.
-      Array(value).all? { _1.is_a?(String) }
+      # are ignored by checking that the value is either a string or an array of strings, and
+      # matches an allowlist of permissible characters.
+      Array(value).all? { _1.is_a?(String) && _1.match?(ACCEPTABLE_VALUE_REGEX) }
     end
   end
 end

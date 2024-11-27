@@ -6,7 +6,7 @@ module DiscoveryEngine::Query
     # values in string_value_or_values
     def filter_any_string(string_or_array_field, string_value_or_values)
       Array(string_value_or_values)
-        .map { escape_and_quote(_1) }
+        .map { quote(_1) }
         .join(",")
         .then { "#{string_or_array_field}: ANY(#{_1})" }
     end
@@ -69,9 +69,8 @@ module DiscoveryEngine::Query
       "(#{expression})"
     end
 
-    def escape_and_quote(string_value)
-      escaped_string = string_value.gsub(/(["\\])/, '\\\\\1')
-      "\"#{escaped_string}\""
+    def quote(string_value)
+      "\"#{string_value}\""
     end
   end
 end
