@@ -20,6 +20,7 @@ module SearchApiV2
     config.discovery_engine_serving_config = ENV.fetch("DISCOVERY_ENGINE_SERVING_CONFIG")
     config.discovery_engine_datastore = ENV.fetch("DISCOVERY_ENGINE_DATASTORE")
     config.discovery_engine_datastore_branch = ENV.fetch("DISCOVERY_ENGINE_DATASTORE_BRANCH")
+    config.google_cloud_project_id = ENV.fetch("GOOGLE_CLOUD_PROJECT_ID")
 
     # Document sync configuration
     config.document_type_ignorelist = config_for(:document_type_ignorelist)

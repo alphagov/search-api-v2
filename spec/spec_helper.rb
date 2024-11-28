@@ -11,6 +11,10 @@ GovukTest.configure
 
 require "grpc_mock/rspec"
 
+# Required to be able to stub Google classes in tests (as classes from the `v1` namespace are not
+# used directly in non-test code, they are not loaded by default)
+require "google/cloud/discovery_engine/v1"
+
 Timecop.safe_mode = true
 
 require "redlock/testing"
