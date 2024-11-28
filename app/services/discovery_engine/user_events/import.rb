@@ -84,7 +84,9 @@ module DiscoveryEngine::UserEvents
     end
 
     def logger
-      @logger ||= Rails.logger.tagged(self.class.name, event_type, date)
+      @logger ||= ActiveSupport::TaggedLogging
+        .new(Rails.logger)
+        .tagged(self.class.name, "event_type=#{event_type}", "date=#{date}")
     end
   end
 end
