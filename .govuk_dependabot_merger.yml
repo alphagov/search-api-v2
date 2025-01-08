@@ -1,4 +1,11 @@
 api_version: 2
 defaults:
+  update_external_dependencies: true
   auto_merge: true
-  update_external_dependencies: false # TODO: enable after verifying that this repo meets the conditions
+  allowed_semver_bumps:
+    - patch
+    - minor
+overrides:
+  - dependency: rails
+    allowed_semver_bumps:
+      - patch
