@@ -40,5 +40,11 @@ module SearchApiV2
     ## currently only using a single instance (the Publishing "shared" Redis). If we ever need to
     ## use multiple Redis instances, this is the only place that needs updating.
     config.redlock_redis_instances = [config.redis_url]
+
+    # Feature flags
+    def self.feature_flag(name, default: false)
+      ActiveModel::Type::Boolean.new.cast(ENV.fetch(name, default))
+    end
+    config.enable_autocomplete = feature_flag("ENABLE_AUTOCOMPLETE", default: true)
   end
 end

@@ -17,4 +17,19 @@ RSpec.describe "Making an autocomplete request" do
       })
     end
   end
+
+  context "when autocomplete is disabled through the feature flag" do
+    before do
+      allow(Rails.configuration).to receive(:enable_autocomplete).and_return(false)
+    end
+
+    it "returns empty suggestions" do
+      get "/autocomplete.json?q=foo"
+
+      expect(response).to have_http_status(:ok)
+      expect(JSON.parse(response.body)).to eq({
+        "suggestions" => [],
+      })
+    end
+  end
 end
