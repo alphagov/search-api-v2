@@ -19,7 +19,6 @@ module SearchApiV2
     # Google Discovery Engine configuration
     config.discovery_engine_default_collection_name = ENV.fetch("DISCOVERY_ENGINE_DEFAULT_COLLECTION_NAME")
     config.discovery_engine_serving_config = ENV.fetch("DISCOVERY_ENGINE_SERVING_CONFIG")
-    config.discovery_engine_datastore_branch = ENV.fetch("DISCOVERY_ENGINE_DATASTORE_BRANCH")
     config.google_cloud_project_id = ENV.fetch("GOOGLE_CLOUD_PROJECT_ID")
 
     # Document sync configuration
