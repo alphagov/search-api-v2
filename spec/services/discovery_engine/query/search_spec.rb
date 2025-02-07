@@ -16,8 +16,6 @@ RSpec.describe DiscoveryEngine::Query::Search do
   end
 
   before do
-    allow(Rails.configuration).to receive(:discovery_engine_serving_config)
-      .and_return("serving-config-path")
     allow(DiscoveryEngine::Query::Filters).to receive(:new).and_return(filters)
   end
 
@@ -52,7 +50,7 @@ RSpec.describe DiscoveryEngine::Query::Search do
 
       it "calls the client with the expected parameters" do
         expect(client).to have_received(:search).with(
-          serving_config: "serving-config-path",
+          serving_config: ServingConfig.default.name,
           query: "garden centres",
           offset: 0,
           page_size: 10,
@@ -76,7 +74,7 @@ RSpec.describe DiscoveryEngine::Query::Search do
 
         it "calls the client with the expected parameters" do
           expect(client).to have_received(:search).with(
-            serving_config: "serving-config-path",
+            serving_config: ServingConfig.default.name,
             query: "garden centres",
             offset: 11,
             page_size: 22,

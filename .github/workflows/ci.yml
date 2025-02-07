@@ -46,7 +46,6 @@ jobs:
       # All Google client library calls are mocked, but the application needs this set to boot
       GOOGLE_CLOUD_PROJECT_ID: not-used
       DISCOVERY_ENGINE_DEFAULT_COLLECTION_NAME: not-used
-      DISCOVERY_ENGINE_SERVING_CONFIG: not-used
       # Redis running through govuk-infrastructure action
       REDIS_URL: redis://localhost:6379
     steps:

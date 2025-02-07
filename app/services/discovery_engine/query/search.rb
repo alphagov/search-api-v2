@@ -56,7 +56,7 @@ module DiscoveryEngine::Query
     end
 
     def serving_config
-      Rails.configuration.discovery_engine_serving_config
+      ServingConfig.default.name
     end
 
     def page_size
