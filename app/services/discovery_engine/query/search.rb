@@ -56,7 +56,9 @@ module DiscoveryEngine::Query
     end
 
     def serving_config
-      ServingConfig.default.name
+      return ServingConfig.default.name if query_params[:serving_config].blank?
+
+      ServingConfig.new(query_params[:serving_config]).name
     end
 
     def page_size

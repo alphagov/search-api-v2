@@ -204,6 +204,16 @@ RSpec.describe DiscoveryEngine::Query::Search do
           )
         end
       end
+
+      context "when a serving config is manually specified" do
+        let(:query_params) { { q: "garden centres", serving_config: "preview" } }
+
+        it "calls the client with the expected parameters" do
+          expect(client).to have_received(:search).with(
+            hash_including(serving_config: ServingConfig.new("preview").name),
+          )
+        end
+      end
     end
   end
 end
