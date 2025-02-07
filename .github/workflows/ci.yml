@@ -47,7 +47,6 @@ jobs:
       GOOGLE_CLOUD_PROJECT_ID: not-used
       DISCOVERY_ENGINE_DEFAULT_COLLECTION_NAME: not-used
       DISCOVERY_ENGINE_SERVING_CONFIG: not-used
-      DISCOVERY_ENGINE_DATASTORE: not-used
       DISCOVERY_ENGINE_DATASTORE_BRANCH: not-used
       # Redis running through govuk-infrastructure action
       REDIS_URL: redis://localhost:6379

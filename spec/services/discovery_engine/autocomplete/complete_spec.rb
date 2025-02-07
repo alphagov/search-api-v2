@@ -3,10 +3,6 @@ RSpec.describe DiscoveryEngine::Autocomplete::Complete do
 
   let(:client) { double("completion service", complete_query:) }
 
-  before do
-    allow(Rails.configuration).to receive(:discovery_engine_datastore).and_return("/the/datastore")
-  end
-
   describe "#completion_result" do
     subject(:completion_result) { completion.completion_result }
 
@@ -22,7 +18,7 @@ RSpec.describe DiscoveryEngine::Autocomplete::Complete do
       completion_result
 
       expect(client).to have_received(:complete_query).with(
-        data_store: "/the/datastore",
+        data_store: DataStore.default.name,
         query:,
         query_model: "user-event",
       )
