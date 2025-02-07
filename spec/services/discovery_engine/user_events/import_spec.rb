@@ -14,7 +14,6 @@ RSpec.describe DiscoveryEngine::UserEvents::Import do
 
   before do
     allow(Rails.configuration).to receive_messages(
-      discovery_engine_datastore: "data/store",
       google_cloud_project_id: "my-fancy-project",
     )
   end
@@ -55,7 +54,7 @@ RSpec.describe DiscoveryEngine::UserEvents::Import do
             table_id: "search-event",
             partition_date: Google::Type::Date.new(year: 2000, month: 1, day: 1),
           },
-          parent: "data/store",
+          parent: DataStore.default.name,
         )
       end
     end
@@ -71,7 +70,7 @@ RSpec.describe DiscoveryEngine::UserEvents::Import do
             table_id: "search-intraday-event",
             partition_date: Google::Type::Date.new(year: 1989, month: 12, day: 13),
           },
-          parent: "data/store",
+          parent: DataStore.default.name,
         )
       end
     end

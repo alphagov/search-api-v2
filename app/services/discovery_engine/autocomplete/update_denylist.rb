@@ -54,7 +54,7 @@ module DiscoveryEngine::Autocomplete
     end
 
     def parent
-      Rails.configuration.discovery_engine_datastore
+      DataStore.default.name
     end
   end
 end

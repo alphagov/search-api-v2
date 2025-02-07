@@ -26,7 +26,7 @@ RSpec.describe DiscoveryEngine::Sync::Put do
       expect(client).to have_received(:update_document).with(
         document: {
           id: "some_content_id",
-          name: "branch/documents/some_content_id",
+          name: "#{Branch.default.name}/documents/some_content_id",
           json_data: "{\"foo\":\"bar\",\"payload_version\":\"1\"}",
           content: {
             mime_type: "text/html",

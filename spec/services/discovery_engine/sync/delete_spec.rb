@@ -14,7 +14,7 @@ RSpec.describe DiscoveryEngine::Sync::Delete do
 
     it "deletes the document" do
       expect(client).to have_received(:delete_document)
-        .with(name: "branch/documents/some_content_id")
+        .with(name: "#{Branch.default.name}/documents/some_content_id")
     end
 
     it_behaves_like "a successful sync operation", "delete"

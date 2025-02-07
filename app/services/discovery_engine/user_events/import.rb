@@ -53,7 +53,7 @@ module DiscoveryEngine::UserEvents
           table_id:,
           partition_date:,
         },
-        parent: Rails.configuration.discovery_engine_datastore,
+        parent: DataStore.default.name,
       )
 
       logger.info("Waiting for import_user_events operation to finish remotely")

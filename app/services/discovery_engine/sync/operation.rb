@@ -60,7 +60,7 @@ module DiscoveryEngine::Sync
     end
 
     def document_name
-      "#{Rails.configuration.discovery_engine_datastore_branch}/documents/#{content_id}"
+      [Branch.default.name, "documents", content_id].join("/")
     end
 
     def log(level, message)

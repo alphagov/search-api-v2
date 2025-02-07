@@ -15,7 +15,6 @@ RSpec.describe DiscoveryEngine::Autocomplete::UpdateDenylist do
 
   before do
     allow(Rails.configuration).to receive_messages(
-      discovery_engine_datastore: "data/store",
       google_cloud_project_id: "my-fancy-project",
     )
   end
@@ -25,7 +24,7 @@ RSpec.describe DiscoveryEngine::Autocomplete::UpdateDenylist do
       update_denylist.call
 
       expect(client).to have_received(:purge_suggestion_deny_list_entries)
-        .with(parent: "data/store")
+        .with(parent: DataStore.default.name)
       expect(purge_operation).to have_received(:wait_until_done!)
     end
 
@@ -37,7 +36,7 @@ RSpec.describe DiscoveryEngine::Autocomplete::UpdateDenylist do
           data_schema: "suggestion_deny_list",
           input_uris: ["gs://my-fancy-project_vais_artifacts/denylist.jsonl"],
         },
-        parent: "data/store",
+        parent: DataStore.default.name,
       )
       expect(import_operation).to have_received(:wait_until_done!)
     end

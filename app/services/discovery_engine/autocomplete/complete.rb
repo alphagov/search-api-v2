@@ -32,14 +32,10 @@ module DiscoveryEngine::Autocomplete
 
     def complete_query_request
       {
-        data_store:,
+        data_store: DataStore.default.name,
         query:,
         query_model: QUERY_MODEL,
       }
-    end
-
-    def data_store
-      Rails.configuration.discovery_engine_datastore
     end
   end
 end

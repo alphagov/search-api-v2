@@ -8,7 +8,6 @@ RSpec.shared_context "with sync context" do
   before do
     allow(Kernel).to receive(:sleep).and_return(nil)
     allow(Rails).to receive(:logger).and_return(logger)
-    allow(Rails.configuration).to receive(:discovery_engine_datastore_branch).and_return("branch")
     allow(GovukError).to receive(:notify)
 
     allow(Coordination::DocumentLock).to receive(:new).with("some_content_id").and_return(lock)
