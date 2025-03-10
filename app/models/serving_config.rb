@@ -14,6 +14,11 @@ ServingConfig = Data.define(:remote_resource_id) do
     new("default_search")
   end
 
+  # Used as the variant ("B") when AB testing
+  def self.variant
+    new("variant_search")
+  end
+
   def parent
     # We only use a single engine in our architecture, so we can hardcode it here.
     Engine.default

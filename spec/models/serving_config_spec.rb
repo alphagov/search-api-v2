@@ -7,6 +7,12 @@ RSpec.describe ServingConfig do
     end
   end
 
+  describe ".variant" do
+    it "returns the variant serving config" do
+      expect(described_class.variant).to eq(described_class.new("variant_search"))
+    end
+  end
+
   describe "#name" do
     it "returns the fully qualified name of the serving config" do
       expect(serving_config.name).to eq("[collection]/engines/govuk/servingConfigs/my-serving-config")
