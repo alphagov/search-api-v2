@@ -214,6 +214,19 @@ RSpec.describe DiscoveryEngine::Query::Search do
           )
         end
       end
+
+      context "when using the variant serving config" do
+        let(:query_params) { { q: "garden centres", serving_config: "variant_search" } }
+
+        it "does not include our manual news recency boosts" do
+          expect(client).to have_received(:search).with(
+            hash_including(
+              serving_config: ServingConfig.variant.name,
+              boost_spec: { condition_boost_specs: [] },
+            ),
+          )
+        end
+      end
     end
   end
 end
