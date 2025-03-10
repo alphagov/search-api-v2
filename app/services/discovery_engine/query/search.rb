@@ -95,10 +95,23 @@ module DiscoveryEngine::Query
     def boost_spec
       {
         condition_boost_specs: [
-          *NewsRecencyBoost.new.boost_specs,
+          *news_recency_boost_specs,
           *best_bets_boost_specs,
         ],
       }
+    end
+
+    def news_recency_boost_specs
+      # Since we first created `NewsRecencyBoost`, Vertex AI Search has gained the equivalent
+      # functionality natively. As of Mar 2025, we are AB testing this new feature on the `variant`
+      # serving configuration, so we do not want to apply our custom boost if that is the serving
+      # config used for the current search, as it would cause content to be boosted twice.
+      #
+      # TODO: Remove this method (and `NewsRecencyBoost` class) when we have successfully concluded
+      # the AB test.
+      return [] if serving_config == ServingConfig.variant
+
+      NewsRecencyBoost.new.boost_specs
     end
 
     def best_bets_boost_specs
