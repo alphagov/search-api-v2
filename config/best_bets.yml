@@ -4,19 +4,21 @@ shared:
     - /government/people/test-person
     - /government/publications/test--150
     - /service-manual/technology/test-your-services-performance
-  "budget": 
-    - /government/topical-events/autumn-budget-2024
-    - /government/publications/autumn-budget-2024
-  "budget 2024":
-    - /government/topical-events/autumn-budget-2024
-    - /government/publications/autumn-budget-2024
-  "autumn budget": /government/topical-events/autumn-budget-2024
-  "autumn budget 2024": /government/topical-events/autumn-budget-2024
-  "2024 budget": /government/topical-events/autumn-budget-2024
-  "budget statement": /government/topical-events/autumn-budget-2024
-  "autumn statement": /government/topical-events/autumn-budget-2024
-  "autumn statement 2024": /government/topical-events/autumn-budget-2024
-  "the budget": /government/topical-events/autumn-budget-2024
+  "spring forecast": 
+    - /government/topical-events/spring-forecast-2025
+    - /government/publications/spring-forecast-2025
+  "spring forecast 2025":
+    - /government/topical-events/spring-forecast-2025
+    - /government/publications/spring-forecast-2025
+  "budget": /government/topical-events/spring-forecast-2025
+  "budget 2025": /government/topical-events/spring-forecast-2025
+  "spring budget": /government/topical-events/spring-forecast-2025
+  "spring budget 2025": /government/topical-events/spring-forecast-2025
+  "2025 budget": /government/topical-events/spring-forecast-2025
+  "budget statement": /government/topical-events/spring-forecast-2025
+  "spring statement": /government/topical-events/spring-forecast-2025
+  "spring statement 2025": /government/topical-events/spring-forecast-2025
+  "the budget": /government/topical-events/spring-forecast-2025
   "gaza":
     - /foreign-travel-advice/the-occupied-palestinian-territories
     - /government/news/gaza-what-you-can-do-to-help
