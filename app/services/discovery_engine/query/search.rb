@@ -42,7 +42,7 @@ module DiscoveryEngine::Query
     def discovery_engine_params
       {
         query:,
-        serving_config:,
+        serving_config: serving_config.name,
         page_size:,
         offset:,
         order_by:,
@@ -56,9 +56,9 @@ module DiscoveryEngine::Query
     end
 
     def serving_config
-      return ServingConfig.default.name if query_params[:serving_config].blank?
+      return ServingConfig.default if query_params[:serving_config].blank?
 
-      ServingConfig.new(query_params[:serving_config]).name
+      ServingConfig.new(query_params[:serving_config])
     end
 
     def page_size
