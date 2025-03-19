@@ -23,6 +23,7 @@ RSpec.describe "Document synchronization" do
         "5941cb22-5d52-4212-83b6-255d75d2c680",
         {
           content_id: "5941cb22-5d52-4212-83b6-255d75d2c680",
+          cdoc_url: "5941cb22-5d52-4212-83b6-255d75d2c680",
           title: "UK and Japan strengthen cooperation in the area of digital government",
           description: "On Monday 31 October 2022, the UK and Japan signed a Memorandum of Cooperation (MoC) to deepen ties on digital government transformation.",
           link: "/government/news/uk-and-japan-strengthen-cooperation-in-the-area-of-digital-government",
@@ -59,6 +60,7 @@ RSpec.describe "Document synchronization" do
         "b662d0a3-c20d-4167-8056-b9c7d058d860",
         {
           content_id: "b662d0a3-c20d-4167-8056-b9c7d058d860",
+          cdoc_url: "b662d0a3-c20d-4167-8056-b9c7d058d860",
           title: "Austria travel advice",
           description: "FCDO travel advice for Austria. Includes safety and security, insurance, entry requirements and legal differences.",
           link: "/foreign-travel-advice/austria",
@@ -123,6 +125,7 @@ RSpec.describe "Document synchronization" do
         "5c880596-7631-11e4-a3cb-005056011aef",
         {
           content_id: "5c880596-7631-11e4-a3cb-005056011aef",
+          cdoc_url: "5c880596-7631-11e4-a3cb-005056011aef",
           title: "Travel advice for fans going to Champions League and Europa League matches this week",
           description: "Tottenham, Manchester City and Chelsea are playing matches in Europe this week. If you’re going to the matches, check our travel advice for fans.",
           link: "/government/news/travel-advice-for-fans-going-to-champions-league-and-europa-league-matches-this-week",
@@ -162,6 +165,7 @@ RSpec.describe "Document synchronization" do
         "e1f47495-b58d-41ca-84bb-ccb2b751cc3f",
         {
           content_id: "e1f47495-b58d-41ca-84bb-ccb2b751cc3f",
+          cdoc_url: "e1f47495-b58d-41ca-84bb-ccb2b751cc3f",
           title: "6. Body, structure and attachments",
           description: "Structure and attachments (including exhaust system and bumpers), and body and interior (including doors and catches, seats and floor) rules and inspection for car and passenger vehicle MOT tests.",
           link: "/guidance/mot-inspection-manual-for-private-passenger-and-light-commercial-vehicles/6-body-structure-and-attachments",
@@ -194,6 +198,7 @@ RSpec.describe "Document synchronization" do
         "f1cb1b1f-d619-5694-9822-0e5ff9bfcb09",
         {
           content_id: "f1cb1b1f-d619-5694-9822-0e5ff9bfcb09",
+          cdoc_url: "f1cb1b1f-d619-5694-9822-0e5ff9bfcb09",
           title: "BIM60660 - Pre-trading expenses – Overview",
           link: "/hmrc-internal-manuals/business-income-manual/bim60660",
           url: "https://www.gov.uk/hmrc-internal-manuals/business-income-manual/bim60660",
@@ -225,6 +230,7 @@ RSpec.describe "Document synchronization" do
         "174c41e0-3316-4e9d-be46-6555d52f3cb7",
         {
           content_id: "174c41e0-3316-4e9d-be46-6555d52f3cb7",
+          cdoc_url: "174c41e0-3316-4e9d-be46-6555d52f3cb7",
           title: "5. Make sure everyone can use the service",
           description: "Provide a service that everyone can use, including disabled people and people with other legally protected characteristics. And people who do not have access to the internet or lack the skills or confidence to use it.",
           link: "/service-manual/service-standard/point-5-make-sure-everyone-can-use-the-service",
@@ -257,6 +263,7 @@ RSpec.describe "Document synchronization" do
         "6ba90ae6-972d-4d48-ad66-693bbb31496d",
         {
           content_id: "6ba90ae6-972d-4d48-ad66-693bbb31496d",
+          cdoc_url: "6ba90ae6-972d-4d48-ad66-693bbb31496d",
           title: "Legal Aid Agency",
           description: "We provide civil and criminal legal aid and advice in England and Wales to help people deal with their legal problems. LAA is an executive agency, sponsored by the Ministry of Justice .",
           link: "/government/organisations/legal-aid-agency",
@@ -289,6 +296,7 @@ RSpec.describe "Document synchronization" do
         "f4c394f9-7a30-11e4-a3cb-005056011aef",
         {
           content_id: "f4c394f9-7a30-11e4-a3cb-005056011aef",
+          cdoc_url: "f4c394f9-7a30-11e4-a3cb-005056011aef",
           title: "British Embassy Vienna",
           description: "The British Embassy in Vienna maintains and develops relations between the UK and Austria.",
           link: "/world/organisations/british-embassy-vienna",
@@ -326,6 +334,7 @@ RSpec.describe "Document synchronization" do
         "5d315ee8-7631-11e4-a3cb-005056011aef",
         {
           content_id: "5d315ee8-7631-11e4-a3cb-005056011aef",
+          cdoc_url: "5d315ee8-7631-11e4-a3cb-005056011aef",
           title: "Directgov 2010 and beyond: revolution not evolution, a report by Martha Lane Fox",
           description: "A report from the Digital Champion Martha Lane Fox with recommendations for the future of Directgov.",
           link: "/government/publications/directgov-2010-and-beyond-revolution-not-evolution-a-report-by-martha-lane-fox",
@@ -371,6 +380,7 @@ RSpec.describe "Document synchronization" do
         "f1724368-504f-4b3c-9dc2-41121046de9f",
         {
           content_id: "f1724368-504f-4b3c-9dc2-41121046de9f",
+          cdoc_url: "f1724368-504f-4b3c-9dc2-41121046de9f",
           title: "UK help and services in Switzerland",
           description: "Services if you're visiting, studying, working or living in Switzerland. Includes information about trading with and doing business in the UK and Switzerland, and your rights after the UK’s exit from the EU.",
           link: "/world/switzerland",
@@ -404,6 +414,7 @@ RSpec.describe "Document synchronization" do
         "5fac6be0-146e-40ea-a899-c3299f62eff9",
         {
           content_id: "5fac6be0-146e-40ea-a899-c3299f62eff9",
+          cdoc_url: "5fac6be0-146e-40ea-a899-c3299f62eff9",
           title: "Service of thanksgiving for the life of Her Majesty Queen Elizabeth II at the Washington National Cathedral",
           description: "British Ambassador to the USA Dame Karen Pierce DCMG, spoke at the service of thanksgiving for the life of Her Majesty Queen Elizabeth II.",
           link: "/government/speeches/a-service-of-thanksgiving-for-the-life-of-her-majesty-queen-elizabeth-ii-at-the-washington-national-cathedral",
@@ -443,6 +454,7 @@ RSpec.describe "Document synchronization" do
         "1f1f2c96-5a14-4d2a-9d0c-be6ac6c62c3b",
         {
           content_id: "1f1f2c96-5a14-4d2a-9d0c-be6ac6c62c3b",
+          cdoc_url: "1f1f2c96-5a14-4d2a-9d0c-be6ac6c62c3b",
           content_purpose_supergroup: "other",
           debug: { last_synced_at: "1989-12-13T01:02:03+00:00", payload_version: 12_345 },
           document_type: "html_publication",
@@ -471,6 +483,7 @@ RSpec.describe "Document synchronization" do
         "4423de24-06d2-454c-8fc1-2bd9c43087f0",
         {
           content_id: "4423de24-06d2-454c-8fc1-2bd9c43087f0",
+          cdoc_url: "4423de24-06d2-454c-8fc1-2bd9c43087f0",
           content_purpose_supergroup: "other",
           debug: {
             last_synced_at: "1989-12-13T01:02:03+00:00",
@@ -503,6 +516,7 @@ RSpec.describe "Document synchronization" do
         "526d5caf-221b-4c7b-9e74-b3e0b189fc8d",
         {
           content_id: "526d5caf-221b-4c7b-9e74-b3e0b189fc8d",
+          cdoc_url: "526d5caf-221b-4c7b-9e74-b3e0b189fc8d",
           title: "Brighton & Hove City Council",
           description: "Website of Brighton & Hove City Council",
           link: "https://www.brighton-hove.gov.uk",
