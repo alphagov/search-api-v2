@@ -3,7 +3,7 @@ module SchemaHelpers
   # repository. Maybe eventually we will vendor the schema, or get it directly from the GCP API
   # client?
   METADATA_JSON_SCHEMA_URI = URI.parse(
-    "https://raw.githubusercontent.com/alphagov/search-v2-infrastructure/main/terraform/modules/google_discovery_engine_restapi/files/datastore_schema.json",
+    "https://raw.githubusercontent.com/alphagov/govuk-infrastructure/refs/heads/main/terraform/deployments/search-api-v2/files/datastore-schema.json",
   )
 
   # Returns a JSONSchemer object representing the JSON schema for document metadata

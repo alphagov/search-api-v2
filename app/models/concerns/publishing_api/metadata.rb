@@ -28,6 +28,8 @@ module PublishingApi
     def metadata
       {
         content_id: document_hash[:content_id],
+        # Unique identifier for evaluation purposes, not actually a URL. See schema for details.
+        cdoc_url: document_hash[:content_id],
         title:,
         description: document_hash[:description],
         link:,
