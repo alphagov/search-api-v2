@@ -4,21 +4,21 @@ shared:
     - /government/people/test-person
     - /government/publications/test--150
     - /service-manual/technology/test-your-services-performance
-  "spring forecast": 
-    - /government/topical-events/spring-forecast-2025
-    - /government/publications/spring-forecast-2025
-  "spring forecast 2025":
-    - /government/topical-events/spring-forecast-2025
-    - /government/publications/spring-forecast-2025
-  "budget": /government/topical-events/spring-forecast-2025
-  "budget 2025": /government/topical-events/spring-forecast-2025
-  "spring budget": /government/topical-events/spring-forecast-2025
-  "spring budget 2025": /government/topical-events/spring-forecast-2025
-  "2025 budget": /government/topical-events/spring-forecast-2025
-  "budget statement": /government/topical-events/spring-forecast-2025
-  "spring statement": /government/topical-events/spring-forecast-2025
-  "spring statement 2025": /government/topical-events/spring-forecast-2025
-  "the budget": /government/topical-events/spring-forecast-2025
+  "spring statement": 
+    - /government/topical-events/spring-statement-2025
+    - /government/publications/spring-statement-2025
+  "spring statement 2025":
+    - /government/topical-events/spring-statement-2025
+    - /government/publications/spring-statement-2025
+  "budget": /government/topical-events/spring-statement-2025
+  "budget 2025": /government/topical-events/spring-statement-2025
+  "spring budget": /government/topical-events/spring-statement-2025
+  "spring budget 2025": /government/topical-events/spring-statement-2025
+  "2025 budget": /government/topical-events/spring-statement-2025
+  "budget statement": /government/topical-events/spring-statement-2025
+  "spring forecast": /government/topical-events/spring-statement-2025
+  "spring forecast 2025": /government/topical-events/spring-statement-2025
+  "the budget": /government/topical-events/spring-statement-2025
   "gaza":
     - /foreign-travel-advice/the-occupied-palestinian-territories
     - /government/news/gaza-what-you-can-do-to-help
