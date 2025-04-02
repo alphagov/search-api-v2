@@ -9,8 +9,6 @@ class PublishingApiMessageProcessor
 
     message.ack
   rescue StandardError => e
-    Metrics::Exported.increment_counter(:message_processing_errors)
-
     # TODO: Consider options for handling errors more granularly, and for differentiating between
     # retriable (e.g. transient connection issue) and fatal (e.g. malformed document on queue)
     # errors. For now while we aren't live, log an error, send the error to Sentry, and reject the

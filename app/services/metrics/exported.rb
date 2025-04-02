@@ -3,16 +3,6 @@ module Metrics
     CLIENT = PrometheusExporter::Client.default
     COUNTERS = {
       ### Synchronisation counters
-      message_processing_errors: CLIENT.register(
-        :counter,
-        "search_api_v2_message_processing_errors",
-        "number of messages from Publishing API that failed to process",
-      ),
-      discovery_engine_requests: CLIENT.register(
-        :counter,
-        "search_api_v2_discovery_engine_requests",
-        "number of requests to Discovery Engine",
-      ),
       documents_synced: CLIENT.register(
         :counter, "search_api_v2_documents_synced", "number of documents synced to Discovery Engine"
       ),
