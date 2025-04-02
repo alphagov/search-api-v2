@@ -3,18 +3,11 @@ module Metrics
     CLIENT = PrometheusExporter::Client.default
     COUNTERS = {
       ### Synchronisation counters
-      documents_synced: CLIENT.register(
-        :counter, "search_api_v2_documents_synced", "number of documents synced to Discovery Engine"
-      ),
-      documents_desynced: CLIENT.register(
+      documents_processed_total: CLIENT.register(
         :counter,
-        "search_api_v2_documents_desynced",
-        "number of documents desynced from Discovery Engine",
-      ),
-      documents_skipped: CLIENT.register(
-        :counter,
-        "search_api_v2_documents_skipped",
-        "number of documents skipped from syncing to Discovery Engine",
+        "search_api_v2_documents_processed_total",
+        "documents synchronised to Discovery Engine",
+        labels: %i[action],
       ),
     }.freeze
     HISTOGRAMS = {
