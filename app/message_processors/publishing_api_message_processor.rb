@@ -1,8 +1,6 @@
 class PublishingApiMessageProcessor
   # Implements the callback interface required by `govuk_message_queue_consumer`
   def process(message)
-    Metrics::Exported.increment_counter(:incoming_messages)
-
     Metrics::Exported.observe_duration(:total_processing_duration) do
       document_hash = message.payload.deep_symbolize_keys
       document = PublishingApiDocument.new(document_hash)
