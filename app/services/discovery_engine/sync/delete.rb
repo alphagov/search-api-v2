@@ -8,7 +8,6 @@ module DiscoveryEngine::Sync
       sync do
         client.delete_document(name: document_name)
       rescue Google::Cloud::NotFoundError => e
-        increment_counter("already_not_present")
         log(
           Logger::Severity::INFO,
           "Did not delete document as it doesn't exist remotely (#{e.message}).",

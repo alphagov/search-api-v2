@@ -29,14 +29,7 @@ module DiscoveryEngine::Query
     attr_reader :query_params, :client
 
     def response
-      @response ||= client.search(discovery_engine_params).response.tap do
-        Metrics::Exported.increment_counter(
-          :search_requests,
-          query_present: query.present?,
-          filter_present: filter.present?,
-          best_bets_applied: best_bets_boost_specs.present?,
-        )
-      end
+      @response ||= client.search(discovery_engine_params).response
     end
 
     def discovery_engine_params

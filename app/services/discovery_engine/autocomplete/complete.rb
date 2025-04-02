@@ -22,8 +22,6 @@ module DiscoveryEngine::Autocomplete
       # Discovery Engine returns an error on an empty query, so we need to handle it ourselves
       return [] if query.blank?
 
-      Metrics::Exported.increment_counter(:autocomplete_requests)
-
       client
         .complete_query(complete_query_request)
         .query_suggestions

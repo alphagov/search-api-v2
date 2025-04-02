@@ -1,8 +1,6 @@
 class PublishingApiMessageProcessor
   # Implements the callback interface required by `govuk_message_queue_consumer`
   def process(message)
-    Metrics::Exported.increment_counter(:incoming_messages)
-
     Metrics::Exported.observe_duration(:total_processing_duration) do
       document_hash = message.payload.deep_symbolize_keys
       document = PublishingApiDocument.new(document_hash)
@@ -11,8 +9,6 @@ class PublishingApiMessageProcessor
 
     message.ack
   rescue StandardError => e
-    Metrics::Exported.increment_counter(:message_processing_errors)
-
     # TODO: Consider options for handling errors more granularly, and for differentiating between
     # retriable (e.g. transient connection issue) and fatal (e.g. malformed document on queue)
     # errors. For now while we aren't live, log an error, send the error to Sentry, and reject the
