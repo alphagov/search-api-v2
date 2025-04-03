@@ -20,15 +20,15 @@ class PublishingApiDocument
 
   def synchronize
     if skip?
-      Metrics::Exported.increment_counter(:documents_processed_total, labels: { action: "skip" })
+      Metrics::Exported.increment_counter(:documents_processed_total, action: "skip")
       log("skip (#{action_reason})")
     elsif sync?
       log("sync")
-      Metrics::Exported.increment_counter(:documents_processed_total, labels: { action: "sync" })
+      Metrics::Exported.increment_counter(:documents_processed_total, action: "sync")
       put_service.new(content_id, metadata, content:, payload_version:).call
     elsif desync?
       log("desync (#{action_reason}))")
-      Metrics::Exported.increment_counter(:documents_processed_total, labels: { action: "desync" })
+      Metrics::Exported.increment_counter(:documents_processed_total, action: "desync")
       delete_service.new(content_id, payload_version:).call
     else
       raise "Cannot determine action for document: #{content_id}"
