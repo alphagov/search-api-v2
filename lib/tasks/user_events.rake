@@ -14,4 +14,9 @@ namespace :user_events do
     date = Time.zone.parse(args[:date]).to_date
     DiscoveryEngine::UserEvents::Import.import_all(date)
   end
+
+  desc "Purge user events that occurred during the final week of the retention period"
+  task purge_final_week_of_retention_period: :environment do
+    DiscoveryEngine::UserEvents::Purge.purge_final_week_of_retention_period
+  end
 end
