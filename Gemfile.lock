@@ -44,8 +44,8 @@ GEM
     brakeman (7.0.2)
       racc
     builder (3.3.0)
-    bunny (2.23.0)
-      amq-protocol (~> 2.3, >= 2.3.1)
+    bunny (2.24.0)
+      amq-protocol (~> 2.3)
       sorted_set (~> 1, >= 1.0.2)
     capybara (3.40.0)
       addressable
@@ -142,7 +142,7 @@ GEM
       sentry-rails (~> 5.3)
       sentry-ruby (~> 5.3)
       statsd-ruby (~> 1.5)
-    govuk_message_queue_consumer (5.0.2)
+    govuk_message_queue_consumer (6.0.0)
       bunny (~> 2.17)
       ostruct
     govuk_test (4.1.1)
