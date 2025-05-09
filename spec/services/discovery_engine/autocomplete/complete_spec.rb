@@ -50,8 +50,8 @@ RSpec.describe DiscoveryEngine::Autocomplete::Complete do
       context "and the error is a Google::Cloud::DeadlineExceededError" do
         let(:error) { Google::Cloud::DeadlineExceededError.new("Deadline error") }
 
-        it "catches the error and logs it to the Rails logger" do
-          completion_result
+        it "raises an error and logs it to the Rails logger" do
+          expect { completion_result }.to raise_error(DiscoveryEngine::InternalError)
 
           expect(Rails.logger).to have_received(:warn).with(
             "DiscoveryEngine::Autocomplete::Complete: Did not get autocomplete suggestion: 'Deadline error'",
@@ -62,8 +62,8 @@ RSpec.describe DiscoveryEngine::Autocomplete::Complete do
       context "and the error is a Google::Cloud::InternalError" do
         let(:error) { Google::Cloud::InternalError.new("Internal error") }
 
-        it "catches the error and logs it to the Rails logger" do
-          completion_result
+        it "raises an error and logs it only to the Rails logger" do
+          expect { completion_result }.to raise_error(DiscoveryEngine::InternalError)
 
           expect(Rails.logger).to have_received(:warn).with(
             "DiscoveryEngine::Autocomplete::Complete: Did not get autocomplete suggestion: 'Internal error'",

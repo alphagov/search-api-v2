@@ -28,6 +28,8 @@ module DiscoveryEngine::Autocomplete
         .map(&:suggestion)
     rescue Google::Cloud::DeadlineExceededError, Google::Cloud::InternalError => e
       Rails.logger.warn("#{self.class.name}: Did not get autocomplete suggestion: '#{e.message}'")
+
+      raise DiscoveryEngine::InternalError
     end
 
     def complete_query_request
