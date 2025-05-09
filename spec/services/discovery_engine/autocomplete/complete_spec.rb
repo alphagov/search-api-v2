@@ -32,5 +32,20 @@ RSpec.describe DiscoveryEngine::Autocomplete::Complete do
         expect(client).not_to have_received(:complete_query)
       end
     end
+
+    context "when the completion service fails" do
+      before do
+        allow(client).to receive(:complete_query).and_raise(error)
+        allow(Rails.logger).to receive(:warn)
+      end
+
+      context "and the error is actionable" do
+        let(:error) { Google::Cloud::PermissionDeniedError.new("Permission denied") }
+
+        it "returns the error from Google Cloud" do
+          expect { completion_result }.to raise_error(error)
+        end
+      end
+    end
   end
 end
