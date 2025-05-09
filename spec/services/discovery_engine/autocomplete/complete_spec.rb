@@ -58,6 +58,18 @@ RSpec.describe DiscoveryEngine::Autocomplete::Complete do
           )
         end
       end
+
+      context "and the error is a Google::Cloud::InternalError" do
+        let(:error) { Google::Cloud::InternalError.new("Internal error") }
+
+        it "catches the error and logs it to the Rails logger" do
+          completion_result
+
+          expect(Rails.logger).to have_received(:warn).with(
+            "DiscoveryEngine::Autocomplete::Complete: Did not get autocomplete suggestion: 'Internal error'",
+          )
+        end
+      end
     end
   end
 end
