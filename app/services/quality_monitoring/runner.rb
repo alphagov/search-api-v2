@@ -1,7 +1,5 @@
 module QualityMonitoring
   class Runner
-    class FailuresEncountered < StandardError; end
-
     attr_reader :file, :type, :cutoff, :report_query_below_score, :judge_by, :metric_collector
 
     def initialize(

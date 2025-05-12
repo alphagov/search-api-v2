@@ -32,4 +32,17 @@ RSpec.describe "Making an autocomplete request" do
       })
     end
   end
+
+  context "when autocomplete returns a DiscoveryEngine::InternalError" do
+    before do
+      allow(DiscoveryEngine::Autocomplete::Complete).to receive(:new)
+        .and_raise(DiscoveryEngine::InternalError)
+    end
+
+    it "returns a 500 response" do
+      get "/autocomplete.json?q=foo"
+
+      expect(response).to have_http_status(:internal_server_error)
+    end
+  end
 end

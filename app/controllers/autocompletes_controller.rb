@@ -1,4 +1,6 @@
 class AutocompletesController < ApplicationController
+  rescue_from DiscoveryEngine::InternalError, with: :render_internal_error
+
   def show
     render json: completion_result
   end

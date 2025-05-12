@@ -32,5 +32,44 @@ RSpec.describe DiscoveryEngine::Autocomplete::Complete do
         expect(client).not_to have_received(:complete_query)
       end
     end
+
+    context "when the completion service fails" do
+      before do
+        allow(client).to receive(:complete_query).and_raise(error)
+        allow(Rails.logger).to receive(:warn)
+      end
+
+      context "and the error is actionable" do
+        let(:error) { Google::Cloud::PermissionDeniedError.new("Permission denied") }
+
+        it "returns the error from Google Cloud" do
+          expect { completion_result }.to raise_error(error)
+        end
+      end
+
+      context "and the error is a Google::Cloud::DeadlineExceededError" do
+        let(:error) { Google::Cloud::DeadlineExceededError.new("Deadline error") }
+
+        it "raises an error and logs it to the Rails logger" do
+          expect { completion_result }.to raise_error(DiscoveryEngine::InternalError)
+
+          expect(Rails.logger).to have_received(:warn).with(
+            "DiscoveryEngine::Autocomplete::Complete: Did not get autocomplete suggestion: 'Deadline error'",
+          )
+        end
+      end
+
+      context "and the error is a Google::Cloud::InternalError" do
+        let(:error) { Google::Cloud::InternalError.new("Internal error") }
+
+        it "raises an error and logs it only to the Rails logger" do
+          expect { completion_result }.to raise_error(DiscoveryEngine::InternalError)
+
+          expect(Rails.logger).to have_received(:warn).with(
+            "DiscoveryEngine::Autocomplete::Complete: Did not get autocomplete suggestion: 'Internal error'",
+          )
+        end
+      end
+    end
   end
 end
