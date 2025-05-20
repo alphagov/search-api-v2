@@ -145,7 +145,7 @@ GEM
     govuk_message_queue_consumer (6.0.0)
       bunny (~> 2.17)
       ostruct
-    govuk_test (4.1.1)
+    govuk_test (4.1.2)
       brakeman (>= 5.0.2)
       capybara (>= 3.36)
       puma
@@ -543,7 +543,7 @@ GEM
     ruby-progressbar (1.13.0)
     rubyzip (2.4.1)
     securerandom (0.4.1)
-    selenium-webdriver (4.29.1)
+    selenium-webdriver (4.32.0)
       base64 (~> 0.2)
       logger (~> 1.4)
       rexml (~> 3.2, >= 3.2.5)
