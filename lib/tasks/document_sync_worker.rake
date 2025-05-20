@@ -24,5 +24,8 @@ namespace :document_sync_worker do
     ).run
   rescue Interrupt
     Rails.logger.info("Stopping document sync worker (received interrupt)")
+  rescue AMQ::Protocol::EmptyResponseError => e
+    Rails.logger.warn("Stopping document sync worker: '#{e.message}'")
+    exit(1)
   end
 end

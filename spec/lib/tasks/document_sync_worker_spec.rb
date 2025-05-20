@@ -40,5 +40,25 @@ RSpec.describe "Document synchronisation tasks" do
         end
       end
     end
+
+    context "when the task fails with a RabbitMQ error" do
+      let(:error) { AMQ::Protocol::EmptyResponseError.new("Empty response") }
+
+      it "logs the error to Rails logger and exits the task" do
+        ClimateControl.modify PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_NAME: "my queue" do
+          allow(consumer)
+            .to receive(:run)
+            .and_raise(error)
+
+          allow(Rails.logger).to receive(:warn)
+
+          expect(Rails.logger).to receive(:warn).with(
+            "Stopping document sync worker: 'Empty response'",
+          )
+
+          expect { Rake::Task["document_sync_worker:run"].invoke }.to raise_error(SystemExit)
+        end
+      end
+    end
   end
 end
