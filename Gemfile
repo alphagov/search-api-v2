@@ -20,6 +20,7 @@ gem "redis"
 gem "redlock"
 
 group :test do
+  gem "climate_control"
   gem "grpc_mock"
   gem "json_schemer"
   gem "simplecov", require: false
