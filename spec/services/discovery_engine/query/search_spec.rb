@@ -258,6 +258,18 @@ RSpec.describe DiscoveryEngine::Query::Search do
           )
         end
       end
+
+      context "and the error is a Google::Cloud::InternalError" do
+        let(:error) { Google::Cloud::DeadlineExceededError.new("Internal error") }
+
+        it "raises an error and logs it to the Rails logger" do
+          expect { search.result_set }.to raise_error(DiscoveryEngine::InternalError)
+
+          expect(Rails.logger).to have_received(:warn).with(
+            "DiscoveryEngine::Query::Search: Did not get search results: 'Internal error'",
+          )
+        end
+      end
     end
   end
 end

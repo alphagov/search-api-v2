@@ -30,7 +30,7 @@ module DiscoveryEngine::Query
 
     def response
       @response ||= client.search(discovery_engine_params).response
-    rescue Google::Cloud::DeadlineExceededError => e
+    rescue Google::Cloud::DeadlineExceededError, Google::Cloud::InternalError => e
       Rails.logger.warn("#{self.class.name}: Did not get search results: '#{e.message}'")
 
       raise DiscoveryEngine::InternalError
