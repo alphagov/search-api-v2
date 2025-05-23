@@ -246,6 +246,18 @@ RSpec.describe DiscoveryEngine::Query::Search do
           expect { search.result_set }.to raise_error(error)
         end
       end
+
+      context "and the error is a Google::Cloud::DeadlineExceededError" do
+        let(:error) { Google::Cloud::DeadlineExceededError.new("Deadline error") }
+
+        it "raises an error and logs it to the Rails logger" do
+          expect { search.result_set }.to raise_error(DiscoveryEngine::InternalError)
+
+          expect(Rails.logger).to have_received(:warn).with(
+            "DiscoveryEngine::Query::Search: Did not get search results: 'Deadline error'",
+          )
+        end
+      end
     end
   end
 end
