@@ -4,6 +4,8 @@ RSpec.describe DiscoveryEngine::Query::Search do
   let(:client) { double("SearchService::Client", search: search_return_value) }
   let(:filters) { double(filter_expression: "filter-expression") }
 
+  let(:query_params) { { q: "garden centres" } }
+
   let(:expected_boost_specs) do
     [{ boost: 0.2,
        condition: "content_purpose_supergroup: ANY(\"news_and_communications\") AND public_timestamp: IN(628905600i,*)" },
@@ -26,10 +28,8 @@ RSpec.describe DiscoveryEngine::Query::Search do
   end
 
   describe "#result_set" do
-    subject!(:result_set) { search.result_set }
-
     context "when the search is successful" do
-      let(:query_params) { { q: "garden centres" } }
+      subject!(:result_set) { search.result_set }
 
       let(:search_return_value) { double(response: search_response) }
       let(:search_response) do
@@ -225,6 +225,25 @@ RSpec.describe DiscoveryEngine::Query::Search do
               boost_spec: { condition_boost_specs: [] },
             ),
           )
+        end
+      end
+    end
+
+    context "when search fails" do
+      let(:search_return_value) { double }
+
+      before do
+        allow(search_return_value)
+          .to receive(:response)
+          .and_raise(error)
+        allow(Rails.logger).to receive(:warn)
+      end
+
+      context "and the error is actionable" do
+        let(:error) { RangeError.new("integer 9999999990 too big") }
+
+        it "returns the error" do
+          expect { search.result_set }.to raise_error(error)
         end
       end
     end
