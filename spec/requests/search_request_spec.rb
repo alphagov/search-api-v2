@@ -35,5 +35,19 @@ RSpec.describe "Making a search request" do
         ),
       )
     end
+
+    context "when search returns a DiscoveryEngine::InternalError" do
+      before do
+        allow(search_service)
+          .to receive(:result_set)
+          .and_raise(DiscoveryEngine::InternalError)
+      end
+
+      it "returns a 500 response" do
+        get "/search.json"
+
+        expect(response).to have_http_status(:internal_server_error)
+      end
+    end
   end
 end
