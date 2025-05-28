@@ -10,6 +10,10 @@ require "rails/test_unit/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+# The beta Discovery Engine libraries are not automatically required.
+# Once all functionality we need is available in v1, this can be removed:
+require "google/cloud/discovery_engine/v1beta"
+
 module SearchApiV2
   class Application < Rails::Application
     config.load_defaults 8.0
