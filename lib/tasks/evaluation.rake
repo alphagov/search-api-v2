@@ -12,18 +12,27 @@ require "google/cloud/discovery_engine/v1beta"
 # `EvaluationService::Client#get_evaluation`, or on a per query level using
 # `EvaluationService::Client#list_evaluation_results`)
 # • Do something with the results (probably adding the sample query set level results to Prometheus
-# using the exporter, and chucking the per-query results into a BigQuery table for potential further
-# analysis)
+# using `Prometheus::Client::Push`, and chucking the per-query results into a BigQuery table for
+# further analysis)
 #
-# Notes:
+# Run the Rake tasks as follows:
+# • bin/rails evaluation:clickstream:setup_sample_set
+# • bin/rails evaluation:clickstream:create_evaluation[clickstream_2025-05]
+# • bin/rails evaluation:clickstream:results[whatever-evaluation-id-you-got-from-the-previous-step]
+#
+# Gotchas:
 # • The Sample Query Set, Sample Query, and Evaluation services operate on a _location_ level,
 # unlike most other things we use in this app which are on the engine or datastore level.
-# • Gotcha: Our current "main" engine (`govuk`) is a legacy engine that doesn't support evaluation,
-# so we need to switch to the new `govuk_global` engine first.
-# • Gotcha: Only a single evaluation can run at a given time across a location
-# • Gotcha: Creating a new evaluation returns an operation, but unlike other services the operation
-# only reflects the creation of the evaluation, not the completion of it (so we need to manually
-# poll its state)
+# • The BigQuery table does not contain data for April, so we need to use the current month instead
+# until it's June. This is a temporary workaround until we have data for April.
+# • Our current "main" engine (`govuk`) is a legacy engine that doesn't support evaluation, so we
+# need to switch to the new `govuk_global` engine first.
+# • Only a single evaluation can be actively running at a given time across a location. Given that
+# they start running when created, trying to create a new one while a previous one hasn't finished
+# running yet will result in an error.
+# • Creating a new evaluation returns an operation, but unlike other services the operation only
+# reflects the creation of the evaluation, not the completion of it (so we need to manually poll its
+# state)
 
 namespace :evaluation do
   namespace :clickstream do
@@ -37,10 +46,11 @@ namespace :evaluation do
     evaluation_client = Google::Cloud::DiscoveryEngine::V1beta::EvaluationService::Client.new
 
     desc "Create a sample query set for last month's clickstream data and import from BigQuery"
-    task setup_sample_set_for_last_month: :environment do
+    task setup_sample_set: :environment do
       # Sample query set details
       # TODO: There is no data in BQ for April, so use the current month instead until it's June
-      # prev_month = Time.zone.today.prev_month
+      # Should really be:
+      #   prev_month = Time.zone.today.prev_month
       prev_month = Time.zone.today
       id = "clickstream_#{prev_month.strftime('%Y-%m')}"
 
@@ -88,11 +98,11 @@ namespace :evaluation do
 
     # e.g. bin/rails evaluation:clickstream:evaluate[clickstream_2025-05]
     desc "Run an evaluation for a sample query set by ID"
-    task :evaluate, [:id] => [:environment] do |_, args|
-      id = args[:id]
-      raise "Please provide a sample query set ID to evaluate" if id.blank?
+    task :create_evaluation, [:sample_set_id] => [:environment] do |_, args|
+      sample_set_id = args[:sample_set_id]
+      raise "Please provide a sample query set ID to evaluate" if sample_set_id.blank?
 
-      sample_set_name = "#{location}/sampleQuerySets/#{id}"
+      sample_set_name = "#{location}/sampleQuerySets/#{sample_set_id}"
 
       puts "Creating evaluation for sample query set: #{sample_set_name}..."
       operation = evaluation_client.create_evaluation(
@@ -114,13 +124,24 @@ namespace :evaluation do
       raise "Error creating evaluation: #{operation.error.message}" if operation.error?
 
       puts "Successfully created evaluation #{evaluation.name}"
+    end
 
-      while evaluation_client.get_evaluation(evaluation.name).state == :PENDING
+    # e.g. bin/rails evaluation:clickstream:results[5b3fc2b1-9c57-4da9-b9b6-ab39cd4bbdcd]
+    desc "Get the results of an evaluation by ID"
+    task :results, [:evaluation_id] => [:environment] do |_, args|
+      evaluation_id = args[:evaluation_id]
+      raise "Please provide an evaluation ID to get results for" if evaluation_id.blank?
+
+      evaluation_name = "#{location}/evaluations/#{evaluation_id}"
+      puts "Getting results for evaluation: #{evaluation_name}"
+
+      while evaluation_client.get_evaluation(name: evaluation_name).state == :PENDING
         puts "Still waiting for evaluation to complete..."
         sleep 10
       end
 
-      puts evaluation_client.get_evaluation(evaluation.name).inspect
+      evaluation = evaluation_client.get_evaluation(name: evaluation_name)
+      pp evaluation.quality_metrics.to_h
     end
 
     ### USEFUL DEBUGGING TASKS
