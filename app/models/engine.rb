@@ -13,6 +13,6 @@ Engine = Data.define(:remote_resource_id) do
 
   # The default engine created through Terraform in `govuk-infrastructure`
   def self.default
-    new("govuk")
+    new("govuk_global")
   end
 end
