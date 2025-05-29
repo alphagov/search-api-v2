@@ -1,12 +1,44 @@
+require "google/cloud/discovery_engine/v1beta"
+
+# Proof of concept for using the Discovery Engine API to evaluate clickstream data
+#
+# The general flow for evaluations is as follows:
+# • Create a sample query set (`SampleQuerySetService::Client#create_sample_query_set`)
+# • Import sample queries into the set from BigQuery
+# (`SampleQuerySetService::Client#import_sample_queries`)
+# • Create an evaluation for the sample query set (`EvaluationService::Client#create_evaluation`)
+# • Wait for the evaluation to complete (`polling EvaluationService::Client#get_evaluation`)
+# • Retrieve the evaluation results (either on a sample query set level using
+# `EvaluationService::Client#get_evaluation`, or on a per query level using
+# `EvaluationService::Client#list_evaluation_results`)
+# • Do something with the results (probably adding the sample query set level results to Prometheus
+# using the exporter, and chucking the per-query results into a BigQuery table for potential further
+# analysis)
+#
+# Notes:
+# • The Sample Query Set, Sample Query, and Evaluation services operate on a _location_ level,
+# unlike most other things we use in this app which are on the engine or datastore level.
+# • Gotcha: Our current "main" engine (`govuk`) is a legacy engine that doesn't support evaluation,
+# so we need to switch to the new `govuk_global` engine first.
+# • Gotcha: Only a single evaluation can run at a given time across a location
+# • Gotcha: Creating a new evaluation returns an operation, but unlike other services the operation
+# only reflects the creation of the evaluation, not the completion of it (so we need to manually
+# poll its state)
+
 namespace :evaluation do
   namespace :clickstream do
+    # Global configuration for all tasks
+    project_id = Rails.application.config.google_cloud_project_id
+    location = "projects/#{project_id}/locations/global"
+
+    # Clients
+    sqs_client = Google::Cloud::DiscoveryEngine::V1beta::SampleQuerySetService::Client.new
+    sq_client = Google::Cloud::DiscoveryEngine::V1beta::SampleQueryService::Client.new
+    evaluation_client = Google::Cloud::DiscoveryEngine::V1beta::EvaluationService::Client.new
+
     desc "Create a sample query set for last month's clickstream data and import from BigQuery"
     task setup_sample_set_for_last_month: :environment do
-      sqs_client = Google::Cloud::DiscoveryEngine::V1beta::SampleQuerySetService::Client.new
-      sq_client = Google::Cloud::DiscoveryEngine::V1beta::SampleQueryService::Client.new
-
       # Sample query set details
-      location = "projects/#{Rails.application.config.google_cloud_project_id}/locations/global"
       # TODO: There is no data in BQ for April, so use the current month instead until it's June
       # prev_month = Time.zone.today.prev_month
       prev_month = Time.zone.today
@@ -27,7 +59,7 @@ namespace :evaluation do
       bigquery_source = {
         dataset_id: "automated_evaluation_input",
         table_id: "clickstream",
-        project_id: Rails.application.config.google_cloud_project_id,
+        project_id:,
         partition_date: {
           year: prev_month.year,
           month: prev_month.month,
@@ -60,10 +92,7 @@ namespace :evaluation do
       id = args[:id]
       raise "Please provide a sample query set ID to evaluate" if id.blank?
 
-      evaluation_client = Google::Cloud::DiscoveryEngine::V1beta::EvaluationService::Client.new
-
-      location = "projects/#{Rails.application.config.google_cloud_project_id}/locations/global"
-      sample_set_name = "projects/#{Rails.application.config.google_cloud_project_id}/locations/global/sampleQuerySets/#{id}"
+      sample_set_name = "#{location}/sampleQuerySets/#{id}"
 
       puts "Creating evaluation for sample query set: #{sample_set_name}..."
       operation = evaluation_client.create_evaluation(
@@ -102,8 +131,7 @@ namespace :evaluation do
       id = args[:id]
       raise "Please provide a sample query set ID to delete" if id.blank?
 
-      sqs_client = Google::Cloud::DiscoveryEngine::V1beta::SampleQuerySetService::Client.new
-      name = "projects/#{Rails.application.config.google_cloud_project_id}/locations/global/sampleQuerySets/#{id}"
+      name = "#{location}/sampleQuerySets/#{id}"
 
       puts "Deleting sample query set: #{name}"
       sqs_client.delete_sample_query_set(name: name)
@@ -111,11 +139,6 @@ namespace :evaluation do
 
     desc "List all sample query sets and some sample queries"
     task debug_list: :environment do
-      sqs_client = Google::Cloud::DiscoveryEngine::V1beta::SampleQuerySetService::Client.new
-      sq_client = Google::Cloud::DiscoveryEngine::V1beta::SampleQueryService::Client.new
-
-      location = "projects/#{Rails.application.config.google_cloud_project_id}/locations/global"
-
       puts "Sample Query Sets:"
       sqs_client.list_sample_query_sets(parent: location).each do |sample_query_set|
         puts "# #{sample_query_set.name} (#{sample_query_set.display_name})"
@@ -126,6 +149,15 @@ namespace :evaluation do
         end
 
         puts
+      end
+    end
+
+    desc "List all evaluations and their state"
+    task debug_list_evaluations: :environment do
+      puts "Evaluations:"
+      evaluation_client.list_evaluations(parent: location).each do |evaluation|
+        created = evaluation.create_time.to_time
+        puts "# #{evaluation.name} (created #{created}): #{evaluation.state}"
       end
     end
   end
