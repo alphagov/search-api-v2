@@ -34,6 +34,7 @@ shared:
   "mediation": /find-legal-advice
   "ombudsman": /find-legal-advice
   "plan for change": /missions
+  "eta": /eta
 
 test:
   "i want to test a single best bet": /here/you/go
