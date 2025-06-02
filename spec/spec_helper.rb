@@ -44,7 +44,6 @@ RSpec.configure do |config|
   end
 
   config.include FixtureHelpers
-  config.include SchemaHelpers
 
   GrpcMock.disable_net_connect!
 end
