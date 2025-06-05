@@ -26,6 +26,30 @@ module DiscoveryEngine
           )
       end
 
+      def import_from_bigquery(dataset_id:, table_id:)
+        operation = DiscoveryEngine::Clients
+          .sample_query_service
+          .import_sample_queries(
+            parent: set.name,
+            bigquery_source: {
+              dataset_id:,
+              table_id:,
+              project_id: Rails.application.config.google_cloud_project_id,
+              partition_date: {
+                year: year,
+                month: month,
+                # Partition date needs to be a full date not just year-month
+                day: 1,
+              },
+            },
+          )
+        operation.wait_until_done!
+
+        raise operation.error.message if operation.error?
+
+        Rails.logger.info("Successfully imported sample queries into: #{set.name}")
+      end
+
     private
 
       attr_reader :year, :month
