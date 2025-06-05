@@ -15,6 +15,11 @@ inherit_mode:
 RSpec/VerifiedDoubles:
   Enabled: false
 
+# This app does not use ActiveRecord, so prevent Rubocop from messing with method names that look
+# like ActiveRecord methods (for example, insisting on adding `!` when calling methods called
+# `create`).
+Rails/SaveBang:
+  Enabled: false
 # **************************************************************
 # TRY NOT TO ADD OVERRIDES IN THIS FILE
 #
