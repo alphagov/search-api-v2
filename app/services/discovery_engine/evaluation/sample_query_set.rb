@@ -4,7 +4,10 @@ module DiscoveryEngine
       def initialize(month, year)
         @month = month
         @year = year
+        @set = create_empty_set
       end
+
+      attr_reader :set
 
       def self.create(month:, year:)
         new(month, year)

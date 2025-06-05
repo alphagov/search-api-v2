@@ -9,10 +9,9 @@ RSpec.describe DiscoveryEngine::Evaluation::SampleQuerySet do
     allow(DiscoveryEngine::Clients).to receive(:sample_query_set_service).and_return(sample_query_set_service_stub)
   end
 
-  describe "#create_empty_set" do
+  describe ".create" do
     it "calls the create sample query set endpoint" do
-      sqs = sample_query_set.create(month:, year:)
-      sqs.create_empty_set
+      sample_query_set.create(month:, year:)
 
       expect(sample_query_set_service_stub).to have_received(:create_sample_query_set).with(
         sample_query_set: {
