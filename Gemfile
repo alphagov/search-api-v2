@@ -11,6 +11,7 @@ gem "bootsnap", require: false
 gem "connection_pool"
 gem "csv"
 gem "google-cloud-discovery_engine"
+gem "google-cloud-discovery_engine-v1beta"
 gem "govuk_app_config"
 gem "govuk_message_queue_consumer"
 gem "jsonpath"
