@@ -35,6 +35,7 @@ shared:
   "ombudsman": /find-legal-advice
   "plan for change": /missions
   "eta": /eta
+  "paying hmrc": /government/collections/paying-hmrc-detailed-information
 
 test:
   "i want to test a single best bet": /here/you/go
