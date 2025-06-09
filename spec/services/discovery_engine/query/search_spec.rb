@@ -1,5 +1,5 @@
 RSpec.describe DiscoveryEngine::Query::Search do
-  subject(:search) { described_class.new(query_params, client:) }
+  subject(:search) { described_class.new(query_params, user_agent: "test-user-agent", client:) }
 
   let(:client) { double("SearchService::Client", search: search_return_value) }
   let(:filters) { double(filter_expression: "filter-expression") }
@@ -19,6 +19,13 @@ RSpec.describe DiscoveryEngine::Query::Search do
 
   before do
     allow(DiscoveryEngine::Query::Filters).to receive(:new).and_return(filters)
+    allow(DiscoveryEngine::Query::UserLabels).to receive(:from_user_agent)
+      .with("test-user-agent")
+      .and_return(
+        DiscoveryEngine::Query::UserLabels.new(
+          consumer: "test-consumer", consumer_group: "test-group",
+        ),
+      )
   end
 
   around do |example|
@@ -56,6 +63,7 @@ RSpec.describe DiscoveryEngine::Query::Search do
           page_size: 10,
           filter: "filter-expression",
           boost_spec: { condition_boost_specs: expected_boost_specs },
+          user_labels: { consumer: "test-consumer", consumer_group: "test-group" },
         )
       end
 
@@ -80,6 +88,7 @@ RSpec.describe DiscoveryEngine::Query::Search do
             page_size: 22,
             filter: "filter-expression",
             boost_spec: { condition_boost_specs: expected_boost_specs },
+            user_labels: { consumer: "test-consumer", consumer_group: "test-group" },
           )
         end
 

@@ -6,9 +6,11 @@ module DiscoveryEngine::Query
 
     def initialize(
       query_params,
+      user_agent: nil,
       client: ::Google::Cloud::DiscoveryEngine.search_service(version: :v1)
     )
       @query_params = query_params
+      @user_agent = user_agent
       @client = client
 
       Rails.logger.debug { "Instantiated #{self.class.name}: Query: #{discovery_engine_params}" }
@@ -26,7 +28,7 @@ module DiscoveryEngine::Query
 
   private
 
-    attr_reader :query_params, :client
+    attr_reader :query_params, :client, :user_agent
 
     def response
       @response ||= client.search(discovery_engine_params).response
@@ -45,6 +47,7 @@ module DiscoveryEngine::Query
         order_by:,
         filter:,
         boost_spec:,
+        user_labels:,
       }.compact
     end
 
@@ -128,6 +131,10 @@ module DiscoveryEngine::Query
         text: response.corrected_query,
         highlighted: "<mark>#{response.corrected_query}</mark>",
       }]
+    end
+
+    def user_labels
+      UserLabels.from_user_agent(user_agent).to_h
     end
   end
 end
