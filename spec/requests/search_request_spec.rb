@@ -23,8 +23,9 @@ RSpec.describe "Making a search request" do
       })
     end
 
-    it "passes any query parameters to the search service in the expected format" do
-      get "/search.json?q=garden+centres&start=11&count=22&filter_public_timestamp=from:2019-01-01"
+    it "passes any query parameters and user agent to the search service in the expected format" do
+      get "/search.json?q=garden+centres&start=11&count=22&filter_public_timestamp=from:2019-01-01",
+          headers: { "User-Agent" => "gds-api-adapters/99.2.0 (finder-frontend)" }
 
       expect(DiscoveryEngine::Query::Search).to have_received(:new).with(
         hash_including(
@@ -33,6 +34,7 @@ RSpec.describe "Making a search request" do
           count: "22",
           filter_public_timestamp: "from:2019-01-01",
         ),
+        user_agent: "gds-api-adapters/99.2.0 (finder-frontend)",
       )
     end
 
