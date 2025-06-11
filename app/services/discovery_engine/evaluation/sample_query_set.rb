@@ -12,7 +12,9 @@ module DiscoveryEngine
 
       attr_reader :set
 
-      def self.create(month:, year:)
+      def self.create
+        month = Time.zone.now.prev_month.month
+        year = Time.zone.now.year
         sample_query_set = DiscoveryEngine::Clients
           .sample_query_set_service
           .create_sample_query_set(
