@@ -4,28 +4,29 @@ module DiscoveryEngine
       BIGQUERY_DATASET_ID = "automated_evaluation_input".freeze
       BIGQUERY_TABLE_ID = "clickstream".freeze
 
-      def initialize(month, year, set)
+      def initialize(month, year, set, table_id)
         @month = month
         @year = year
         @set = set
+        @table_id = table_id
       end
 
-      attr_reader :set
+      attr_reader :set, :table_id
 
-      def self.create
+      def self.create(table_id: BIGQUERY_TABLE_ID)
         month = Time.zone.now.prev_month.month
         year = Time.zone.now.year
         sample_query_set = DiscoveryEngine::Clients
           .sample_query_set_service
           .create_sample_query_set(
             sample_query_set: {
-              display_name: "Clickstream #{year}-#{month}",
-              description: "Generated from #{year}-#{month} BigQuery clickstream data",
+              display_name: "#{table_id} #{year}-#{month}",
+              description: "Generated from #{year}-#{month} BigQuery #{table_id} data",
             },
-            sample_query_set_id: "clickstream_#{year}-#{month}",
+            sample_query_set_id: "#{table_id}_#{year}-#{month}",
             parent: Rails.application.config.discovery_engine_default_location_name,
           )
-        new(month, year, sample_query_set)
+        new(month, year, sample_query_set, table_id)
       end
 
       def import_from_bigquery
@@ -35,7 +36,7 @@ module DiscoveryEngine
             parent: set.name,
             bigquery_source: {
               dataset_id: BIGQUERY_DATASET_ID,
-              table_id: BIGQUERY_TABLE_ID,
+              table_id: table_id,
               project_id: Rails.application.config.google_cloud_project_id,
               partition_date: {
                 year: year,

@@ -23,20 +23,40 @@ RSpec.describe DiscoveryEngine::Evaluation::SampleQuerySet do
 
       expect(sample_query_set_service_stub).to have_received(:create_sample_query_set).with(
         sample_query_set: {
-          display_name: "Clickstream #{current_year}-#{last_month}",
+          display_name: "clickstream #{current_year}-#{last_month}",
           description: "Generated from #{current_year}-#{last_month} BigQuery clickstream data",
         },
         sample_query_set_id: "clickstream_#{current_year}-#{last_month}",
         parent: Rails.application.config.discovery_engine_default_location_name,
       )
     end
+
+    context "when a custom table_id is passed in" do
+      let(:table_id) { "explicit" }
+
+      it "adds table_id to paramaters passed to the create sample query set endpoint" do
+        sqs = sample_query_set.create(table_id:)
+
+        expect(sqs.table_id).to eq(table_id)
+
+        expect(sample_query_set_service_stub).to have_received(:create_sample_query_set).with(
+          sample_query_set: {
+            display_name: "#{table_id} #{current_year}-#{last_month}",
+            description: "Generated from #{current_year}-#{last_month} BigQuery #{table_id} data",
+          },
+          sample_query_set_id: "#{table_id}_#{current_year}-#{last_month}",
+          parent: Rails.application.config.discovery_engine_default_location_name,
+        )
+      end
+    end
   end
 
   describe "#import_from_bigquery" do
+    let(:table_id) { described_class::BIGQUERY_TABLE_ID }
     let(:bigquery_source) do
       {
         dataset_id: described_class::BIGQUERY_DATASET_ID,
-        table_id: described_class::BIGQUERY_TABLE_ID,
+        table_id:,
         project_id: Rails.application.config.google_cloud_project_id,
         partition_date: {
           year: current_year,
@@ -54,6 +74,20 @@ RSpec.describe DiscoveryEngine::Evaluation::SampleQuerySet do
         parent: sqs.set.name,
         bigquery_source: bigquery_source,
       )
+    end
+
+    context "when a table_id is passed in" do
+      let(:table_id) { "explicit" }
+
+      it "adds table_id to paramaters passed to the import_sample_queries endpoint on the sample query service client" do
+        sqs = sample_query_set.create(table_id:)
+        sqs.import_from_bigquery
+
+        expect(sample_query_service_stub).to have_received(:import_sample_queries).with(
+          parent: sqs.set.name,
+          bigquery_source: bigquery_source,
+        )
+      end
     end
 
     context "when operation does not complete" do
