@@ -7,6 +7,15 @@ module DiscoveryEngine
         @sample_set_id = sample_set_id
       end
 
+      def fetch_quality_metrics
+        create
+        fetch_and_output_metrics
+      end
+
+    private
+
+      attr_reader :evaluation
+
       def create
         operation = DiscoveryEngine::Clients
           .evaluation_service
@@ -36,10 +45,6 @@ module DiscoveryEngine
         # TODO: implement a new method in the Metrics::Exported module to send quality metrics to Prometheus instead
         Rails.logger.info(fetch_with_wait.quality_metrics.to_h)
       end
-
-    private
-
-      attr_reader :evaluation
 
       def sample_set_name
         "#{Rails.application.config.discovery_engine_default_location_name}/sampleQuerySets/#{sample_set_id}"
