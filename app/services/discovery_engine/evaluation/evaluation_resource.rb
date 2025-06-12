@@ -27,15 +27,35 @@ module DiscoveryEngine
 
         raise operation.error.message.to_s if operation.error?
 
-        evaluation = operation.results
+        @evaluation = operation.results
 
         Rails.logger.info("Successfully created evaluation #{evaluation.name}")
       end
 
+      def fetch_and_output_metrics
+        # TODO: implement a new method in the Metrics::Exported module to send quality metrics to Prometheus instead
+        Rails.logger.info(fetch_with_wait.quality_metrics.to_h)
+      end
+
     private
+
+      attr_reader :evaluation
 
       def sample_set_name
         "#{Rails.application.config.discovery_engine_default_location_name}/sampleQuerySets/#{sample_set_id}"
+      end
+
+      def fetch_with_wait
+        while (e = fetch_evaluation)
+          return e if e.state == :SUCCEEDED
+
+          Rails.logger.info("Still waiting for evaluation to complete...")
+          Kernel.sleep(10)
+        end
+      end
+
+      def fetch_evaluation
+        DiscoveryEngine::Clients.evaluation_service.get_evaluation(name: evaluation.name)
       end
     end
   end
