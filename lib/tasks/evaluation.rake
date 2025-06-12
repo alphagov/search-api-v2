@@ -4,5 +4,15 @@ namespace :evaluation do
     task setup_sample_set: :environment do
       DiscoveryEngine::Evaluation::SampleQuerySet.new.create_and_import
     end
+
+    desc "Create evaluation and fetch results"
+    task :fetch_evaluations, [:sample_set_id] => [:environment] do |_, args|
+      sample_set_id = args[:sample_set_id]
+
+      raise "sample_set_id is required" unless sample_set_id
+
+      er = DiscoveryEngine::Evaluation::EvaluationResource.new(sample_set_id)
+      er.fetch_quality_metrics
+    end
   end
 end
