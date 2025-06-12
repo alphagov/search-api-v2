@@ -13,9 +13,9 @@ RSpec.describe DiscoveryEngine::Evaluation::EvaluationResource do
     allow(Rails.logger).to receive(:info)
   end
 
-  describe "#create_evaluation" do
+  describe "#fetch_quality_metrics" do
     it "calls the create_evaluation endpoint" do
-      evaluation_resource.create
+      evaluation_resource.fetch_quality_metrics
 
       expect(evaluation_service_stub).to have_received(:create_evaluation).with(
         parent: Rails.application.config.discovery_engine_default_location_name,
@@ -35,20 +35,8 @@ RSpec.describe DiscoveryEngine::Evaluation::EvaluationResource do
         .with("Successfully created evaluation /evaluations/1")
     end
 
-    context "when operation does not complete" do
-      let(:error_stub) { double("error", message: "An error message") }
-      let(:operation_object) { double("operation", wait_until_done!: true, error?: true, error: error_stub) }
-
-      it "raises an error" do
-        expect { evaluation_resource.create }.to raise_error("An error message")
-      end
-    end
-  end
-
-  describe "#fetch_and_output_metrics" do
     it "polls the get_evaluation endpoint until state == :SUCCEEDED" do
-      evaluation_resource.create
-      evaluation_resource.fetch_and_output_metrics
+      evaluation_resource.fetch_quality_metrics
 
       expect(evaluation_service_stub)
         .to have_received(:get_evaluation)
@@ -58,6 +46,15 @@ RSpec.describe DiscoveryEngine::Evaluation::EvaluationResource do
       expect(evaluation_object)
         .to have_received(:quality_metrics)
         .once
+    end
+
+    context "when operation does not complete" do
+      let(:error_stub) { double("error", message: "An error message") }
+      let(:operation_object) { double("operation", wait_until_done!: true, error?: true, error: error_stub) }
+
+      it "raises an error" do
+        expect { evaluation_resource.fetch_quality_metrics }.to raise_error("An error message")
+      end
     end
   end
 end
