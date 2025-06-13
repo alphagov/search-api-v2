@@ -11,7 +11,7 @@ ServingConfig = Data.define(:remote_resource_id) do
 
   # The default serving config automatically available on an engine
   def self.default
-    new("default_search")
+    new("default")
   end
 
   # Used as the variant ("B") when AB testing
