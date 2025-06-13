@@ -3,7 +3,7 @@ RSpec.describe Engine do
 
   describe ".default" do
     it "returns the default engine" do
-      expect(described_class.default).to eq(described_class.new("govuk"))
+      expect(described_class.default).to eq(described_class.new("govuk_global"))
     end
   end
 

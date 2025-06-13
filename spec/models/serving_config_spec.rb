@@ -3,7 +3,7 @@ RSpec.describe ServingConfig do
 
   describe ".default" do
     it "returns the default serving config" do
-      expect(described_class.default).to eq(described_class.new("default_search"))
+      expect(described_class.default).to eq(described_class.new("default"))
     end
   end
 
@@ -15,7 +15,7 @@ RSpec.describe ServingConfig do
 
   describe "#name" do
     it "returns the fully qualified name of the serving config" do
-      expect(serving_config.name).to eq("[collection]/engines/govuk/servingConfigs/my-serving-config")
+      expect(serving_config.name).to eq("[collection]/engines/govuk_global/servingConfigs/my-serving-config")
     end
   end
 end
