@@ -1,5 +1,5 @@
 RSpec.describe DiscoveryEngine::UserEvents::Purge do
-  subject(:import) { described_class.new(from:, to:, client:) }
+  subject(:import) { described_class.new(from:, to:) }
 
   let(:from) { Date.new(2000, 1, 1) }
   let(:to) { Date.new(2000, 1, 30) }
@@ -10,6 +10,10 @@ RSpec.describe DiscoveryEngine::UserEvents::Purge do
     )
   end
   let(:operation) { instance_double(Gapic::Operation, wait_until_done!: nil) }
+
+  before do
+    allow(DiscoveryEngine::Clients).to receive(:user_event_service).and_return(client)
+  end
 
   around do |example|
     Timecop.freeze(Time.zone.local(1989, 12, 13, 1, 2, 3)) do

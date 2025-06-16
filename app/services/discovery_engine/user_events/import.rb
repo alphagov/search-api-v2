@@ -34,19 +34,14 @@ module DiscoveryEngine::UserEvents
       end
     end
 
-    def initialize(
-      event_type,
-      date:,
-      client: ::Google::Cloud::DiscoveryEngine.user_event_service(version: :v1)
-    )
+    def initialize(event_type, date:)
       @event_type = event_type
       @date = date
-      @client = client
     end
 
     def call
       logger.info("Triggering import_user_events operation")
-      operation = client.import_user_events(
+      operation = DiscoveryEngine::Clients.user_event_service.import_user_events(
         bigquery_source: {
           project_id: Rails.configuration.google_cloud_project_id,
           dataset_id: BIGQUERY_DATASET,
@@ -69,7 +64,7 @@ module DiscoveryEngine::UserEvents
 
   private
 
-    attr_reader :event_type, :date, :client
+    attr_reader :event_type, :date
 
     def table_id
       if date.today?
