@@ -3,17 +3,16 @@ module DiscoveryEngine::Sync
     MAX_RETRIES_ON_ERROR = 3
     WAIT_ON_ERROR = 3.seconds
 
-    def initialize(type, content_id, payload_version: nil, client: nil)
+    def initialize(type, content_id, payload_version: nil)
       @type = type
       @content_id = content_id
       @payload_version = payload_version
-      @client = client || ::Google::Cloud::DiscoveryEngine.document_service(version: :v1)
       @attempt = 1
     end
 
   private
 
-    attr_reader :type, :content_id, :payload_version, :client, :attempt
+    attr_reader :type, :content_id, :payload_version, :attempt
 
     def sync
       lock.acquire

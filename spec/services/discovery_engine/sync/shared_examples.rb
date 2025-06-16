@@ -6,6 +6,7 @@ RSpec.shared_context "with sync context" do
   let(:version_cache) { instance_double(Coordination::DocumentVersionCache, sync_required?: sync_required, set_as_latest_synced_version: nil) }
 
   before do
+    allow(DiscoveryEngine::Clients).to receive(:document_service).and_return(client)
     allow(Kernel).to receive(:sleep).and_return(nil)
     allow(Rails).to receive(:logger).and_return(logger)
     allow(GovukError).to receive(:notify)

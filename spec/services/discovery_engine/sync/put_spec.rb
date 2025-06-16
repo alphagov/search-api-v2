@@ -7,7 +7,6 @@ RSpec.describe DiscoveryEngine::Sync::Put do
       { foo: "bar" },
       content: "some content",
       payload_version: "1",
-      client:,
     )
   end
 

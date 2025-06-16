@@ -1,7 +1,7 @@
 require_relative "shared_examples"
 
 RSpec.describe DiscoveryEngine::Sync::Delete do
-  subject(:sync) { described_class.new("some_content_id", payload_version: "1", client:) }
+  subject(:sync) { described_class.new("some_content_id", payload_version: "1") }
 
   include_context "with sync context"
 

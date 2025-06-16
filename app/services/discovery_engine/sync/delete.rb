@@ -1,12 +1,12 @@
 module DiscoveryEngine::Sync
   class Delete < Operation
-    def initialize(content_id, payload_version: nil, client: nil)
-      super(:delete, content_id, payload_version:, client:)
+    def initialize(content_id, payload_version: nil)
+      super(:delete, content_id, payload_version:)
     end
 
     def call
       sync do
-        client.delete_document(name: document_name)
+        DiscoveryEngine::Clients.document_service.delete_document(name: document_name)
       rescue Google::Cloud::NotFoundError => e
         log(
           Logger::Severity::INFO,
