@@ -2,12 +2,8 @@ module DiscoveryEngine::Autocomplete
   class Complete
     QUERY_MODEL = "user-event".freeze
 
-    def initialize(
-      query,
-      client: ::Google::Cloud::DiscoveryEngine.completion_service(version: :v1)
-    )
+    def initialize(query)
       @query = query
-      @client = client
     end
 
     def completion_result
@@ -16,13 +12,13 @@ module DiscoveryEngine::Autocomplete
 
   private
 
-    attr_reader :query, :client
+    attr_reader :query
 
     def suggestions
       # Discovery Engine returns an error on an empty query, so we need to handle it ourselves
       return [] if query.blank?
 
-      client
+      DiscoveryEngine::Clients.completion_service
         .complete_query(complete_query_request)
         .query_suggestions
         .map(&:suggestion)

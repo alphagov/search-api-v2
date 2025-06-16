@@ -1,7 +1,11 @@
 RSpec.describe DiscoveryEngine::Autocomplete::Complete do
-  subject(:completion) { described_class.new(query, client:) }
+  subject(:completion) { described_class.new(query) }
 
   let(:client) { double("completion service", complete_query:) }
+
+  before do
+    allow(DiscoveryEngine::Clients).to receive(:completion_service).and_return(client)
+  end
 
   describe "#completion_result" do
     subject(:completion_result) { completion.completion_result }
