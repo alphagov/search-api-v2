@@ -2,8 +2,8 @@ module DiscoveryEngine::Sync
   class Put < Operation
     MIME_TYPE = "text/html".freeze
 
-    def initialize(content_id, metadata = nil, content: "", payload_version: nil, client: nil)
-      super(:put, content_id, payload_version:, client:)
+    def initialize(content_id, metadata = nil, content: "", payload_version: nil)
+      super(:put, content_id, payload_version:)
 
       @metadata = metadata
       @content = content
@@ -11,7 +11,7 @@ module DiscoveryEngine::Sync
 
     def call
       sync do
-        client.update_document(
+        DiscoveryEngine::Clients.document_service.update_document(
           document: {
             id: content_id,
             name: document_name,

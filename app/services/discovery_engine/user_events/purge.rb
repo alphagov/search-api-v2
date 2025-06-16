@@ -26,22 +26,16 @@ module DiscoveryEngine::UserEvents
       ).call
     end
 
-    def initialize(
-      from:,
-      to:,
-      client: ::Google::Cloud::DiscoveryEngine.user_event_service(version: :v1)
-    )
+    def initialize(from:, to:)
       @from = from.to_date
       @to = to.to_date.tomorrow # end of this day == 0:00am on the next day
       raise ArgumentError, "from date is after to date" if @from >= @to
       raise ArgumentError, "date range is too long" if (@to - @from) > MAX_DAYS
-
-      @client = client
     end
 
     def call
       logger.info("Triggering purge_user_events operation")
-      operation = client.purge_user_events(
+      operation = DiscoveryEngine::Clients.user_event_service.purge_user_events(
         filter:,
         parent: DataStore.default.name,
         force: true,
@@ -58,7 +52,7 @@ module DiscoveryEngine::UserEvents
 
   private
 
-    attr_reader :from, :to, :client
+    attr_reader :from, :to
 
     def filter
       sprintf(

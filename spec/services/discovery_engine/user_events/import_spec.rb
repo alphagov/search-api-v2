@@ -1,5 +1,5 @@
 RSpec.describe DiscoveryEngine::UserEvents::Import do
-  subject(:import) { described_class.new(event_type, date:, client:) }
+  subject(:import) { described_class.new(event_type, date:) }
 
   let(:event_type) { "search" }
   let(:date) { Date.new(2000, 1, 1) }
@@ -13,6 +13,7 @@ RSpec.describe DiscoveryEngine::UserEvents::Import do
   let(:operation) { instance_double(Gapic::Operation, wait_until_done!: nil) }
 
   before do
+    allow(DiscoveryEngine::Clients).to receive(:user_event_service).and_return(client)
     allow(Rails.configuration).to receive_messages(
       google_cloud_project_id: "my-fancy-project",
     )
