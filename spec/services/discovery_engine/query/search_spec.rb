@@ -1,5 +1,5 @@
 RSpec.describe DiscoveryEngine::Query::Search do
-  subject(:search) { described_class.new(query_params, user_agent: "test-user-agent", client:) }
+  subject(:search) { described_class.new(query_params, user_agent: "test-user-agent") }
 
   let(:client) { double("SearchService::Client", search: search_return_value) }
   let(:filters) { double(filter_expression: "filter-expression") }
@@ -18,6 +18,7 @@ RSpec.describe DiscoveryEngine::Query::Search do
   end
 
   before do
+    allow(DiscoveryEngine::Clients).to receive(:search_service).and_return(client)
     allow(DiscoveryEngine::Query::Filters).to receive(:new).and_return(filters)
     allow(DiscoveryEngine::Query::UserLabels).to receive(:from_user_agent)
       .with("test-user-agent")

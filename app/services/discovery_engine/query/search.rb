@@ -6,12 +6,10 @@ module DiscoveryEngine::Query
 
     def initialize(
       query_params,
-      user_agent: nil,
-      client: ::Google::Cloud::DiscoveryEngine.search_service(version: :v1)
+      user_agent: nil
     )
       @query_params = query_params
       @user_agent = user_agent
-      @client = client
 
       Rails.logger.debug { "Instantiated #{self.class.name}: Query: #{discovery_engine_params}" }
     end
@@ -28,10 +26,10 @@ module DiscoveryEngine::Query
 
   private
 
-    attr_reader :query_params, :client, :user_agent
+    attr_reader :query_params, :user_agent
 
     def response
-      @response ||= client.search(discovery_engine_params).response
+      @response ||= DiscoveryEngine::Clients.search_service.search(discovery_engine_params).response
     rescue Google::Cloud::DeadlineExceededError, Google::Cloud::InternalError => e
       Rails.logger.warn("#{self.class.name}: Did not get search results: '#{e.message}'")
 
