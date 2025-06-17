@@ -24,8 +24,8 @@ private
     if respond_to?(:parent)
       parent.name
     else
-      # The default collection is the parent of all root-level resources
-      Rails.configuration.discovery_engine_default_collection_name
+      # The default location is the parent of all root-level resources
+      Rails.configuration.discovery_engine_default_location_name
     end
   end
 end

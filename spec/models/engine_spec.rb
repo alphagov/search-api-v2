@@ -9,7 +9,7 @@ RSpec.describe Engine do
 
   describe "#name" do
     it "returns the fully qualified name of the engine" do
-      expect(engine.name).to eq("[collection]/engines/my-engine")
+      expect(engine.name).to eq("[location]/collections/default_collection/engines/my-engine")
     end
   end
 end

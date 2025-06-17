@@ -15,7 +15,7 @@ RSpec.describe ServingConfig do
 
   describe "#name" do
     it "returns the fully qualified name of the serving config" do
-      expect(serving_config.name).to eq("[collection]/engines/govuk_global/servingConfigs/my-serving-config")
+      expect(serving_config.name).to eq("[location]/collections/default_collection/engines/govuk_global/servingConfigs/my-serving-config")
     end
   end
 end

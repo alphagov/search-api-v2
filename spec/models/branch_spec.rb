@@ -9,7 +9,7 @@ RSpec.describe Branch do
 
   describe "#name" do
     it "returns the fully qualified name of the branch" do
-      expect(branch.name).to eq("[collection]/dataStores/govuk_content/branches/my-branch")
+      expect(branch.name).to eq("[location]/collections/default_collection/dataStores/govuk_content/branches/my-branch")
     end
   end
 end

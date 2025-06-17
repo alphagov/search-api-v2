@@ -9,7 +9,7 @@ RSpec.describe DataStore do
 
   describe "#name" do
     it "returns the fully qualified name of the data store" do
-      expect(data_store.name).to eq("[collection]/dataStores/my-data-store")
+      expect(data_store.name).to eq("[location]/collections/default_collection/dataStores/my-data-store")
     end
   end
 end

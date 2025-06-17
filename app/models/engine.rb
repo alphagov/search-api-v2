@@ -15,4 +15,8 @@ Engine = Data.define(:remote_resource_id) do
   def self.default
     new("govuk_global")
   end
+
+  def parent
+    Collection.default
+  end
 end

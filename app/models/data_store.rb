@@ -12,4 +12,8 @@ DataStore = Data.define(:remote_resource_id) do
   def self.default
     new("govuk_content")
   end
+
+  def parent
+    Collection.default
+  end
 end
