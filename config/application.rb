@@ -18,9 +18,8 @@ module SearchApiV2
 
     # Google Discovery Engine configuration
     config.discovery_engine_default_collection_name = ENV.fetch("DISCOVERY_ENGINE_DEFAULT_COLLECTION_NAME")
+    config.discovery_engine_default_location_name = ENV.fetch("DISCOVERY_ENGINE_DEFAULT_LOCATION_NAME")
     config.google_cloud_project_id = ENV.fetch("GOOGLE_CLOUD_PROJECT_ID")
-    # TODO: Move this into an env var later
-    config.discovery_engine_default_location_name = "projects/#{config.google_cloud_project_id}/locations/global"
 
     # Document sync configuration
     config.document_type_ignorelist = config_for(:document_type_ignorelist)

@@ -42,6 +42,7 @@ Rails.application.configure do
 
   # Google Discovery Engine configuration
   config.discovery_engine_default_collection_name = "[collection]"
+  config.discovery_engine_default_location_name = "[location]"
 end
 
 # TODO: remove this workaround once GovukPrometheusExporter initialisation is fixed in govuk_app_config.
