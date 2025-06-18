@@ -1,6 +1,6 @@
 module DiscoveryEngine
   module Evaluation
-    class EvaluationResource
+    class EvaluationRunner
       attr_reader :sample_set_id
 
       def initialize(sample_set_id)

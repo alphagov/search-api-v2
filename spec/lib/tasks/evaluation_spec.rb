@@ -19,12 +19,12 @@ RSpec.describe "Evaluation tasks" do
   end
 
   describe "fetch_evaluations" do
-    let(:evaluation_resource) { instance_double(DiscoveryEngine::Evaluation::EvaluationResource) }
+    let(:evaluation_resource) { instance_double(DiscoveryEngine::Evaluation::EvaluationRunner) }
 
     before do
       Rake::Task["evaluation:clickstream:fetch_evaluations"].reenable
 
-      allow(DiscoveryEngine::Evaluation::EvaluationResource)
+      allow(DiscoveryEngine::Evaluation::EvaluationRunner)
         .to receive(:new)
         .with("clickstream_01_07")
         .and_return(evaluation_resource)

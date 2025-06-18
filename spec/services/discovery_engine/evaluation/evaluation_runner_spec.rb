@@ -1,6 +1,6 @@
-RSpec.describe DiscoveryEngine::Evaluation::EvaluationResource do
+RSpec.describe DiscoveryEngine::Evaluation::EvaluationRunner do
   let(:sample_set_id) { "clickstream_01_02" }
-  let(:evaluation_resource) { described_class.new(sample_set_id) }
+  let(:evaluation_runner) { described_class.new(sample_set_id) }
 
   describe "#fetch_and_output_metrics" do
     let(:quality_metrics) { double("quality_metrics", to_h: "some output") }
@@ -20,7 +20,7 @@ RSpec.describe DiscoveryEngine::Evaluation::EvaluationResource do
       let(:operation) { double("operation", wait_until_done!: true, error?: true, error:) }
 
       it "raises an error" do
-        expect { evaluation_resource.fetch_quality_metrics }.to raise_error("An error message")
+        expect { evaluation_runner.fetch_quality_metrics }.to raise_error("An error message")
       end
     end
 
@@ -32,7 +32,7 @@ RSpec.describe DiscoveryEngine::Evaluation::EvaluationResource do
       end
 
       it "calls the create_evaluation endpoint" do
-        evaluation_resource.fetch_quality_metrics
+        evaluation_runner.fetch_quality_metrics
 
         expect(evaluation_service).to have_received(:create_evaluation).with(
           parent: Rails.application.config.discovery_engine_default_location_name,
@@ -53,7 +53,7 @@ RSpec.describe DiscoveryEngine::Evaluation::EvaluationResource do
       end
 
       it "fetches quality metrics" do
-        evaluation_resource.fetch_quality_metrics
+        evaluation_runner.fetch_quality_metrics
 
         expect(evaluation_service).to have_received(:get_evaluation)
           .with(name: response.name)
@@ -77,7 +77,7 @@ RSpec.describe DiscoveryEngine::Evaluation::EvaluationResource do
       end
 
       it "sleeps for 10, then polls again" do
-        evaluation_resource.fetch_quality_metrics
+        evaluation_runner.fetch_quality_metrics
 
         expect(evaluation_service).to have_received(:get_evaluation)
           .with(name: response.name)

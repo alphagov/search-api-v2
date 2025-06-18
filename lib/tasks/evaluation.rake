@@ -11,7 +11,7 @@ namespace :evaluation do
 
       raise "sample_set_id is required" unless sample_set_id
 
-      er = DiscoveryEngine::Evaluation::EvaluationResource.new(sample_set_id)
+      er = DiscoveryEngine::Evaluation::EvaluationRunner.new(sample_set_id)
       er.fetch_quality_metrics
     end
   end
