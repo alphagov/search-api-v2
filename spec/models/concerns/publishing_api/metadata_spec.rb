@@ -134,6 +134,20 @@ RSpec.describe PublishingApi::Metadata do
       end
     end
 
+    describe "first_published_at" do
+      subject(:extracted_first_published_at) { extracted_metadata[:first_published_at] }
+
+      let(:document_hash) { { first_published_at: "2012-01-15T10:30:00Z" } }
+
+      it { is_expected.to eq("2012-01-15T10:30:00Z") }
+
+      context "without a first_published_at" do
+        let(:document_hash) { {} }
+
+        it { is_expected.to be_nil }
+      end
+    end
+
     describe "document_type" do
       subject(:extracted_document_type) { extracted_metadata[:document_type] }
 
