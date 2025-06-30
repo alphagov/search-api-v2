@@ -42,8 +42,8 @@ module DiscoveryEngine
       end
 
       def fetch_and_output_metrics
-        # TODO: implement a new method in the Metrics::Exported module to send quality metrics to Prometheus instead
-        Rails.logger.info(fetch_with_wait.quality_metrics.to_h)
+        Rails.logger.info("Fetching evaluations...")
+        fetch_with_wait.quality_metrics.to_h
       end
 
       def sample_set_name
