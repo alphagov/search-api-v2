@@ -13,7 +13,7 @@ namespace :evaluation do
 
     raise "sample_set_id is required" unless sample_set_id
 
-    evaluations = DiscoveryEngine::Quality::EvaluationRunner.new(sample_set_id).fetch_quality_metrics
+    evaluations = DiscoveryEngine::Quality::Evaluation.new(sample_set_id).fetch_quality_metrics
 
     Rails.logger.info(evaluations)
 

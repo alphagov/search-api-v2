@@ -19,7 +19,7 @@ RSpec.describe "Evaluation tasks" do
   end
 
   describe "fetch_evaluations" do
-    let(:evaluation_runner) { instance_double(DiscoveryEngine::Quality::EvaluationRunner) }
+    let(:evaluation) { instance_double(DiscoveryEngine::Quality::Evaluation) }
     let(:registry) { double("registry", gauge: nil) }
     let(:push_client) { double("push_client", add: nil) }
     let(:metric_evaluation) { instance_double(Metrics::Evaluation) }
@@ -27,10 +27,10 @@ RSpec.describe "Evaluation tasks" do
     before do
       Rake::Task["evaluation:fetch_evaluations"].reenable
 
-      allow(DiscoveryEngine::Quality::EvaluationRunner)
+      allow(DiscoveryEngine::Quality::Evaluation)
         .to receive(:new)
         .with("clickstream_01_07")
-        .and_return(evaluation_runner)
+        .and_return(evaluation)
 
       allow(Prometheus::Client)
         .to receive(:registry)
@@ -48,7 +48,7 @@ RSpec.describe "Evaluation tasks" do
 
     it "creates and outputs evaluations" do
       ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
-        expect(evaluation_runner)
+        expect(evaluation)
           .to receive(:fetch_quality_metrics)
           .once
 
