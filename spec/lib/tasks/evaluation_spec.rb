@@ -1,9 +1,9 @@
 RSpec.describe "Evaluation tasks" do
-  describe "setup_sample_set" do
+  describe "setup_sample_query_sets" do
     let(:sample_query_set) { instance_double(DiscoveryEngine::Evaluation::SampleQuerySet) }
 
     before do
-      Rake::Task["evaluation:clickstream:setup_sample_set"].reenable
+      Rake::Task["evaluation:setup_sample_query_sets"].reenable
 
       allow(DiscoveryEngine::Evaluation::SampleQuerySet)
       .to receive(:new)
@@ -14,7 +14,7 @@ RSpec.describe "Evaluation tasks" do
       expect(sample_query_set)
         .to receive(:create_and_import)
         .once
-      Rake::Task["evaluation:clickstream:setup_sample_set"].invoke
+      Rake::Task["evaluation:setup_sample_query_sets"].invoke
     end
   end
 
@@ -25,7 +25,7 @@ RSpec.describe "Evaluation tasks" do
     let(:metric_evaluation) { instance_double(Metrics::Evaluation) }
 
     before do
-      Rake::Task["evaluation:clickstream:fetch_evaluations"].reenable
+      Rake::Task["evaluation:fetch_evaluations"].reenable
 
       allow(DiscoveryEngine::Evaluation::EvaluationRunner)
         .to receive(:new)
@@ -55,13 +55,13 @@ RSpec.describe "Evaluation tasks" do
         expect(metric_evaluation)
           .to receive(:record_evaluations)
           .once
-        Rake::Task["evaluation:clickstream:fetch_evaluations"].invoke("clickstream_01_07")
+        Rake::Task["evaluation:fetch_evaluations"].invoke("clickstream_01_07")
       end
     end
 
     context "when sample_id is not passed in" do
       it "raises and error" do
-        expect { Rake::Task["evaluation:clickstream:fetch_evaluations"].invoke }
+        expect { Rake::Task["evaluation:fetch_evaluations"].invoke }
           .to raise_error("sample_set_id is required")
       end
     end
