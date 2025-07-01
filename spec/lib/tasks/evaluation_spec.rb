@@ -18,14 +18,14 @@ RSpec.describe "Evaluation tasks" do
     end
   end
 
-  describe "fetch_evaluations" do
+  describe "report_quality_metrics" do
     let(:evaluation) { instance_double(DiscoveryEngine::Quality::Evaluation) }
     let(:registry) { double("registry", gauge: nil) }
     let(:push_client) { double("push_client", add: nil) }
     let(:metric_evaluation) { instance_double(Metrics::Evaluation) }
 
     before do
-      Rake::Task["evaluation:fetch_evaluations"].reenable
+      Rake::Task["evaluation:report_quality_metrics"].reenable
 
       allow(DiscoveryEngine::Quality::Evaluation)
         .to receive(:new)
@@ -55,13 +55,13 @@ RSpec.describe "Evaluation tasks" do
         expect(metric_evaluation)
           .to receive(:record_evaluations)
           .once
-        Rake::Task["evaluation:fetch_evaluations"].invoke("clickstream_01_07")
+        Rake::Task["evaluation:report_quality_metrics"].invoke("clickstream_01_07")
       end
     end
 
     context "when sample_id is not passed in" do
       it "raises and error" do
-        expect { Rake::Task["evaluation:fetch_evaluations"].invoke }
+        expect { Rake::Task["evaluation:report_quality_metrics"].invoke }
           .to raise_error("sample_set_id is required")
       end
     end
