@@ -1,11 +1,11 @@
 RSpec.describe "Evaluation tasks" do
   describe "setup_sample_query_sets" do
-    let(:sample_query_set) { instance_double(DiscoveryEngine::Evaluation::SampleQuerySet) }
+    let(:sample_query_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
 
     before do
       Rake::Task["evaluation:setup_sample_query_sets"].reenable
 
-      allow(DiscoveryEngine::Evaluation::SampleQuerySet)
+      allow(DiscoveryEngine::Quality::SampleQuerySet)
       .to receive(:new)
       .and_return(sample_query_set)
     end
@@ -19,7 +19,7 @@ RSpec.describe "Evaluation tasks" do
   end
 
   describe "fetch_evaluations" do
-    let(:evaluation_runner) { instance_double(DiscoveryEngine::Evaluation::EvaluationRunner) }
+    let(:evaluation_runner) { instance_double(DiscoveryEngine::Quality::EvaluationRunner) }
     let(:registry) { double("registry", gauge: nil) }
     let(:push_client) { double("push_client", add: nil) }
     let(:metric_evaluation) { instance_double(Metrics::Evaluation) }
@@ -27,7 +27,7 @@ RSpec.describe "Evaluation tasks" do
     before do
       Rake::Task["evaluation:fetch_evaluations"].reenable
 
-      allow(DiscoveryEngine::Evaluation::EvaluationRunner)
+      allow(DiscoveryEngine::Quality::EvaluationRunner)
         .to receive(:new)
         .with("clickstream_01_07")
         .and_return(evaluation_runner)

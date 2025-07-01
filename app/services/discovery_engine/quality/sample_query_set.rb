@@ -1,5 +1,5 @@
 module DiscoveryEngine
-  module Evaluation
+  module Quality
     class SampleQuerySet
       BIGQUERY_DATASET_ID = "automated_evaluation_input".freeze
       BIGQUERY_TABLE_ID = "clickstream".freeze

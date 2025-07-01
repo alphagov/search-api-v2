@@ -1,5 +1,5 @@
 module DiscoveryEngine
-  module Evaluation
+  module Quality
     class EvaluationRunner
       attr_reader :sample_set_id
 

@@ -1,4 +1,4 @@
-RSpec.describe DiscoveryEngine::Evaluation::EvaluationRunner do
+RSpec.describe DiscoveryEngine::Quality::EvaluationRunner do
   let(:sample_set_id) { "clickstream_01_02" }
   let(:evaluation_runner) { described_class.new(sample_set_id) }
 
