@@ -2,7 +2,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
   let(:sample_set_id) { "clickstream_01_02" }
   let(:evaluation) { described_class.new(sample_set_id) }
 
-  describe "#fetch_and_output_metrics" do
+  describe "#fetch" do
     let(:quality_metrics) { double("quality_metrics", to_h: "some output") }
     let(:evaluation_service) { double("evaluation_service", create_evaluation: operation) }
     let(:operation) { double("operation", error?: false, wait_until_done!: true, results: response) }
