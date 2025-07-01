@@ -3,6 +3,8 @@ module DiscoveryEngine
     BIGQUERY_DATASET_ID = "automated_evaluation_input".freeze
     BIGQUERY_TABLE_ID = "clickstream".freeze
 
+  module_function
+
     def display_name(date)
       "#{BIGQUERY_TABLE_ID} #{formatted_date(date)}"
     end
