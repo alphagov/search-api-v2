@@ -29,7 +29,7 @@ RSpec.describe "Evaluation tasks" do
 
       allow(DiscoveryEngine::Quality::Evaluation)
         .to receive(:new)
-        .with("clickstream_01_07")
+        .with("clickstream_2025-07")
         .and_return(evaluation)
 
       allow(Prometheus::Client)
@@ -42,7 +42,7 @@ RSpec.describe "Evaluation tasks" do
 
       allow(Metrics::Evaluation)
         .to receive(:new)
-        .with(registry)
+        .with(registry, :last_month)
         .and_return(metric_evaluation)
     end
 
@@ -55,7 +55,7 @@ RSpec.describe "Evaluation tasks" do
         expect(metric_evaluation)
           .to receive(:record_evaluations)
           .once
-        Rake::Task["evaluation:report_quality_metrics"].invoke("clickstream_01_07")
+        Rake::Task["evaluation:report_quality_metrics"].invoke("clickstream_2025-07")
       end
     end
 

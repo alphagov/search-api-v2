@@ -19,7 +19,7 @@ namespace :evaluation do
 
     registry = Prometheus::Client.registry
 
-    Metrics::Evaluation.new(registry).record_evaluations(evaluations)
+    Metrics::Evaluation.new(registry, :last_month).record_evaluations(evaluations)
 
     Prometheus::Client::Push.new(
       job: "evaluation_push_quality_metrics",

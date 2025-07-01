@@ -1,7 +1,9 @@
 RSpec.describe Metrics::Evaluation do
-  subject(:evaluation) { described_class.new(registry) }
+  subject(:evaluation) { described_class.new(registry, month) }
 
   let(:registry) { double("registry") }
+  let(:month) { :last_month }
+
   let(:evaluation_response) do
     {
       doc_recall: {
@@ -42,31 +44,31 @@ RSpec.describe Metrics::Evaluation do
   describe "#record_evaluations" do
     it "records the recall, precision and ndcg score" do
       expect(recall_gauge).to receive(:set)
-        .with(0.988, { labels: { top: "1" } })
+        .with(0.988, { labels: { top: "1", month: } })
       expect(recall_gauge).to receive(:set)
-        .with(0.995, { labels: { top: "3" } })
+        .with(0.995, { labels: { top: "3", month: } })
       expect(recall_gauge).to receive(:set)
-        .with(0.998, { labels: { top: "5" } })
+        .with(0.998, { labels: { top: "5", month: } })
       expect(recall_gauge).to receive(:set)
-        .with(0.999, { labels: { top: "10" } })
+        .with(0.999, { labels: { top: "10", month: } })
 
       expect(precision_gauge).to receive(:set)
-        .with(0.988, { labels: { top: "1" } })
+        .with(0.988, { labels: { top: "1", month: } })
       expect(precision_gauge).to receive(:set)
-        .with(0.953, { labels: { top: "3" } })
+        .with(0.953, { labels: { top: "3", month: } })
       expect(precision_gauge).to receive(:set)
-        .with(0.896, { labels: { top: "5" } })
+        .with(0.896, { labels: { top: "5", month: } })
       expect(precision_gauge).to receive(:set)
-        .with(0.752, { labels: { top: "10" } })
+        .with(0.752, { labels: { top: "10", month: } })
 
       expect(ndcg_gauge).to receive(:set)
-        .with(0.988, { labels: { top: "1" } })
+        .with(0.988, { labels: { top: "1", month: } })
       expect(ndcg_gauge).to receive(:set)
-        .with(0.961, { labels: { top: "3" } })
+        .with(0.961, { labels: { top: "3", month: } })
       expect(ndcg_gauge).to receive(:set)
-        .with(0.929, { labels: { top: "5" } })
+        .with(0.929, { labels: { top: "5", month: } })
       expect(ndcg_gauge).to receive(:set)
-        .with(0.887, { labels: { top: "10" } })
+        .with(0.887, { labels: { top: "10", month: } })
 
       evaluation.record_evaluations(evaluation_response)
     end
