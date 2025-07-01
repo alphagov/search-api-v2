@@ -1,3 +1,6 @@
+require "prometheus/client"
+require "prometheus/client/push"
+
 namespace :evaluation do
   namespace :clickstream do
     desc "Create a sample query set for last month's clickstream data and import from BigQuery"
@@ -11,8 +14,18 @@ namespace :evaluation do
 
       raise "sample_set_id is required" unless sample_set_id
 
-      er = DiscoveryEngine::Evaluation::EvaluationRunner.new(sample_set_id)
-      er.fetch_quality_metrics
+      evaluations = DiscoveryEngine::Evaluation::EvaluationRunner.new(sample_set_id).fetch_quality_metrics
+
+      Rails.logger.info(evaluations)
+
+      registry = Prometheus::Client.registry
+
+      Metrics::Evaluation.new(registry).record_evaluations(evaluations)
+
+      Prometheus::Client::Push.new(
+        job: "evaluation_clickstream_fetch_evaluations",
+        gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
+      ).add(registry)
     end
   end
 end
