@@ -1,11 +1,11 @@
 RSpec.describe "Evaluation tasks" do
   describe "setup_sample_query_sets" do
-    let(:sample_query_set) { instance_double(DiscoveryEngine::Evaluation::SampleQuerySet) }
+    let(:sample_query_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
 
     before do
       Rake::Task["evaluation:setup_sample_query_sets"].reenable
 
-      allow(DiscoveryEngine::Evaluation::SampleQuerySet)
+      allow(DiscoveryEngine::Quality::SampleQuerySet)
       .to receive(:new)
       .and_return(sample_query_set)
     end
@@ -18,19 +18,19 @@ RSpec.describe "Evaluation tasks" do
     end
   end
 
-  describe "fetch_evaluations" do
-    let(:evaluation_runner) { instance_double(DiscoveryEngine::Evaluation::EvaluationRunner) }
+  describe "report_quality_metrics" do
+    let(:evaluation) { instance_double(DiscoveryEngine::Quality::Evaluation) }
     let(:registry) { double("registry", gauge: nil) }
     let(:push_client) { double("push_client", add: nil) }
     let(:metric_evaluation) { instance_double(Metrics::Evaluation) }
 
     before do
-      Rake::Task["evaluation:fetch_evaluations"].reenable
+      Rake::Task["evaluation:report_quality_metrics"].reenable
 
-      allow(DiscoveryEngine::Evaluation::EvaluationRunner)
+      allow(DiscoveryEngine::Quality::Evaluation)
         .to receive(:new)
         .with("clickstream_01_07")
-        .and_return(evaluation_runner)
+        .and_return(evaluation)
 
       allow(Prometheus::Client)
         .to receive(:registry)
@@ -48,20 +48,20 @@ RSpec.describe "Evaluation tasks" do
 
     it "creates and outputs evaluations" do
       ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
-        expect(evaluation_runner)
+        expect(evaluation)
           .to receive(:fetch_quality_metrics)
           .once
 
         expect(metric_evaluation)
           .to receive(:record_evaluations)
           .once
-        Rake::Task["evaluation:fetch_evaluations"].invoke("clickstream_01_07")
+        Rake::Task["evaluation:report_quality_metrics"].invoke("clickstream_01_07")
       end
     end
 
     context "when sample_id is not passed in" do
       it "raises and error" do
-        expect { Rake::Task["evaluation:fetch_evaluations"].invoke }
+        expect { Rake::Task["evaluation:report_quality_metrics"].invoke }
           .to raise_error("sample_set_id is required")
       end
     end

@@ -1,4 +1,4 @@
-RSpec.describe DiscoveryEngine::Evaluation::SampleQuerySet do
+RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
   subject(:sample_query_set) { described_class.new }
 
   let(:operation_object) { double("operation", wait_until_done!: true, error?: false) }
