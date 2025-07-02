@@ -1,7 +1,7 @@
 require "prometheus/client"
 require "prometheus/client/push"
 
-namespace :evaluation do
+namespace :quality do
   desc "Create a sample query set for last month's clickstream data and import from BigQuery"
   task setup_sample_query_sets: :environment do
     DiscoveryEngine::Quality::SampleQuerySet.new.create_and_import
