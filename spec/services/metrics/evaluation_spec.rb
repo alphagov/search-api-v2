@@ -1,5 +1,5 @@
 RSpec.describe Metrics::Evaluation do
-  subject(:evaluation) { described_class.new(registry, month) }
+  subject(:evaluation) { described_class.new(registry) }
 
   let(:registry) { double("registry") }
   let(:month) { :last_month }
@@ -70,7 +70,7 @@ RSpec.describe Metrics::Evaluation do
       expect(ndcg_gauge).to receive(:set)
         .with(0.887, { labels: { top: "10", month: } })
 
-      evaluation.record_evaluations(evaluation_response)
+      evaluation.record_evaluations(evaluation_response, month)
     end
   end
 end

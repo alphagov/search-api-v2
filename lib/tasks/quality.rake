@@ -17,13 +17,14 @@ namespace :quality do
     }
 
     registry = Prometheus::Client.registry
+    metric_evaluation = Metrics::Evaluation.new(registry)
 
     sample_query_sets.each do |month_label, id|
       e = DiscoveryEngine::Quality::Evaluation.new(id).fetch_quality_metrics
 
       Rails.logger.info(e)
 
-      Metrics::Evaluation.new(registry, month_label).record_evaluations(e)
+      metric_evaluation.record_evaluations(e, month_label)
 
       Prometheus::Client::Push.new(
         job: "evaluation_report_quality_metrics",

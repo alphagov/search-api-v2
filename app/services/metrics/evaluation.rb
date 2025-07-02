@@ -2,7 +2,7 @@ module Metrics
   class Evaluation
     TOP_K_LEVELS = %w[1 3 5 10].freeze
 
-    def initialize(registry, month)
+    def initialize(registry)
       @doc_recall = registry.gauge(
         :search_api_v2_evaluation_monitoring_recall,
         docstring: "Vertex AI search evaluation recall",
@@ -18,16 +18,15 @@ module Metrics
         docstring: "Vertex AI search evaluation ndcg",
         labels: %i[top month],
       )
-      @month = month
     end
 
-    def record_evaluations(evaluation_result)
+    def record_evaluations(evaluation_result, month)
       metrics.each { |key, registry| record_evaluation(key, registry, month, evaluation_result) }
     end
 
   private
 
-    attr_reader :doc_recall, :doc_precision, :doc_ndcg, :month
+    attr_reader :doc_recall, :doc_precision, :doc_ndcg
 
     def metrics
       { doc_recall:, doc_precision:, doc_ndcg: }
