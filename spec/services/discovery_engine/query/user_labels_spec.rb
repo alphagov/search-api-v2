@@ -36,14 +36,14 @@ RSpec.describe DiscoveryEngine::Query::UserLabels do
   end
 
   context "when user agent is from Android app" do
-    context "with basic okhttp user agent" do
-      let(:user_agent) { "okhttp/4.9.0" }
+    context "with basic govuk_android user agent" do
+      let(:user_agent) { "govuk_android/4.9.0" }
 
       it { is_expected.to have_attributes(consumer: "app-android", consumer_group: "app") }
     end
 
-    context "with okhttp user agent with additional info" do
-      let(:user_agent) { "okhttp/4.9.0 (Android 11)" }
+    context "with govuk_android user agent with additional info" do
+      let(:user_agent) { "govuk_android/4.9.0 (Android 11)" }
 
       it { is_expected.to have_attributes(consumer: "app-android", consumer_group: "app") }
     end
