@@ -7,7 +7,7 @@ module DiscoveryEngine::Query
         new(consumer: Regexp.last_match(1), consumer_group: "web")
       when /\Agovuk_ios\//
         new(consumer: "app-ios", consumer_group: "app")
-      when /\Aokhttp\//
+      when /\Agovuk_android\//
         # NOTE: Android app currently uses the stock `okhttp/` user agent from its HTTP library, but
         # should hopefully change in the future
         new(consumer: "app-android", consumer_group: "app")
