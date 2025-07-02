@@ -1,9 +1,9 @@
-RSpec.describe "Evaluation tasks" do
+RSpec.describe "Quality tasks" do
   describe "setup_sample_query_sets" do
     let(:sample_query_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
 
     before do
-      Rake::Task["evaluation:setup_sample_query_sets"].reenable
+      Rake::Task["quality:setup_sample_query_sets"].reenable
 
       allow(DiscoveryEngine::Quality::SampleQuerySet)
       .to receive(:new)
@@ -14,7 +14,7 @@ RSpec.describe "Evaluation tasks" do
       expect(sample_query_set)
         .to receive(:create_and_import)
         .once
-      Rake::Task["evaluation:setup_sample_query_sets"].invoke
+      Rake::Task["quality:setup_sample_query_sets"].invoke
     end
   end
 
@@ -29,7 +29,7 @@ RSpec.describe "Evaluation tasks" do
     let(:metric_evaluation) { instance_double(Metrics::Evaluation) }
 
     before do
-      Rake::Task["evaluation:report_quality_metrics"].reenable
+      Rake::Task["quality:report_quality_metrics"].reenable
 
       allow(DiscoveryEngine::Quality::Evaluation)
         .to receive(:new)
@@ -69,7 +69,7 @@ RSpec.describe "Evaluation tasks" do
         expect(metric_evaluation)
           .to receive(:record_evaluations)
           .twice
-        Rake::Task["evaluation:report_quality_metrics"].invoke
+        Rake::Task["quality:report_quality_metrics"].invoke
       end
     end
   end
