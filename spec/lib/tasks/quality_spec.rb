@@ -23,7 +23,8 @@ RSpec.describe "Quality tasks" do
       Timecop.freeze(2025, 11, 1) { example.call }
     end
 
-    let(:evaluation) { instance_double(DiscoveryEngine::Quality::Evaluation) }
+    let(:evaluation) { instance_double(DiscoveryEngine::Quality::Evaluation, fetch_quality_metrics: evaluation_response) }
+    let(:evaluation_response) { double }
     let(:registry) { double("registry", gauge: nil) }
     let(:push_client) { double("push_client", add: nil) }
     let(:metric_evaluation) { instance_double(Metrics::Evaluation) }
@@ -51,12 +52,7 @@ RSpec.describe "Quality tasks" do
 
       allow(Metrics::Evaluation)
         .to receive(:new)
-        .with(registry, :last_month)
-        .and_return(metric_evaluation)
-
-      allow(Metrics::Evaluation)
-        .to receive(:new)
-        .with(registry, :month_before_last)
+        .with(registry)
         .and_return(metric_evaluation)
     end
 
@@ -68,7 +64,14 @@ RSpec.describe "Quality tasks" do
 
         expect(metric_evaluation)
           .to receive(:record_evaluations)
-          .twice
+          .once
+          .with(evaluation_response, :last_month)
+
+        expect(metric_evaluation)
+        .to receive(:record_evaluations)
+        .once
+        .with(evaluation_response, :month_before_last)
+
         Rake::Task["quality:report_quality_metrics"].invoke
       end
     end
