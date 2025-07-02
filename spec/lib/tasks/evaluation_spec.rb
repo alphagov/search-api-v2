@@ -19,6 +19,10 @@ RSpec.describe "Evaluation tasks" do
   end
 
   describe "report_quality_metrics" do
+    around do |example|
+      Timecop.freeze(2025, 11, 1) { example.call }
+    end
+
     let(:evaluation) { instance_double(DiscoveryEngine::Quality::Evaluation) }
     let(:registry) { double("registry", gauge: nil) }
     let(:push_client) { double("push_client", add: nil) }
@@ -29,7 +33,12 @@ RSpec.describe "Evaluation tasks" do
 
       allow(DiscoveryEngine::Quality::Evaluation)
         .to receive(:new)
-        .with("clickstream_01_07")
+        .with("clickstream_2025-10")
+        .and_return(evaluation)
+
+      allow(DiscoveryEngine::Quality::Evaluation)
+        .to receive(:new)
+        .with("clickstream_2025-09")
         .and_return(evaluation)
 
       allow(Prometheus::Client)
@@ -42,27 +51,25 @@ RSpec.describe "Evaluation tasks" do
 
       allow(Metrics::Evaluation)
         .to receive(:new)
-        .with(registry)
+        .with(registry, :last_month)
+        .and_return(metric_evaluation)
+
+      allow(Metrics::Evaluation)
+        .to receive(:new)
+        .with(registry, :month_before_last)
         .and_return(metric_evaluation)
     end
 
-    it "creates and outputs evaluations" do
+    it "reports quality metrics to prometheus" do
       ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
         expect(evaluation)
           .to receive(:fetch_quality_metrics)
-          .once
+          .twice
 
         expect(metric_evaluation)
           .to receive(:record_evaluations)
-          .once
-        Rake::Task["evaluation:report_quality_metrics"].invoke("clickstream_01_07")
-      end
-    end
-
-    context "when sample_id is not passed in" do
-      it "raises and error" do
-        expect { Rake::Task["evaluation:report_quality_metrics"].invoke }
-          .to raise_error("sample_set_id is required")
+          .twice
+        Rake::Task["evaluation:report_quality_metrics"].invoke
       end
     end
   end

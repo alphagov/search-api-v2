@@ -8,22 +8,27 @@ namespace :evaluation do
   end
 
   desc "Create evaluation and push results to Prometheus"
-  task :report_quality_metrics, [:sample_set_id] => [:environment] do |_, args|
-    sample_set_id = args[:sample_set_id]
+  task report_quality_metrics: :environment do
+    fields = DiscoveryEngine::Quality::SampleQuerySetFields
 
-    raise "sample_set_id is required" unless sample_set_id
-
-    evaluations = DiscoveryEngine::Quality::Evaluation.new(sample_set_id).fetch_quality_metrics
-
-    Rails.logger.info(evaluations)
+    sample_query_sets = {
+      last_month: fields.sample_query_set_id(Time.zone.now.prev_month),
+      month_before_last: fields.sample_query_set_id(Time.zone.now.prev_month(2)),
+    }
 
     registry = Prometheus::Client.registry
 
-    Metrics::Evaluation.new(registry).record_evaluations(evaluations)
+    sample_query_sets.each do |month_label, id|
+      e = DiscoveryEngine::Quality::Evaluation.new(id).fetch_quality_metrics
 
-    Prometheus::Client::Push.new(
-      job: "evaluation_push_quality_metrics",
-      gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
-    ).add(registry)
+      Rails.logger.info(e)
+
+      Metrics::Evaluation.new(registry, month_label).record_evaluations(e)
+
+      Prometheus::Client::Push.new(
+        job: "evaluation_report_quality_metrics",
+        gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
+      ).add(registry)
+    end
   end
 end

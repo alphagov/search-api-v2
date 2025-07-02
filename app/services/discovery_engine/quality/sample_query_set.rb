@@ -1,32 +1,31 @@
 module DiscoveryEngine
   module Quality
     class SampleQuerySet
-      BIGQUERY_DATASET_ID = "automated_evaluation_input".freeze
-      BIGQUERY_TABLE_ID = "clickstream".freeze
+      include SampleQuerySetFields
 
       def create_and_import
-        create_sample_query_set
-        import_from_bigquery
+        create
+        import
       end
 
     private
 
       attr_reader :set
 
-      def create_sample_query_set
+      def create
         @set = DiscoveryEngine::Clients
           .sample_query_set_service
           .create_sample_query_set(
             sample_query_set: {
-              display_name: sample_query_set_display_name,
-              description: sample_query_set_description,
+              display_name: display_name(last_month),
+              description: description(last_month),
             },
-            sample_query_set_id:,
+            sample_query_set_id: sample_query_set_id(last_month),
             parent: Rails.application.config.discovery_engine_default_location_name,
           )
       end
 
-      def import_from_bigquery
+      def import
         operation = DiscoveryEngine::Clients
           .sample_query_service
           .import_sample_queries(
@@ -36,8 +35,8 @@ module DiscoveryEngine
               table_id: BIGQUERY_TABLE_ID,
               project_id: Rails.application.config.google_cloud_project_id,
               partition_date: {
-                year: date.year,
-                month: date.month,
+                year: last_month.year,
+                month: last_month.month,
                 # Partition date needs to be a full date not just year-month
                 day: 1,
               },
@@ -50,23 +49,7 @@ module DiscoveryEngine
         Rails.logger.info("Successfully imported sample queries into: #{set.name}")
       end
 
-      def sample_query_set_display_name
-        "#{BIGQUERY_TABLE_ID} #{formatted_date}"
-      end
-
-      def sample_query_set_description
-        "Generated from #{formatted_date} BigQuery #{BIGQUERY_TABLE_ID} data"
-      end
-
-      def sample_query_set_id
-        "#{BIGQUERY_TABLE_ID}_#{formatted_date}"
-      end
-
-      def formatted_date
-        date.strftime("%Y-%m")
-      end
-
-      def date
+      def last_month
         Time.zone.now.prev_month
       end
     end
