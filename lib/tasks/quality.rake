@@ -4,29 +4,30 @@ require "prometheus/client/push"
 namespace :quality do
   desc "Create a sample query set for last month's clickstream data and import from BigQuery"
   task setup_sample_query_sets: :environment do
-    DiscoveryEngine::Quality::SampleQuerySet.new.create_and_import
+    month_interval = DiscoveryEngine::Quality::MonthInterval.previous_month
+    DiscoveryEngine::Quality::SampleQuerySet.new(month_interval).create_and_import
   end
 
   desc "Create a sample query set for clickstream data for a given month, and import from BigQuery"
   task :setup_sample_query_set, %i[year month] => :environment do |_, args|
-    raise "year and month are required arguments" unless args[:year] && args[:month]
+    year = args[:year]&.to_i
+    month = args[:month]&.to_i
+    raise "year and month are required arguments" unless year.positive? && month.positive?
+    raise "arguments must be provided in YYYY MM order" if year < month
 
-    raise "arguments must be provided in YYYY M order" if args[:year].to_i < args[:month].to_i
-
-    year = args[:year]
-    month = args[:month]
-
-    DiscoveryEngine::Quality::SampleQuerySet.new(year, month).create_and_import
+    month_interval = DiscoveryEngine::Quality::MonthInterval.new(year, month)
+    DiscoveryEngine::Quality::SampleQuerySet.new(month_interval).create_and_import
   end
 
   desc "Create evaluation and push results to Prometheus"
   task report_quality_metrics: :environment do
-    fields = DiscoveryEngine::Quality::SampleQuerySetFields
-
-    sample_query_sets = {
-      last_month: fields.sample_query_set_id(Time.zone.now.prev_month),
-      month_before_last: fields.sample_query_set_id(Time.zone.now.prev_month(2)),
+    month_intervals = {
+      last_month: DiscoveryEngine::Quality::MonthInterval.previous_month,
+      month_before_last: DiscoveryEngine::Quality::MonthInterval.previous_month(2),
     }
+    sample_query_sets = month_intervals.transform_values do |month_interval|
+      DiscoveryEngine::Quality::SampleQuerySetFields.sample_query_set_id(month_interval)
+    end
 
     registry = Prometheus::Client.registry
     metric_evaluation = Metrics::Evaluation.new(registry)

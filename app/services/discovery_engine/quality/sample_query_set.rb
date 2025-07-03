@@ -3,9 +3,8 @@ module DiscoveryEngine
     class SampleQuerySet
       include SampleQuerySetFields
 
-      def initialize(year = nil, month = nil)
-        @year = year&.to_i
-        @month = month&.to_i
+      def initialize(month_interval)
+        @month_interval = month_interval
       end
 
       def create_and_import
@@ -15,17 +14,17 @@ module DiscoveryEngine
 
     private
 
-      attr_reader :set, :year, :month
+      attr_reader :set, :month_interval
 
       def create
         @set = DiscoveryEngine::Clients
           .sample_query_set_service
           .create_sample_query_set(
             sample_query_set: {
-              display_name: display_name(date),
-              description: description(date),
+              display_name: display_name(month_interval),
+              description: description(month_interval),
             },
-            sample_query_set_id: sample_query_set_id(date),
+            sample_query_set_id: sample_query_set_id(month_interval),
             parent: Rails.application.config.discovery_engine_default_location_name,
           )
       end
@@ -40,8 +39,8 @@ module DiscoveryEngine
               table_id: BIGQUERY_TABLE_ID,
               project_id: Rails.application.config.google_cloud_project_id,
               partition_date: {
-                year: date.year,
-                month: date.month,
+                year: month_interval.year,
+                month: month_interval.month,
                 # Partition date needs to be a full date not just year-month
                 day: 1,
               },
@@ -52,12 +51,6 @@ module DiscoveryEngine
         raise operation.error.message if operation.error?
 
         Rails.logger.info("Successfully imported sample queries into: #{set.name}")
-      end
-
-      def date
-        return Time.zone.now.prev_month if year.nil? || month.nil?
-
-        Date.new(year, month, 1)
       end
     end
   end
