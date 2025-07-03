@@ -7,6 +7,18 @@ namespace :quality do
     DiscoveryEngine::Quality::SampleQuerySet.new.create_and_import
   end
 
+  desc "Create a sample query set for clickstream data for a given month, and import from BigQuery"
+  task :setup_sample_query_set, %i[year month] => :environment do |_, args|
+    raise "year and month are required arguments" unless args[:year] && args[:month]
+
+    raise "arguments must be provided in YYYY M order" if args[:year].to_i < args[:month].to_i
+
+    year = args[:year]
+    month = args[:month]
+
+    DiscoveryEngine::Quality::SampleQuerySet.new(year, month).create_and_import
+  end
+
   desc "Create evaluation and push results to Prometheus"
   task report_quality_metrics: :environment do
     fields = DiscoveryEngine::Quality::SampleQuerySetFields
