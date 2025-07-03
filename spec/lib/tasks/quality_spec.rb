@@ -18,6 +18,26 @@ RSpec.describe "Quality tasks" do
     end
   end
 
+  describe "setup_sample_query_set" do
+    let(:sample_query_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
+
+    before do
+      Rake::Task["quality:setup_sample_query_set"].reenable
+
+      allow(DiscoveryEngine::Quality::SampleQuerySet)
+      .to receive(:new)
+      .with("2025", "1")
+      .and_return(sample_query_set)
+    end
+
+    it "creates and imports a sample set" do
+      expect(sample_query_set)
+        .to receive(:create_and_import)
+        .once
+      Rake::Task["quality:setup_sample_query_set"].invoke("2025", "1")
+    end
+  end
+
   describe "report_quality_metrics" do
     around do |example|
       Timecop.freeze(2025, 11, 1) { example.call }
