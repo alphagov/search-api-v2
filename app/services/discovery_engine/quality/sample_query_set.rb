@@ -1,7 +1,8 @@
 module DiscoveryEngine
   module Quality
     class SampleQuerySet
-      include SampleQuerySetFields
+      BIGQUERY_DATASET_ID = "automated_evaluation_input".freeze
+      BIGQUERY_TABLE_ID = "clickstream".freeze
 
       def initialize(month_interval)
         @month_interval = month_interval
@@ -10,6 +11,10 @@ module DiscoveryEngine
       def create_and_import
         create
         import
+      end
+
+      def id
+        "#{BIGQUERY_TABLE_ID}_#{month_interval}"
       end
 
     private
@@ -21,10 +26,10 @@ module DiscoveryEngine
           .sample_query_set_service
           .create_sample_query_set(
             sample_query_set: {
-              display_name: display_name(month_interval),
-              description: description(month_interval),
+              display_name:,
+              description:,
             },
-            sample_query_set_id: sample_query_set_id(month_interval),
+            sample_query_set_id: id,
             parent: Rails.application.config.discovery_engine_default_location_name,
           )
       end
@@ -51,6 +56,14 @@ module DiscoveryEngine
         raise operation.error.message if operation.error?
 
         Rails.logger.info("Successfully imported sample queries into: #{set.name}")
+      end
+
+      def display_name
+        "#{BIGQUERY_TABLE_ID} #{month_interval}"
+      end
+
+      def description
+        "Generated from #{month_interval} BigQuery #{BIGQUERY_TABLE_ID} data"
       end
     end
   end
