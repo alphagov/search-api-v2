@@ -27,7 +27,7 @@ RSpec.describe "Quality tasks" do
 
       allow(DiscoveryEngine::Quality::SampleQuerySet)
       .to receive(:new)
-      .with(expected_month_interval)
+      .with("clickstream", expected_month_interval)
       .and_return(sample_query_set)
     end
 

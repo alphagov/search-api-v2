@@ -1,6 +1,7 @@
 RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
-  subject(:sample_query_set) { described_class.new(month_interval) }
+  subject(:sample_query_set) { described_class.new(table_id, month_interval) }
 
+  let(:table_id) { "clickstream" }
   let(:month_interval) { DiscoveryEngine::Quality::MonthInterval.new(2025, 1) }
 
   let(:operation_object) { double("operation", wait_until_done!: true, error?: false) }
