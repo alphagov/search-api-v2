@@ -1,6 +1,6 @@
 RSpec.describe DiscoveryEngine::Quality::Evaluation do
-  let(:sample_set_id) { "clickstream_01_02" }
-  let(:evaluation) { described_class.new(sample_set_id) }
+  let(:sample_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, name: "/set") }
+  let(:evaluation) { described_class.new(sample_set) }
 
   describe "#fetch" do
     let(:quality_metrics) { double("quality_metrics", to_h: "some output") }
@@ -39,7 +39,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
           evaluation: {
             evaluation_spec: {
               query_set_spec: {
-                sample_query_set: "#{Rails.application.config.discovery_engine_default_location_name}/sampleQuerySets/#{sample_set_id}",
+                sample_query_set: "/set",
               },
               search_request: {
                 serving_config: ServingConfig.default.name,
