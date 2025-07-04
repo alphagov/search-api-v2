@@ -5,20 +5,16 @@ module DiscoveryEngine
 
   module_function
 
-    def display_name(date)
-      "#{BIGQUERY_TABLE_ID} #{formatted_date(date)}"
+    def display_name(month_interval)
+      "#{BIGQUERY_TABLE_ID} #{month_interval}"
     end
 
-    def description(date)
-      "Generated from #{formatted_date(date)} BigQuery #{BIGQUERY_TABLE_ID} data"
+    def description(month_interval)
+      "Generated from #{month_interval} BigQuery #{BIGQUERY_TABLE_ID} data"
     end
 
-    def sample_query_set_id(date)
-      "#{BIGQUERY_TABLE_ID}_#{formatted_date(date)}"
-    end
-
-    def formatted_date(date)
-      date.strftime("%Y-%m")
+    def sample_query_set_id(month_interval)
+      "#{BIGQUERY_TABLE_ID}_#{month_interval}"
     end
   end
 end

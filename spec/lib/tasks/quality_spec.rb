@@ -20,13 +20,14 @@ RSpec.describe "Quality tasks" do
 
   describe "setup_sample_query_set" do
     let(:sample_query_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
+    let(:expected_month_interval) { DiscoveryEngine::Quality::MonthInterval.new(2025, 1) }
 
     before do
       Rake::Task["quality:setup_sample_query_set"].reenable
 
       allow(DiscoveryEngine::Quality::SampleQuerySet)
       .to receive(:new)
-      .with("2025", "1")
+      .with(expected_month_interval)
       .and_return(sample_query_set)
     end
 
