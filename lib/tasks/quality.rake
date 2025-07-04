@@ -26,7 +26,7 @@ namespace :quality do
       month_before_last: DiscoveryEngine::Quality::MonthInterval.previous_month(2),
     }
     sample_query_sets = month_intervals.transform_values do |month_interval|
-      DiscoveryEngine::Quality::SampleQuerySetFields.sample_query_set_id(month_interval)
+      DiscoveryEngine::Quality::SampleQuerySet.new(month_interval).id
     end
 
     registry = Prometheus::Client.registry
