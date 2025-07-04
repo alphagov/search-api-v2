@@ -17,12 +17,16 @@ module DiscoveryEngine
         "#{BIGQUERY_TABLE_ID}_#{month_interval}"
       end
 
+      def name
+        "#{Rails.application.config.discovery_engine_default_location_name}/sampleQuerySets/#{id}"
+      end
+
     private
 
-      attr_reader :set, :month_interval
+      attr_reader :month_interval
 
       def create
-        @set = DiscoveryEngine::Clients
+        DiscoveryEngine::Clients
           .sample_query_set_service
           .create_sample_query_set(
             sample_query_set: {
@@ -38,7 +42,7 @@ module DiscoveryEngine
         operation = DiscoveryEngine::Clients
           .sample_query_service
           .import_sample_queries(
-            parent: set.name,
+            parent: name,
             bigquery_source: {
               dataset_id: BIGQUERY_DATASET_ID,
               table_id: BIGQUERY_TABLE_ID,
@@ -55,7 +59,7 @@ module DiscoveryEngine
 
         raise operation.error.message if operation.error?
 
-        Rails.logger.info("Successfully imported sample queries into: #{set.name}")
+        Rails.logger.info("Successfully imported sample queries into: #{name}")
       end
 
       def display_name

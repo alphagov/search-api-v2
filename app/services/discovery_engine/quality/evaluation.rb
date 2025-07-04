@@ -1,9 +1,7 @@
 module DiscoveryEngine::Quality
   class Evaluation
-    attr_reader :sample_set_id
-
-    def initialize(sample_set_id)
-      @sample_set_id = sample_set_id
+    def initialize(sample_set)
+      @sample_set = sample_set
     end
 
     def fetch_quality_metrics
@@ -13,7 +11,7 @@ module DiscoveryEngine::Quality
 
   private
 
-    attr_reader :result
+    attr_reader :sample_set, :result
 
     def create
       operation = DiscoveryEngine::Clients
@@ -23,7 +21,7 @@ module DiscoveryEngine::Quality
           evaluation: {
             evaluation_spec: {
               query_set_spec: {
-                sample_query_set: sample_set_name,
+                sample_query_set: sample_set.name,
               },
               search_request: {
                 serving_config: ServingConfig.default.name,
@@ -43,10 +41,6 @@ module DiscoveryEngine::Quality
     def fetch
       Rails.logger.info("Fetching evaluations...")
       fetch_with_wait.quality_metrics.to_h
-    end
-
-    def sample_set_name
-      "#{Rails.application.config.discovery_engine_default_location_name}/sampleQuerySets/#{sample_set_id}"
     end
 
     def fetch_with_wait
