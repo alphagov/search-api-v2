@@ -5,7 +5,7 @@ namespace :quality do
   desc "Create a sample query set for last month's clickstream data and import from BigQuery"
   task setup_sample_query_sets: :environment do
     month_interval = DiscoveryEngine::Quality::MonthInterval.previous_month
-    DiscoveryEngine::Quality::SampleQuerySet.new(month_interval).create_and_import
+    DiscoveryEngine::Quality::SampleQuerySet.new("clickstream", month_interval).create_and_import
   end
 
   desc "Create a sample query set for clickstream data for a given month, and import from BigQuery"
@@ -16,7 +16,7 @@ namespace :quality do
     raise "arguments must be provided in YYYY MM order" if year < month
 
     month_interval = DiscoveryEngine::Quality::MonthInterval.new(year, month)
-    DiscoveryEngine::Quality::SampleQuerySet.new(month_interval).create_and_import
+    DiscoveryEngine::Quality::SampleQuerySet.new("clickstream", month_interval).create_and_import
   end
 
   desc "Create evaluation and push results to Prometheus"
@@ -26,7 +26,7 @@ namespace :quality do
       month_before_last: DiscoveryEngine::Quality::MonthInterval.previous_month(2),
     }
     sample_query_sets = month_intervals.transform_values do |month_interval|
-      DiscoveryEngine::Quality::SampleQuerySet.new(month_interval).id
+      DiscoveryEngine::Quality::SampleQuerySet.new("clickstream", month_interval).id
     end
 
     registry = Prometheus::Client.registry
