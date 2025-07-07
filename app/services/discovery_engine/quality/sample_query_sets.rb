@@ -1,7 +1,7 @@
 module DiscoveryEngine
   module Quality
     class SampleQuerySets
-      BIGQUERY_TABLE_IDS = %w[clickstream].freeze
+      BIGQUERY_TABLE_IDS = %w[binary clickstream explicit].freeze
 
       attr_reader :month_interval, :sets
 

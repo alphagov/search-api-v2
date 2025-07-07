@@ -5,13 +5,14 @@ RSpec.describe DiscoveryEngine::Quality::SampleQuerySets do
 
   describe "sets" do
     it "returns SampleQuerySet objects" do
-      expect(sample_query_sets.sets.count).to eq(1)
+      expect(sample_query_sets.sets.count).to eq(3)
     end
 
     it "creates a SampleQuerySet object for each table name" do
       table_ids = described_class::BIGQUERY_TABLE_IDS
       expect(DiscoveryEngine::Quality::SampleQuerySet)
         .to receive(:new)
+        .exactly(3).times
         .with(month_interval, table_ids.first)
 
       sample_query_sets.sets
