@@ -9,8 +9,8 @@ module DiscoveryEngine
       end
 
       def create_and_import
-        create
-        import
+        set = create
+        import(set)
       end
 
       def id
@@ -19,10 +19,10 @@ module DiscoveryEngine
 
     private
 
-      attr_reader :set, :month_interval, :table_id
+      attr_reader :month_interval, :table_id
 
       def create
-        @set = DiscoveryEngine::Clients
+        DiscoveryEngine::Clients
           .sample_query_set_service
           .create_sample_query_set(
             sample_query_set: {
@@ -34,7 +34,7 @@ module DiscoveryEngine
           )
       end
 
-      def import
+      def import(set)
         operation = DiscoveryEngine::Clients
           .sample_query_service
           .import_sample_queries(
