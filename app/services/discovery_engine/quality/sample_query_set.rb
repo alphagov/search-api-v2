@@ -2,10 +2,10 @@ module DiscoveryEngine
   module Quality
     class SampleQuerySet
       BIGQUERY_DATASET_ID = "automated_evaluation_input".freeze
-      BIGQUERY_TABLE_ID = "clickstream".freeze
 
-      def initialize(month_interval)
+      def initialize(month_interval, table_id)
         @month_interval = month_interval
+        @table_id = table_id
       end
 
       def create_and_import
@@ -19,7 +19,7 @@ module DiscoveryEngine
 
     private
 
-      attr_reader :month_interval
+      attr_reader :month_interval, :table_id
 
       def create
         DiscoveryEngine::Clients
@@ -41,7 +41,7 @@ module DiscoveryEngine
             parent: name,
             bigquery_source: {
               dataset_id: BIGQUERY_DATASET_ID,
-              table_id: BIGQUERY_TABLE_ID,
+              table_id:,
               project_id: Rails.application.config.google_cloud_project_id,
               partition_date: {
                 year: month_interval.year,
@@ -59,11 +59,11 @@ module DiscoveryEngine
       end
 
       def display_name
-        "#{BIGQUERY_TABLE_ID} #{month_interval}"
+        "#{table_id} #{month_interval}"
       end
 
       def description
-        "Generated from #{month_interval} BigQuery #{BIGQUERY_TABLE_ID} data"
+        "Generated from #{month_interval} BigQuery #{table_id} data"
       end
 
       def id
