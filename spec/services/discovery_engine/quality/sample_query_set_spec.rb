@@ -1,5 +1,5 @@
 RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
-  subject(:sample_query_set) { described_class.new(month_interval) }
+  subject(:sample_query_set) { described_class.new(month_interval, table_id) }
 
   let(:month_interval) { DiscoveryEngine::Quality::MonthInterval.new(2025, 1) }
 
@@ -7,6 +7,7 @@ RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
   let(:response_object) { double("response", name: "/sample_query_set/1") }
   let(:sample_query_set_service_stub) { double("sample_query_set_service", create_sample_query_set: response_object) }
   let(:sample_query_service_stub) { double("sample_query_service", import_sample_queries: operation_object) }
+  let(:table_id) { "clickstream" }
 
   before do
     allow(DiscoveryEngine::Clients).to receive_messages(sample_query_set_service: sample_query_set_service_stub, sample_query_service: sample_query_service_stub)
