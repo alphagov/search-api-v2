@@ -5,8 +5,7 @@ namespace :quality do
   desc "Create a sample query set for last month's clickstream data and import from BigQuery"
   task setup_sample_query_sets: :environment do
     month_interval = DiscoveryEngine::Quality::MonthInterval.previous_month
-    array_of_sets = DiscoveryEngine::Quality::SampleQuerySets.new(month_interval).all
-    array_of_sets.each(&:create_and_import)
+    DiscoveryEngine::Quality::SampleQuerySets.new(month_interval).create_and_import_all
   end
 
   desc "Create a sample query set for clickstream data for a given month, and import from BigQuery"

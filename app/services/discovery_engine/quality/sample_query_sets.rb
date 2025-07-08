@@ -14,6 +14,10 @@ module DiscoveryEngine
           SampleQuerySet.new(month_interval, table_id)
         end
       end
+
+      def create_and_import_all
+        all.each(&:create_and_import)
+      end
     end
   end
 end

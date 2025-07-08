@@ -18,13 +18,12 @@ RSpec.describe "Quality tasks" do
       .and_return(sample_query_sets)
 
       allow(sample_query_sets)
-      .to receive(:all)
-      .and_return([sample_query_set])
+      .to receive(:create_and_import_all)
     end
 
     it "creates and imports a sample set" do
-      expect(sample_query_set)
-        .to receive(:create_and_import)
+      expect(sample_query_sets)
+        .to receive(:create_and_import_all)
         .once
       Rake::Task["quality:setup_sample_query_sets"].invoke
     end
