@@ -1,7 +1,7 @@
 RSpec.describe "Quality tasks" do
-  describe "setup_sample_query_sets" do
-    let(:sample_query_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
+  let(:sample_query_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
 
+  describe "setup_sample_query_sets" do
     before do
       Rake::Task["quality:setup_sample_query_sets"].reenable
 
@@ -19,7 +19,6 @@ RSpec.describe "Quality tasks" do
   end
 
   describe "setup_sample_query_set" do
-    let(:sample_query_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
     let(:expected_month_interval) { DiscoveryEngine::Quality::MonthInterval.new(2025, 1) }
 
     before do
@@ -49,18 +48,23 @@ RSpec.describe "Quality tasks" do
     let(:registry) { double("registry", gauge: nil) }
     let(:push_client) { double("push_client", add: nil) }
     let(:metric_evaluation) { instance_double(Metrics::Evaluation) }
+    let(:sample_query_set_last_month) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
 
     before do
       Rake::Task["quality:report_quality_metrics"].reenable
 
+      allow(DiscoveryEngine::Quality::SampleQuerySet)
+      .to receive(:new)
+      .and_return(sample_query_set, sample_query_set_last_month)
+
       allow(DiscoveryEngine::Quality::Evaluation)
         .to receive(:new)
-        .with("clickstream_2025-10")
+        .with(sample_query_set)
         .and_return(evaluation)
 
       allow(DiscoveryEngine::Quality::Evaluation)
         .to receive(:new)
-        .with("clickstream_2025-09")
+        .with(sample_query_set_last_month)
         .and_return(evaluation)
 
       allow(Prometheus::Client)

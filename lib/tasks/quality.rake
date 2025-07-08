@@ -26,14 +26,14 @@ namespace :quality do
       month_before_last: DiscoveryEngine::Quality::MonthInterval.previous_month(2),
     }
     sample_query_sets = month_intervals.transform_values do |month_interval|
-      DiscoveryEngine::Quality::SampleQuerySet.new(month_interval).id
+      DiscoveryEngine::Quality::SampleQuerySet.new(month_interval)
     end
 
     registry = Prometheus::Client.registry
     metric_evaluation = Metrics::Evaluation.new(registry)
 
-    sample_query_sets.each do |month_label, id|
-      e = DiscoveryEngine::Quality::Evaluation.new(id).fetch_quality_metrics
+    sample_query_sets.each do |month_label, set|
+      e = DiscoveryEngine::Quality::Evaluation.new(set).fetch_quality_metrics
 
       Rails.logger.info(e)
 

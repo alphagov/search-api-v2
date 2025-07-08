@@ -4,8 +4,7 @@ RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
   let(:month_interval) { DiscoveryEngine::Quality::MonthInterval.new(2025, 1) }
 
   let(:operation_object) { double("operation", wait_until_done!: true, error?: false) }
-  let(:response_object) { double("response", name: "/sample_query_set/1") }
-  let(:sample_query_set_service_stub) { double("sample_query_set_service", create_sample_query_set: response_object) }
+  let(:sample_query_set_service_stub) { double("sample_query_set_service", create_sample_query_set: nil) }
   let(:sample_query_service_stub) { double("sample_query_service", import_sample_queries: operation_object) }
 
   before do
@@ -26,7 +25,7 @@ RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
       )
 
       expect(sample_query_service_stub).to have_received(:import_sample_queries).with(
-        parent: response_object.name,
+        parent: "[location]/sampleQuerySets/clickstream_2025-01",
         bigquery_source: {
           dataset_id: "automated_evaluation_input",
           table_id: "clickstream",
@@ -53,6 +52,12 @@ RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
   describe "#id" do
     it "returns the sample query set ID based on the month interval" do
       expect(sample_query_set.id).to eq("clickstream_2025-01")
+    end
+  end
+
+  describe "#name" do
+    it "returns the fully qualified GCP name of the sample query set" do
+      expect(sample_query_set.name).to eq("[location]/sampleQuerySets/clickstream_2025-01")
     end
   end
 end
