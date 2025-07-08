@@ -54,42 +54,24 @@ RSpec.describe "Quality tasks" do
       Timecop.freeze(2025, 11, 1) { example.call }
     end
 
-    let(:evaluation) { instance_double(DiscoveryEngine::Quality::Evaluation, fetch_quality_metrics: evaluation_response) }
+    let(:evaluations) { instance_double(DiscoveryEngine::Quality::Evaluations) }
     let(:evaluation_response) { double }
     let(:registry) { double("registry", gauge: nil) }
     let(:push_client) { double("push_client", add: nil) }
-    let(:metric_evaluation) { instance_double(Metrics::Evaluation) }
-    let(:sample_query_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
-    let(:sample_query_set_month_before_last) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
-    let(:expected_month_interval) { DiscoveryEngine::Quality::MonthInterval.new(2025, 10) }
-    let(:expected_month_before_last_interval) { DiscoveryEngine::Quality::MonthInterval.new(2025, 9) }
+    let(:metric_collector) { instance_double(Metrics::Evaluation) }
 
     before do
       Rake::Task["quality:report_quality_metrics"].reenable
 
-      allow(DiscoveryEngine::Quality::SampleQuerySets)
+      allow(DiscoveryEngine::Quality::Evaluations)
       .to receive(:new)
-      .with(expected_month_interval)
-      .and_return(sample_query_sets)
+      .with(:last_month, metric_collector)
+      .and_return(evaluations)
 
-      allow(DiscoveryEngine::Quality::SampleQuerySets)
+      allow(DiscoveryEngine::Quality::Evaluations)
       .to receive(:new)
-      .with(expected_month_before_last_interval)
-      .and_return(sample_query_sets)
-
-      allow(sample_query_sets)
-      .to receive(:all)
-      .and_return([sample_query_set])
-
-      allow(DiscoveryEngine::Quality::Evaluation)
-        .to receive(:new)
-        .with(sample_query_set)
-        .and_return(evaluation)
-
-      allow(DiscoveryEngine::Quality::Evaluation)
-        .to receive(:new)
-        .with(sample_query_set_month_before_last)
-        .and_return(evaluation)
+      .with(:month_before_last, metric_collector)
+      .and_return(evaluations)
 
       allow(Prometheus::Client)
         .to receive(:registry)
@@ -102,25 +84,14 @@ RSpec.describe "Quality tasks" do
       allow(Metrics::Evaluation)
         .to receive(:new)
         .with(registry)
-        .and_return(metric_evaluation)
+        .and_return(metric_collector)
     end
 
     it "reports quality metrics to prometheus" do
       ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
-        expect(evaluation)
-          .to receive(:fetch_quality_metrics)
+        expect(evaluations)
+          .to receive(:collect_all_quality_metrics)
           .twice
-
-        expect(metric_evaluation)
-          .to receive(:record_evaluations)
-          .once
-          .with(evaluation_response, :last_month)
-
-        expect(metric_evaluation)
-        .to receive(:record_evaluations)
-        .once
-        .with(evaluation_response, :month_before_last)
-
         Rake::Task["quality:report_quality_metrics"].invoke
       end
     end

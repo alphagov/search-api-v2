@@ -21,24 +21,15 @@ namespace :quality do
 
   desc "Create evaluation and push results to Prometheus"
   task report_quality_metrics: :environment do
-    month_intervals = {
-      last_month: DiscoveryEngine::Quality::MonthInterval.previous_month,
-      month_before_last: DiscoveryEngine::Quality::MonthInterval.previous_month(2),
-    }
-    sample_query_sets = month_intervals.transform_values do |month_interval|
-      DiscoveryEngine::Quality::SampleQuerySets.new(month_interval).all
-    end
-
     registry = Prometheus::Client.registry
-    metric_evaluation = Metrics::Evaluation.new(registry)
+    metric_collector = Metrics::Evaluation.new(registry)
 
-    sample_query_sets.each do |month_label, sets|
-      sets.each do |set|
-        e = DiscoveryEngine::Quality::Evaluation.new(set).fetch_quality_metrics
-        Rails.logger.info(e)
-        metric_evaluation.record_evaluations(e, month_label)
-      end
+    %i[last_month month_before_last].each do |month_label|
+      DiscoveryEngine::Quality::Evaluations.new(
+        month_label, metric_collector
+      ).collect_all_quality_metrics
     end
+
     Prometheus::Client::Push.new(
       job: "evaluation_report_quality_metrics",
       gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
