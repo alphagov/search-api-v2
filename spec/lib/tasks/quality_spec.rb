@@ -3,18 +3,12 @@ RSpec.describe "Quality tasks" do
   let(:sample_query_sets) { instance_double(DiscoveryEngine::Quality::SampleQuerySets) }
 
   describe "setup_sample_query_sets" do
-    around do |example|
-      Timecop.freeze(2025, 11, 1) { example.call }
-    end
-
-    let(:expected_month_interval) { DiscoveryEngine::Quality::MonthInterval.new(2025, 10) }
-
     before do
       Rake::Task["quality:setup_sample_query_sets"].reenable
 
       allow(DiscoveryEngine::Quality::SampleQuerySets)
       .to receive(:new)
-      .with(expected_month_interval)
+      .with(:last_month)
       .and_return(sample_query_sets)
 
       allow(sample_query_sets)
@@ -30,14 +24,12 @@ RSpec.describe "Quality tasks" do
   end
 
   describe "setup_sample_query_set" do
-    let(:expected_month_interval) { DiscoveryEngine::Quality::MonthInterval.new(2025, 1) }
-
     before do
       Rake::Task["quality:setup_sample_query_set"].reenable
 
       allow(DiscoveryEngine::Quality::SampleQuerySet)
       .to receive(:new)
-      .with(expected_month_interval, "clickstream")
+      .with(month: 1, year: 2025, table_id: "clickstream")
       .and_return(sample_query_set)
     end
 
@@ -50,10 +42,6 @@ RSpec.describe "Quality tasks" do
   end
 
   describe "report_quality_metrics" do
-    around do |example|
-      Timecop.freeze(2025, 11, 1) { example.call }
-    end
-
     let(:evaluations) { instance_double(DiscoveryEngine::Quality::Evaluations) }
     let(:evaluation_response) { double }
     let(:registry) { double("registry", gauge: nil) }

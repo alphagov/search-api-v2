@@ -3,15 +3,15 @@ module DiscoveryEngine
     class SampleQuerySets
       BIGQUERY_TABLE_IDS = %w[clickstream].freeze
 
-      attr_reader :month_interval
+      attr_reader :month_label
 
-      def initialize(month_interval)
-        @month_interval = month_interval
+      def initialize(month_label)
+        @month_label = month_label
       end
 
       def all
         @all ||= BIGQUERY_TABLE_IDS.map do |table_id|
-          SampleQuerySet.new(month_interval, table_id)
+          SampleQuerySet.new(table_id:, month_label:)
         end
       end
 

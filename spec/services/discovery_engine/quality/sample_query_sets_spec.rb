@@ -1,7 +1,7 @@
 RSpec.describe DiscoveryEngine::Quality::SampleQuerySets do
-  subject(:sample_query_sets) { described_class.new(month_interval) }
+  subject(:sample_query_sets) { described_class.new(:last_month) }
   let(:sample_query_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
-  let(:month_interval) { DiscoveryEngine::Quality::MonthInterval.new(2025, 1) }
+  let(:month_label) { :last_month }
 
   describe "#all" do
     it "returns SampleQuerySet objects" do
@@ -11,7 +11,7 @@ RSpec.describe DiscoveryEngine::Quality::SampleQuerySets do
     it "creates a SampleQuerySet object for each table name" do
       expect(DiscoveryEngine::Quality::SampleQuerySet)
         .to receive(:new)
-        .with(month_interval, "clickstream")
+        .with(table_id: "clickstream", month_label:)
 
       sample_query_sets.all
     end

@@ -3,8 +3,10 @@ module DiscoveryEngine
     class SampleQuerySet
       BIGQUERY_DATASET_ID = "automated_evaluation_input".freeze
 
-      def initialize(month_interval, table_id)
-        @month_interval = month_interval
+      def initialize(table_id:, month_label: nil, month: nil, year: nil)
+        @month_label = month_label
+        @month = month
+        @year = year
         @table_id = table_id
       end
 
@@ -19,7 +21,7 @@ module DiscoveryEngine
 
     private
 
-      attr_reader :month_interval, :table_id
+      attr_reader :month_label, :table_id, :month, :year
 
       def create
         DiscoveryEngine::Clients
@@ -44,8 +46,8 @@ module DiscoveryEngine
               table_id:,
               project_id: Rails.application.config.google_cloud_project_id,
               partition_date: {
-                year: month_interval.year,
-                month: month_interval.month,
+                year: partition_date.year,
+                month: partition_date.month,
                 # Partition date needs to be a full date not just year-month
                 day: 1,
               },
@@ -59,15 +61,27 @@ module DiscoveryEngine
       end
 
       def display_name
-        "#{table_id} #{month_interval}"
+        "#{table_id} #{partition_date}"
       end
 
       def description
-        "Generated from #{month_interval} BigQuery #{table_id} data"
+        "Generated from #{partition_date} BigQuery #{table_id} data"
+      end
+
+      def partition_date
+        case month_label
+
+        when :last_month
+          DiscoveryEngine::Quality::MonthInterval.previous_month
+        when :month_before_last
+          DiscoveryEngine::Quality::MonthInterval.previous_month(2)
+        else
+          DiscoveryEngine::Quality::MonthInterval.new(year, month)
+        end
       end
 
       def id
-        "#{BIGQUERY_TABLE_ID}_#{month_interval}"
+        @id ||= "#{table_id}_#{partition_date}"
       end
     end
   end
