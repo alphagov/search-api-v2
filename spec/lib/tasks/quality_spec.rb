@@ -1,32 +1,35 @@
 RSpec.describe "Quality tasks" do
   let(:sample_query_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
+  let(:sample_query_sets) { instance_double(DiscoveryEngine::Quality::SampleQuerySets) }
 
   describe "setup_sample_query_sets" do
     before do
       Rake::Task["quality:setup_sample_query_sets"].reenable
 
-      allow(DiscoveryEngine::Quality::SampleQuerySet)
+      allow(DiscoveryEngine::Quality::SampleQuerySets)
       .to receive(:new)
-      .and_return(sample_query_set)
+      .with(:last_month)
+      .and_return(sample_query_sets)
+
+      allow(sample_query_sets)
+      .to receive(:create_and_import_all)
     end
 
     it "creates and imports a sample set" do
-      expect(sample_query_set)
-        .to receive(:create_and_import)
+      expect(sample_query_sets)
+        .to receive(:create_and_import_all)
         .once
       Rake::Task["quality:setup_sample_query_sets"].invoke
     end
   end
 
   describe "setup_sample_query_set" do
-    let(:expected_month_interval) { DiscoveryEngine::Quality::MonthInterval.new(2025, 1) }
-
     before do
       Rake::Task["quality:setup_sample_query_set"].reenable
 
       allow(DiscoveryEngine::Quality::SampleQuerySet)
       .to receive(:new)
-      .with(expected_month_interval)
+      .with(month: 1, year: 2025, table_id: "clickstream")
       .and_return(sample_query_set)
     end
 
@@ -34,38 +37,45 @@ RSpec.describe "Quality tasks" do
       expect(sample_query_set)
         .to receive(:create_and_import)
         .once
-      Rake::Task["quality:setup_sample_query_set"].invoke("2025", "1")
+      Rake::Task["quality:setup_sample_query_set"].invoke("2025", "1", "clickstream")
+    end
+
+    it "raises an error unless table_id is provided" do
+      message = "table id is a required argument"
+      expect {
+        Rake::Task["quality:setup_sample_query_set"].invoke("2025", "1")
+      }.to raise_error(message)
+    end
+
+    it "raises an error unless year and month are provided" do
+      message = "year and month are required arguments"
+      expect {
+        Rake::Task["quality:setup_sample_query_set"].invoke("clickstream")
+      }.to raise_error(message)
+    end
+
+    it "raises an error if year and month are not provided in YYYY MM order" do
+      message = "arguments must be provided in YYYY MM order"
+      expect {
+        Rake::Task["quality:setup_sample_query_set"].invoke("05", "2025", "clickstream")
+      }.to raise_error(message)
     end
   end
 
   describe "report_quality_metrics" do
-    around do |example|
-      Timecop.freeze(2025, 11, 1) { example.call }
-    end
-
-    let(:evaluation) { instance_double(DiscoveryEngine::Quality::Evaluation, fetch_quality_metrics: evaluation_response) }
+    let(:evaluations) { instance_double(DiscoveryEngine::Quality::Evaluations) }
     let(:evaluation_response) { double }
     let(:registry) { double("registry", gauge: nil) }
     let(:push_client) { double("push_client", add: nil) }
-    let(:metric_evaluation) { instance_double(Metrics::Evaluation) }
-    let(:sample_query_set_last_month) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
+    let(:metric_collector) { instance_double(Metrics::Evaluation) }
 
     before do
       Rake::Task["quality:report_quality_metrics"].reenable
 
-      allow(DiscoveryEngine::Quality::SampleQuerySet)
-      .to receive(:new)
-      .and_return(sample_query_set, sample_query_set_last_month)
-
-      allow(DiscoveryEngine::Quality::Evaluation)
+      allow(DiscoveryEngine::Quality::Evaluations)
         .to receive(:new)
-        .with(sample_query_set)
-        .and_return(evaluation)
-
-      allow(DiscoveryEngine::Quality::Evaluation)
-        .to receive(:new)
-        .with(sample_query_set_last_month)
-        .and_return(evaluation)
+        .with(metric_collector)
+        .and_return(evaluations)
 
       allow(Prometheus::Client)
         .to receive(:registry)
@@ -78,25 +88,14 @@ RSpec.describe "Quality tasks" do
       allow(Metrics::Evaluation)
         .to receive(:new)
         .with(registry)
-        .and_return(metric_evaluation)
+        .and_return(metric_collector)
     end
 
     it "reports quality metrics to prometheus" do
       ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
-        expect(evaluation)
-          .to receive(:fetch_quality_metrics)
-          .twice
-
-        expect(metric_evaluation)
-          .to receive(:record_evaluations)
+        expect(evaluations)
+          .to receive(:collect_all_quality_metrics)
           .once
-          .with(evaluation_response, :last_month)
-
-        expect(metric_evaluation)
-        .to receive(:record_evaluations)
-        .once
-        .with(evaluation_response, :month_before_last)
-
         Rake::Task["quality:report_quality_metrics"].invoke
       end
     end
