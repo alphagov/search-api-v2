@@ -37,7 +37,28 @@ RSpec.describe "Quality tasks" do
       expect(sample_query_set)
         .to receive(:create_and_import)
         .once
-      Rake::Task["quality:setup_sample_query_set"].invoke("2025", "1")
+      Rake::Task["quality:setup_sample_query_set"].invoke("2025", "1", "clickstream")
+    end
+
+    it "raises an error unless table_id is provided" do
+      message = "table id is a required argument"
+      expect {
+        Rake::Task["quality:setup_sample_query_set"].invoke("2025", "1")
+      }.to raise_error(message)
+    end
+
+    it "raises an error unless year and month are provided" do
+      message = "year and month are required arguments"
+      expect {
+        Rake::Task["quality:setup_sample_query_set"].invoke("clickstream")
+      }.to raise_error(message)
+    end
+
+    it "raises an error if year and month are not provided in YYYY MM order" do
+      message = "arguments must be provided in YYYY MM order"
+      expect {
+        Rake::Task["quality:setup_sample_query_set"].invoke("05", "2025", "clickstream")
+      }.to raise_error(message)
     end
   end
 
