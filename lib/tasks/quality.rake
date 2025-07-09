@@ -22,11 +22,8 @@ namespace :quality do
     registry = Prometheus::Client.registry
     metric_collector = Metrics::Evaluation.new(registry)
 
-    %i[last_month month_before_last].each do |month_label|
-      DiscoveryEngine::Quality::Evaluations.new(
-        month_label, metric_collector
-      ).collect_all_quality_metrics
-    end
+    DiscoveryEngine::Quality::Evaluations.new(metric_collector)
+      .collect_all_quality_metrics
 
     Prometheus::Client::Push.new(
       job: "evaluation_report_quality_metrics",

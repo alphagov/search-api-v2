@@ -52,14 +52,9 @@ RSpec.describe "Quality tasks" do
       Rake::Task["quality:report_quality_metrics"].reenable
 
       allow(DiscoveryEngine::Quality::Evaluations)
-      .to receive(:new)
-      .with(:last_month, metric_collector)
-      .and_return(evaluations)
-
-      allow(DiscoveryEngine::Quality::Evaluations)
-      .to receive(:new)
-      .with(:month_before_last, metric_collector)
-      .and_return(evaluations)
+        .to receive(:new)
+        .with(metric_collector)
+        .and_return(evaluations)
 
       allow(Prometheus::Client)
         .to receive(:registry)
@@ -79,7 +74,7 @@ RSpec.describe "Quality tasks" do
       ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
         expect(evaluations)
           .to receive(:collect_all_quality_metrics)
-          .twice
+          .once
         Rake::Task["quality:report_quality_metrics"].invoke
       end
     end
