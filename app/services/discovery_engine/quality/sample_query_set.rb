@@ -13,10 +13,6 @@ module DiscoveryEngine
         import
       end
 
-      def id
-        "#{BIGQUERY_TABLE_ID}_#{month_interval}"
-      end
-
       def name
         "#{Rails.application.config.discovery_engine_default_location_name}/sampleQuerySets/#{id}"
       end
@@ -68,6 +64,10 @@ module DiscoveryEngine
 
       def description
         "Generated from #{month_interval} BigQuery #{BIGQUERY_TABLE_ID} data"
+      end
+
+      def id
+        "#{BIGQUERY_TABLE_ID}_#{month_interval}"
       end
     end
   end
