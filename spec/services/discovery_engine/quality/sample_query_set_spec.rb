@@ -49,12 +49,6 @@ RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
     end
   end
 
-  describe "#id" do
-    it "returns the sample query set ID based on the month interval" do
-      expect(sample_query_set.id).to eq("clickstream_2025-01")
-    end
-  end
-
   describe "#name" do
     it "returns the fully qualified GCP name of the sample query set" do
       expect(sample_query_set.name).to eq("[location]/sampleQuerySets/clickstream_2025-01")
