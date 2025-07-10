@@ -5,7 +5,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluations do
   let(:evaluation) { double("evaluation") }
   let(:evaluation_response) { "amything" }
   let(:sample_query_sets) { double("sample_query_sets") }
-  let(:sample_query_set) { double("sample_query_set") }
+  let(:sample_query_set) { double("sample_query_set", table_id: "clickstream") }
 
   before do
     allow(DiscoveryEngine::Quality::Evaluation)
@@ -19,11 +19,11 @@ RSpec.describe DiscoveryEngine::Quality::Evaluations do
 
     allow(metric_collector)
       .to receive(:record_evaluations)
-      .with(evaluation_response, :last_month)
+      .with(evaluation_response, :last_month, "clickstream")
 
     allow(metric_collector)
       .to receive(:record_evaluations)
-      .with(evaluation_response, :month_before_last)
+      .with(evaluation_response, :month_before_last, "clickstream")
 
     allow(DiscoveryEngine::Quality::SampleQuerySets)
       .to receive(:new)

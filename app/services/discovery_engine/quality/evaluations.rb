@@ -18,7 +18,7 @@ module DiscoveryEngine::Quality
       all_sample_query_sets(month_label).each do |set|
         e = DiscoveryEngine::Quality::Evaluation.new(set).fetch_quality_metrics
         Rails.logger.info(e)
-        metric_collector.record_evaluations(e, month_label)
+        metric_collector.record_evaluations(e, month_label, set.table_id)
       end
     end
 

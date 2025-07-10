@@ -3,6 +3,7 @@ RSpec.describe Metrics::Evaluation do
 
   let(:registry) { double("registry") }
   let(:month) { :last_month }
+  let(:table_id) { "clickstream" }
 
   let(:evaluation_response) do
     {
@@ -44,33 +45,33 @@ RSpec.describe Metrics::Evaluation do
   describe "#record_evaluations" do
     it "records the recall, precision and ndcg score" do
       expect(recall_gauge).to receive(:set)
-        .with(0.988, { labels: { top: "1", month: } })
+        .with(0.988, { labels: { top: "1", month:, dataset: "clickstream" } })
       expect(recall_gauge).to receive(:set)
-        .with(0.995, { labels: { top: "3", month: } })
+        .with(0.995, { labels: { top: "3", month:, dataset: "clickstream" } })
       expect(recall_gauge).to receive(:set)
-        .with(0.998, { labels: { top: "5", month: } })
+        .with(0.998, { labels: { top: "5", month:, dataset: "clickstream" } })
       expect(recall_gauge).to receive(:set)
-        .with(0.999, { labels: { top: "10", month: } })
+        .with(0.999, { labels: { top: "10", month:, dataset: "clickstream" } })
 
       expect(precision_gauge).to receive(:set)
-        .with(0.988, { labels: { top: "1", month: } })
+        .with(0.988, { labels: { top: "1", month:, dataset: "clickstream" } })
       expect(precision_gauge).to receive(:set)
-        .with(0.953, { labels: { top: "3", month: } })
+        .with(0.953, { labels: { top: "3", month:, dataset: "clickstream" } })
       expect(precision_gauge).to receive(:set)
-        .with(0.896, { labels: { top: "5", month: } })
+        .with(0.896, { labels: { top: "5", month:, dataset: "clickstream" } })
       expect(precision_gauge).to receive(:set)
-        .with(0.752, { labels: { top: "10", month: } })
+        .with(0.752, { labels: { top: "10", month:, dataset: "clickstream" } })
 
       expect(ndcg_gauge).to receive(:set)
-        .with(0.988, { labels: { top: "1", month: } })
+        .with(0.988, { labels: { top: "1", month:, dataset: "clickstream" } })
       expect(ndcg_gauge).to receive(:set)
-        .with(0.961, { labels: { top: "3", month: } })
+        .with(0.961, { labels: { top: "3", month:, dataset: "clickstream" } })
       expect(ndcg_gauge).to receive(:set)
-        .with(0.929, { labels: { top: "5", month: } })
+        .with(0.929, { labels: { top: "5", month:, dataset: "clickstream" } })
       expect(ndcg_gauge).to receive(:set)
-        .with(0.887, { labels: { top: "10", month: } })
+        .with(0.887, { labels: { top: "10", month:, dataset: "clickstream" } })
 
-      evaluation.record_evaluations(evaluation_response, month)
+      evaluation.record_evaluations(evaluation_response, month, table_id)
     end
   end
 end
