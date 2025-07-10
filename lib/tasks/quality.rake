@@ -2,12 +2,12 @@ require "prometheus/client"
 require "prometheus/client/push"
 
 namespace :quality do
-  desc "Create a sample query set for last month's clickstream data and import from BigQuery"
+  desc "Create a sample query set for last month's clickstream and binary datasets and import from BigQuery"
   task setup_sample_query_sets: :environment do
     DiscoveryEngine::Quality::SampleQuerySets.new(:last_month).create_and_import_all
   end
 
-  desc "Create a sample query set for a given month, and import from BigQuery"
+  desc "Create a sample query set for a given table and month, and import from BigQuery"
   task :setup_sample_query_set, %i[year month table_id] => :environment do |_, args|
     year = args[:year]&.to_i
     month = args[:month]&.to_i
@@ -25,8 +25,7 @@ namespace :quality do
     registry = Prometheus::Client.registry
     metric_collector = Metrics::Evaluation.new(registry)
 
-    DiscoveryEngine::Quality::Evaluations.new(metric_collector)
-      .collect_all_quality_metrics
+    DiscoveryEngine::Quality::Evaluations.new(metric_collector).collect_all_quality_metrics
 
     Prometheus::Client::Push.new(
       job: "evaluation_report_quality_metrics",
