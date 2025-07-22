@@ -32,5 +32,8 @@ namespace :quality do
       job: "evaluation_report_quality_metrics",
       gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
     ).add(registry)
+  rescue Prometheus::Client::Push::HttpError => e
+    Rails.logger.warn("Failed to push evaluations to Prometheus push gateway: '#{e.message}'")
+    raise e
   end
 end
