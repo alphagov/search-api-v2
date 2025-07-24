@@ -1,7 +1,11 @@
 module DiscoveryEngine::Quality
   class Evaluation
+    MAX_RETRIES_ON_ERROR = 3
+    WAIT_ON_ERROR = 3
+
     def initialize(sample_set)
       @sample_set = sample_set
+      @attempt = 1
     end
 
     def fetch_quality_metrics
@@ -36,6 +40,15 @@ module DiscoveryEngine::Quality
       @result = operation.results
 
       Rails.logger.info("Successfully created evaluation #{result.name}")
+    rescue Google::Cloud::AlreadyExistsError => e
+      if @attempt < MAX_RETRIES_ON_ERROR
+        Rails.logger.warn("Failed to create evaluation (#{e.message}). Retrying...")
+        @attempt += 1
+        Kernel.sleep(WAIT_ON_ERROR)
+        retry
+      else
+        raise e
+      end
     end
 
     def fetch
