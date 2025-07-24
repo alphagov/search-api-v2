@@ -24,6 +24,26 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
       end
     end
 
+    context "when GCP returns an error" do
+      let(:erroring_service) { double("evaluation") }
+
+      before do
+        allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(erroring_service)
+
+        allow(erroring_service)
+          .to receive(:create_evaluation)
+          .with(anything)
+          .and_raise(Google::Cloud::AlreadyExistsError)
+
+        allow(Kernel).to receive(:sleep).with(3).and_return(true)
+      end
+
+      it "retries 3 times and then raises an error" do
+        expect { evaluation.fetch_quality_metrics }.to raise_error(Google::Cloud::AlreadyExistsError)
+        expect(erroring_service).to have_received(:create_evaluation).exactly(3).times
+      end
+    end
+
     context "when evaluation state is :SUCCEEDED" do
       before do
         allow(evaluation_service).to receive(:get_evaluation)
