@@ -2,44 +2,63 @@ RSpec.describe DiscoveryEngine::Quality::Evaluations do
   subject(:evaluations) { described_class.new(metric_collector) }
 
   let(:metric_collector) { double("metric_collector") }
-  let(:evaluation) { double("evaluation") }
+  let(:clickstream_evaluation) { double("evaluation") }
+  let(:binary_evaluation) { double("evaluation") }
   let(:evaluation_response) { "anything" }
   let(:sample_query_sets) { double("sample_query_sets") }
-  let(:sample_query_set) { double("sample_query_set", table_id: "clickstream", name: "/path/to/set") }
+  let(:clickstream_query_set) { double("sample_query_set", table_id: "clickstream", name: "/path/to/clickstream-set") }
+  let(:binary_query_set) { double("sample_query_set", table_id: "binary", name: "/path/to/binary-set") }
 
   before do
     allow(DiscoveryEngine::Quality::Evaluation)
       .to receive(:new)
-      .with(sample_query_set)
-      .and_return(evaluation)
+      .with(clickstream_query_set)
+      .and_return(clickstream_evaluation)
 
-    allow(evaluation)
+    allow(DiscoveryEngine::Quality::Evaluation)
+      .to receive(:new)
+      .with(binary_query_set)
+      .and_return(binary_evaluation)
+
+    [clickstream_evaluation, binary_evaluation].each do |evaluation|
+      allow(evaluation)
       .to receive(:fetch_quality_metrics)
       .and_return(evaluation_response)
+    end
 
-    allow(metric_collector)
+    %i[last_month month_before_last].each do |label|
+      allow(metric_collector)
       .to receive(:record_evaluations)
-      .with(evaluation_response, :last_month, "clickstream")
+      .with(evaluation_response, label, "clickstream")
 
-    allow(metric_collector)
+      allow(metric_collector)
       .to receive(:record_evaluations)
-      .with(evaluation_response, :month_before_last, "clickstream")
+      .with(evaluation_response, label, "binary")
 
-    allow(DiscoveryEngine::Quality::SampleQuerySets)
+      allow(DiscoveryEngine::Quality::SampleQuerySets)
       .to receive(:new)
-      .with(anything)
+      .with(label)
       .and_return(sample_query_sets)
+    end
 
     allow(sample_query_sets)
       .to receive(:all)
-      .and_return([sample_query_set])
+      .and_return([clickstream_query_set, binary_query_set])
   end
 
   describe "#collect_all_quality_metrics" do
-    it "sends #fetch_quality_metrics to the Evaluation class for all sample query sets" do
+    it "fetches quality metrics for last-month and month-before-last for all tables" do
       evaluations.collect_all_quality_metrics
 
-      expect(evaluation)
+      expect(sample_query_sets)
+        .to have_received(:all)
+        .twice
+
+      expect(binary_evaluation)
+        .to have_received(:fetch_quality_metrics)
+        .twice
+
+      expect(clickstream_evaluation)
         .to have_received(:fetch_quality_metrics)
         .twice
     end
@@ -50,7 +69,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluations do
       before do
         allow(DiscoveryEngine::Quality::Evaluation)
           .to receive(:new)
-          .with(sample_query_set)
+          .with(clickstream_query_set)
           .and_return(erroring_evaluation)
 
         allow(erroring_evaluation)
@@ -64,9 +83,43 @@ RSpec.describe DiscoveryEngine::Quality::Evaluations do
         evaluations.collect_all_quality_metrics
 
         expect(GovukError).to have_received(:notify)
-          .with("No evaluation created for sample query set /path/to/set. Month label: 'last_month')")
+          .with("No evaluation created for sample query set /path/to/clickstream-set. Month label: 'last_month')")
         expect(GovukError).to have_received(:notify)
-          .with("No evaluation created for sample query set /path/to/set. Month label: 'month_before_last')")
+          .with("No evaluation created for sample query set /path/to/clickstream-set. Month label: 'month_before_last')")
+      end
+    end
+
+    context "when the table_id 'binary' is passed in" do
+      before do
+        allow(DiscoveryEngine::Quality::SampleQuerySet)
+        .to receive(:new)
+        .with(anything)
+        .and_return(binary_query_set)
+      end
+
+      it "fetches quality metrics for last-month and month-before-last for binary tables" do
+        evaluations.collect_all_quality_metrics("binary")
+
+        expect(binary_evaluation)
+          .to have_received(:fetch_quality_metrics)
+          .twice
+      end
+    end
+
+    context "when the table_id 'clickstream' is passed in" do
+      before do
+        allow(DiscoveryEngine::Quality::SampleQuerySet)
+        .to receive(:new)
+        .with(anything)
+        .and_return(clickstream_query_set)
+      end
+
+      it "fetches quality metrics for last-month and month-before-last for clickstream tables" do
+        evaluations.collect_all_quality_metrics("clickstream")
+
+        expect(clickstream_evaluation)
+          .to have_received(:fetch_quality_metrics)
+          .twice
       end
     end
   end
