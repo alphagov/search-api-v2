@@ -19,6 +19,8 @@ module DiscoveryEngine::Quality
         e = DiscoveryEngine::Quality::Evaluation.new(set).fetch_quality_metrics
         Rails.logger.info(e)
         metric_collector.record_evaluations(e, month_label, set.table_id)
+      rescue Google::Cloud::AlreadyExistsError
+        GovukError.notify("No evaluation created for sample query set #{set.name}. Month label: '#{month_label}')")
       end
     end
 
