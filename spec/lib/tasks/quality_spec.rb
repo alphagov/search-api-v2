@@ -6,7 +6,7 @@ RSpec.describe "Quality tasks" do
   let(:registry) { double("registry", gauge: nil) }
   let(:metric_collector) { instance_double(Metrics::Evaluation) }
 
-  describe "setup_sample_query_sets" do
+  describe "quality:setup_sample_query_sets" do
     before do
       Rake::Task["quality:setup_sample_query_sets"].reenable
 
@@ -27,7 +27,7 @@ RSpec.describe "Quality tasks" do
     end
   end
 
-  describe "setup_sample_query_set" do
+  describe "quality:setup_sample_query_set" do
     before do
       Rake::Task["quality:setup_sample_query_set"].reenable
 
@@ -66,16 +66,17 @@ RSpec.describe "Quality tasks" do
     end
   end
 
-  describe "report_quality_metrics" do
+  describe "quality:report_quality_metrics" do
     let(:push_client) { double("push_client", add: nil) }
+    let(:logger_message) { "Getting ready to fetch quality metrics for all datasets" }
 
     before do
       Rake::Task["quality:report_quality_metrics"].reenable
 
       allow(DiscoveryEngine::Quality::Evaluations)
-        .to receive(:new)
-        .with(metric_collector)
-        .and_return(evaluations)
+          .to receive(:new)
+          .with(metric_collector)
+          .and_return(evaluations)
 
       allow(Prometheus::Client)
         .to receive(:registry)
@@ -89,6 +90,8 @@ RSpec.describe "Quality tasks" do
         .to receive(:new)
         .with(registry)
         .and_return(metric_collector)
+
+      allow(Rails.logger).to receive(:info)
     end
 
     it "reports quality metrics to prometheus" do
@@ -96,7 +99,33 @@ RSpec.describe "Quality tasks" do
         expect(evaluations)
           .to receive(:collect_all_quality_metrics)
           .once
+        expect(Rails.logger)
+          .to receive(:info)
+          .with(logger_message)
         Rake::Task["quality:report_quality_metrics"].invoke
+      end
+    end
+
+    context "when a table_id is passed in" do
+      let(:logger_message) { "Getting ready to fetch quality metrics for binary datasets" }
+
+      before do
+        Rake::Task["quality:report_quality_metrics"].reenable
+        allow(Rails.logger).to receive(:info)
+      end
+
+      it "reports quality metrics for the given table only" do
+        ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
+          expect(Rails.logger)
+            .to receive(:info)
+            .with(logger_message)
+
+          expect(evaluations)
+            .to receive(:collect_all_quality_metrics)
+            .with("binary")
+            .once
+          Rake::Task["quality:report_quality_metrics"].invoke("binary")
+        end
       end
     end
 
