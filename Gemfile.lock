@@ -98,7 +98,7 @@ GEM
       gapic-common (~> 1.0)
       google-cloud-errors (~> 1.0)
       google-cloud-location (~> 1.0)
-    google-cloud-discovery_engine-v1beta (0.20.1)
+    google-cloud-discovery_engine-v1beta (0.21.0)
       gapic-common (~> 1.0)
       google-cloud-errors (~> 1.0)
       google-cloud-location (~> 1.0)
