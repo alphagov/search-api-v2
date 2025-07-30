@@ -6,16 +6,16 @@ module DiscoveryEngine::Quality
       @metric_collector = metric_collector
     end
 
-    def collect_all_quality_metrics
-      MONTH_LABELS.each { |month_label| collect_quality_metrics(month_label) }
+    def collect_all_quality_metrics(table_id = nil)
+      MONTH_LABELS.each { |month_label| collect_quality_metrics(month_label, table_id) }
     end
 
   private
 
     attr_reader :metric_collector
 
-    def collect_quality_metrics(month_label)
-      all_sample_query_sets(month_label).each do |set|
+    def collect_quality_metrics(month_label, table_id = nil)
+      Array(sample_query_sets(month_label, table_id)).each do |set|
         e = DiscoveryEngine::Quality::Evaluation.new(set).fetch_quality_metrics
         Rails.logger.info(e)
         metric_collector.record_evaluations(e, month_label, set.table_id)
@@ -24,8 +24,10 @@ module DiscoveryEngine::Quality
       end
     end
 
-    def all_sample_query_sets(month_label)
-      DiscoveryEngine::Quality::SampleQuerySets.new(month_label).all
+    def sample_query_sets(month_label, table_id = nil)
+      return DiscoveryEngine::Quality::SampleQuerySets.new(month_label).all if table_id.nil?
+
+      DiscoveryEngine::Quality::SampleQuerySet.new(table_id:, month_label:)
     end
   end
 end
