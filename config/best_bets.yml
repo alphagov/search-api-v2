@@ -36,6 +36,8 @@ shared:
   "plan for change": /missions
   "eta": /eta
   "paying hmrc": /government/collections/paying-hmrc-detailed-information
+  "new style jsa": /jobseekers-allowance
+  "new style esa": /employment-support-allowance
 
 test:
   "i want to test a single best bet": /here/you/go
