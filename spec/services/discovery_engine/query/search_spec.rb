@@ -27,6 +27,9 @@ RSpec.describe DiscoveryEngine::Query::Search do
           consumer: "test-consumer", consumer_group: "test-group",
         ),
       )
+    allow(Metrics::Exported)
+      .to receive(:observe_duration)
+      .and_call_original
   end
 
   around do |example|
@@ -76,6 +79,12 @@ RSpec.describe DiscoveryEngine::Query::Search do
           "Louth Garden Centre",
           "Cleethorpes Garden Centre",
         ])
+      end
+
+      it "logs the request duration" do
+        expect(Metrics::Exported)
+          .to have_received(:observe_duration)
+          .with(:vertex_search_request_duration)
       end
 
       context "when start and count are specified" do
