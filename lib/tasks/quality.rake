@@ -26,7 +26,7 @@ namespace :quality do
   task :report_quality_metrics, [:table_id] => :environment do |_, args|
     table_id = args[:table_id]
     registry = Prometheus::Client.registry
-    metric_collector = Metrics::Evaluation.new(registry)
+    metric_collector = Metrics::PrometheusCollector.new(registry)
     evaluation = DiscoveryEngine::Quality::Evaluations.new(metric_collector)
 
     Rails.logger.info("Getting ready to fetch quality metrics for #{table_id || 'all'} datasets")
@@ -42,3 +42,28 @@ namespace :quality do
     raise e
   end
 end
+
+#   # Example usage rake quality:create_evaluation_and_send_to_bigquery would
+#   # generate and report metrics for all tables, or rake
+#   # quality:create_evaluation_and_send_to_bigquery[clickstream] to target a
+#   # single dataset
+#   desc "Create evaluations and push query-level results to BigQuery"
+#   task :report_quality_metrics, [:table_id] => :environment do |_, args|
+#     table_id = args[:table_id]
+#     registry = Prometheus::Client.registry
+#     metric_collector = Metrics::PrometheusCollector.new(registry)
+#     evaluation = DiscoveryEngine::Quality::Evaluations.new(metric_collector)
+#
+#     Rails.logger.info("Getting ready to fetch query-level quality metrics for #{table_id || 'all'} datasets")
+#
+#     evaluation.collect_all_quality_metrics(table_id.presence)
+#
+#     Prometheus::Client::Push.new(
+#       job: "evaluation_report_quality_metrics",
+#       gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
+#     ).add(registry)
+#   rescue Prometheus::Client::Push::HttpError => e
+#     Rails.logger.warn("Failed to push evaluations to Prometheus push gateway: '#{e.message}'")
+#     raise e
+#   end
+# end

@@ -4,7 +4,7 @@ RSpec.describe "Quality tasks" do
   let(:evaluations) { instance_double(DiscoveryEngine::Quality::Evaluations) }
   let(:evaluation_response) { double }
   let(:registry) { double("registry", gauge: nil) }
-  let(:metric_collector) { instance_double(Metrics::Evaluation) }
+  let(:metric_collector) { instance_double(Metrics::PrometheusCollector) }
 
   describe "quality:setup_sample_query_sets" do
     before do
@@ -86,7 +86,7 @@ RSpec.describe "Quality tasks" do
         .to receive(:new)
         .and_return(push_client)
 
-      allow(Metrics::Evaluation)
+      allow(Metrics::PrometheusCollector)
         .to receive(:new)
         .with(registry)
         .and_return(metric_collector)

@@ -1,5 +1,5 @@
-RSpec.describe Metrics::Evaluation do
-  subject(:evaluation) { described_class.new(registry) }
+RSpec.describe Metrics::PrometheusCollector do
+  subject(:collector) { described_class.new(registry) }
 
   let(:registry) { double("registry") }
   let(:month) { :last_month }
@@ -71,7 +71,7 @@ RSpec.describe Metrics::Evaluation do
       expect(ndcg_gauge).to receive(:set)
         .with(0.887, { labels: { top: "10", month:, dataset: "clickstream" } })
 
-      evaluation.record_evaluations(evaluation_response, month, table_id)
+      collector.record_evaluations(evaluation_response, month, table_id)
     end
   end
 end
