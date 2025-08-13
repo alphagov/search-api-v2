@@ -29,11 +29,17 @@ module DiscoveryEngine::Query
     attr_reader :query_params, :user_agent
 
     def response
-      @response ||= DiscoveryEngine::Clients.search_service.search(discovery_engine_params).response
-    rescue Google::Cloud::DeadlineExceededError, Google::Cloud::InternalError => e
-      Rails.logger.warn("#{self.class.name}: Did not get search results: '#{e.message}'")
+      @response ||= begin
+        search_result =
+          Metrics::Exported.observe_duration(:vertex_search_request_duration) do
+            DiscoveryEngine::Clients.search_service.search(discovery_engine_params)
+          end
 
-      raise DiscoveryEngine::InternalError
+        search_result.response
+      rescue Google::Cloud::DeadlineExceededError, Google::Cloud::InternalError => e
+        Rails.logger.warn("#{self.class.name}: Did not get search results: '#{e.message}'")
+        raise DiscoveryEngine::InternalError
+      end
     end
 
     def discovery_engine_params

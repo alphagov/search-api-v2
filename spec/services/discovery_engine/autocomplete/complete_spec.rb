@@ -5,6 +5,9 @@ RSpec.describe DiscoveryEngine::Autocomplete::Complete do
 
   before do
     allow(DiscoveryEngine::Clients).to receive(:completion_service).and_return(client)
+    allow(Metrics::Exported)
+      .to receive(:observe_duration)
+      .and_call_original
   end
 
   describe "#completion_result" do
@@ -26,6 +29,14 @@ RSpec.describe DiscoveryEngine::Autocomplete::Complete do
         query:,
         query_model: "user-event",
       )
+    end
+
+    it "logs the request duration" do
+      completion_result
+
+      expect(Metrics::Exported)
+        .to have_received(:observe_duration)
+        .with(:vertex_autocomplete_request_duration)
     end
 
     context "when the query is empty" do
