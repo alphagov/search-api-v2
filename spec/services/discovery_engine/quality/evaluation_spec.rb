@@ -2,13 +2,35 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
   let(:sample_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, name: "/set") }
   let(:evaluation) { described_class.new(sample_set) }
 
-  describe "#fetch" do
-    let(:quality_metrics) { double("quality_metrics", to_h: "some output") }
+  describe "#quality_metrics" do
     let(:evaluation_service) { double("evaluation_service", create_evaluation: operation) }
     let(:operation) { double("operation", error?: false, wait_until_done!: true, results: response) }
     let(:response) { double("response", name: "/evaluations/1") }
-    let(:evaluation_success) { double("evaluation", state: :SUCCEEDED, quality_metrics: quality_metrics) }
+    let(:evaluation_success) { double("evaluation", state: :SUCCEEDED, quality_metrics: api_response) }
     let(:evaluation_pending) { double("evaluation", state: :PENDING) }
+
+    let(:api_response) do
+      {
+        "doc_recall" => {
+          "top_1" => 0.851,
+          "top_3" => 0.93,
+          "top_5" => 0.939,
+          "top_10" => 0.945,
+        },
+        "doc_precision" => {
+          "top_1" => 0.851,
+          "top_3" => 0.3713333333333329,
+          "top_5" => 0.22840000000000052,
+          "top_10" => 0.11520000000000026,
+        },
+        "doc_ndcg" => {
+          "top_1" => 0.851,
+          "top_3" => 0.8809067030461095,
+          "top_5" => 0.8888468583490955,
+          "top_10" => 0.8913925917320329,
+        },
+      }
+    end
 
     before do
       allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(evaluation_service)
@@ -20,7 +42,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
       let(:operation) { double("operation", wait_until_done!: true, error?: true, error:) }
 
       it "raises an error" do
-        expect { evaluation.fetch_quality_metrics }.to raise_error("An error message")
+        expect { evaluation.quality_metrics }.to raise_error("An error message")
       end
     end
 
@@ -39,7 +61,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
       end
 
       it "retries 3 times and then raises an error" do
-        expect { evaluation.fetch_quality_metrics }.to raise_error(Google::Cloud::AlreadyExistsError)
+        expect { evaluation.quality_metrics }.to raise_error(Google::Cloud::AlreadyExistsError)
         expect(erroring_service).to have_received(:create_evaluation).exactly(3).times
       end
     end
@@ -52,7 +74,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
       end
 
       it "calls the create_evaluation endpoint" do
-        evaluation.fetch_quality_metrics
+        evaluation.quality_metrics
 
         expect(evaluation_service).to have_received(:create_evaluation).with(
           parent: Rails.application.config.discovery_engine_default_location_name,
@@ -73,7 +95,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
       end
 
       it "fetches quality metrics" do
-        evaluation.fetch_quality_metrics
+        evaluation.quality_metrics
 
         expect(evaluation_service).to have_received(:get_evaluation)
           .with(name: response.name)
@@ -97,7 +119,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
       end
 
       it "sleeps for 10, then polls again" do
-        evaluation.fetch_quality_metrics
+        evaluation.quality_metrics
 
         expect(evaluation_service).to have_received(:get_evaluation)
           .with(name: response.name)

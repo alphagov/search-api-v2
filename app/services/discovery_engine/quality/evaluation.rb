@@ -8,16 +8,20 @@ module DiscoveryEngine::Quality
       @attempt = 1
     end
 
-    def fetch_quality_metrics
-      create
-      fetch
+    def quality_metrics
+      @quality_metrics ||= api_response.quality_metrics.to_h
     end
 
   private
 
     attr_reader :sample_set, :result
 
-    def create
+    def api_response
+      create_evaluation
+      get_evaluation_with_wait
+    end
+
+    def create_evaluation
       operation = DiscoveryEngine::Clients
         .evaluation_service
         .create_evaluation(
@@ -51,13 +55,10 @@ module DiscoveryEngine::Quality
       end
     end
 
-    def fetch
+    def get_evaluation_with_wait
       Rails.logger.info("Fetching evaluations...")
-      fetch_with_wait.quality_metrics.to_h
-    end
 
-    def fetch_with_wait
-      while (e = fetch_evaluation)
+      while (e = get_evaluation)
         return e if e.state == :SUCCEEDED
 
         Rails.logger.info("Still waiting for evaluation to complete...")
@@ -65,7 +66,7 @@ module DiscoveryEngine::Quality
       end
     end
 
-    def fetch_evaluation
+    def get_evaluation
       DiscoveryEngine::Clients.evaluation_service.get_evaluation(name: result.name)
     end
   end
