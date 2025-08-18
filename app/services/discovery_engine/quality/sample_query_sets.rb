@@ -16,7 +16,7 @@ module DiscoveryEngine
       end
 
       def create_and_import_all
-        all.each(&:create_and_import)
+        all.each(&:create_and_import_queries)
       end
     end
   end

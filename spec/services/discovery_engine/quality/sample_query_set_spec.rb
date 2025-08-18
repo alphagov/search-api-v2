@@ -12,14 +12,14 @@ RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
   let(:operation_object) { double("operation", wait_until_done!: true, error?: false) }
   let(:table_id) { "clickstream" }
 
-  describe "#create_and_import" do
+  describe "#create_and_import_queries" do
     context "when the month label ':last_month' is provided" do
       subject(:sample_query_set) { described_class.new(month_label:, table_id:) }
 
       let(:month_label) { :last_month }
 
       it "creates a sample query set for last month" do
-        sample_query_set.create_and_import
+        sample_query_set.create_and_import_queries
 
         expect(sample_query_set_service_stub).to have_received(:create_sample_query_set).with(
           sample_query_set: {
@@ -50,7 +50,7 @@ RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
         let(:operation_object) { double("operation", wait_until_done!: true, error?: true, error: error_stub) }
 
         it "raises an error" do
-          expect { sample_query_set.create_and_import }.to raise_error("An error message")
+          expect { sample_query_set.create_and_import_queries }.to raise_error("An error message")
         end
       end
     end
@@ -62,7 +62,7 @@ RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
       let(:month) { 9 }
 
       it "creates a sample query set for the year and month provided" do
-        sample_query_set.create_and_import
+        sample_query_set.create_and_import_queries
 
         expect(sample_query_set_service_stub).to have_received(:create_sample_query_set).with(
           sample_query_set: {

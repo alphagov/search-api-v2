@@ -17,7 +17,7 @@ namespace :quality do
     raise "table id is a required argument" if table_id.blank?
     raise "arguments must be provided in YYYY MM order" if year < month
 
-    DiscoveryEngine::Quality::SampleQuerySet.new(month:, year:, table_id:).create_and_import
+    DiscoveryEngine::Quality::SampleQuerySet.new(month:, year:, table_id:).create_and_import_queries
   end
 
   # Example usage rake quality:report_quality_metrics would generate and report metrics for all tables

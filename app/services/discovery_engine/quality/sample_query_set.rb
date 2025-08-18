@@ -12,9 +12,9 @@ module DiscoveryEngine
         @table_id = table_id
       end
 
-      def create_and_import
-        create
-        import
+      def create_and_import_queries
+        create_set
+        import_queries
       end
 
       def name
@@ -25,7 +25,7 @@ module DiscoveryEngine
 
       attr_reader :month_label, :month, :year
 
-      def create
+      def create_set
         DiscoveryEngine::Clients
           .sample_query_set_service
           .create_sample_query_set(
@@ -38,7 +38,7 @@ module DiscoveryEngine
           )
       end
 
-      def import
+      def import_queries
         operation = DiscoveryEngine::Clients
           .sample_query_service
           .import_sample_queries(
