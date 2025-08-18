@@ -73,5 +73,17 @@ RSpec.describe Metrics::Evaluation do
 
       evaluation.record_evaluations(evaluation_response, month, table_id)
     end
+
+    context "when there are no quality metrics" do
+      let(:evaluation_response) { {} }
+
+      it "does not update prometheus" do
+        expect(recall_gauge).not_to receive(:set)
+        expect(precision_gauge).not_to receive(:set)
+        expect(ndcg_gauge).not_to receive(:set)
+
+        evaluation.record_evaluations(evaluation_response, month, table_id)
+      end
+    end
   end
 end
