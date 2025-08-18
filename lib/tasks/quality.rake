@@ -25,20 +25,11 @@ namespace :quality do
   desc "Create evaluations and push results to Prometheus"
   task :report_quality_metrics, [:table_id] => :environment do |_, args|
     table_id = args[:table_id]
-    registry = Prometheus::Client.registry
-    metric_collector = Metrics::Evaluation.new(registry)
-    evaluations = DiscoveryEngine::Quality::Evaluations.new(metric_collector)
+    Rails.logger.info("Getting ready to report detailed and aggregate metrics for #{table_id || 'all'} datasets")
 
-    Rails.logger.info("Getting ready to fetch quality metrics for #{table_id || 'all'} datasets")
-
-    evaluations.collect_all_quality_metrics(table_id.presence)
-
-    Prometheus::Client::Push.new(
-      job: "evaluation_report_quality_metrics",
-      gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
-    ).add(registry)
-  rescue Prometheus::Client::Push::HttpError => e
-    Rails.logger.warn("Failed to push evaluations to Prometheus push gateway: '#{e.message}'")
-    raise e
+    prometheus_reporter = DiscoveryEngine::Quality::PrometheusReporter.new
+    biqquery_reporter = DiscoveryEngine::Quality::BigQueryReporter.new
+    runner = DiscoveryEngine::Quality::EvaluationsRunner.new(table_id.presence, prometheus_reporter, biqquery_reporter)
+    runner.report_all_metrics
   end
 end
