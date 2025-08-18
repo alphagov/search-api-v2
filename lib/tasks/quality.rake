@@ -27,11 +27,11 @@ namespace :quality do
     table_id = args[:table_id]
     registry = Prometheus::Client.registry
     metric_collector = Metrics::Evaluation.new(registry)
-    evaluation = DiscoveryEngine::Quality::Evaluations.new(metric_collector)
+    evaluations = DiscoveryEngine::Quality::Evaluations.new(metric_collector)
 
     Rails.logger.info("Getting ready to fetch quality metrics for #{table_id || 'all'} datasets")
 
-    evaluation.collect_all_quality_metrics(table_id.presence)
+    evaluations.collect_all_quality_metrics(table_id.presence)
 
     Prometheus::Client::Push.new(
       job: "evaluation_report_quality_metrics",
