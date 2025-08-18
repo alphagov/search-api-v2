@@ -22,7 +22,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluations do
 
     [clickstream_evaluation, binary_evaluation].each do |evaluation|
       allow(evaluation)
-      .to receive(:fetch_quality_metrics)
+      .to receive(:quality_metrics)
       .and_return(evaluation_response)
     end
 
@@ -55,11 +55,11 @@ RSpec.describe DiscoveryEngine::Quality::Evaluations do
         .twice
 
       expect(binary_evaluation)
-        .to have_received(:fetch_quality_metrics)
+        .to have_received(:quality_metrics)
         .twice
 
       expect(clickstream_evaluation)
-        .to have_received(:fetch_quality_metrics)
+        .to have_received(:quality_metrics)
         .twice
     end
 
@@ -73,7 +73,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluations do
           .and_return(erroring_evaluation)
 
         allow(erroring_evaluation)
-          .to receive(:fetch_quality_metrics)
+          .to receive(:quality_metrics)
           .and_raise(Google::Cloud::AlreadyExistsError)
 
         allow(GovukError).to receive(:notify)
@@ -101,7 +101,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluations do
         evaluations.collect_all_quality_metrics("binary")
 
         expect(binary_evaluation)
-          .to have_received(:fetch_quality_metrics)
+          .to have_received(:quality_metrics)
           .twice
       end
     end
@@ -118,7 +118,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluations do
         evaluations.collect_all_quality_metrics("clickstream")
 
         expect(clickstream_evaluation)
-          .to have_received(:fetch_quality_metrics)
+          .to have_received(:quality_metrics)
           .twice
       end
     end

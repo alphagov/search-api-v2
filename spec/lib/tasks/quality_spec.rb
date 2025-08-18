@@ -39,7 +39,7 @@ RSpec.describe "Quality tasks" do
 
     it "creates and imports a sample set" do
       expect(sample_query_set)
-        .to receive(:create_and_import)
+        .to receive(:create_and_import_queries)
         .once
       Rake::Task["quality:setup_sample_query_set"].invoke("2025", "1", "clickstream")
     end
