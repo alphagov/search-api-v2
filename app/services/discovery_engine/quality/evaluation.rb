@@ -46,7 +46,7 @@ module DiscoveryEngine::Quality
       Rails.logger.info("Successfully created evaluation: #{sample_set.display_name}")
     rescue Google::Cloud::AlreadyExistsError => e
       if @attempt < MAX_RETRIES_ON_ERROR
-        Rails.logger.warn("Failed to create evaluation (#{e.message}). Retrying...")
+        Rails.logger.warn("Failed to create evaluation: #{sample_set.display_name} (#{e.message}). Retrying...")
         @attempt += 1
         Kernel.sleep(WAIT_ON_ERROR)
         retry

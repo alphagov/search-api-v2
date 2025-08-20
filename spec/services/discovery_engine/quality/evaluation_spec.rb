@@ -58,11 +58,14 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
           .and_raise(Google::Cloud::AlreadyExistsError)
 
         allow(Kernel).to receive(:sleep).with(3).and_return(true)
+        allow(Rails.logger).to receive(:warn)
       end
 
       it "retries 3 times and then raises an error" do
         expect { evaluation.quality_metrics }.to raise_error(Google::Cloud::AlreadyExistsError)
         expect(erroring_service).to have_received(:create_evaluation).exactly(3).times
+        expect(Rails.logger).to have_received(:warn).exactly(2).times
+          .with("Failed to create evaluation: clickstream 2025-10 (Google::Cloud::AlreadyExistsError). Retrying...")
       end
     end
 
