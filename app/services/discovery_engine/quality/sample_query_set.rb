@@ -3,7 +3,7 @@ module DiscoveryEngine
     class SampleQuerySet
       BIGQUERY_DATASET_ID = "automated_evaluation_input".freeze
 
-      attr_reader :table_id
+      attr_reader :table_id, :month_label, :month, :year
 
       def initialize(table_id:, month_label: nil, month: nil, year: nil)
         @month_label = month_label
@@ -22,8 +22,6 @@ module DiscoveryEngine
       end
 
     private
-
-      attr_reader :month_label, :month, :year
 
       def create_set
         DiscoveryEngine::Clients

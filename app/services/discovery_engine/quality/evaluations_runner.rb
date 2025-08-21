@@ -29,7 +29,7 @@ module DiscoveryEngine::Quality
 
   private
 
-    attr_reader :table_id
+    attr_reader :table_id, :bigquery_reporter, :prometheus_reporter
 
     def evaluations
       @evaluations ||= begin

@@ -1,6 +1,6 @@
 require "google/cloud/storage"
 
-# TODO:
+# TODO
 # - See if this actually works.
 # - Rename to StorageReporter? It writes to a bucket, not to BigQuery.
 # - What parameters should be passed into the `send()` method, given that it
@@ -9,15 +9,18 @@ require "google/cloud/storage"
 #   from the `evaluation`.
 # - Maybe refactor the client Google::Cloud::Storage.new into app/services/storage/clients.rb
 module DiscoveryEngine::Quality
-  class BiqQueryReporter
-    def send(evaluation, judgement_list_name)
-      storage = Google::Cloud::Storage.new
+  class BigqueryReporter
+    PROJECT_NAME = "search-api-v2-integration".freeze
+
+    def send(evaluation)
+      storage = Google::Cloud::Storage.new(project: PROJECT_NAME)
       bucket = storage.bucket "search-api-v2-#{PROJECT_NAME}_vais_evaluation_output" # or pass it into this method
-      object_name = "ts=#{evaluation.createTime}/judgement_list=#{judgement_list_name}"
+      judgement_list_name = "#{evaluation.table_id}_#{evaluation.month}_#{evaluation.year}"
+      file_name = "ts=#{evaluation.create_time}/judgement_list=#{judgement_list_name}"
 
       # The API returns results in pages, but the list_evaluation_results()
       # method returns an enumerable that handles paging in the background.
-      query_level_results = DiscoveryEngine::Clients.evaluation_service.list_evaluation_results(evaluation: evaluation.name)
+      query_level_results = evaluation.list_evaluation_results
 
       # Stream to Google Cloud Storage in NDJSON format, which BigQuery can
       # query directly. This streaming method will supposedly resume after a

@@ -3,7 +3,7 @@ module DiscoveryEngine::Quality
     MAX_RETRIES_ON_ERROR = 3
     WAIT_ON_ERROR = 3
 
-    delegate :table_id, :month_label, :month, :year, to: SampleQuerySet
+    delegate :table_id, :month_label, :month, :year, to: :sample_set
 
     def initialize(sample_set)
       @sample_set = sample_set
@@ -15,16 +15,20 @@ module DiscoveryEngine::Quality
     end
 
     def list_evaluation_results
-      raise "Detailed metrics aren't available yet" if result.nil?
+      # raise "Detailed metrics aren't available yet" if result.nil?
 
       @list_evaluation_results ||=
         DiscoveryEngine::Clients
           .evaluation_service
           .list_evaluation_results(
-            evaluation: result.name,
+            evaluation: result.try(:name) || api_response.name,
             page_size: 1000,
           )
       Rails.logger.info("Successfully fetched detailed metrics for #{sample_set.name}")
+    end
+
+    def create_time
+      api_response.create_time
     end
 
   private
@@ -32,7 +36,8 @@ module DiscoveryEngine::Quality
     attr_reader :sample_set, :result
 
     def api_response
-      create_evaluation
+      @api_response ||=
+        create_evaluation
       get_evaluation_with_wait
     end
 
