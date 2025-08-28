@@ -40,6 +40,8 @@ module DiscoveryEngine
             sample_query_set_id: id,
             parent: Rails.application.config.discovery_engine_default_location_name,
           )
+      rescue Google::Cloud::AlreadyExistsError
+        Rails.logger.warn("SampleQuerySet #{display_name} already exists. Skipping query set creation...")
       end
 
       def import_queries
