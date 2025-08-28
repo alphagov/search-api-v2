@@ -21,6 +21,10 @@ module DiscoveryEngine
         "#{Rails.application.config.discovery_engine_default_location_name}/sampleQuerySets/#{id}"
       end
 
+      def display_name
+        "#{table_id} #{partition_date}"
+      end
+
     private
 
       def create_set
@@ -58,10 +62,6 @@ module DiscoveryEngine
         raise operation.error.message if operation.error?
 
         Rails.logger.info("Successfully imported sample queries into: #{name}")
-      end
-
-      def display_name
-        "#{table_id} #{partition_date}"
       end
 
       def description

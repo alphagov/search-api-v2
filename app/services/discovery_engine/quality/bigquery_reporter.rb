@@ -1,5 +1,6 @@
 require "google/cloud/storage"
 
+
 # TODO
 # - See if this actually works.
 # - Rename to StorageReporter? It writes to a bucket, not to BigQuery.
@@ -14,23 +15,14 @@ module DiscoveryEngine::Quality
 
     def send(evaluation)
       storage = Google::Cloud::Storage.new(project: PROJECT_NAME)
-      bucket = storage.bucket "search-api-v2-#{PROJECT_NAME}_vais_evaluation_output" # or pass it into this method
-      judgement_list_name = "#{evaluation.table_id}_#{evaluation.month}_#{evaluation.year}"
-      file_name = "ts=#{evaluation.create_time}/judgement_list=#{judgement_list_name}"
+      bucket = storage.bucket "#{PROJECT_NAME}_vais_evaluation_output"
+      file_name = "ts=#{evaluation.create_time}/judgement_list=#{evaluation.display_name}"
 
       # The API returns results in pages, but the list_evaluation_results()
       # method returns an enumerable that handles paging in the background.
-      query_level_results = evaluation.list_evaluation_results
+      results = evaluation.list_evaluation_results.to_json
 
-      # Stream to Google Cloud Storage in NDJSON format, which BigQuery can
-      # query directly. This streaming method will supposedly resume after a
-      # network glitch.
-      bucket.create_file file_name do |io|
-        query_level_results.each do |result|
-          io.write(result.to_json)
-          io.write("\n")
-        end
-      end
+      bucket.create_file StringIO.new(results), file_name
     end
   end
 end

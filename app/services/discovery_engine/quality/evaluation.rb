@@ -3,7 +3,7 @@ module DiscoveryEngine::Quality
     MAX_RETRIES_ON_ERROR = 3
     WAIT_ON_ERROR = 3
 
-    delegate :table_id, :month_label, :month, :year, to: :sample_set
+    delegate :table_id, :month_label, :month, :year, :display_name, to: :sample_set
 
     def initialize(sample_set)
       @sample_set = sample_set
@@ -17,18 +17,20 @@ module DiscoveryEngine::Quality
     def list_evaluation_results
       # raise "Detailed metrics aren't available yet" if result.nil?
 
-      @list_evaluation_results ||=
+      # @list_evaluation_results ||=
         DiscoveryEngine::Clients
           .evaluation_service
           .list_evaluation_results(
-            evaluation: result.try(:name) || api_response.name,
+            evaluation: "projects/780375417592/locations/global/evaluations/2c3f0ed9-fd27-4739-b929-d5f307191d46",
             page_size: 1000,
           )
-      Rails.logger.info("Successfully fetched detailed metrics for #{sample_set.name}")
+      # Rails.logger.info("Successfully fetched detailed metrics for sample_set.name")
     end
 
     def create_time
-      api_response.create_time
+      google_time_stamp = api_response.create_time
+      data = { nanos: google_time_stamp.nanos, seconds: google_time_stamp.seconds }
+      Google::Protobuf::Timestamp.new(data).to_time.strftime("%Y-%m-%d %H:%M:%S")
     end
 
   private
@@ -37,8 +39,11 @@ module DiscoveryEngine::Quality
 
     def api_response
       @api_response ||=
-        create_evaluation
-      get_evaluation_with_wait
+        DiscoveryEngine::Clients
+          .evaluation_service
+          .get_evaluation(
+            name: "projects/780375417592/locations/global/evaluations/2c3f0ed9-fd27-4739-b929-d5f307191d46"
+          )
     end
 
     def create_evaluation
