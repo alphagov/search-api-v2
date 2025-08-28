@@ -15,16 +15,16 @@ module DiscoveryEngine::Quality
     end
 
     def list_evaluation_results
-      # raise "Detailed metrics aren't available yet" if result.nil?
+      raise "Detailed metrics aren't available yet" if result.nil?
 
-      # @list_evaluation_results ||=
-        DiscoveryEngine::Clients
-          .evaluation_service
-          .list_evaluation_results(
-            evaluation: "projects/780375417592/locations/global/evaluations/2c3f0ed9-fd27-4739-b929-d5f307191d46",
-            page_size: 1000,
-          )
-      # Rails.logger.info("Successfully fetched detailed metrics for sample_set.name")
+      results = DiscoveryEngine::Clients
+        .evaluation_service
+        .list_evaluation_results(
+          evaluation: result.name,
+          page_size: 1000,
+        )
+      Rails.logger.info("Successfully fetched detailed metrics for #{sample_set.name}")
+      results
     end
 
     def create_time
@@ -39,11 +39,8 @@ module DiscoveryEngine::Quality
 
     def api_response
       @api_response ||=
-        DiscoveryEngine::Clients
-          .evaluation_service
-          .get_evaluation(
-            name: "projects/780375417592/locations/global/evaluations/2c3f0ed9-fd27-4739-b929-d5f307191d46"
-          )
+        create_evaluation
+      get_evaluation_with_wait
     end
 
     def create_evaluation

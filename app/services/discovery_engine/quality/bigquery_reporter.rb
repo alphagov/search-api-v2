@@ -1,6 +1,5 @@
 require "google/cloud/storage"
 
-
 # TODO
 # - See if this actually works.
 # - Rename to StorageReporter? It writes to a bucket, not to BigQuery.
@@ -16,12 +15,14 @@ module DiscoveryEngine::Quality
     def send(evaluation)
       storage = Google::Cloud::Storage.new(project: PROJECT_NAME)
       bucket = storage.bucket "#{PROJECT_NAME}_vais_evaluation_output"
+      # question for Duncan - is the judgment list the same as the sample query set name?
       file_name = "ts=#{evaluation.create_time}/judgement_list=#{evaluation.display_name}"
 
-      # The API returns results in pages, but the list_evaluation_results()
-      # method returns an enumerable that handles paging in the background.
-      results = evaluation.list_evaluation_results.to_json
+      # If we configure the evaluation results to be fetched in batches of 1000 I don't think
+      # we need to worry about pagination
 
+      results = evaluation.list_evaluation_results.to_json
+      Rails.logger.info(results)
       bucket.create_file StringIO.new(results), file_name
     end
   end
