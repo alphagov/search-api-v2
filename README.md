@@ -28,7 +28,37 @@ make search-api-v2
 
 ```bash
 gcloud auth application-default login
-govuk-docker up -d search-api-v2-app # or search-api-v2-lite if you just want to run tests
+govuk-docker up -d search-api-v2-app
+```
+
+### Running tests
+
+```bash
+govuk-docker run search-api-v2-lite bundle exec rake
+```
+
+### Running document sync
+
+Running the document sync worker locally requires setting up of rabbitmq. The `document-sync-worker` stack
+exists to do this conveniently and can be run as follows:
+
+```bash
+govuk-docker run search-api-v2-document-sync-worker bundle exec rake document_sync_worker:run
+```
+
+### Running other rake tasks
+
+Other rake tasks (including evaluations related rask tasks) require connecting to the integration environment. 
+The `task-runner` stack has been created to do this with minimal dependencies and can be run as follows:
+
+```bash
+govuk-docker run search-api-v2-task-runner bundle exec rake [relevant-rake-task]
+```
+
+Alternatively, you can run the `lite` stack, setting additional environment variables to point to integration:
+
+```bash
+govuk-docker run search-api-v2-lite env GOOGLE_CLOUD_PROJECT_ID="780375417592" DISCOVERY_ENGINE_DEFAULT_COLLECTION_NAME="projects/780375417592/locations/global/collections/default_collection" DISCOVERY_ENGINE_DEFAULT_LOCATION_NAME="projects/780375417592/locations/global" bundle exec rake [relevant-rake-task]`
 ```
 
 ## Design goals and `search-api-v2` vs `search-api`
