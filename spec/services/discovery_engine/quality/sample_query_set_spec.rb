@@ -53,6 +53,28 @@ RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
           expect { sample_query_set.create_and_import_queries }.to raise_error("An error message")
         end
       end
+
+      context "when sample query set already exists" do
+        let(:erroring_service) { double("sample_query_set") }
+
+        before do
+          allow(DiscoveryEngine::Clients).to receive(:sample_query_set_service).and_return(erroring_service)
+
+          allow(erroring_service)
+            .to receive(:create_sample_query_set)
+            .with(anything)
+            .and_raise(Google::Cloud::AlreadyExistsError)
+
+          allow(Rails.logger).to receive(:warn)
+        end
+
+        it "handles the error and logs a warning" do
+          sample_query_set.create_and_import_queries
+          expect(erroring_service).to have_received(:create_sample_query_set).exactly(1).times
+          expect(Rails.logger).to have_received(:warn)
+            .with("SampleQuerySet clickstream 2025-10 already exists. Skipping query set creation...")
+        end
+      end
     end
 
     context "when a year and month are provided" do
