@@ -19,9 +19,10 @@ module DiscoveryEngine::Quality
       # If we configure the evaluation results to be fetched in batches of 1000 I don't think
       # we need to worry about pagination
 
-      results = evaluation.list_evaluation_results.to_json
-      Rails.logger.info(results)
-      bucket.create_file StringIO.new(results), file_name(evaluation)
+      results = evaluation.list_evaluation_results
+      results_ndjson = results.map { |result| result.to_json }.join("\n")
+      Rails.logger.info(results_ndjson)
+      bucket.create_file StringIO.new(results_ndjson), file_name(evaluation)
     end
 
     def file_name(evaluation)
