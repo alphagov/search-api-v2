@@ -1,10 +1,10 @@
 module DiscoveryEngine::Quality
   class PrometheusReporter
-    def send(evaluation)
+    def send(quality_metrics, evaluation)
       Rails.logger.info("Reporting aggregate metrics to Prometheus for #{evaluation.table_id}")
 
       metric_collector.record_evaluations(
-        evaluation.quality_metrics,
+        quality_metrics,
         evaluation.month_label,
         evaluation.table_id,
       )

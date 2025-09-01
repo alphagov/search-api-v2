@@ -15,14 +15,7 @@ module DiscoveryEngine::Quality
     end
 
     def list_evaluation_results
-      results = DiscoveryEngine::Clients
-        .evaluation_service
-        .list_evaluation_results(
-          evaluation: evaluation_name,
-          page_size: 1000,
-        )
-      Rails.logger.info("Successfully fetched detailed metrics for #{sample_set.name}")
-      results
+      DiscoveryEngine::Quality::EvaluationListResults.new(evaluation_name, sample_set.name).presented_results
     end
 
     def create_time
@@ -31,17 +24,12 @@ module DiscoveryEngine::Quality
       Google::Protobuf::Timestamp.new(data).to_time.strftime("%Y-%m-%d %H:%M:%S")
     end
 
-    def evaluation_name
-      @evaluation_name ||= api_response.name
-    end
-
   private
 
-    attr_reader :sample_set
+    attr_reader :sample_set, :evaluation_name
 
     def api_response
-      @api_response ||=
-        create_evaluation
+      create_evaluation
       get_evaluation_with_wait
     end
 
@@ -65,7 +53,7 @@ module DiscoveryEngine::Quality
 
       raise operation.error.message.to_s if operation.error?
 
-      @result = operation.results
+      @evaluation_name = operation.results.name
 
       Rails.logger.info("Successfully created evaluation #{evaluation_name}")
     rescue Google::Cloud::AlreadyExistsError => e

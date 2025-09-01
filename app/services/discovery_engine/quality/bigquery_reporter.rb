@@ -12,17 +12,14 @@ module DiscoveryEngine::Quality
   class BigqueryReporter
     PROJECT_NAME = "search-api-v2-integration".freeze
 
-    def send(evaluation)
+    def send(evaluation, data)
       storage = Google::Cloud::Storage.new(project: PROJECT_NAME)
       bucket = storage.bucket "#{PROJECT_NAME}_vais_evaluation_output"
 
       # If we configure the evaluation results to be fetched in batches of 1000 I don't think
       # we need to worry about pagination
 
-      results = evaluation.list_evaluation_results
-      results_ndjson = results.map { |result| result.to_json }.join("\n")
-      Rails.logger.info(results_ndjson)
-      bucket.create_file StringIO.new(results_ndjson), file_name(evaluation)
+      bucket.create_file StringIO.new(data), file_name(evaluation)
     end
 
     def file_name(evaluation)
