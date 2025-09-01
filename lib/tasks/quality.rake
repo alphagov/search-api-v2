@@ -28,7 +28,7 @@ namespace :quality do
     Rails.logger.info("Getting ready to report detailed and aggregate metrics for #{table_id || 'all'} datasets")
 
     prometheus_reporter = DiscoveryEngine::Quality::PrometheusReporter.new
-    biqquery_reporter = DiscoveryEngine::Quality::BigQueryReporter.new
+    biqquery_reporter = DiscoveryEngine::Quality::BigqueryReporter.new
     runner = DiscoveryEngine::Quality::EvaluationsRunner.new(table_id.presence, prometheus_reporter, biqquery_reporter)
     runner.report_all_metrics
   end

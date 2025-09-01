@@ -22,7 +22,7 @@ module DiscoveryEngine
       end
 
       def display_name
-        "#{table_id} #{partition_date}"
+        "#{table_id}_#{partition_date}"
       end
 
     private

@@ -15,15 +15,21 @@ module DiscoveryEngine::Quality
     def send(evaluation)
       storage = Google::Cloud::Storage.new(project: PROJECT_NAME)
       bucket = storage.bucket "#{PROJECT_NAME}_vais_evaluation_output"
-      # question for Duncan - is the judgment list the same as the sample query set name?
-      file_name = "ts=#{evaluation.create_time}/judgement_list=#{evaluation.display_name}"
 
       # If we configure the evaluation results to be fetched in batches of 1000 I don't think
       # we need to worry about pagination
 
       results = evaluation.list_evaluation_results.to_json
       Rails.logger.info(results)
-      bucket.create_file StringIO.new(results), file_name
+      bucket.create_file StringIO.new(results), file_name(evaluation)
+    end
+
+    def file_name(evaluation)
+      create_time = evaluation.create_time
+      table_id = evaluation.table_id
+      partition_date = evaluation.display_name.split("_").last
+
+      "create_time=#{create_time}/judgement_list=#{table_id}/partition_date=#{partition_date}/results.json"
     end
   end
 end

@@ -15,12 +15,10 @@ module DiscoveryEngine::Quality
     end
 
     def list_evaluation_results
-      raise "Detailed metrics aren't available yet" if result.nil?
-
       results = DiscoveryEngine::Clients
         .evaluation_service
         .list_evaluation_results(
-          evaluation: result.name,
+          evaluation: evaluation_name,
           page_size: 1000,
         )
       Rails.logger.info("Successfully fetched detailed metrics for #{sample_set.name}")
@@ -33,9 +31,13 @@ module DiscoveryEngine::Quality
       Google::Protobuf::Timestamp.new(data).to_time.strftime("%Y-%m-%d %H:%M:%S")
     end
 
+    def evaluation_name
+      @evaluation_name ||= api_response.name
+    end
+
   private
 
-    attr_reader :sample_set, :result
+    attr_reader :sample_set
 
     def api_response
       @api_response ||=
@@ -65,7 +67,7 @@ module DiscoveryEngine::Quality
 
       @result = operation.results
 
-      Rails.logger.info("Successfully created evaluation #{result.name}")
+      Rails.logger.info("Successfully created evaluation #{evaluation_name}")
     rescue Google::Cloud::AlreadyExistsError => e
       if @attempt < MAX_RETRIES_ON_ERROR
         Rails.logger.warn("Failed to create evaluation (#{e.message}). Retrying...")
@@ -89,7 +91,7 @@ module DiscoveryEngine::Quality
     end
 
     def get_evaluation
-      DiscoveryEngine::Clients.evaluation_service.get_evaluation(name: result.name)
+      DiscoveryEngine::Clients.evaluation_service.get_evaluation(name: evaluation_name)
     end
   end
 end
