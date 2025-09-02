@@ -10,7 +10,7 @@ module DiscoveryEngine::Quality
 
   private
 
-    attr_reader :sample_set, :result
+    attr_reader :sample_set, :evaluation_name
 
     def api_response
       create_evaluation
@@ -37,7 +37,7 @@ module DiscoveryEngine::Quality
 
       raise operation.error.message.to_s if operation.error?
 
-      @result = operation.results
+      @evaluation_name = operation.results.name
 
       Rails.logger.info("Successfully created an evaluation of sample set #{sample_set.display_name}")
     rescue Google::Cloud::AlreadyExistsError => e
@@ -57,7 +57,7 @@ module DiscoveryEngine::Quality
     end
 
     def get_evaluation
-      DiscoveryEngine::Clients.evaluation_service.get_evaluation(name: result.name)
+      DiscoveryEngine::Clients.evaluation_service.get_evaluation(name: evaluation_name)
     end
   end
 end
