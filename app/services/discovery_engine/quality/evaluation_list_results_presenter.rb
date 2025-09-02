@@ -28,7 +28,7 @@ module DiscoveryEngine::Quality
     end
 
     def new_line_deliminate(json)
-      json.map { |response| response }.join("\n")
+      json.map { |response| response.to_json }.join("\n")
     end
   end
 end

@@ -27,20 +27,13 @@ namespace :quality do
     table_id = args[:table_id]
     Rails.logger.info("Getting ready to report detailed and aggregate metrics for #{table_id || 'all'} datasets")
 
-    prometheus_reporter = DiscoveryEngine::Quality::PrometheusReporter.new
-    biqquery_reporter = DiscoveryEngine::Quality::BigqueryReporter.new
-    runner = DiscoveryEngine::Quality::EvaluationsRunner.new(table_id.presence, prometheus_reporter, biqquery_reporter)
-    runner.report_all_metrics
+    runner = DiscoveryEngine::Quality::EvaluationsRunner.new(table_id.presence)
+    runner.report_quality_metrics
   end
 
-  desc "Create query level metrics and push to a gcp bucket"
-  task :report_detailed_metrics, [:table_id] => :environment do |_, args|
-    table_id = args[:table_id]
-    Rails.logger.info("Getting ready to report detailed metrics for #{table_id || 'all'} datasets")
-
-    prometheus_reporter = DiscoveryEngine::Quality::PrometheusReporter.new
-    bigquery_reporter = DiscoveryEngine::Quality::BigqueryReporter.new
-    runner = DiscoveryEngine::Quality::EvaluationsRunner.new(table_id.presence, prometheus_reporter, bigquery_reporter)
+  desc "Create query level metrics for the explicit datasets and push to a gcp bucket"
+  task report_detailed_metrics: :environment do
+    runner = DiscoveryEngine::Quality::EvaluationsRunner.new("explicit")
     runner.report_detailed_metrics
   end
 end

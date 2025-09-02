@@ -11,11 +11,13 @@ module DiscoveryEngine::Quality
     end
 
     def quality_metrics
-      @quality_metrics ||= api_response.quality_metrics.to_h
+      api_response.quality_metrics.to_h
     end
 
     def list_evaluation_results
-      DiscoveryEngine::Quality::EvaluationListResults.new(evaluation_name, sample_set.name).presented_results
+      fetch_api_response unless evaluation_created?
+
+      EvaluationListResults.new(evaluation_name, sample_set.name).presented_results
     end
 
     def create_time
@@ -28,8 +30,16 @@ module DiscoveryEngine::Quality
 
     attr_reader :sample_set, :evaluation_name
 
+    def evaluation_created?
+      evaluation_name.present?
+    end
+
     def api_response
-      create_evaluation
+      @api_response ||= fetch_api_response
+    end
+
+    def fetch_api_response
+        create_evaluation
       get_evaluation_with_wait
     end
 

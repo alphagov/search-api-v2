@@ -2,19 +2,17 @@ module DiscoveryEngine::Quality
   class EvaluationsRunner
     MONTH_LABELS = %i[last_month month_before_last].freeze
 
-    def initialize(table_id, prometheus_reporter, bigquery_reporter)
+    def initialize(table_id)
       @table_id = table_id
-      @prometheus_reporter = prometheus_reporter
-      @bigquery_reporter = bigquery_reporter
     end
 
     # Once a day at 7am
-    ## Rake:quality:report_clickstream_quality_metrics
-    ## EvaluationsRunner.new("clickstream").report_quality_metrics
-    ## = 2 evaluations
+    ## Rake:quality:report_quality_metrics
+    ## EvaluationsRunner.new.report_quality_metrics
+    ## = 4 evaluations (2 for clickstream, 2 for binary)
 
-    # Every 2hours weekdays 8-4pm
-    ## Rake:quality:report_binary_quality_metrics
+    # Every 2hours, weekdays 8-4pm
+    ## Rake:quality:report_quality_metrics['binary']
     ## EvaluationsRunner.new("binary").report_quality_metrics
     ## = 10 evaluations
 
@@ -26,6 +24,10 @@ module DiscoveryEngine::Quality
     end
 
     # Can be run on an adhoc basis
+    # Once a day at 7am
+    ## Rake:quality:report_quality_metrics
+    ## EvaluationsRunner.new("explicit").report_quality_metrics
+
     def report_detailed_metrics
       evaluations.each do |e|
         detailed_metrics = e.list_evaluation_results
@@ -33,10 +35,9 @@ module DiscoveryEngine::Quality
       end
     end
 
-    # Once a day at 7am or every 2 hours? Probably every 2 hours
-    ## Rake:quality::report_all_explicit_metrics
+    #  Doesn't look like this task is needed
+    ## Rake:quality::report_explicit_metrics
     ## EvaluationsRunner.new("explicit").report_quality_metrics_and_detailed_metrics
-    # question: do we actually need to send the detailed metrics for explicit datasets to prometheus?
 
     def report_quality_metrics_and_detailed_metrics
       evaluations.each do |e|
@@ -50,7 +51,15 @@ module DiscoveryEngine::Quality
 
   private
 
-    attr_reader :table_id, :bigquery_reporter, :prometheus_reporter
+    attr_reader :table_id
+
+    def prometheus_reporter
+      @prometheus_reporter ||= DiscoveryEngine::Quality::PrometheusReporter.new
+    end
+
+    def bigquery_reporter
+      @bigquery_reporter ||= DiscoveryEngine::Quality::BigqueryReporter.new
+    end
 
     def evaluations
       @evaluations ||=
