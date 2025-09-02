@@ -3,7 +3,7 @@ module DiscoveryEngine::Quality
     MAX_RETRIES_ON_ERROR = 3
     WAIT_ON_ERROR = 3
 
-    delegate :table_id, :month_label, :month, :year, :display_name, to: :sample_set
+    delegate :table_id, :month_label, :display_name, to: :sample_set
 
     def initialize(sample_set)
       @sample_set = sample_set
@@ -11,7 +11,7 @@ module DiscoveryEngine::Quality
     end
 
     def quality_metrics
-      api_response.quality_metrics.to_h
+      fetch_api_response.quality_metrics.to_h
     end
 
     def list_evaluation_results
@@ -20,22 +20,19 @@ module DiscoveryEngine::Quality
       EvaluationListResults.new(evaluation_name, sample_set.name).presented_results
     end
 
-    def create_time
-      google_time_stamp = api_response.create_time
-      data = { nanos: google_time_stamp.nanos, seconds: google_time_stamp.seconds }
+    def formatted_create_time
+      return "" unless evaluation_created?
+
+      data = { nanos: create_time.nanos, seconds: create_time.seconds }
       Google::Protobuf::Timestamp.new(data).to_time.strftime("%Y-%m-%d %H:%M:%S")
     end
 
   private
 
-    attr_reader :sample_set, :evaluation_name
+    attr_reader :sample_set, :evaluation_name, :create_time
 
     def evaluation_created?
       evaluation_name.present?
-    end
-
-    def api_response
-      @api_response ||= fetch_api_response
     end
 
     def fetch_api_response
@@ -64,6 +61,7 @@ module DiscoveryEngine::Quality
       raise operation.error.message.to_s if operation.error?
 
       @evaluation_name = operation.results.name
+      @create_time = operation.results.create_time
 
       Rails.logger.info("Successfully created evaluation #{evaluation_name}")
     rescue Google::Cloud::AlreadyExistsError => e
