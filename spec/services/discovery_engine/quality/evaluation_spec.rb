@@ -2,41 +2,41 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
   let(:sample_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, name: "/set", display_name: "clickstream 2025-10") }
   let(:evaluation) { described_class.new(sample_set) }
 
+  let(:evaluation_service) { double("evaluation_service", create_evaluation: operation) }
+  let(:operation) { double("operation", error?: false, wait_until_done!: true, results: response) }
+  let(:response) { double("response", name: "/evaluations/1") }
+  let(:evaluation_success) { double("evaluation", state: :SUCCEEDED, quality_metrics: quality_metrics_response, name: "/evaluations/1") }
+  let(:evaluation_pending) { double("evaluation", state: :PENDING) }
+
+  let(:quality_metrics_response) do
+    {
+      "doc_recall" => {
+        "top_1" => 0.851,
+        "top_3" => 0.93,
+        "top_5" => 0.939,
+        "top_10" => 0.945,
+      },
+      "doc_precision" => {
+        "top_1" => 0.851,
+        "top_3" => 0.3713333333333329,
+        "top_5" => 0.22840000000000052,
+        "top_10" => 0.11520000000000026,
+      },
+      "doc_ndcg" => {
+        "top_1" => 0.851,
+        "top_3" => 0.8809067030461095,
+        "top_5" => 0.8888468583490955,
+        "top_10" => 0.8913925917320329,
+      },
+    }
+  end
+
+  before do
+    allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(evaluation_service)
+    allow(Rails.logger).to receive(:info)
+  end
+
   describe "#quality_metrics" do
-    let(:evaluation_service) { double("evaluation_service", create_evaluation: operation) }
-    let(:operation) { double("operation", error?: false, wait_until_done!: true, results: response) }
-    let(:response) { double("response", name: "/evaluations/1") }
-    let(:evaluation_success) { double("evaluation", state: :SUCCEEDED, quality_metrics: api_response) }
-    let(:evaluation_pending) { double("evaluation", state: :PENDING) }
-
-    let(:api_response) do
-      {
-        "doc_recall" => {
-          "top_1" => 0.851,
-          "top_3" => 0.93,
-          "top_5" => 0.939,
-          "top_10" => 0.945,
-        },
-        "doc_precision" => {
-          "top_1" => 0.851,
-          "top_3" => 0.3713333333333329,
-          "top_5" => 0.22840000000000052,
-          "top_10" => 0.11520000000000026,
-        },
-        "doc_ndcg" => {
-          "top_1" => 0.851,
-          "top_3" => 0.8809067030461095,
-          "top_5" => 0.8888468583490955,
-          "top_10" => 0.8913925917320329,
-        },
-      }
-    end
-
-    before do
-      allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(evaluation_service)
-      allow(Rails.logger).to receive(:info)
-    end
-
     context "when operation does not complete" do
       let(:error) { double("error", message: "An error message") }
       let(:operation) { double("operation", wait_until_done!: true, error?: true, error:) }
@@ -144,6 +144,50 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
 
         expect(Rails.logger).to have_received(:info).with("Still waiting for evaluation to complete...")
       end
+    end
+  end
+
+  describe "#list_evaluation_results" do
+    let(:list_evaluation_results) { double("list_evaluation_results") }
+
+    before do
+      allow(evaluation_service)
+        .to receive(:create_evaluation)
+        .with(anything)
+        .and_return(operation)
+
+      allow(evaluation_service)
+        .to receive(:get_evaluation)
+        .with(name: operation.results.name)
+        .and_return(evaluation_success)
+
+      allow(DiscoveryEngine::Quality::ListEvaluationResults)
+        .to receive(:new)
+        .with(anything, anything)
+        .and_return(list_evaluation_results)
+
+      allow(list_evaluation_results)
+        .to receive(:raw_api_response)
+    end
+
+    it "creates an evaluation first" do
+      evaluation.list_evaluation_results
+
+      expect(evaluation_service).to have_received(:create_evaluation).once
+      expect(evaluation_service).to have_received(:get_evaluation).once
+
+      expect(list_evaluation_results).to have_received(:raw_api_response)
+    end
+
+    it "uses the memoised api response if an evaluation already exists" do
+      3.times { evaluation.list_evaluation_results }
+
+      expect(evaluation_service).to have_received(:create_evaluation).once
+      expect(evaluation_service).to have_received(:get_evaluation).once
+
+      expect(evaluation_success)
+        .to have_received(:name)
+        .exactly(3).times
     end
   end
 end

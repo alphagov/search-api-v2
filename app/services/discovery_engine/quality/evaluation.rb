@@ -8,6 +8,12 @@ module DiscoveryEngine::Quality
       api_response.quality_metrics.to_h
     end
 
+    # evaluation_name and api_response.name are equivalent, but calling api_response
+    # ensures that we have fetched an evaluation before we ask for list_results.
+    def list_evaluation_results
+      ListEvaluationResults.new(api_response.name, sample_set.display_name).raw_api_response
+    end
+
   private
 
     attr_reader :sample_set, :evaluation_name
