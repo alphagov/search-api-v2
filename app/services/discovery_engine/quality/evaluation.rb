@@ -39,7 +39,7 @@ module DiscoveryEngine::Quality
 
       @result = operation.results
 
-      Rails.logger.info("Successfully created evaluation: #{sample_set.display_name}")
+      Rails.logger.info("Successfully created an evaluation of sample set #{sample_set.display_name}")
     rescue Google::Cloud::AlreadyExistsError => e
       Rails.logger.warn("Failed to create an evaluation of sample set #{sample_set.display_name} (#{e.message})")
       raise e

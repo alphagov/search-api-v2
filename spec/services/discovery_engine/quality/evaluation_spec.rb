@@ -94,7 +94,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
         )
 
         expect(Rails.logger).to have_received(:info)
-          .with("Successfully created evaluation: clickstream 2025-10")
+          .with("Successfully created an evaluation of sample set clickstream 2025-10")
       end
 
       it "fetches quality metrics" do
