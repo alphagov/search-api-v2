@@ -108,6 +108,18 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
           .to have_received(:quality_metrics)
           .once
       end
+
+      it "calls quality_metrics on the memoised api_response" do
+        evaluation.quality_metrics
+        evaluation.quality_metrics
+
+        expect(evaluation_service).to have_received(:create_evaluation)
+         .once
+
+        expect(evaluation_service).to have_received(:get_evaluation)
+          .with(name: response.name)
+          .once
+      end
     end
 
     context "when evaluation state is :PENDING" do

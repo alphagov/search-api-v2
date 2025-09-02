@@ -5,7 +5,7 @@ module DiscoveryEngine::Quality
     end
 
     def quality_metrics
-      @quality_metrics ||= api_response.quality_metrics.to_h
+      api_response.quality_metrics.to_h
     end
 
   private
@@ -13,6 +13,10 @@ module DiscoveryEngine::Quality
     attr_reader :sample_set, :evaluation_name
 
     def api_response
+      @api_response ||= fetch_api_response
+    end
+
+    def fetch_api_response
       create_evaluation
       get_evaluation_with_wait
     end
