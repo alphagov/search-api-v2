@@ -41,4 +41,10 @@ namespace :quality do
     Rails.logger.warn("Failed to push evaluations to Prometheus push gateway: '#{e.message}'")
     raise e
   end
+
+  desc "Create query level metrics for explicit dataset and push to a GCP bucket"
+  task upload_detailed_metrics: :environment do
+    runner = DiscoveryEngine::Quality::EvaluationsRunner.new("explicit")
+    runner.upload_detailed_metrics
+  end
 end
