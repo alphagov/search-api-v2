@@ -167,7 +167,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
         .and_return(list_evaluation_results)
 
       allow(list_evaluation_results)
-        .to receive(:raw_api_response)
+        .to receive(:formatted_json)
     end
 
     it "creates an evaluation first" do
@@ -176,7 +176,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
       expect(evaluation_service).to have_received(:create_evaluation).once
       expect(evaluation_service).to have_received(:get_evaluation).once
 
-      expect(list_evaluation_results).to have_received(:raw_api_response)
+      expect(list_evaluation_results).to have_received(:formatted_json)
     end
 
     it "uses the memoised api response if an evaluation already exists" do
