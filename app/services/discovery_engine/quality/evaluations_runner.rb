@@ -9,7 +9,7 @@ module DiscoveryEngine::Quality
     def upload_detailed_metrics
       evaluations.each do |e|
         detailed_metrics = e.list_evaluation_results
-        Rails.logger.info detailed_metrics
+        gcp_bucket_exporter.send(detailed_metrics)
       end
     end
 
@@ -26,6 +26,10 @@ module DiscoveryEngine::Quality
       MONTH_LABELS.map do |month_label|
         DiscoveryEngine::Quality::SampleQuerySet.new(table_id:, month_label:)
       end
+    end
+
+    def gcp_bucket_exporter
+      @gcp_bucket_exporter ||= DiscoveryEngine::Quality::GcpBucketExporter.new
     end
   end
 end
