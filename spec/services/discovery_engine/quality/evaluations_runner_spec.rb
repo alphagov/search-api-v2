@@ -5,6 +5,7 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
   let(:explicit_evaluation_of_last_month) { double("evaluation", list_evaluation_results: "detailed_metrics") }
   let(:explicit_query_set_month_before_last) { double("sample_query_set", table_id: "explicit", name: "/path/to/explicit-month_before_last") }
   let(:explicit_evaluation_of_month_before_last) { double("evaluation", list_evaluation_results: "more_detailed_metrics") }
+  let(:gcp_bucket_exporter) { double("gcp_bucket_exporter") }
 
   before do
     allow(DiscoveryEngine::Quality::Evaluation)
@@ -24,6 +25,15 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
         .with(table_id: "explicit", month_label: label)
         .and_return(query_set)
     end
+
+    allow(DiscoveryEngine::Quality::GcpBucketExporter)
+      .to receive(:new)
+      .and_return(gcp_bucket_exporter)
+
+    allow(gcp_bucket_exporter)
+      .to receive(:send)
+      .with(anything)
+      .and_return(true)
   end
 
   describe "#upload_detailed_metrics" do
@@ -50,14 +60,22 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
        .with(explicit_query_set_month_before_last)
     end
 
-    it "sends .list_evaluation_results to each evaluation" do
+    it "sends list_evaluation_results for each evaluation to a gcp bucket" do
       evaluations_runner.upload_detailed_metrics
 
       expect(explicit_evaluation_of_last_month)
         .to have_received(:list_evaluation_results)
 
+      expect(gcp_bucket_exporter)
+        .to have_received(:send)
+        .with("detailed_metrics")
+
       expect(explicit_evaluation_of_month_before_last)
         .to have_received(:list_evaluation_results)
+
+      expect(gcp_bucket_exporter)
+        .to have_received(:send)
+        .with("more_detailed_metrics")
     end
   end
 end
