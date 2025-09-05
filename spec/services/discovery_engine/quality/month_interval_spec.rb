@@ -39,4 +39,10 @@ RSpec.describe DiscoveryEngine::Quality::MonthInterval do
       expect(month_interval.to_s).to eq("1989-12")
     end
   end
+
+  describe "#first_day_of_month" do
+    it "returns the formatted string representation of the month interval" do
+      expect(month_interval.first_day_of_month).to eq("1989-12-01")
+    end
+  end
 end

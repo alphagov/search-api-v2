@@ -1,5 +1,7 @@
 module DiscoveryEngine::Quality
   class Evaluation
+    delegate :full_partition_date, to: :sample_set
+
     def initialize(sample_set)
       @sample_set = sample_set
     end

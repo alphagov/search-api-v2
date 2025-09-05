@@ -2,13 +2,13 @@ module DiscoveryEngine::Quality
   class GcpBucketExporter
     PROJECT_NAME = "search-api-v2-integration".freeze # replace with an env var
 
-    def send(time_stamp, table_id, json)
+    def send(time_stamp, table_id, partition_date, json)
       bucket = storage_client.bucket "#{PROJECT_NAME}_vais_evaluation_output"
-      bucket.create_file StringIO.new(json), file_name(time_stamp, table_id)
+      bucket.create_file StringIO.new(json), file_name(time_stamp, table_id, partition_date)
     end
 
-    def file_name(time_stamp, table_id)
-      "create_time=#{time_stamp}/judgement_list=#{table_id}/partition_date=to-be-implemented/results.json"
+    def file_name(time_stamp, table_id, partition_date)
+      "create_time=#{time_stamp}/judgement_list=#{table_id}/partition_date=#{partition_date}/results.json"
     end
 
   private

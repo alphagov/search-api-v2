@@ -1,5 +1,10 @@
 RSpec.describe DiscoveryEngine::Quality::Evaluation do
-  let(:sample_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, name: "/set", display_name: "clickstream 2025-10") }
+  let(:sample_set) do
+    instance_double(DiscoveryEngine::Quality::SampleQuerySet,
+                    name: "/set",
+                    display_name: "clickstream 2025-10",
+                    full_partition_date: "2025-10-01")
+  end
   let(:evaluation) { described_class.new(sample_set) }
   let(:evaluation_service) { double("evaluation_service", create_evaluation: operation) }
   let(:operation) { double("operation", error?: false, wait_until_done!: true, results: response) }
@@ -211,6 +216,13 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
 
     it "returns nil if an evaluation doesn't exist yet" do
       expect(evaluation.formatted_create_time).to be_nil
+    end
+  end
+
+  describe "#full_partition_date" do
+    it "delegates the full_partition_date to the sample query set" do
+      evaluation.full_partition_date
+      expect(sample_set).to have_received(:full_partition_date)
     end
   end
 end

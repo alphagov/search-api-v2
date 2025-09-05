@@ -9,10 +9,12 @@ module DiscoveryEngine::Quality
     def upload_detailed_metrics
       evaluations.each do |e|
         time_stamp = e.formatted_create_time
+        partition_date = e.full_partition_date
         detailed_metrics = e.list_evaluation_results
         gcp_bucket_exporter.send(
           time_stamp,
           table_id,
+          partition_date,
           detailed_metrics,
         )
       end
