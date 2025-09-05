@@ -1,11 +1,17 @@
 RSpec.describe DiscoveryEngine::Quality::Evaluation do
   let(:sample_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, name: "/set", display_name: "clickstream 2025-10") }
   let(:evaluation) { described_class.new(sample_set) }
-
   let(:evaluation_service) { double("evaluation_service", create_evaluation: operation) }
   let(:operation) { double("operation", error?: false, wait_until_done!: true, results: response) }
   let(:response) { double("response", name: "/evaluations/1") }
-  let(:evaluation_success) { double("evaluation", state: :SUCCEEDED, quality_metrics: quality_metrics_response, name: "/evaluations/1") }
+  let(:google_time_stamp) { double("google_time_stamp", nanos: 812_173_000, seconds: 1_753_600_645) }
+  let(:evaluation_success) do
+    double("evaluation",
+           state: :SUCCEEDED,
+           quality_metrics: quality_metrics_response,
+           name: "/evaluations/1",
+           create_time: google_time_stamp)
+  end
   let(:evaluation_pending) { double("evaluation", state: :PENDING) }
 
   let(:quality_metrics_response) do
@@ -188,6 +194,24 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
       expect(evaluation_success)
         .to have_received(:name)
         .exactly(3).times
+    end
+  end
+
+  describe "#formatted_create_time" do
+    before do
+      allow(evaluation_service).to receive(:get_evaluation)
+        .with(name: response.name)
+        .and_return(evaluation_success)
+    end
+
+    it "formats the create_time stamp from the google response" do
+      evaluation.quality_metrics
+      expect(evaluation.formatted_create_time).to eq("2025-07-27 07:17:25")
+    end
+
+    it "raises an error if an evaluation doesn't exist yet" do
+      message = "Error: cannot provide create time of an evaluation unless one exists"
+      expect { evaluation.formatted_create_time }.to raise_error(message)
     end
   end
 end

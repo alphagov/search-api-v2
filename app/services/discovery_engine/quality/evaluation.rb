@@ -14,6 +14,16 @@ module DiscoveryEngine::Quality
       ListEvaluationResults.new(api_response.name, sample_set.display_name).formatted_json
     end
 
+    def formatted_create_time
+      raise "Error: cannot provide create time of an evaluation unless one exists" if @api_response.blank?
+
+      google_time_stamp = @api_response.create_time
+      if google_time_stamp
+        data = { nanos: google_time_stamp.nanos, seconds: google_time_stamp.seconds }
+        Google::Protobuf::Timestamp.new(data).to_time.strftime("%Y-%m-%d %H:%M:%S")
+      end
+    end
+
   private
 
     attr_reader :sample_set, :evaluation_name
