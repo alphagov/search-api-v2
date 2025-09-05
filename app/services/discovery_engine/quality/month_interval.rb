@@ -6,7 +6,11 @@ module DiscoveryEngine::Quality
     end
 
     def to_s
-      Date.new(year, month, 1).strftime("%Y-%m")
+      Date.new(year, month).strftime("%Y-%m")
+    end
+
+    def first_day_of_month
+      Date.new(year, month, 1).strftime("%Y-%m-%d")
     end
   end
 end

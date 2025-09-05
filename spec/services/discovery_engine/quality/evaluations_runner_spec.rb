@@ -2,9 +2,9 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
   subject(:evaluations_runner) { described_class.new("explicit") }
 
   let(:explicit_query_set_last_month) { double("sample_query_set", table_id: "explicit", name: "/path/to/explicit-set-last_month") }
-  let(:explicit_evaluation_of_last_month) { double("evaluation", list_evaluation_results: "detailed_metrics", formatted_create_time: "time-stamp") }
+  let(:explicit_evaluation_of_last_month) { double("evaluation", list_evaluation_results: "detailed_metrics", formatted_create_time: "time-stamp", full_partition_date: "date") }
   let(:explicit_query_set_month_before_last) { double("sample_query_set", table_id: "explicit", name: "/path/to/explicit-month_before_last") }
-  let(:explicit_evaluation_of_month_before_last) { double("evaluation", list_evaluation_results: "more_detailed_metrics", formatted_create_time: "time-stamp") }
+  let(:explicit_evaluation_of_month_before_last) { double("evaluation", list_evaluation_results: "more_detailed_metrics", formatted_create_time: "time-stamp", full_partition_date: "date") }
   let(:gcp_bucket_exporter) { double("gcp_bucket_exporter") }
 
   before do
@@ -32,7 +32,7 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
 
     allow(gcp_bucket_exporter)
       .to receive(:send)
-      .with(anything, anything, anything)
+      .with(anything, anything, anything, anything)
       .and_return(true)
   end
 

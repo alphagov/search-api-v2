@@ -25,6 +25,10 @@ module DiscoveryEngine
         "#{table_id} #{partition_date}"
       end
 
+      def full_partition_date
+        partition_date.first_day_of_month
+      end
+
     private
 
       attr_reader :month_label, :month, :year
