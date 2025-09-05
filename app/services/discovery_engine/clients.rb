@@ -1,8 +1,13 @@
 require "google/cloud/discovery_engine/v1beta"
+require "google/cloud/storage"
 
 module DiscoveryEngine
   module Clients
     extend self
+
+    def cloud_storage_service
+      @cloud_storage_service ||= Google::Cloud::Storage
+    end
 
     def completion_service
       @completion_service ||= Google::Cloud::DiscoveryEngine.completion_service(version: :v1)

@@ -1,18 +1,38 @@
 module DiscoveryEngine::Quality
   class Evaluation
+    delegate :full_partition_date, to: :sample_set
+
     def initialize(sample_set)
       @sample_set = sample_set
     end
 
     def quality_metrics
-      @quality_metrics ||= api_response.quality_metrics.to_h
+      api_response.quality_metrics.to_h
+    end
+
+    # evaluation_name and api_response.name are equivalent, but calling api_response
+    # ensures that we have fetched an evaluation before we ask for list_results.
+    def list_evaluation_results
+      ListEvaluationResults.new(api_response.name, sample_set.display_name).formatted_json
+    end
+
+    def formatted_create_time
+      google_time_stamp = @api_response&.create_time
+      if google_time_stamp
+        data = { nanos: google_time_stamp.nanos, seconds: google_time_stamp.seconds }
+        Google::Protobuf::Timestamp.new(data).to_time.strftime("%Y-%m-%d %H:%M:%S")
+      end
     end
 
   private
 
-    attr_reader :sample_set, :result
+    attr_reader :sample_set, :evaluation_name
 
     def api_response
+      @api_response ||= fetch_api_response
+    end
+
+    def fetch_api_response
       create_evaluation
       get_evaluation_with_wait
     end
@@ -37,7 +57,7 @@ module DiscoveryEngine::Quality
 
       raise operation.error.message.to_s if operation.error?
 
-      @result = operation.results
+      @evaluation_name = operation.results.name
 
       Rails.logger.info("Successfully created an evaluation of sample set #{sample_set.display_name}")
     rescue Google::Cloud::AlreadyExistsError => e
@@ -57,7 +77,7 @@ module DiscoveryEngine::Quality
     end
 
     def get_evaluation
-      DiscoveryEngine::Clients.evaluation_service.get_evaluation(name: result.name)
+      DiscoveryEngine::Clients.evaluation_service.get_evaluation(name: evaluation_name)
     end
   end
 end

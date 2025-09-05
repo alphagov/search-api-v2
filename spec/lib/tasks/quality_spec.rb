@@ -2,6 +2,7 @@ RSpec.describe "Quality tasks" do
   let(:sample_query_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
   let(:sample_query_sets) { instance_double(DiscoveryEngine::Quality::SampleQuerySets) }
   let(:evaluations) { instance_double(DiscoveryEngine::Quality::Evaluations) }
+  let(:evaluations_runner) { instance_double(DiscoveryEngine::Quality::EvaluationsRunner) }
   let(:evaluation_response) { double }
   let(:registry) { double("registry", gauge: nil) }
   let(:metric_collector) { instance_double(Metrics::Evaluation) }
@@ -159,6 +160,25 @@ RSpec.describe "Quality tasks" do
           }.to raise_error(Prometheus::Client::Push::HttpError)
         end
       end
+    end
+  end
+
+  describe "quality:upload_detailed_metrics" do
+    before do
+      allow(DiscoveryEngine::Quality::EvaluationsRunner)
+        .to receive(:new)
+        .with("explicit")
+        .and_return(evaluations_runner)
+
+      allow(evaluations_runner).to receive(:upload_detailed_metrics)
+
+      Rake::Task["quality:upload_detailed_metrics"].reenable
+    end
+
+    it "sends .upload_detailed_metrics to the evaluations_runner" do
+      expect(evaluations_runner).to receive(:upload_detailed_metrics)
+
+      Rake::Task["quality:upload_detailed_metrics"].invoke
     end
   end
 end
