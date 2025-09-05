@@ -2,9 +2,9 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
   subject(:evaluations_runner) { described_class.new("explicit") }
 
   let(:explicit_query_set_last_month) { double("sample_query_set", table_id: "explicit", name: "/path/to/explicit-set-last_month") }
-  let(:explicit_evaluation_of_last_month) { double("evaluation", list_evaluation_results: "detailed_metrics") }
+  let(:explicit_evaluation_of_last_month) { double("evaluation", list_evaluation_results: "detailed_metrics", formatted_create_time: "time-stamp") }
   let(:explicit_query_set_month_before_last) { double("sample_query_set", table_id: "explicit", name: "/path/to/explicit-month_before_last") }
-  let(:explicit_evaluation_of_month_before_last) { double("evaluation", list_evaluation_results: "more_detailed_metrics") }
+  let(:explicit_evaluation_of_month_before_last) { double("evaluation", list_evaluation_results: "more_detailed_metrics", formatted_create_time: "time-stamp") }
   let(:gcp_bucket_exporter) { double("gcp_bucket_exporter") }
 
   before do
@@ -32,7 +32,7 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
 
     allow(gcp_bucket_exporter)
       .to receive(:send)
-      .with(anything)
+      .with(anything, anything, anything)
       .and_return(true)
   end
 
@@ -60,14 +60,11 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
        .with(explicit_query_set_month_before_last)
     end
 
-    it "sends .list_evaluation_results to each evaluation" do
+    it "fetches list evaluation results and a time_stamp from each evaluation" do
       evaluations_runner.upload_detailed_metrics
-
-      expect(explicit_evaluation_of_last_month)
-        .to have_received(:list_evaluation_results)
-
-      expect(explicit_evaluation_of_month_before_last)
-        .to have_received(:list_evaluation_results)
+      evaluations = [explicit_evaluation_of_last_month, explicit_evaluation_of_month_before_last]
+      expect(evaluations).to all(have_received(:list_evaluation_results))
+      expect(evaluations).to all(have_received(:formatted_create_time))
     end
   end
 end
