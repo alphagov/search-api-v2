@@ -33,10 +33,16 @@ namespace :quality do
 
     evaluations.collect_all_quality_metrics(table_id.presence)
 
-    Prometheus::Client::Push.new(
-      job: "evaluation_report_quality_metrics",
-      gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
-    ).add(registry)
+    # Skip pushing metrics to Prometheus in development, since push gateway is local to each
+    # cluster (integration, staging or production)
+    if Rails.env.development?
+      Rails.logger.warn("Skipping push of evaluations to Prometheus push gateway")
+    else
+      Prometheus::Client::Push.new(
+        job: "evaluation_report_quality_metrics",
+        gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
+      ).add(registry)
+    end
   rescue Prometheus::Client::Push::HttpError => e
     Rails.logger.warn("Failed to push evaluations to Prometheus push gateway: '#{e.message}'")
     raise e

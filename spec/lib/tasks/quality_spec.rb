@@ -102,6 +102,34 @@ RSpec.describe "Quality tasks" do
         expect(Rails.logger)
           .to receive(:info)
           .with(logger_message)
+        expect(push_client)
+          .to receive(:add)
+          .with(registry)
+        Rake::Task["quality:report_quality_metrics"].invoke
+      end
+    end
+
+    context "when environment is development" do
+      let(:warning_message) { "Skipping push of evaluations to Prometheus push gateway" }
+
+      before do
+        Rake::Task["quality:report_quality_metrics"].reenable
+        allow(Rails.logger).to receive(:warn)
+        allow(Rails.env).to receive(:development?).and_return(true)
+      end
+
+      it "skips pushing quality metrics to prometheus" do
+        expect(evaluations)
+          .to receive(:collect_all_quality_metrics)
+          .once
+        expect(Rails.logger)
+          .to receive(:info)
+          .with(logger_message)
+        expect(push_client)
+          .not_to receive(:add)
+        expect(Rails.logger)
+          .to receive(:warn)
+          .with(warning_message)
         Rake::Task["quality:report_quality_metrics"].invoke
       end
     end

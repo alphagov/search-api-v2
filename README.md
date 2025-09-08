@@ -61,6 +61,10 @@ Alternatively, you can run the `lite` stack, setting additional environment vari
 govuk-docker run search-api-v2-lite env GOOGLE_CLOUD_PROJECT_ID="780375417592" DISCOVERY_ENGINE_DEFAULT_COLLECTION_NAME="projects/780375417592/locations/global/collections/default_collection" DISCOVERY_ENGINE_DEFAULT_LOCATION_NAME="projects/780375417592/locations/global" bundle exec rake [relevant-rake-task]`
 ```
 
+Note that when rake tasks are run locally, no metrics will be pushed to Prometheus. This is because the
+Prometheus push gateway is local to the cluster in integration, staging or production. If you need metrics
+to be pushed to Prometheus, run the task in the relevant cluster.
+
 ## Design goals and `search-api-v2` vs `search-api`
 Our primary product goal was to improve the quality of search results for the majority of GOV.UK
 users.
