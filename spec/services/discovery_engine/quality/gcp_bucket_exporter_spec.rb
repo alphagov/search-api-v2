@@ -2,13 +2,14 @@ RSpec.describe DiscoveryEngine::Quality::GcpBucketExporter do
   subject(:gcp_bucket_exporter) { described_class.new }
 
   let(:time_stamp) { "2025-06-01 12:30:00" }
+  let(:partition_date) { Date.new(2025, 3, 1) }
   let(:table_id) { "explicit" }
 
   describe "file_name" do
     it "returns a filename that contains the required folder names" do
-      file_name = gcp_bucket_exporter.file_name(time_stamp, table_id)
+      file_name = gcp_bucket_exporter.file_name(time_stamp, table_id, partition_date)
       expected_filename =
-        "judgement_list=explicit/partition_date=to-be-implemented/create_time=2025-06-01 12:30:00/results.json"
+        "judgement_list=explicit/partition_date=2025-03-01/create_time=2025-06-01 12:30:00/results.json"
       expect(file_name).to eq(expected_filename)
     end
   end
@@ -18,7 +19,7 @@ RSpec.describe DiscoveryEngine::Quality::GcpBucketExporter do
     let(:storage) { double("storage") }
     let(:gcp_bucket) { double("gcp_bucket") }
     let(:data) { { "key" => "value" }.to_json }
-    let(:file_name) { "judgement_list=explicit/partition_date=to-be-implemented/create_time=2025-06-01 12:30:00/results.json" }
+    let(:file_name) { "judgement_list=explicit/partition_date=2025-03-01/create_time=2025-06-01 12:30:00/results.json" }
 
     before do
       allow(DiscoveryEngine::Clients)
@@ -46,7 +47,7 @@ RSpec.describe DiscoveryEngine::Quality::GcpBucketExporter do
     end
 
     it "accesses a storage bucket in gcp" do
-      gcp_bucket_exporter.send(time_stamp, table_id, data)
+      gcp_bucket_exporter.send(time_stamp, table_id, partition_date, data)
 
       expect(gcp_bucket)
         .to have_received(:create_file)
