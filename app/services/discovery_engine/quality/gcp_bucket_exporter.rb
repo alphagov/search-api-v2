@@ -1,6 +1,6 @@
 module DiscoveryEngine::Quality
   class GcpBucketExporter
-    PROJECT_NAME = "search-api-v2-integration".freeze # replace with an env var
+    PROJECT_NAME = Rails.application.config.google_cloud_project_id
 
     def send(time_stamp, table_id, partition_date, json)
       bucket = storage_client.bucket("#{PROJECT_NAME}_vais_evaluation_output")

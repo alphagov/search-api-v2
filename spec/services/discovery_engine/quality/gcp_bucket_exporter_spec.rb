@@ -20,6 +20,7 @@ RSpec.describe DiscoveryEngine::Quality::GcpBucketExporter do
     let(:gcp_bucket) { double("gcp_bucket") }
     let(:data) { { "key" => "value" }.to_json }
     let(:file_name) { "judgement_list=explicit/partition_date=2025-03-01/create_time=2025-06-01 12:30:00/results.json" }
+    let(:bucket_name) { "#{Rails.application.config.google_cloud_project_id}_vais_evaluation_output" }
 
     before do
       allow(DiscoveryEngine::Clients)
@@ -28,12 +29,12 @@ RSpec.describe DiscoveryEngine::Quality::GcpBucketExporter do
 
       allow(google_cloud_storage_client)
         .to receive(:new)
-        .with(project: "search-api-v2-integration")
+        .with(project: Rails.application.config.google_cloud_project_id)
         .and_return(storage)
 
       allow(storage)
         .to receive(:bucket)
-        .with("search-api-v2-integration_vais_evaluation_output")
+        .with(bucket_name)
         .and_return(gcp_bucket)
 
       allow(gcp_bucket)
