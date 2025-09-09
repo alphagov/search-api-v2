@@ -1,5 +1,11 @@
 RSpec.describe DiscoveryEngine::Quality::Evaluation do
-  let(:sample_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, name: "/set", display_name: "clickstream 2025-10") }
+  let(:date) { Date.new(2025, 10, 1) }
+  let(:sample_set) do
+    instance_double(DiscoveryEngine::Quality::SampleQuerySet,
+                    name: "/set",
+                    display_name: "clickstream 2025-10",
+                    partition_date: date)
+  end
   let(:evaluation) { described_class.new(sample_set) }
   let(:evaluation_service) { double("evaluation_service", create_evaluation: operation) }
   let(:operation) { double("operation", error?: false, wait_until_done!: true, results: response) }
@@ -212,6 +218,13 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
     it "raises an error if an evaluation doesn't exist yet" do
       message = "Error: cannot provide create time of an evaluation unless one exists"
       expect { evaluation.formatted_create_time }.to raise_error(message)
+    end
+  end
+
+  describe "#partition_date" do
+    it "delegates the partition_date to the sample query set" do
+      expect(evaluation.partition_date).to eq(date)
+      expect(sample_set).to have_received(:partition_date)
     end
   end
 end
