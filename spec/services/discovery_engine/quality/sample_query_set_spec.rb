@@ -11,12 +11,11 @@ RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
   let(:sample_query_service_stub) { double("sample_query_service", import_sample_queries: operation_object) }
   let(:operation_object) { double("operation", wait_until_done!: true, error?: false) }
   let(:table_id) { "clickstream" }
+  let(:month_label) { :last_month }
 
   describe "#create_and_import_queries" do
     context "when the month label ':last_month' is provided" do
       subject(:sample_query_set) { described_class.new(month_label:, table_id:) }
-
-      let(:month_label) { :last_month }
 
       it "creates a sample query set for last month" do
         sample_query_set.create_and_import_queries
@@ -115,10 +114,37 @@ RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
   describe "#name" do
     subject(:sample_query_set) { described_class.new(month_label:, table_id:) }
 
-    let(:month_label) { :last_month }
-
     it "returns the fully qualified GCP name of the sample query set" do
       expect(sample_query_set.name).to eq("[location]/sampleQuerySets/clickstream_2025-10")
+    end
+  end
+
+  describe "#display_name" do
+    subject(:sample_query_set) { described_class.new(month_label:, table_id:) }
+
+    it "returns the display name of the sample query set" do
+      expect(sample_query_set.display_name).to eq("clickstream 2025-10")
+    end
+  end
+
+  describe "#partition_date" do
+    subject(:sample_query_set) { described_class.new(month_label:, table_id:) }
+
+    let(:partition_date) { instance_double(DiscoveryEngine::Quality::PartitionDate) }
+
+    before do
+      allow(DiscoveryEngine::Quality::PartitionDate)
+        .to receive(:new)
+        .with(month_label:, month: nil, year: nil)
+        .and_return(partition_date)
+
+      allow(partition_date).to receive(:calculate)
+    end
+
+    it "fetches the date from the PartitionDate class" do
+      sample_query_set.partition_date
+
+      expect(partition_date).to have_received(:calculate)
     end
   end
 end
