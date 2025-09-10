@@ -21,20 +21,20 @@ module Metrics
     end
 
     def record_evaluations(evaluation_result, month, dataset)
-      metrics.each { |key, registry| record_evaluation(key, registry, month, dataset, evaluation_result) }
+      registries.each { |metric, registry| record_evaluation(metric, registry, month, dataset, evaluation_result) }
     end
 
   private
 
     attr_reader :doc_recall, :doc_precision, :doc_ndcg
 
-    def metrics
+    def registries
       { doc_recall:, doc_precision:, doc_ndcg: }
     end
 
-    def record_evaluation(key, registry, month, dataset, evaluation_result)
+    def record_evaluation(metric, registry, month, dataset, evaluation_result)
       TOP_K_LEVELS.each do |k|
-        value = evaluation_result.dig(key, :"top_#{k}")
+        value = evaluation_result.dig(metric, :"top_#{k}")
         registry.set(value, labels: { top: k, month:, dataset: }) if value.present?
       end
     end
