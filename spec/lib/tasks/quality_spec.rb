@@ -67,6 +67,63 @@ RSpec.describe "Quality tasks" do
     end
   end
 
+  describe "quality:report_metrics" do
+    before do
+      allow(Rails.logger).to receive(:info)
+    end
+
+    context "when a table id is provided" do
+      let(:table_id) { "explicit" }
+      let(:logger_message) { "Getting ready to fetch quality metrics for explicit datasets" }
+
+      before do
+        allow(DiscoveryEngine::Quality::EvaluationsRunner)
+          .to receive(:new)
+          .with("explicit")
+          .and_return(evaluations_runner)
+
+        allow(evaluations_runner).to receive(:upload_and_report_metrics)
+
+        Rake::Task["quality:report_quality_metrics"].reenable
+      end
+
+      it "sends .report_quality_metrics to the evaluations_runner" do
+        expect(evaluations_runner).to receive(:upload_and_report_metrics)
+
+        expect(Rails.logger)
+            .to receive(:info)
+            .with(logger_message)
+
+        Rake::Task["quality:report_quality_metrics"].invoke("explicit")
+      end
+    end
+
+    context "when no table id is provided" do
+      let(:table_id) { nil }
+      let(:logger_message) { "Getting ready to fetch quality metrics for all datasets" }
+
+      before do
+        allow(DiscoveryEngine::Quality::EvaluationsRunner)
+          .to receive(:new)
+          .and_return(evaluations_runner)
+
+        allow(evaluations_runner).to receive(:upload_and_report_metrics)
+
+        Rake::Task["quality:report_quality_metrics"].reenable
+      end
+
+      it "sends .report_quality_metrics to the evaluations_runner" do
+        expect(evaluations_runner).to receive(:upload_and_report_metrics)
+
+        expect(Rails.logger)
+            .to receive(:info)
+            .with(logger_message)
+
+        Rake::Task["quality:report_quality_metrics"].invoke
+      end
+    end
+  end
+
   describe "quality:old_report_quality_metrics" do
     let(:push_client) { double("push_client", add: nil) }
     let(:logger_message) { "Getting ready to fetch quality metrics for all datasets" }

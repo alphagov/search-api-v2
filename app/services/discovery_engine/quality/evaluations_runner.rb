@@ -20,6 +20,10 @@ module DiscoveryEngine::Quality
       end
     end
 
+    def upload_and_report_metrics
+      true
+    end
+
   private
 
     attr_reader :table_id
