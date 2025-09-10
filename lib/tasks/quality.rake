@@ -20,10 +20,10 @@ namespace :quality do
     DiscoveryEngine::Quality::SampleQuerySet.new(month:, year:, table_id:).create_and_import_queries
   end
 
-  # Example usage rake quality:report_quality_metrics would generate and report metrics for all tables
-  # or rake quality:report_quality_metrics[clickstream] to target a single dataset
+  # Example usage rake quality:old_report_quality_metrics would generate and report metrics for all tables
+  # or rake quality:old_report_quality_metrics[clickstream] to target a single dataset
   desc "Create evaluations and push results to Prometheus"
-  task :report_quality_metrics, [:table_id] => :environment do |_, args|
+  task :old_report_quality_metrics, [:table_id] => :environment do |_, args|
     table_id = args[:table_id]
     registry = Prometheus::Client.registry
     metric_collector = Metrics::Evaluation.new(registry)
@@ -34,13 +34,15 @@ namespace :quality do
     evaluations.collect_all_quality_metrics(table_id.presence)
 
     Prometheus::Client::Push.new(
-      job: "evaluation_report_quality_metrics",
+      job: "evaluation_old_report_quality_metrics",
       gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
     ).add(registry)
   rescue Prometheus::Client::Push::HttpError => e
     Rails.logger.warn("Failed to push evaluations to Prometheus push gateway: '#{e.message}'")
     raise e
   end
+
+  task
 
   desc "Create query level metrics for explicit dataset and push to a GCP bucket"
   task upload_detailed_metrics: :environment do
