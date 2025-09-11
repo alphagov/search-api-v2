@@ -21,9 +21,15 @@ namespace :quality_monitoring do
       ).run
     end
 
-    Prometheus::Client::Push.new(
-      job: "quality_monitoring_assert_invariants",
-      gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
-    ).add(registry)
+    # Skip pushing results to Prometheus in development, since push gateway is local to each
+    # cluster (integration, staging or production)
+    if Rails.env.development?
+      Rails.logger.warn("Skipping push of quality monitoring results to Prometheus push gateway")
+    else
+      Prometheus::Client::Push.new(
+        job: "quality_monitoring_assert_invariants",
+        gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
+      ).add(registry)
+    end
   end
 end
