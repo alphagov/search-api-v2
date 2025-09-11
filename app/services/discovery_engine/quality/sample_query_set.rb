@@ -22,7 +22,15 @@ module DiscoveryEngine
       end
 
       def display_name
-        "#{table_id} #{partition_date}"
+        "#{table_id} #{formatted_partition_date}"
+      end
+
+      def partition_date
+        @partition_date ||= DiscoveryEngine::Quality::PartitionDate.calculate(
+          month_label: month_label,
+          month: month,
+          year: year,
+        )
       end
 
     private
@@ -56,8 +64,7 @@ module DiscoveryEngine
               partition_date: {
                 year: partition_date.year,
                 month: partition_date.month,
-                # Partition date needs to be a full date not just year-month
-                day: 1,
+                day: partition_date.day,
               },
             },
           )
@@ -69,23 +76,15 @@ module DiscoveryEngine
       end
 
       def description
-        "Generated from #{partition_date} BigQuery #{table_id} data"
-      end
-
-      def partition_date
-        case month_label
-
-        when :last_month
-          DiscoveryEngine::Quality::MonthInterval.previous_month
-        when :month_before_last
-          DiscoveryEngine::Quality::MonthInterval.previous_month(2)
-        else
-          DiscoveryEngine::Quality::MonthInterval.new(year, month)
-        end
+        "Generated from #{formatted_partition_date} BigQuery #{table_id} data"
       end
 
       def id
-        @id ||= "#{table_id}_#{partition_date}"
+        @id ||= "#{table_id}_#{formatted_partition_date}"
+      end
+
+      def formatted_partition_date
+        partition_date.strftime("%Y-%m")
       end
     end
   end
