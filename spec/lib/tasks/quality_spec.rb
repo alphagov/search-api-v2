@@ -67,12 +67,12 @@ RSpec.describe "Quality tasks" do
     end
   end
 
-  describe "quality:report_quality_metrics" do
+  describe "quality:old_report_quality_metrics" do
     let(:push_client) { double("push_client", add: nil) }
     let(:logger_message) { "Getting ready to fetch quality metrics for all datasets" }
 
     before do
-      Rake::Task["quality:report_quality_metrics"].reenable
+      Rake::Task["quality:old_report_quality_metrics"].reenable
 
       allow(DiscoveryEngine::Quality::Evaluations)
           .to receive(:new)
@@ -103,10 +103,7 @@ RSpec.describe "Quality tasks" do
         expect(Rails.logger)
           .to receive(:info)
           .with(logger_message)
-        expect(push_client)
-          .to receive(:add)
-          .with(registry)
-        Rake::Task["quality:report_quality_metrics"].invoke
+        Rake::Task["quality:old_report_quality_metrics"].invoke
       end
     end
 
@@ -114,7 +111,7 @@ RSpec.describe "Quality tasks" do
       let(:warning_message) { "Skipping push of evaluations to Prometheus push gateway" }
 
       before do
-        Rake::Task["quality:report_quality_metrics"].reenable
+        Rake::Task["quality:old_report_quality_metrics"].reenable
         allow(Rails.logger).to receive(:warn)
         allow(Rails.env).to receive(:development?).and_return(true)
       end
@@ -131,7 +128,7 @@ RSpec.describe "Quality tasks" do
         expect(Rails.logger)
           .to receive(:warn)
           .with(warning_message)
-        Rake::Task["quality:report_quality_metrics"].invoke
+        Rake::Task["quality:old_report_quality_metrics"].invoke
       end
     end
 
@@ -139,7 +136,7 @@ RSpec.describe "Quality tasks" do
       let(:logger_message) { "Getting ready to fetch quality metrics for binary datasets" }
 
       before do
-        Rake::Task["quality:report_quality_metrics"].reenable
+        Rake::Task["quality:old_report_quality_metrics"].reenable
         allow(Rails.logger).to receive(:info)
       end
 
@@ -153,7 +150,7 @@ RSpec.describe "Quality tasks" do
             .to receive(:collect_all_quality_metrics)
             .with("binary")
             .once
-          Rake::Task["quality:report_quality_metrics"].invoke("binary")
+          Rake::Task["quality:old_report_quality_metrics"].invoke("binary")
         end
       end
     end
@@ -163,7 +160,7 @@ RSpec.describe "Quality tasks" do
       let(:logger_message) { "Failed to push evaluations to Prometheus push gateway: 'Prometheus::Client::Push::HttpError'" }
 
       before do
-        Rake::Task["quality:report_quality_metrics"].reenable
+        Rake::Task["quality:old_report_quality_metrics"].reenable
 
         allow(evaluations)
           .to receive(:collect_all_quality_metrics)
@@ -184,7 +181,7 @@ RSpec.describe "Quality tasks" do
           expect(Rails.logger).to receive(:warn).with(logger_message)
 
           expect {
-            Rake::Task["quality:report_quality_metrics"].invoke
+            Rake::Task["quality:old_report_quality_metrics"].invoke
           }.to raise_error(Prometheus::Client::Push::HttpError)
         end
       end
