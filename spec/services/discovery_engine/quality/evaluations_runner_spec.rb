@@ -72,6 +72,7 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
 
     let(:table_id) { "explicit" }
     let(:gcp_bucket_exporter) { double("gcp_bucket_exporter") }
+    let(:prometheus_reporter) { double("prometheus_reporter") }
 
     before do
       allow(DiscoveryEngine::Quality::GcpBucketExporter)
@@ -81,6 +82,15 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
       allow(gcp_bucket_exporter)
         .to receive(:send)
         .with(anything, anything, anything, anything)
+        .and_return(true)
+
+      allow(DiscoveryEngine::Quality::PrometheusReporter)
+        .to receive(:new)
+        .and_return(prometheus_reporter)
+
+      allow(prometheus_reporter)
+        .to receive(:send)
+        .with(anything, anything)
         .and_return(true)
     end
 
@@ -103,12 +113,15 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
     describe "#upload_and_report_metrics" do
       it_behaves_like "creates sample query sets and evaluations", :upload_and_report_metrics
 
-      it "fetches quality_metrics for each evaluation" do
+      it "sends quality_metrics for each evaluation to prometheus" do
         evaluations = [evaluation_of_last_month, evaluation_of_month_before_last]
 
         evaluations_runner.upload_and_report_metrics
 
         expect(evaluations).to all(have_received(:quality_metrics))
+
+        expect(prometheus_reporter).to have_received(:send).with("quality_metrics", evaluation_of_last_month).once
+        expect(prometheus_reporter).to have_received(:send).with("quality_metrics", evaluation_of_month_before_last).once
       end
     end
   end
