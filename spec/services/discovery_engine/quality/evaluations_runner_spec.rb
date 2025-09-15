@@ -2,9 +2,21 @@ RSpec.shared_context "with a table_id" do
   let(:last_month_partition_date) { Date.new(1979, 10, 1) }
   let(:month_before_last_partition_date) { Date.new(1979, 9, 1) }
   let(:query_set_last_month) { double("sample_query_set", table_id:, name: "/path/to/#{table_id}-set-last_month") }
-  let(:evaluation_of_last_month) { double("evaluation", list_evaluation_results: "detailed_metrics", formatted_create_time: "time-stamp", partition_date: last_month_partition_date) }
+  let(:evaluation_of_last_month) do
+    double("evaluation",
+           list_evaluation_results: "detailed_metrics",
+           formatted_create_time: "time-stamp",
+           partition_date: last_month_partition_date,
+           quality_metrics: "quality_metrics")
+  end
   let(:query_set_month_before_last) { double("sample_query_set", table_id:, name: "/path/to/#{table_id}-month_before_last") }
-  let(:evaluation_of_month_before_last) { double("evaluation", list_evaluation_results: "more_detailed_metrics", formatted_create_time: "time-stamp", partition_date: month_before_last_partition_date) }
+  let(:evaluation_of_month_before_last) do
+    double("evaluation",
+           list_evaluation_results: "more_detailed_metrics",
+           formatted_create_time: "time-stamp",
+           partition_date: month_before_last_partition_date,
+           quality_metrics: "quality_metrics")
+  end
 
   before do
     allow(DiscoveryEngine::Quality::Evaluation)
@@ -27,9 +39,9 @@ RSpec.shared_context "with a table_id" do
   end
 end
 
-RSpec.shared_examples "creates sample query sets and evaluations" do |table_id|
+RSpec.shared_examples "creates sample query sets and evaluations" do |method|
   before do
-    evaluations_runner.upload_detailed_metrics
+    evaluations_runner.send(method)
   end
 
   it "fetches explicit sample query sets for this month and the month before last" do
@@ -61,29 +73,42 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
     let(:table_id) { "explicit" }
     let(:gcp_bucket_exporter) { double("gcp_bucket_exporter") }
 
+    before do
+      allow(DiscoveryEngine::Quality::GcpBucketExporter)
+        .to receive(:new)
+        .and_return(gcp_bucket_exporter)
+
+      allow(gcp_bucket_exporter)
+        .to receive(:send)
+        .with(anything, anything, anything, anything)
+        .and_return(true)
+    end
+
     describe "#upload_detailed_metrics" do
-      before do
-        allow(DiscoveryEngine::Quality::GcpBucketExporter)
-          .to receive(:new)
-          .and_return(gcp_bucket_exporter)
-
-        allow(gcp_bucket_exporter)
-          .to receive(:send)
-          .with(anything, anything, anything, anything)
-          .and_return(true)
-      end
-
-      it_behaves_like "creates sample query sets and evaluations", "explicit"
+      it_behaves_like "creates sample query sets and evaluations", :upload_detailed_metrics
 
       it "sends list_evaluation_results for each evaluation to a gcp bucket" do
+        evaluations = [evaluation_of_last_month, evaluation_of_month_before_last]
+
         evaluations_runner.upload_detailed_metrics
 
-        evaluations = [evaluation_of_last_month, evaluation_of_month_before_last]
         expect(evaluations).to all(have_received(:list_evaluation_results))
         expect(evaluations).to all(have_received(:formatted_create_time))
 
         expect(gcp_bucket_exporter).to have_received(:send).with("time-stamp", "explicit", last_month_partition_date, "detailed_metrics").once
         expect(gcp_bucket_exporter).to have_received(:send).with("time-stamp", "explicit", month_before_last_partition_date, "more_detailed_metrics").once
+      end
+    end
+
+    describe "#upload_and_report_metrics" do
+      it_behaves_like "creates sample query sets and evaluations", :upload_and_report_metrics
+
+      it "fetches quality_metrics for each evaluation" do
+        evaluations = [evaluation_of_last_month, evaluation_of_month_before_last]
+
+        evaluations_runner.upload_and_report_metrics
+
+        expect(evaluations).to all(have_received(:quality_metrics))
       end
     end
   end
