@@ -48,6 +48,14 @@ namespace :quality do
     raise e
   end
 
+  desc "Create evaluations for a given table_id, report metrics to prometheus and upload to a gcp bucket"
+  task :report_quality_metrics, [:table_id] => :environment do |_, args|
+    table_id = args[:table_id]
+    Rails.logger.info("Getting ready to fetch quality metrics for #{table_id} datasets")
+    runner = DiscoveryEngine::Quality::EvaluationsRunner.new(table_id.presence)
+    runner.upload_and_report_metrics
+  end
+
   desc "Create query level metrics for explicit dataset and push to a GCP bucket"
   task upload_detailed_metrics: :environment do
     runner = DiscoveryEngine::Quality::EvaluationsRunner.new("explicit")

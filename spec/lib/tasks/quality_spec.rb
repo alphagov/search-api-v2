@@ -206,4 +206,29 @@ RSpec.describe "Quality tasks" do
       Rake::Task["quality:upload_detailed_metrics"].invoke
     end
   end
+
+  describe "quality:report_quality_metrics" do
+    context "when a table_id is passed in" do
+      let(:logger_message) { "Getting ready to fetch quality metrics for explicit datasets" }
+
+      before do
+        allow(DiscoveryEngine::Quality::EvaluationsRunner)
+          .to receive(:new)
+          .with("explicit")
+          .and_return(evaluations_runner)
+
+        allow(evaluations_runner).to receive(:upload_and_report_metrics)
+        allow(Rails.logger).to receive(:info)
+
+        Rake::Task["quality:report_quality_metrics"].reenable
+      end
+
+      it "sends .upload_and_report_metrics to the evaluations_runner" do
+        expect(evaluations_runner).to receive(:upload_and_report_metrics)
+        expect(Rails.logger).to receive(:info).with(logger_message)
+
+        Rake::Task["quality:report_quality_metrics"].invoke("explicit")
+      end
+    end
+  end
 end
