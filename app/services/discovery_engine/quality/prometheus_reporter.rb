@@ -8,6 +8,9 @@ module DiscoveryEngine::Quality
       )
 
       push_client.add(registry)
+    rescue Prometheus::Client::Push::HttpError => e
+      Rails.logger.warn("Failed to push evaluations to Prometheus push gateway: '#{e.message}'")
+      raise e
     end
 
   private
