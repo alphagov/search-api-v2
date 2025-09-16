@@ -11,6 +11,7 @@ shared:
 - /help/cookies # special_route
 - /find-local-council # special_route
 - /contact # special_route
+- /sign-in # special_route
 
 test:
 - /test_ignored_path_override
