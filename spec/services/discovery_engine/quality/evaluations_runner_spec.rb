@@ -123,6 +123,25 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
         expect(prometheus_reporter).to have_received(:send).with("quality_metrics", evaluation_of_last_month).once
         expect(prometheus_reporter).to have_received(:send).with("quality_metrics", evaluation_of_month_before_last).once
       end
+
+      context "when environment is development" do
+        let(:warning_message) { "Skipping push of evaluations to Prometheus push gateway" }
+
+        before do
+          allow(Rails.logger).to receive(:warn)
+          allow(Rails.env).to receive(:development?).and_return(true)
+        end
+
+        it "skips sending quality metrics to Prometheus" do
+          evaluations_runner.upload_and_report_metrics
+
+          expect(Rails.logger)
+            .to have_received(:warn)
+            .with(warning_message).twice
+
+          expect(prometheus_reporter).not_to have_received(:send)
+        end
+      end
     end
   end
 end

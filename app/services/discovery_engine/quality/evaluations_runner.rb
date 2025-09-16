@@ -18,7 +18,7 @@ module DiscoveryEngine::Quality
         detailed_metrics = e.list_evaluation_results
         quality_metrics = e.quality_metrics
         send_to_bucket(detailed_metrics, e)
-        prometheus_reporter.send(quality_metrics, e)
+        send_to_prometheus(quality_metrics, e)
       end
     end
 
@@ -47,6 +47,16 @@ module DiscoveryEngine::Quality
         partition_date,
         detailed_metrics,
       )
+    end
+
+    def send_to_prometheus(quality_metrics, evaluation)
+      # Skip pushing metrics to Prometheus in development, since push gateway is local to each
+      # cluster (integration, staging or production)
+      if Rails.env.development?
+        Rails.logger.warn("Skipping push of evaluations to Prometheus push gateway")
+      else
+        prometheus_reporter.send(quality_metrics, evaluation)
+      end
     end
 
     def gcp_bucket_exporter
