@@ -6,6 +6,8 @@ module DiscoveryEngine::Quality
         evaluation.month_label,
         evaluation.table_id,
       )
+
+      push_client.add(registry)
     end
 
   private
@@ -16,6 +18,14 @@ module DiscoveryEngine::Quality
 
     def registry
       @registry ||= Prometheus::Client.registry
+    end
+
+    def push_client
+      @push_client ||=
+        Prometheus::Client::Push.new(
+          job: "evaluation_report_quality_metrics",
+          gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
+        )
     end
   end
 end
