@@ -217,9 +217,35 @@ RSpec.describe "Quality tasks" do
       end
 
       it "raises an error if the table id is invalid" do
-        expect{
+        expect {
           Rake::Task["quality:upload_detailed_metrics"].invoke("nope")
         }.to raise_error("invalid table id")
+      end
+    end
+
+    context "when no table id is passed in" do
+      before do
+        allow(DiscoveryEngine::Quality::EvaluationsRunner)
+          .to receive(:new)
+          .with(anything)
+          .and_return(evaluations_runner)
+
+        allow(evaluations_runner).to receive(:upload_detailed_metrics)
+
+        Rake::Task["quality:upload_detailed_metrics"].reenable
+      end
+
+      it "passes all valid table ids to the evaluations_runner" do
+        Rake::Task["quality:upload_detailed_metrics"].invoke
+        %w[clickstream binary explicit].each do |table_id|
+          expect(DiscoveryEngine::Quality::EvaluationsRunner)
+            .to have_received(:new)
+            .with(table_id)
+        end
+
+        expect(evaluations_runner)
+          .to have_received(:upload_detailed_metrics)
+          .exactly(3).times
       end
     end
   end

@@ -53,9 +53,15 @@ namespace :quality do
     table_id = args[:table_id]
     valid_table_ids = DiscoveryEngine::Quality::SampleQuerySets::BIGQUERY_TABLE_IDS
 
-    raise "invalid table id" unless valid_table_ids.include?(table_id)
+    if table_id && valid_table_ids.exclude?(table_id)
+      raise "invalid table id"
+    end
 
-    Rails.logger.info("Getting ready to upload detailed metrics for #{table_id} datasets")
-    DiscoveryEngine::Quality::EvaluationsRunner.new(table_id).upload_detailed_metrics
+    table_ids = table_id ? [table_id] : valid_table_ids
+
+    table_ids.each do |table_id|
+      Rails.logger.info("Getting ready to upload detailed metrics for #{table_id} datasets")
+      DiscoveryEngine::Quality::EvaluationsRunner.new(table_id).upload_detailed_metrics
+    end
   end
 end
