@@ -11,6 +11,7 @@ module DiscoveryEngine
 
       def all
         @all ||= BIGQUERY_TABLE_IDS.map do |table_id|
+          Rails.logger.debug table_id.to_s
           SampleQuerySet.new(table_id:, month_label:)
         end
       end
