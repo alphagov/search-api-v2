@@ -69,15 +69,14 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
           .with(anything)
           .and_raise(Google::Cloud::AlreadyExistsError)
 
-        allow(Rails.logger)
-          .to receive(:warn)
+        allow(GovukError).to receive(:notify)
       end
 
       it "logs then raises the error" do
         expect { evaluation.quality_metrics }.to raise_error(Google::Cloud::AlreadyExistsError)
 
-        expect(Rails.logger).to have_received(:warn)
-          .with("Failed to create an evaluation of sample set clickstream 2025-10 (Google::Cloud::AlreadyExistsError)")
+        expect(GovukError).to have_received(:notify)
+          .with("No evaluation created of sample set clickstream 2025-10 (Google::Cloud::AlreadyExistsError)")
       end
     end
 

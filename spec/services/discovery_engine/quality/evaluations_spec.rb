@@ -63,32 +63,6 @@ RSpec.describe DiscoveryEngine::Quality::Evaluations do
         .twice
     end
 
-    context "when GCP returns an error" do
-      let(:erroring_evaluation) { double("evaluation") }
-
-      before do
-        allow(DiscoveryEngine::Quality::Evaluation)
-          .to receive(:new)
-          .with(clickstream_query_set)
-          .and_return(erroring_evaluation)
-
-        allow(erroring_evaluation)
-          .to receive(:quality_metrics)
-          .and_raise(Google::Cloud::AlreadyExistsError)
-
-        allow(GovukError).to receive(:notify)
-      end
-
-      it "notifies GovukError for each month label when evaluation creation fails" do
-        evaluations.collect_all_quality_metrics
-
-        expect(GovukError).to have_received(:notify)
-          .with("No evaluation created for sample query set /path/to/clickstream-set. Month label: 'last_month')")
-        expect(GovukError).to have_received(:notify)
-          .with("No evaluation created for sample query set /path/to/clickstream-set. Month label: 'month_before_last')")
-      end
-    end
-
     context "when the table_id 'binary' is passed in" do
       before do
         allow(DiscoveryEngine::Quality::SampleQuerySet)

@@ -63,7 +63,7 @@ module DiscoveryEngine::Quality
 
       Rails.logger.info("Successfully created an evaluation of sample set #{sample_set.display_name}")
     rescue Google::Cloud::AlreadyExistsError => e
-      Rails.logger.warn("Failed to create an evaluation of sample set #{sample_set.display_name} (#{e.message})")
+      GovukError.notify("No evaluation created of sample set #{sample_set.display_name} (#{e})")
       raise e
     end
 

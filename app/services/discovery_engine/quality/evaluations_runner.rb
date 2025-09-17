@@ -18,8 +18,7 @@ module DiscoveryEngine::Quality
     attr_reader :table_id
 
     def evaluations
-      @evaluations ||=
-        sample_query_sets(table_id).map { |set| DiscoveryEngine::Quality::Evaluation.new(set) }
+      sample_query_sets(table_id).map { |set| DiscoveryEngine::Quality::Evaluation.new(set) }
     end
 
     def sample_query_sets(table_id)
