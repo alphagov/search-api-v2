@@ -49,7 +49,13 @@ module DiscoveryEngine::Quality
 
     def send_to_prometheus(evaluation)
       quality_metrics = evaluation.quality_metrics
-      prometheus_reporter.send(quality_metrics, "label", "label")
+      month_label = evaluation.sample_set.month_label
+
+      prometheus_reporter.send(
+        quality_metrics,
+        month_label,
+        table_id,
+      )
     end
 
     def prometheus_reporter

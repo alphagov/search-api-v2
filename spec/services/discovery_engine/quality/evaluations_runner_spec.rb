@@ -4,7 +4,13 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
   let(:table_id) { "explicit" }
   let(:last_month_partition_date) { Date.new(1979, 10, 1) }
   let(:month_before_last_partition_date) { Date.new(1979, 9, 1) }
-  let(:query_set_last_month) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, table_id:, name: "/path/to/#{table_id}-set-last_month", partition_date: last_month_partition_date) }
+  let(:query_set_last_month) do
+    instance_double(DiscoveryEngine::Quality::SampleQuerySet,
+                    table_id:,
+                    name: "/path/to/#{table_id}-set-last_month",
+                    partition_date: last_month_partition_date,
+                    month_label: :last_month)
+  end
   let(:evaluation_of_last_month) do
     instance_double(DiscoveryEngine::Quality::Evaluation,
                     list_evaluation_results: "detailed_metrics",
@@ -12,7 +18,13 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
                     sample_set: query_set_last_month,
                     quality_metrics: "quality_metrics")
   end
-  let(:query_set_month_before_last) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, table_id:, name: "/path/to/#{table_id}-month_before_last", partition_date: month_before_last_partition_date) }
+  let(:query_set_month_before_last) do
+    instance_double(DiscoveryEngine::Quality::SampleQuerySet,
+                    table_id:,
+                    name: "/path/to/#{table_id}-month_before_last",
+                    partition_date: month_before_last_partition_date,
+                    month_label: :month_before_last)
+  end
   let(:evaluation_of_month_before_last) do
     instance_double(DiscoveryEngine::Quality::Evaluation,
                     list_evaluation_results: "more_detailed_metrics",
@@ -102,7 +114,8 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
       evaluations = [evaluation_of_last_month, evaluation_of_month_before_last]
       expect(evaluations).to all(have_received(:quality_metrics))
 
-      expect(prometheus_reporter).to have_received(:send).with("quality_metrics", "label", "label").twice
+      expect(prometheus_reporter).to have_received(:send).with("quality_metrics", :last_month, "explicit").once
+      expect(prometheus_reporter).to have_received(:send).with("quality_metrics", :month_before_last, "explicit").once
     end
   end
 end
