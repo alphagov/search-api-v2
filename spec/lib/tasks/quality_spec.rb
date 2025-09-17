@@ -68,75 +68,8 @@ RSpec.describe "Quality tasks" do
   end
 
   describe "quality:report_quality_metrics" do
-    let(:push_client) { double("push_client", add: nil) }
-    let(:logger_message) { "Getting ready to fetch quality metrics for all datasets" }
-
-    before do
-      Rake::Task["quality:report_quality_metrics"].reenable
-
-      allow(DiscoveryEngine::Quality::Evaluations)
-          .to receive(:new)
-          .with(metric_collector)
-          .and_return(evaluations)
-
-      allow(Prometheus::Client)
-        .to receive(:registry)
-        .and_return(registry)
-
-      allow(Prometheus::Client::Push)
-        .to receive(:new)
-        .and_return(push_client)
-
-      allow(Metrics::Evaluation)
-        .to receive(:new)
-        .with(registry)
-        .and_return(metric_collector)
-
-      allow(Rails.logger).to receive(:info)
-    end
-
-    it "reports quality metrics to prometheus" do
-      ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
-        expect(evaluations)
-          .to receive(:collect_all_quality_metrics)
-          .once
-        expect(Rails.logger)
-          .to receive(:info)
-          .with(logger_message)
-        expect(push_client)
-          .to receive(:add)
-          .with(registry)
-        Rake::Task["quality:report_quality_metrics"].invoke
-      end
-    end
-
     context "when a table_id is passed in" do
-      let(:logger_message) { "Getting ready to fetch quality metrics for binary datasets" }
-
-      before do
-        Rake::Task["quality:report_quality_metrics"].reenable
-        allow(Rails.logger).to receive(:info)
-      end
-
-      it "reports quality metrics for the given table only" do
-        ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
-          expect(Rails.logger)
-            .to receive(:info)
-            .with(logger_message)
-
-          expect(evaluations)
-            .to receive(:collect_all_quality_metrics)
-            .with("binary")
-            .once
-          Rake::Task["quality:report_quality_metrics"].invoke("binary")
-        end
-      end
-    end
-  end
-
-  describe "quality:upload_and_report_metrics" do
-    context "when a table_id is passed in" do
-      let(:logger_message) { "Getting ready to upload detailed metrics for explicit datasets" }
+      let(:logger_message) { "Getting ready to upload and report metrics for explicit datasets" }
 
       before do
         allow(DiscoveryEngine::Quality::EvaluationsRunner)
@@ -148,19 +81,19 @@ RSpec.describe "Quality tasks" do
         allow(Rails.logger)
           .to receive(:info)
 
-        Rake::Task["quality:upload_and_report_metrics"].reenable
+        Rake::Task["quality:report_quality_metrics"].reenable
       end
 
       it "sends .upload_and_report_metrics to the evaluations_runner" do
         expect(evaluations_runner).to receive(:upload_and_report_metrics)
         expect(Rails.logger).to receive(:info).with(logger_message)
 
-        Rake::Task["quality:upload_and_report_metrics"].invoke("explicit")
+        Rake::Task["quality:report_quality_metrics"].invoke("explicit")
       end
 
       it "raises an error if the table id is invalid" do
         expect {
-          Rake::Task["quality:upload_and_report_metrics"].invoke("nope")
+          Rake::Task["quality:report_quality_metrics"].invoke("nope")
         }.to raise_error("invalid table id")
       end
     end
@@ -174,11 +107,11 @@ RSpec.describe "Quality tasks" do
 
         allow(evaluations_runner).to receive(:upload_and_report_metrics)
 
-        Rake::Task["quality:upload_and_report_metrics"].reenable
+        Rake::Task["quality:report_quality_metrics"].reenable
       end
 
       it "passes all valid table ids to the evaluations_runner" do
-        Rake::Task["quality:upload_and_report_metrics"].invoke
+        Rake::Task["quality:report_quality_metrics"].invoke
         %w[clickstream binary explicit].each do |table_id|
           expect(DiscoveryEngine::Quality::EvaluationsRunner)
             .to have_received(:new)

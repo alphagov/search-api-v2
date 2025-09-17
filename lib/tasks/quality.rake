@@ -22,25 +22,8 @@ namespace :quality do
 
   # Example usage rake quality:report_quality_metrics would generate and report metrics for all tables
   # or rake quality:report_quality_metrics[clickstream] to target a single dataset
-  desc "Create evaluations and push results to Prometheus"
+  desc "Create evaluations, and push metrics to Prometheus and a GCP bucket"
   task :report_quality_metrics, [:table_id] => :environment do |_, args|
-    table_id = args[:table_id]
-    registry = Prometheus::Client.registry
-    metric_collector = Metrics::Evaluation.new(registry)
-    evaluations = DiscoveryEngine::Quality::Evaluations.new(metric_collector)
-
-    Rails.logger.info("Getting ready to fetch quality metrics for #{table_id || 'all'} datasets")
-
-    evaluations.collect_all_quality_metrics(table_id.presence)
-
-    Prometheus::Client::Push.new(
-      job: "evaluation_report_quality_metrics",
-      gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
-    ).add(registry)
-  end
-
-  desc "Create query level metrics and push to a GCP bucket"
-  task :upload_and_report_metrics, [:table_id] => :environment do |_, args|
     table_id = args[:table_id]
     valid_table_ids = DiscoveryEngine::Quality::SampleQuerySets::BIGQUERY_TABLE_IDS
 
@@ -51,7 +34,7 @@ namespace :quality do
     table_ids = table_id ? [table_id] : valid_table_ids
 
     table_ids.each do |table_id|
-      Rails.logger.info("Getting ready to upload detailed metrics for #{table_id} datasets")
+      Rails.logger.info("Getting ready to upload and report metrics for #{table_id} datasets")
       DiscoveryEngine::Quality::EvaluationsRunner.new(table_id).upload_and_report_metrics
     end
   end
