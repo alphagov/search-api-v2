@@ -5,12 +5,17 @@ RSpec.describe DiscoveryEngine::Quality::PrometheusReporter do
   let(:table_id) { "explicit" }
   let(:quality_metrics) { "quality_metrics" }
   let(:registry) { double("registry", gauge: nil) }
+  let(:push_client) { double("push_client", add: nil) }
   let(:metric_collector) { instance_double(Metrics::Evaluation) }
 
   before do
     allow(Prometheus::Client)
       .to receive(:registry)
       .and_return(registry)
+
+    allow(Prometheus::Client::Push)
+      .to receive(:new)
+      .and_return(push_client)
 
     allow(Metrics::Evaluation)
       .to receive(:new)
@@ -23,12 +28,18 @@ RSpec.describe DiscoveryEngine::Quality::PrometheusReporter do
   end
 
   describe "send" do
-    it "adds metrics to the Prometheus registry" do
-      prometheus_reporter.send(quality_metrics, month_label, table_id)
+    it "adds metrics to the Prometheus registry and pushes to the Prometheus client" do
+      ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
+        prometheus_reporter.send(quality_metrics, month_label, table_id)
 
-      expect(metric_collector)
-        .to have_received(:record_evaluations)
-        .with("quality_metrics", :last_month, "explicit")
+        expect(metric_collector)
+          .to have_received(:record_evaluations)
+          .with(quality_metrics, :last_month, "explicit")
+
+        expect(push_client)
+          .to have_received(:add)
+          .with(registry)
+      end
     end
   end
 end
