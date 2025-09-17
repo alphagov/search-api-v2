@@ -9,6 +9,7 @@ module DiscoveryEngine::Quality
     def upload_detailed_metrics
       evaluations.each do |e|
         send_to_bucket(e)
+        send_to_prometheus(e)
       end
     end
 
@@ -44,6 +45,15 @@ module DiscoveryEngine::Quality
 
     def gcp_bucket_exporter
       @gcp_bucket_exporter ||= DiscoveryEngine::Quality::GcpBucketExporter.new
+    end
+
+    def send_to_prometheus(evaluation)
+      quality_metrics = evaluation.quality_metrics
+      prometheus_reporter.send(quality_metrics, "label", "label")
+    end
+
+    def prometheus_reporter
+      @prometheus_reporter ||= DiscoveryEngine::Quality::PrometheusReporter.new
     end
   end
 end

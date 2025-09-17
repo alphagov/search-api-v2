@@ -5,10 +5,23 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
   let(:last_month_partition_date) { Date.new(1979, 10, 1) }
   let(:month_before_last_partition_date) { Date.new(1979, 9, 1) }
   let(:query_set_last_month) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, table_id:, name: "/path/to/#{table_id}-set-last_month", partition_date: last_month_partition_date) }
-  let(:evaluation_of_last_month) { instance_double(DiscoveryEngine::Quality::Evaluation, list_evaluation_results: "detailed_metrics", formatted_create_time: "time-stamp", sample_set: query_set_last_month) }
+  let(:evaluation_of_last_month) do
+    instance_double(DiscoveryEngine::Quality::Evaluation,
+                    list_evaluation_results: "detailed_metrics",
+                    formatted_create_time: "time-stamp",
+                    sample_set: query_set_last_month,
+                    quality_metrics: "quality_metrics")
+  end
   let(:query_set_month_before_last) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, table_id:, name: "/path/to/#{table_id}-month_before_last", partition_date: month_before_last_partition_date) }
-  let(:evaluation_of_month_before_last) { instance_double(DiscoveryEngine::Quality::Evaluation, list_evaluation_results: "more_detailed_metrics", formatted_create_time: "time-stamp", sample_set: query_set_month_before_last) }
+  let(:evaluation_of_month_before_last) do
+    instance_double(DiscoveryEngine::Quality::Evaluation,
+                    list_evaluation_results: "more_detailed_metrics",
+                    formatted_create_time: "time-stamp",
+                    sample_set: query_set_month_before_last,
+                    quality_metrics: "quality_metrics")
+  end
   let(:gcp_bucket_exporter) { instance_double(DiscoveryEngine::Quality::GcpBucketExporter) }
+  let(:prometheus_reporter) { instance_double(DiscoveryEngine::Quality::PrometheusReporter) }
 
   before do
     allow(DiscoveryEngine::Quality::Evaluation)
@@ -36,6 +49,15 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
     allow(gcp_bucket_exporter)
       .to receive(:send)
       .with(anything, anything, anything, anything)
+      .and_return(true)
+
+    allow(DiscoveryEngine::Quality::PrometheusReporter)
+      .to receive(:new)
+      .and_return(prometheus_reporter)
+
+    allow(prometheus_reporter)
+      .to receive(:send)
+      .with(anything, anything, anything)
       .and_return(true)
   end
 
@@ -72,6 +94,15 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
 
       expect(gcp_bucket_exporter).to have_received(:send).with("time-stamp", "explicit", last_month_partition_date, "detailed_metrics").once
       expect(gcp_bucket_exporter).to have_received(:send).with("time-stamp", "explicit", month_before_last_partition_date, "more_detailed_metrics").once
+    end
+
+    it "sends quality metrics for each evaluation to prometheus" do
+      evaluations_runner.upload_detailed_metrics
+
+      evaluations = [evaluation_of_last_month, evaluation_of_month_before_last]
+      expect(evaluations).to all(have_received(:quality_metrics))
+
+      expect(prometheus_reporter).to have_received(:send).with("quality_metrics", "label", "label").twice
     end
   end
 end
