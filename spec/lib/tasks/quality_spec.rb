@@ -191,7 +191,7 @@ RSpec.describe "Quality tasks" do
     end
   end
 
-  describe "quality:upload_detailed_metrics" do
+  describe "quality:upload_and_report_metrics" do
     context "when a table_id is passed in" do
       let(:logger_message) { "Getting ready to upload detailed metrics for explicit datasets" }
 
@@ -201,24 +201,23 @@ RSpec.describe "Quality tasks" do
           .with("explicit")
           .and_return(evaluations_runner)
 
-        allow(evaluations_runner).to receive(:upload_detailed_metrics)
+        allow(evaluations_runner).to receive(:upload_and_report_metrics)
         allow(Rails.logger)
           .to receive(:info)
 
-        Rake::Task["quality:upload_detailed_metrics"].reenable
+        Rake::Task["quality:upload_and_report_metrics"].reenable
       end
 
-      it "sends .upload_detailed_metrics to the evaluations_runner" do
-        expect(evaluations_runner).to receive(:upload_detailed_metrics)
-        expect(Rails.logger).to receive(:info)
-          .with(logger_message)
+      it "sends .upload_and_report_metrics to the evaluations_runner" do
+        expect(evaluations_runner).to receive(:upload_and_report_metrics)
+        expect(Rails.logger).to receive(:info).with(logger_message)
 
-        Rake::Task["quality:upload_detailed_metrics"].invoke("explicit")
+        Rake::Task["quality:upload_and_report_metrics"].invoke("explicit")
       end
 
       it "raises an error if the table id is invalid" do
         expect {
-          Rake::Task["quality:upload_detailed_metrics"].invoke("nope")
+          Rake::Task["quality:upload_and_report_metrics"].invoke("nope")
         }.to raise_error("invalid table id")
       end
     end
@@ -230,13 +229,13 @@ RSpec.describe "Quality tasks" do
           .with(anything)
           .and_return(evaluations_runner)
 
-        allow(evaluations_runner).to receive(:upload_detailed_metrics)
+        allow(evaluations_runner).to receive(:upload_and_report_metrics)
 
-        Rake::Task["quality:upload_detailed_metrics"].reenable
+        Rake::Task["quality:upload_and_report_metrics"].reenable
       end
 
       it "passes all valid table ids to the evaluations_runner" do
-        Rake::Task["quality:upload_detailed_metrics"].invoke
+        Rake::Task["quality:upload_and_report_metrics"].invoke
         %w[clickstream binary explicit].each do |table_id|
           expect(DiscoveryEngine::Quality::EvaluationsRunner)
             .to have_received(:new)
@@ -244,7 +243,7 @@ RSpec.describe "Quality tasks" do
         end
 
         expect(evaluations_runner)
-          .to have_received(:upload_detailed_metrics)
+          .to have_received(:upload_and_report_metrics)
           .exactly(3).times
       end
     end

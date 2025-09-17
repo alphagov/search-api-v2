@@ -6,7 +6,7 @@ module DiscoveryEngine::Quality
       @table_id = table_id
     end
 
-    def upload_detailed_metrics
+    def upload_and_report_metrics
       evaluations.each do |e|
         send_to_bucket(e)
         send_to_prometheus(e)

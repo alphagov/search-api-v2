@@ -73,9 +73,9 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
       .and_return(true)
   end
 
-  describe "#upload_detailed_metrics" do
+  describe "#upload_and_report_metrics" do
     it "fetches explicit sample query sets for this month and the month before last" do
-      evaluations_runner.upload_detailed_metrics
+      evaluations_runner.upload_and_report_metrics
 
       expect(DiscoveryEngine::Quality::SampleQuerySet)
         .to have_received(:new)
@@ -86,7 +86,7 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
     end
 
     it "creates an evaluation of each sample query set" do
-      evaluations_runner.upload_detailed_metrics
+      evaluations_runner.upload_and_report_metrics
 
       expect(DiscoveryEngine::Quality::Evaluation)
       .to have_received(:new)
@@ -98,7 +98,7 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
     end
 
     it "sends list_evaluation_results for each evaluation to a gcp bucket" do
-      evaluations_runner.upload_detailed_metrics
+      evaluations_runner.upload_and_report_metrics
 
       evaluations = [evaluation_of_last_month, evaluation_of_month_before_last]
       expect(evaluations).to all(have_received(:list_evaluation_results))
@@ -109,7 +109,7 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
     end
 
     it "sends quality metrics for each evaluation to prometheus" do
-      evaluations_runner.upload_detailed_metrics
+      evaluations_runner.upload_and_report_metrics
 
       evaluations = [evaluation_of_last_month, evaluation_of_month_before_last]
       expect(evaluations).to all(have_received(:quality_metrics))
