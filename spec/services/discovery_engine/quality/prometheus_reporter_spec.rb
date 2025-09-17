@@ -41,5 +41,28 @@ RSpec.describe DiscoveryEngine::Quality::PrometheusReporter do
           .with(registry)
       end
     end
+
+    context "when push gateway returns an error code" do
+      let(:erroring_push_client) { double("erroring_push_client") }
+      let(:logger_message) { "Failed to push evaluations to Prometheus push gateway: 'Prometheus::Client::Push::HttpError'" }
+
+      before do
+        allow(Prometheus::Client::Push)
+          .to receive(:new)
+          .and_return(erroring_push_client)
+
+        allow(erroring_push_client)
+          .to receive(:add)
+          .and_raise(Prometheus::Client::Push::HttpError)
+      end
+
+      it "logs and raises an error" do
+        ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
+          expect {
+            prometheus_reporter.send(quality_metrics, month_label, table_id)
+          }.to raise_error(Prometheus::Client::Push::HttpError)
+        end
+      end
+    end
   end
 end

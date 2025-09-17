@@ -43,9 +43,6 @@ namespace :quality do
         gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
       ).add(registry)
     end
-  rescue Prometheus::Client::Push::HttpError => e
-    Rails.logger.warn("Failed to push evaluations to Prometheus push gateway: '#{e.message}'")
-    raise e
   end
 
   desc "Create query level metrics and push to a GCP bucket"

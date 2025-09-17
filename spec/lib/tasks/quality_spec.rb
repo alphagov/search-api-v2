@@ -157,38 +157,6 @@ RSpec.describe "Quality tasks" do
         end
       end
     end
-
-    context "when push gateway returns an error code" do
-      let(:erroring_push_client) { double("erroring_push_client") }
-      let(:logger_message) { "Failed to push evaluations to Prometheus push gateway: 'Prometheus::Client::Push::HttpError'" }
-
-      before do
-        Rake::Task["quality:report_quality_metrics"].reenable
-
-        allow(evaluations)
-          .to receive(:collect_all_quality_metrics)
-
-        allow(Prometheus::Client::Push)
-          .to receive(:new)
-          .and_return(erroring_push_client)
-
-        allow(erroring_push_client)
-          .to receive(:add)
-          .and_raise(Prometheus::Client::Push::HttpError)
-
-        allow(Rails.logger).to receive(:warn)
-      end
-
-      it "logs and raises an error" do
-        ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
-          expect(Rails.logger).to receive(:warn).with(logger_message)
-
-          expect {
-            Rake::Task["quality:report_quality_metrics"].invoke
-          }.to raise_error(Prometheus::Client::Push::HttpError)
-        end
-      end
-    end
   end
 
   describe "quality:upload_and_report_metrics" do
