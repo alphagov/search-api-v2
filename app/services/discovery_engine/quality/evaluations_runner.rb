@@ -48,6 +48,7 @@ module DiscoveryEngine::Quality
 
     def send_to_prometheus(evaluation)
       quality_metrics = evaluation.quality_metrics
+      Rails.logger.info(quality_metrics)
 
       # Skip pushing metrics to Prometheus in development, since push gateway is local to each
       # cluster (integration, staging or production)
