@@ -33,16 +33,10 @@ namespace :quality do
 
     evaluations.collect_all_quality_metrics(table_id.presence)
 
-    # Skip pushing metrics to Prometheus in development, since push gateway is local to each
-    # cluster (integration, staging or production)
-    if Rails.env.development?
-      Rails.logger.warn("Skipping push of evaluations to Prometheus push gateway")
-    else
-      Prometheus::Client::Push.new(
-        job: "evaluation_report_quality_metrics",
-        gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
-      ).add(registry)
-    end
+    Prometheus::Client::Push.new(
+      job: "evaluation_report_quality_metrics",
+      gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
+    ).add(registry)
   end
 
   desc "Create query level metrics and push to a GCP bucket"

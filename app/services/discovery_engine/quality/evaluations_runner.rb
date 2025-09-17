@@ -49,13 +49,20 @@ module DiscoveryEngine::Quality
 
     def send_to_prometheus(evaluation)
       quality_metrics = evaluation.quality_metrics
-      month_label = evaluation.sample_set.month_label
 
-      prometheus_reporter.send(
-        quality_metrics,
-        month_label,
-        table_id,
-      )
+      # Skip pushing metrics to Prometheus in development, since push gateway is local to each
+      # cluster (integration, staging or production)
+      if Rails.env.development?
+        Rails.logger.warn("Skipping push of evaluations to Prometheus push gateway")
+      else
+        month_label = evaluation.sample_set.month_label
+
+        prometheus_reporter.send(
+          quality_metrics,
+          month_label,
+          table_id,
+        )
+      end
     end
 
     def prometheus_reporter
