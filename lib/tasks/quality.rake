@@ -51,8 +51,11 @@ namespace :quality do
   desc "Create query level metrics and push to a GCP bucket"
   task :upload_detailed_metrics, [:table_id] => :environment do |_, args|
     table_id = args[:table_id]
-    Rails.logger.info("Getting ready to upload detailed metrics for #{table_id} datasets")
+    valid_table_ids = DiscoveryEngine::Quality::SampleQuerySets::BIGQUERY_TABLE_IDS
 
+    raise "invalid table id" unless valid_table_ids.include?(table_id)
+
+    Rails.logger.info("Getting ready to upload detailed metrics for #{table_id} datasets")
     DiscoveryEngine::Quality::EvaluationsRunner.new(table_id).upload_detailed_metrics
   end
 end

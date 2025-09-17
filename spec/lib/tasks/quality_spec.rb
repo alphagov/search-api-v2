@@ -215,6 +215,12 @@ RSpec.describe "Quality tasks" do
 
         Rake::Task["quality:upload_detailed_metrics"].invoke("explicit")
       end
+
+      it "raises an error if the table id is invalid" do
+        expect{
+          Rake::Task["quality:upload_detailed_metrics"].invoke("nope")
+        }.to raise_error("invalid table id")
+      end
     end
   end
 end
