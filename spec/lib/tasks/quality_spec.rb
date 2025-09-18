@@ -192,21 +192,29 @@ RSpec.describe "Quality tasks" do
   end
 
   describe "quality:upload_detailed_metrics" do
-    before do
-      allow(DiscoveryEngine::Quality::EvaluationsRunner)
-        .to receive(:new)
-        .with("explicit")
-        .and_return(evaluations_runner)
+    context "when a table_id is passed in" do
+      let(:logger_message) { "Getting ready to upload detailed metrics for explicit datasets" }
 
-      allow(evaluations_runner).to receive(:upload_detailed_metrics)
+      before do
+        allow(DiscoveryEngine::Quality::EvaluationsRunner)
+          .to receive(:new)
+          .with("explicit")
+          .and_return(evaluations_runner)
 
-      Rake::Task["quality:upload_detailed_metrics"].reenable
-    end
+        allow(evaluations_runner).to receive(:upload_detailed_metrics)
+        allow(Rails.logger)
+          .to receive(:info)
 
-    it "sends .upload_detailed_metrics to the evaluations_runner" do
-      expect(evaluations_runner).to receive(:upload_detailed_metrics)
+        Rake::Task["quality:upload_detailed_metrics"].reenable
+      end
 
-      Rake::Task["quality:upload_detailed_metrics"].invoke
+      it "sends .upload_detailed_metrics to the evaluations_runner" do
+        expect(evaluations_runner).to receive(:upload_detailed_metrics)
+        expect(Rails.logger).to receive(:info)
+          .with(logger_message)
+
+        Rake::Task["quality:upload_detailed_metrics"].invoke("explicit")
+      end
     end
   end
 end

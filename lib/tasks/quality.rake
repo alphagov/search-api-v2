@@ -48,9 +48,11 @@ namespace :quality do
     raise e
   end
 
-  desc "Create query level metrics for explicit dataset and push to a GCP bucket"
-  task upload_detailed_metrics: :environment do
-    runner = DiscoveryEngine::Quality::EvaluationsRunner.new("explicit")
-    runner.upload_detailed_metrics
+  desc "Create query level metrics and push to a GCP bucket"
+  task :upload_detailed_metrics, [:table_id] => :environment do |_, args|
+    table_id = args[:table_id]
+    Rails.logger.info("Getting ready to upload detailed metrics for #{table_id} datasets")
+
+    DiscoveryEngine::Quality::EvaluationsRunner.new(table_id).upload_detailed_metrics
   end
 end
