@@ -4,10 +4,10 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
   let(:table_id) { "explicit" }
   let(:last_month_partition_date) { Date.new(1979, 10, 1) }
   let(:month_before_last_partition_date) { Date.new(1979, 9, 1) }
-  let(:query_set_last_month) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, table_id:, name: "/path/to/#{table_id}-set-last_month") }
-  let(:evaluation_of_last_month) { instance_double(DiscoveryEngine::Quality::Evaluation, list_evaluation_results: "detailed_metrics", formatted_create_time: "time-stamp", partition_date: last_month_partition_date) }
-  let(:query_set_month_before_last) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, table_id:, name: "/path/to/#{table_id}-month_before_last") }
-  let(:evaluation_of_month_before_last) { instance_double(DiscoveryEngine::Quality::Evaluation, list_evaluation_results: "more_detailed_metrics", formatted_create_time: "time-stamp", partition_date: month_before_last_partition_date) }
+  let(:query_set_last_month) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, table_id:, name: "/path/to/#{table_id}-set-last_month", partition_date: last_month_partition_date) }
+  let(:evaluation_of_last_month) { instance_double(DiscoveryEngine::Quality::Evaluation, list_evaluation_results: "detailed_metrics", formatted_create_time: "time-stamp", sample_set: query_set_last_month) }
+  let(:query_set_month_before_last) { instance_double(DiscoveryEngine::Quality::SampleQuerySet, table_id:, name: "/path/to/#{table_id}-month_before_last", partition_date: month_before_last_partition_date) }
+  let(:evaluation_of_month_before_last) { instance_double(DiscoveryEngine::Quality::Evaluation, list_evaluation_results: "more_detailed_metrics", formatted_create_time: "time-stamp", sample_set: query_set_month_before_last) }
   let(:gcp_bucket_exporter) { instance_double(DiscoveryEngine::Quality::GcpBucketExporter) }
 
   before do

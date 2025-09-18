@@ -220,11 +220,4 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
       expect { evaluation.formatted_create_time }.to raise_error(message)
     end
   end
-
-  describe "#partition_date" do
-    it "delegates the partition_date to the sample query set" do
-      expect(evaluation.partition_date).to eq(date)
-      expect(sample_set).to have_received(:partition_date)
-    end
-  end
 end
