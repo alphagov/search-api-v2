@@ -38,6 +38,13 @@ RSpec.describe "Making a search request" do
       )
     end
 
+    it "returns a bad request if the query parameter is an invalid type" do
+      get "/search.json?q[]=foo"
+
+      expect(response).to have_http_status(:bad_request)
+      expect(JSON.parse(response.body)).to eq("error" => "Invalid query parameter")
+    end
+
     context "when search returns a DiscoveryEngine::InternalError" do
       before do
         allow(search_service)
