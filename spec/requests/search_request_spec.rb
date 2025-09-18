@@ -38,6 +38,15 @@ RSpec.describe "Making a search request" do
       )
     end
 
+    it "reports an ArgumentError" do
+      allow(DiscoveryEngine::Query::Search).to receive(:new).and_raise(ArgumentError, "invalid query parameter")
+
+      get "/search.json?q[]=foo"
+
+      expect(response).to have_http_status(:unprocessable_content)
+      expect(JSON.parse(response.body)).to eq("error" => "invalid query parameter")
+    end
+
     context "when search returns a DiscoveryEngine::InternalError" do
       before do
         allow(search_service)

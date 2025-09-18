@@ -11,6 +11,8 @@ module DiscoveryEngine::Query
       @query_params = query_params
       @user_agent = user_agent
 
+      validate_query_params!
+
       Rails.logger.debug { "Instantiated #{self.class.name}: Query: #{discovery_engine_params}" }
     end
 
@@ -40,6 +42,10 @@ module DiscoveryEngine::Query
         Rails.logger.warn("#{self.class.name}: Did not get search results: '#{e.message}'")
         raise DiscoveryEngine::InternalError
       end
+    end
+
+    def validate_query_params!
+      raise ArgumentError, "Invalid query parameter" unless query_params.fetch(:q, "").is_a?(String)
     end
 
     def discovery_engine_params

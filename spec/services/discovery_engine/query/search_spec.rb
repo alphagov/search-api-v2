@@ -2,6 +2,7 @@ RSpec.describe DiscoveryEngine::Query::Search do
   subject(:search) { described_class.new(query_params, user_agent: "test-user-agent") }
 
   let(:client) { double("SearchService::Client", search: search_return_value) }
+  let(:search_return_value) { double }
   let(:filters) { double(filter_expression: "filter-expression") }
 
   let(:query_params) { { q: "garden centres" } }
@@ -249,8 +250,6 @@ RSpec.describe DiscoveryEngine::Query::Search do
     end
 
     context "when search fails" do
-      let(:search_return_value) { double }
-
       before do
         allow(search_return_value)
           .to receive(:response)
@@ -287,6 +286,18 @@ RSpec.describe DiscoveryEngine::Query::Search do
           expect(Rails.logger).to have_received(:warn).with(
             "DiscoveryEngine::Query::Search: Did not get search results: 'Internal error'",
           )
+        end
+      end
+    end
+
+    context "when supplying invalid parameters" do
+      context "and the error is the user supplying an invalid query parameter" do
+        let(:query_params) { { q: [] } }
+
+        it "raises an ArgumentError because the query parameter is not a string" do
+          expect {
+            search
+          }.to raise_error(ArgumentError, "Invalid query parameter")
         end
       end
     end
