@@ -7,7 +7,7 @@ module DiscoveryEngine::Quality
         table_id,
       )
 
-      push_client.add(registry)
+      push_client.add(metric_collector.registry)
     rescue Prometheus::Client::Push::HttpError => e
       Rails.logger.warn("Failed to push evaluations to Prometheus push gateway: '#{e.message}'")
       raise e
@@ -16,11 +16,7 @@ module DiscoveryEngine::Quality
   private
 
     def metric_collector
-      @metric_collector ||= Metrics::Evaluation.new(registry)
-    end
-
-    def registry
-      @registry ||= Prometheus::Client.registry
+      @metric_collector ||= Metrics::Evaluation.new
     end
 
     def push_client

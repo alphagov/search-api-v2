@@ -9,22 +9,21 @@ RSpec.describe DiscoveryEngine::Quality::PrometheusReporter do
   let(:metric_collector) { instance_double(Metrics::Evaluation) }
 
   before do
-    allow(Prometheus::Client)
-      .to receive(:registry)
-      .and_return(registry)
-
     allow(Prometheus::Client::Push)
       .to receive(:new)
       .and_return(push_client)
 
     allow(Metrics::Evaluation)
       .to receive(:new)
-      .with(registry)
       .and_return(metric_collector)
 
     allow(metric_collector)
       .to receive(:record_evaluations)
       .with(anything, anything, anything)
+
+    allow(metric_collector)
+      .to receive(:registry)
+      .and_return(registry)
   end
 
   describe "send" do
