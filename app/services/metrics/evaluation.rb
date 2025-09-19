@@ -1,5 +1,7 @@
 module Metrics
   class Evaluation
+    include Singleton
+
     TOP_K_LEVELS = %w[1 3 5 10].freeze
 
     def initialize

@@ -16,7 +16,7 @@ module DiscoveryEngine::Quality
   private
 
     def metric_collector
-      @metric_collector ||= Metrics::Evaluation.new
+      @metric_collector ||= Metrics::Evaluation.instance
     end
 
     def push_client

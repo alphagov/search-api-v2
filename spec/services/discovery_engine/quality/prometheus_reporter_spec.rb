@@ -14,7 +14,7 @@ RSpec.describe DiscoveryEngine::Quality::PrometheusReporter do
       .and_return(push_client)
 
     allow(Metrics::Evaluation)
-      .to receive(:new)
+      .to receive(:instance)
       .and_return(metric_collector)
 
     allow(metric_collector)
