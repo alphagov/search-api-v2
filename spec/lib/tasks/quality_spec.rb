@@ -68,145 +68,60 @@ RSpec.describe "Quality tasks" do
   end
 
   describe "quality:report_quality_metrics" do
-    let(:push_client) { double("push_client", add: nil) }
-    let(:logger_message) { "Getting ready to fetch quality metrics for all datasets" }
-
-    before do
-      Rake::Task["quality:report_quality_metrics"].reenable
-
-      allow(DiscoveryEngine::Quality::Evaluations)
-          .to receive(:new)
-          .with(metric_collector)
-          .and_return(evaluations)
-
-      allow(Prometheus::Client)
-        .to receive(:registry)
-        .and_return(registry)
-
-      allow(Prometheus::Client::Push)
-        .to receive(:new)
-        .and_return(push_client)
-
-      allow(Metrics::Evaluation)
-        .to receive(:new)
-        .with(registry)
-        .and_return(metric_collector)
-
-      allow(Rails.logger).to receive(:info)
-    end
-
-    it "reports quality metrics to prometheus" do
-      ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
-        expect(evaluations)
-          .to receive(:collect_all_quality_metrics)
-          .once
-        expect(Rails.logger)
-          .to receive(:info)
-          .with(logger_message)
-        expect(push_client)
-          .to receive(:add)
-          .with(registry)
-        Rake::Task["quality:report_quality_metrics"].invoke
-      end
-    end
-
-    context "when environment is development" do
-      let(:warning_message) { "Skipping push of evaluations to Prometheus push gateway" }
-
-      before do
-        Rake::Task["quality:report_quality_metrics"].reenable
-        allow(Rails.logger).to receive(:warn)
-        allow(Rails.env).to receive(:development?).and_return(true)
-      end
-
-      it "skips pushing quality metrics to prometheus" do
-        expect(evaluations)
-          .to receive(:collect_all_quality_metrics)
-          .once
-        expect(Rails.logger)
-          .to receive(:info)
-          .with(logger_message)
-        expect(push_client)
-          .not_to receive(:add)
-        expect(Rails.logger)
-          .to receive(:warn)
-          .with(warning_message)
-        Rake::Task["quality:report_quality_metrics"].invoke
-      end
-    end
-
     context "when a table_id is passed in" do
-      let(:logger_message) { "Getting ready to fetch quality metrics for binary datasets" }
+      let(:logger_message) { "Getting ready to upload and report metrics for explicit datasets" }
 
       before do
-        Rake::Task["quality:report_quality_metrics"].reenable
-        allow(Rails.logger).to receive(:info)
-      end
-
-      it "reports quality metrics for the given table only" do
-        ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
-          expect(Rails.logger)
-            .to receive(:info)
-            .with(logger_message)
-
-          expect(evaluations)
-            .to receive(:collect_all_quality_metrics)
-            .with("binary")
-            .once
-          Rake::Task["quality:report_quality_metrics"].invoke("binary")
-        end
-      end
-    end
-
-    context "when push gateway returns an error code" do
-      let(:erroring_push_client) { double("erroring_push_client") }
-      let(:logger_message) { "Failed to push evaluations to Prometheus push gateway: 'Prometheus::Client::Push::HttpError'" }
-
-      before do
-        Rake::Task["quality:report_quality_metrics"].reenable
-
-        allow(evaluations)
-          .to receive(:collect_all_quality_metrics)
-
-        allow(Prometheus::Client::Push)
+        allow(DiscoveryEngine::Quality::EvaluationsRunner)
           .to receive(:new)
-          .and_return(erroring_push_client)
+          .with("explicit")
+          .and_return(evaluations_runner)
 
-        allow(erroring_push_client)
-          .to receive(:add)
-          .and_raise(Prometheus::Client::Push::HttpError)
+        allow(evaluations_runner).to receive(:upload_and_report_metrics)
+        allow(Rails.logger)
+          .to receive(:info)
 
-        allow(Rails.logger).to receive(:warn)
+        Rake::Task["quality:report_quality_metrics"].reenable
       end
 
-      it "logs and raises an error" do
-        ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
-          expect(Rails.logger).to receive(:warn).with(logger_message)
+      it "sends .upload_and_report_metrics to the evaluations_runner" do
+        expect(evaluations_runner).to receive(:upload_and_report_metrics)
+        expect(Rails.logger).to receive(:info).with(logger_message)
 
-          expect {
-            Rake::Task["quality:report_quality_metrics"].invoke
-          }.to raise_error(Prometheus::Client::Push::HttpError)
+        Rake::Task["quality:report_quality_metrics"].invoke("explicit")
+      end
+
+      it "raises an error if the table id is invalid" do
+        expect {
+          Rake::Task["quality:report_quality_metrics"].invoke("nope")
+        }.to raise_error("invalid table id")
+      end
+    end
+
+    context "when no table id is passed in" do
+      before do
+        allow(DiscoveryEngine::Quality::EvaluationsRunner)
+          .to receive(:new)
+          .with(anything)
+          .and_return(evaluations_runner)
+
+        allow(evaluations_runner).to receive(:upload_and_report_metrics)
+
+        Rake::Task["quality:report_quality_metrics"].reenable
+      end
+
+      it "passes all valid table ids to the evaluations_runner" do
+        Rake::Task["quality:report_quality_metrics"].invoke
+        %w[clickstream binary explicit].each do |table_id|
+          expect(DiscoveryEngine::Quality::EvaluationsRunner)
+            .to have_received(:new)
+            .with(table_id)
         end
+
+        expect(evaluations_runner)
+          .to have_received(:upload_and_report_metrics)
+          .exactly(3).times
       end
-    end
-  end
-
-  describe "quality:upload_detailed_metrics" do
-    before do
-      allow(DiscoveryEngine::Quality::EvaluationsRunner)
-        .to receive(:new)
-        .with("explicit")
-        .and_return(evaluations_runner)
-
-      allow(evaluations_runner).to receive(:upload_detailed_metrics)
-
-      Rake::Task["quality:upload_detailed_metrics"].reenable
-    end
-
-    it "sends .upload_detailed_metrics to the evaluations_runner" do
-      expect(evaluations_runner).to receive(:upload_detailed_metrics)
-
-      Rake::Task["quality:upload_detailed_metrics"].invoke
     end
   end
 end

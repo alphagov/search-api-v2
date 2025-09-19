@@ -1,5 +1,5 @@
 RSpec.describe Metrics::Evaluation do
-  subject(:evaluation) { described_class.new(registry) }
+  subject(:evaluation) { described_class.instance }
 
   let(:registry) { double("registry") }
   let(:month) { :last_month }
@@ -34,6 +34,9 @@ RSpec.describe Metrics::Evaluation do
   let(:ndcg_gauge) { double("ndcg_gauge") }
 
   before do
+    allow(Prometheus::Client)
+      .to receive(:registry)
+      .and_return(registry)
     allow(registry).to receive(:gauge)
       .with(:search_api_v2_evaluation_monitoring_recall, anything).and_return(recall_gauge)
     allow(registry).to receive(:gauge)

@@ -69,15 +69,14 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
           .with(anything)
           .and_raise(Google::Cloud::AlreadyExistsError)
 
-        allow(Rails.logger)
-          .to receive(:warn)
+        allow(GovukError).to receive(:notify)
       end
 
       it "logs then raises the error" do
         expect { evaluation.quality_metrics }.to raise_error(Google::Cloud::AlreadyExistsError)
 
-        expect(Rails.logger).to have_received(:warn)
-          .with("Failed to create an evaluation of sample set clickstream 2025-10 (Google::Cloud::AlreadyExistsError)")
+        expect(GovukError).to have_received(:notify)
+          .with("No evaluation created of sample set clickstream 2025-10 (Google::Cloud::AlreadyExistsError)")
       end
     end
 
@@ -218,13 +217,6 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
     it "raises an error if an evaluation doesn't exist yet" do
       message = "Error: cannot provide create time of an evaluation unless one exists"
       expect { evaluation.formatted_create_time }.to raise_error(message)
-    end
-  end
-
-  describe "#partition_date" do
-    it "delegates the partition_date to the sample query set" do
-      expect(evaluation.partition_date).to eq(date)
-      expect(sample_set).to have_received(:partition_date)
     end
   end
 end

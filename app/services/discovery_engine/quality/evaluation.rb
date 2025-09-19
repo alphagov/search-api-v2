@@ -1,6 +1,6 @@
 module DiscoveryEngine::Quality
   class Evaluation
-    delegate :partition_date, to: :sample_set
+    attr_reader :sample_set
 
     def initialize(sample_set)
       @sample_set = sample_set
@@ -28,7 +28,7 @@ module DiscoveryEngine::Quality
 
   private
 
-    attr_reader :sample_set, :evaluation_name
+    attr_reader :evaluation_name
 
     def api_response
       @api_response ||= fetch_api_response
@@ -63,7 +63,7 @@ module DiscoveryEngine::Quality
 
       Rails.logger.info("Successfully created an evaluation of sample set #{sample_set.display_name}")
     rescue Google::Cloud::AlreadyExistsError => e
-      Rails.logger.warn("Failed to create an evaluation of sample set #{sample_set.display_name} (#{e.message})")
+      GovukError.notify("No evaluation created of sample set #{sample_set.display_name} (#{e})")
       raise e
     end
 
