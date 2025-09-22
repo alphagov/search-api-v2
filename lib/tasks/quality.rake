@@ -22,35 +22,20 @@ namespace :quality do
 
   # Example usage rake quality:report_quality_metrics would generate and report metrics for all tables
   # or rake quality:report_quality_metrics[clickstream] to target a single dataset
-  desc "Create evaluations and push results to Prometheus"
+  desc "Create evaluations, and push metrics to Prometheus and a GCP bucket"
   task :report_quality_metrics, [:table_id] => :environment do |_, args|
     table_id = args[:table_id]
-    registry = Prometheus::Client.registry
-    metric_collector = Metrics::Evaluation.new(registry)
-    evaluations = DiscoveryEngine::Quality::Evaluations.new(metric_collector)
+    valid_table_ids = DiscoveryEngine::Quality::SampleQuerySets::BIGQUERY_TABLE_IDS
 
-    Rails.logger.info("Getting ready to fetch quality metrics for #{table_id || 'all'} datasets")
-
-    evaluations.collect_all_quality_metrics(table_id.presence)
-
-    # Skip pushing metrics to Prometheus in development, since push gateway is local to each
-    # cluster (integration, staging or production)
-    if Rails.env.development?
-      Rails.logger.warn("Skipping push of evaluations to Prometheus push gateway")
-    else
-      Prometheus::Client::Push.new(
-        job: "evaluation_report_quality_metrics",
-        gateway: ENV.fetch("PROMETHEUS_PUSHGATEWAY_URL"),
-      ).add(registry)
+    if table_id && valid_table_ids.exclude?(table_id)
+      raise "invalid table id"
     end
-  rescue Prometheus::Client::Push::HttpError => e
-    Rails.logger.warn("Failed to push evaluations to Prometheus push gateway: '#{e.message}'")
-    raise e
-  end
 
-  desc "Create query level metrics for explicit dataset and push to a GCP bucket"
-  task upload_detailed_metrics: :environment do
-    runner = DiscoveryEngine::Quality::EvaluationsRunner.new("explicit")
-    runner.upload_detailed_metrics
+    table_ids = table_id ? [table_id] : valid_table_ids
+
+    table_ids.each do |table_id|
+      Rails.logger.info("Getting ready to upload and report metrics for #{table_id} datasets")
+      DiscoveryEngine::Quality::EvaluationsRunner.new(table_id).upload_and_report_metrics
+    end
   end
 end
