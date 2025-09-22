@@ -4,6 +4,18 @@ module Metrics
 
     TOP_K_LEVELS = %w[1 3 5 10].freeze
 
+    def record_evaluations(evaluation_result, month, dataset)
+      metrics.each { |key, registry| record_evaluation(key, registry, month, dataset, evaluation_result) }
+    end
+
+    def registry
+      @registry ||= Prometheus::Client.registry
+    end
+
+  private
+
+    attr_reader :doc_recall, :doc_precision, :doc_ndcg
+
     def initialize
       @doc_recall = registry.gauge(
         :search_api_v2_evaluation_monitoring_recall,
@@ -21,18 +33,6 @@ module Metrics
         labels: %i[top month dataset],
       )
     end
-
-    def record_evaluations(evaluation_result, month, dataset)
-      metrics.each { |key, registry| record_evaluation(key, registry, month, dataset, evaluation_result) }
-    end
-
-    def registry
-      @registry ||= Prometheus::Client.registry
-    end
-
-  private
-
-    attr_reader :doc_recall, :doc_precision, :doc_ndcg
 
     def metrics
       { doc_recall:, doc_precision:, doc_ndcg: }
