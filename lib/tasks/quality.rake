@@ -22,16 +22,16 @@ namespace :quality do
 
   # Example usage rake quality:report_quality_metrics would generate and report metrics for all tables
   # or rake quality:report_quality_metrics[clickstream] to target a single dataset
+  # or rake quality:report_quality_metrics[clickstream,binary] to target two datasets
   desc "Create evaluations, and push metrics to Prometheus and a GCP bucket"
-  task :report_quality_metrics, [:table_id] => :environment do |_, args|
-    table_id = args[:table_id]
+  task :report_quality_metrics, [:table_ids] => :environment do |_, args|
     valid_table_ids = DiscoveryEngine::Quality::SampleQuerySets::BIGQUERY_TABLE_IDS
+    args = args[:table_ids]
+    table_ids = args.nil? ? valid_table_ids : args.split(",")
 
-    if table_id && valid_table_ids.exclude?(table_id)
-      raise "invalid table id"
+    if (table_ids - valid_table_ids).any?
+      raise "Invalid arguments, expecting one or more of #{valid_table_ids.split(',').join(' ')}"
     end
-
-    table_ids = table_id ? [table_id] : valid_table_ids
 
     table_ids.each do |table_id|
       Rails.logger.info("Getting ready to upload and report metrics for #{table_id} datasets")

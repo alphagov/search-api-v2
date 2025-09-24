@@ -69,12 +69,13 @@ RSpec.describe "Quality tasks" do
 
   describe "quality:report_quality_metrics" do
     context "when a table_id is passed in" do
-      let(:logger_message) { "Getting ready to upload and report metrics for explicit datasets" }
+      let(:table_id) { "explicit" }
+      let(:logger_message) { "Getting ready to upload and report metrics for #{table_id} datasets" }
 
       before do
         allow(DiscoveryEngine::Quality::EvaluationsRunner)
           .to receive(:new)
-          .with("explicit")
+          .with(table_id)
           .and_return(evaluations_runner)
 
         allow(evaluations_runner).to receive(:upload_and_report_metrics)
@@ -88,13 +89,46 @@ RSpec.describe "Quality tasks" do
         expect(evaluations_runner).to receive(:upload_and_report_metrics)
         expect(Rails.logger).to receive(:info).with(logger_message)
 
-        Rake::Task["quality:report_quality_metrics"].invoke("explicit")
+        Rake::Task["quality:report_quality_metrics"].invoke(table_id)
       end
 
       it "raises an error if the table id is invalid" do
         expect {
           Rake::Task["quality:report_quality_metrics"].invoke("nope")
-        }.to raise_error("invalid table id")
+        }.to raise_error("Invalid arguments, expecting one or more of clickstream binary explicit")
+      end
+    end
+
+    context "when more than one table id is passed in" do
+      before do
+        allow(DiscoveryEngine::Quality::EvaluationsRunner)
+         .to receive(:new)
+         .with(anything)
+         .and_return(evaluations_runner)
+
+        allow(evaluations_runner).to receive(:upload_and_report_metrics)
+        allow(Rails.logger)
+          .to receive(:info)
+
+        Rake::Task["quality:report_quality_metrics"].reenable
+      end
+
+      it "passes each table id to the evaluations_runner" do
+        expect(DiscoveryEngine::Quality::EvaluationsRunner).to receive(:new).with("explicit").once
+        expect(DiscoveryEngine::Quality::EvaluationsRunner).to receive(:new).with("binary").once
+
+        expect(evaluations_runner).to receive(:upload_and_report_metrics).twice
+
+        expect(Rails.logger).to receive(:info).with("Getting ready to upload and report metrics for explicit datasets").once
+        expect(Rails.logger).to receive(:info).with("Getting ready to upload and report metrics for binary datasets").once
+
+        Rake::Task["quality:report_quality_metrics"].invoke("explicit,binary")
+      end
+
+      it "raises an error if either of the table ids is invalid" do
+        expect {
+          Rake::Task["quality:report_quality_metrics"].invoke("nope,explicit")
+        }.to raise_error("Invalid arguments, expecting one or more of clickstream binary explicit")
       end
     end
 
