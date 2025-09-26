@@ -20,6 +20,7 @@ module SearchApiV2
     config.discovery_engine_default_collection_name = ENV.fetch("DISCOVERY_ENGINE_DEFAULT_COLLECTION_NAME")
     config.discovery_engine_default_location_name = ENV.fetch("DISCOVERY_ENGINE_DEFAULT_LOCATION_NAME")
     config.google_cloud_project_id = ENV.fetch("GOOGLE_CLOUD_PROJECT_ID")
+    config.google_cloud_project_id_number = ENV.fetch("GOOGLE_CLOUD_PROJECT_ID_NUMBER")
 
     # Document sync configuration
     config.document_type_ignorelist = config_for(:document_type_ignorelist)

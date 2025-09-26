@@ -34,7 +34,7 @@ RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
           bigquery_source: {
             dataset_id: "automated_evaluation_input",
             table_id: "clickstream",
-            project_id: Rails.application.config.google_cloud_project_id,
+            project_id: Rails.application.config.google_cloud_project_id_number,
             partition_date: {
               year: 2025,
               month: 10,
@@ -99,7 +99,7 @@ RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
           bigquery_source: {
             dataset_id: "automated_evaluation_input",
             table_id: "clickstream",
-            project_id: Rails.application.config.google_cloud_project_id,
+            project_id: Rails.application.config.google_cloud_project_id_number,
             partition_date: {
               year: 2025,
               month: 9,
