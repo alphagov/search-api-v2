@@ -41,6 +41,8 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = true
 
   # Google Discovery Engine configuration
+  config.google_cloud_project_id = "project_id"
+  config.google_cloud_project_id_number = "project_id_number"
   config.discovery_engine_default_collection_name = "[collection]"
   config.discovery_engine_default_location_name = "[location]"
 end

@@ -60,7 +60,7 @@ module DiscoveryEngine
             bigquery_source: {
               dataset_id: BIGQUERY_DATASET_ID,
               table_id:,
-              project_id: Rails.application.config.google_cloud_project_id,
+              project_id: Rails.application.config.google_cloud_project_id_number,
               partition_date: {
                 year: partition_date.year,
                 month: partition_date.month,
