@@ -71,6 +71,8 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
       .to receive(:send)
       .with(anything, anything, anything)
       .and_return(true)
+
+    allow(Kernel).to receive(:sleep).with(10).and_return(true)
   end
 
   describe "#upload_and_report_metrics" do
