@@ -13,7 +13,11 @@ module DiscoveryEngine::Quality
     # evaluation_name and api_response.name are equivalent, but calling api_response
     # ensures that we have fetched an evaluation before we ask for list_results.
     def list_evaluation_results
-      ListEvaluationResults.new(api_response.name, sample_set.display_name).formatted_json
+      ListEvaluationResults.new(
+        api_response.name,
+        sample_set.display_name,
+        serving_config,
+      ).formatted_json
     end
 
     def formatted_create_time

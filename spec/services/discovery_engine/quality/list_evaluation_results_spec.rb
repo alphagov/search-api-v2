@@ -1,8 +1,10 @@
 RSpec.describe DiscoveryEngine::Quality::ListEvaluationResults do
-  subject(:list_results) { described_class.new(evaluation_name, sample_query_set_name) }
+  subject(:list_results) { described_class.new(evaluation_name, sample_query_set_name, serving_config) }
 
   let(:evaluation_name) { "projects/780375417592/locations/global/evaluations/2b53e0c6" }
   let(:sample_query_set_name) { "clickstream_09-2025" }
+  let(:serving_config) { "projects/780375417592/locations/global/collections/default_collection/engines/govuk_global/servingConfigs/default" }
+  let(:serving_config_display_name) { "default" }
   let(:evaluation_service) { double("evaluation_service", list_evaluation_results: raw_api_response) }
   let(:raw_api_response) { double("raw_api_resonse", to_json: response.to_json) }
   let(:response) do
@@ -65,6 +67,7 @@ RSpec.describe DiscoveryEngine::Quality::ListEvaluationResults do
     it "formats the response" do
       formatted_results = {
         "evaluation_name" => evaluation_name,
+        "serving_configuration_name" => serving_config_display_name,
         "evaluation_results" => response,
       }
       expect(list_results.formatted_json).to eq(formatted_results.to_json)
