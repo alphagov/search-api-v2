@@ -1,8 +1,9 @@
 module DiscoveryEngine::Quality
   class ListEvaluationResults
-    def initialize(evaluation_name, sample_query_set_name)
+    def initialize(evaluation_name, sample_query_set_name, serving_config_name)
       @evaluation_name = evaluation_name
       @sample_query_set_name = sample_query_set_name
+      @serving_config_name = serving_config_name
     end
 
     def formatted_json
@@ -10,6 +11,7 @@ module DiscoveryEngine::Quality
       parsed = JSON.parse(json)
       with_required_keys = {
         "evaluation_name" => evaluation_name,
+        "serving_configuration_name" => serving_config_name,
         "evaluation_results" => parsed,
       }
       with_required_keys.to_json
@@ -17,7 +19,7 @@ module DiscoveryEngine::Quality
 
   private
 
-    attr_reader :evaluation_name, :sample_query_set_name
+    attr_reader :evaluation_name, :sample_query_set_name, :serving_config_name
 
     def raw_api_response
       results = DiscoveryEngine::Clients
