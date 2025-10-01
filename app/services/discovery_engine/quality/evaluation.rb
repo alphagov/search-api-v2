@@ -30,6 +30,12 @@ module DiscoveryEngine::Quality
 
     attr_reader :evaluation_name
 
+    def serving_config
+      raise "Error: cannot provide serving config of an evaluation unless one exists" if @api_response.blank?
+
+      @api_response.evaluation_spec.search_request.serving_config
+    end
+
     def api_response
       @api_response ||= fetch_api_response
     end
