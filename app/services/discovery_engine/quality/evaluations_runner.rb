@@ -10,6 +10,8 @@ module DiscoveryEngine::Quality
       evaluations.each do |e|
         send_to_bucket(e)
         send_to_prometheus(e)
+        # space out our calls to the evaluations API, as it is unable to handle concurrent requests
+        Kernel.sleep(10)
       end
     end
 
