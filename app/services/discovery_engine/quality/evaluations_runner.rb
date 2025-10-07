@@ -8,6 +8,7 @@ module DiscoveryEngine::Quality
 
     def upload_and_report_metrics
       evaluations.each do |e|
+        wait_for_running_evaluations_to_finish
         send_to_bucket(e)
         send_to_prometheus(e)
         # space out our calls to the evaluations API, as it is unable to handle concurrent requests
@@ -18,6 +19,25 @@ module DiscoveryEngine::Quality
   private
 
     attr_reader :table_id
+
+    def wait_for_running_evaluations_to_finish
+      parent = Rails.application.config.discovery_engine_default_location_name
+      all_evaluations = DiscoveryEngine::Clients.evaluation_service.list_evaluations(parent:)
+
+      all_evaluations.each do |evaluation|
+        next unless running?(evaluation)
+      end
+    end
+
+    def running?(evaluation)
+      if evaluation.state == :RUNNING
+        Rails.logger.info("Found a running evaluation: #{evaluation.name}")
+        Kernel.sleep(10)
+        running?(evaluation)
+      end
+
+      false
+    end
 
     def evaluations
       sample_query_sets(table_id).map { |set| DiscoveryEngine::Quality::Evaluation.new(set) }

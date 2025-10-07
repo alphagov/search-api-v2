@@ -34,6 +34,12 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
   end
   let(:gcp_bucket_exporter) { instance_double(DiscoveryEngine::Quality::GcpBucketExporter) }
   let(:prometheus_reporter) { instance_double(DiscoveryEngine::Quality::PrometheusReporter) }
+  let(:evaluation_service) { double("evaluation_service") }
+  let(:evaluations_list) do
+    [
+      double("evaluation", name: "/evaluations/1", state: :SUCCEEDED),
+    ]
+  end
 
   before do
     allow(DiscoveryEngine::Quality::Evaluation)
@@ -73,6 +79,12 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
       .and_return(true)
 
     allow(Kernel).to receive(:sleep).with(10).and_return(true)
+
+    allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(evaluation_service)
+
+    allow(evaluation_service).to receive(:list_evaluations)
+      .with(parent: Rails.application.config.discovery_engine_default_location_name)
+      .and_return(evaluations_list)
   end
 
   describe "#upload_and_report_metrics" do
@@ -118,6 +130,14 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
 
       expect(prometheus_reporter).to have_received(:send).with("quality_metrics", :last_month, "explicit").once
       expect(prometheus_reporter).to have_received(:send).with("quality_metrics", :month_before_last, "explicit").once
+    end
+
+    it "checks if any evaluations are running" do
+      evaluations_runner.upload_and_report_metrics
+
+      expect(evaluation_service).to have_received(:list_evaluations).with(
+        parent: Rails.application.config.discovery_engine_default_location_name,
+      ).at_least(:once)
     end
 
     context "when environment is development" do
