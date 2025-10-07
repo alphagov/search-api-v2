@@ -11,12 +11,21 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
   let(:operation) { double("operation", error?: false, wait_until_done!: true, results: response) }
   let(:response) { double("response", name: "/evaluations/1") }
   let(:google_time_stamp) { double("google_time_stamp", nanos: 812_173_000, seconds: 1_753_600_645) }
+  let(:search_request) do
+    double("search_request",
+           serving_config: "projects/780375417592/locations/global/collections/default_collection/engines/govuk_global/servingConfigs/default")
+  end
+  let(:evaluation_spec) do
+    double("evaluation_spec",
+           search_request: search_request)
+  end
   let(:evaluation_success) do
     double("evaluation",
            state: :SUCCEEDED,
            quality_metrics: quality_metrics_response,
            name: "/evaluations/1",
-           create_time: google_time_stamp)
+           create_time: google_time_stamp,
+           evaluation_spec: evaluation_spec)
   end
   let(:evaluation_pending) { double("evaluation", state: :PENDING) }
 
@@ -174,7 +183,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
 
       allow(DiscoveryEngine::Quality::ListEvaluationResults)
         .to receive(:new)
-        .with(anything, anything)
+        .with(anything, anything, anything)
         .and_return(list_evaluation_results)
 
       allow(list_evaluation_results)
