@@ -140,6 +140,30 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
       ).at_least(:once)
     end
 
+    context "when there are running evaluations" do
+      let(:running_evaluations_list) do
+        [
+          double("evaluation", name: "/evaluations/1", state: :RUNNING),
+        ]
+      end
+
+      before do
+        allow(evaluation_service).to receive(:list_evaluations)
+          .with(parent: Rails.application.config.discovery_engine_default_location_name)
+          .and_return(running_evaluations_list)
+        allow(evaluation_service).to receive(:list_evaluations)
+          .with(parent: Rails.application.config.discovery_engine_default_location_name)
+          .and_return(evaluations_list)
+      end
+
+      it "waits and tries again" do
+        evaluations_runner.upload_and_report_metrics
+        expect(evaluation_service).to have_received(:list_evaluations).with(
+          parent: Rails.application.config.discovery_engine_default_location_name,
+        ).at_least(:twice)
+      end
+    end
+
     context "when environment is development" do
       let(:warning_message) { "Skipping push of evaluations to Prometheus push gateway" }
 
