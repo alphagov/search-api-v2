@@ -41,10 +41,10 @@ module DiscoveryEngine::Quality
     end
 
     def fetched_evaluation
-      @fetched_evaluation ||= fetch_api_response
+      @fetched_evaluation ||= fetch_evaluation
     end
 
-    def fetch_api_response
+    def fetch_evaluation
       create_evaluation
       get_evaluation_with_wait
     end
