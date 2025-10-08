@@ -8,8 +8,8 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
   end
   let(:evaluation) { described_class.new(sample_set) }
   let(:evaluation_service) { double("evaluation_service", create_evaluation: operation) }
-  let(:operation) { double("operation", error?: false, wait_until_done!: true, results: response) }
-  let(:response) { double("response", name: "/evaluations/1") }
+  let(:operation) { double("operation", error?: false, wait_until_done!: true, results: fetched_evaluation) }
+  let(:fetched_evaluation) { double("fetched_evaluation", name: "/evaluations/1") }
   let(:google_time_stamp) { double("google_time_stamp", nanos: 812_173_000, seconds: 1_753_600_645) }
   let(:search_request) do
     double("search_request",
@@ -92,7 +92,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
     context "when evaluation state is :SUCCEEDED" do
       before do
         allow(evaluation_service).to receive(:get_evaluation)
-          .with(name: response.name)
+          .with(name: fetched_evaluation.name)
           .and_return(evaluation_success)
       end
 
@@ -121,7 +121,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
         evaluation.quality_metrics
 
         expect(evaluation_service).to have_received(:get_evaluation)
-          .with(name: response.name)
+          .with(name: fetched_evaluation.name)
           .once
 
         expect(evaluation_success)
@@ -129,7 +129,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
           .once
       end
 
-      it "calls quality_metrics on the memoised api_response" do
+      it "calls quality_metrics on the memoised fetched_evaluation" do
         evaluation.quality_metrics
         evaluation.quality_metrics
 
@@ -137,7 +137,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
          .once
 
         expect(evaluation_service).to have_received(:get_evaluation)
-          .with(name: response.name)
+          .with(name: fetched_evaluation.name)
           .once
       end
     end
@@ -147,7 +147,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
 
       before do
         allow(evaluation_service).to receive(:get_evaluation)
-          .with(name: response.name)
+          .with(name: fetched_evaluation.name)
           .and_return(evaluation_pending, evaluation_success)
 
         allow(Kernel).to receive(:sleep).with(10).and_return(true)
@@ -157,7 +157,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
         evaluation.quality_metrics
 
         expect(evaluation_service).to have_received(:get_evaluation)
-          .with(name: response.name)
+          .with(name: fetched_evaluation.name)
           .twice
 
         expect(Kernel).to have_received(:sleep)
@@ -214,7 +214,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
   describe "#formatted_create_time" do
     before do
       allow(evaluation_service).to receive(:get_evaluation)
-        .with(name: response.name)
+        .with(name: fetched_evaluation.name)
         .and_return(evaluation_success)
     end
 
