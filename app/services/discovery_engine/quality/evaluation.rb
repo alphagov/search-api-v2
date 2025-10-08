@@ -50,8 +50,7 @@ module DiscoveryEngine::Quality
     end
 
     def create_evaluation
-      operation = DiscoveryEngine::Clients
-        .evaluation_service
+      operation = evaluation_service
         .create_evaluation(
           parent: Rails.application.config.discovery_engine_default_location_name,
           evaluation: {
@@ -89,7 +88,11 @@ module DiscoveryEngine::Quality
     end
 
     def get_evaluation
-      DiscoveryEngine::Clients.evaluation_service.get_evaluation(name: evaluation_name)
+      evaluation_service.get_evaluation(name: evaluation_name)
+    end
+
+    def evaluation_service
+      @evaluation_service ||= DiscoveryEngine::Clients.evaluation_service
     end
   end
 end
