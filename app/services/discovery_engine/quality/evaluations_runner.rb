@@ -58,10 +58,15 @@ module DiscoveryEngine::Quality
         Rails.logger.warn("Skipping push of evaluations to Prometheus push gateway")
       else
         month_label = evaluation.sample_set.month_label
+        partition_date = evaluation.sample_set.partition_date
+        month_name_label = Date::MONTHNAMES[partition_date.month]
+        year_label = partition_date.year
 
         prometheus_reporter.send(
           quality_metrics,
           month_label,
+          month_name_label,
+          year_label,
           table_id,
         )
       end

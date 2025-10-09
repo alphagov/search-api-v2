@@ -2,6 +2,8 @@ RSpec.describe DiscoveryEngine::Quality::PrometheusReporter do
   subject(:prometheus_reporter) { described_class.new }
 
   let(:month_label) { :this_month }
+  let(:month_name_label) { "July" }
+  let(:year_label) { 2025 }
   let(:table_id) { "explicit" }
   let(:quality_metrics) { "quality_metrics" }
   let(:registry) { double("registry", gauge: nil) }
@@ -19,7 +21,7 @@ RSpec.describe DiscoveryEngine::Quality::PrometheusReporter do
 
     allow(metric_collector)
       .to receive(:record_evaluations)
-      .with(anything, anything, anything)
+      .with(anything, anything, anything, anything, anything)
 
     allow(metric_collector)
       .to receive(:registry)
@@ -29,11 +31,11 @@ RSpec.describe DiscoveryEngine::Quality::PrometheusReporter do
   describe "send" do
     it "adds metrics to the Prometheus registry and pushes to the Prometheus client" do
       ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
-        prometheus_reporter.send(quality_metrics, month_label, table_id)
+        prometheus_reporter.send(quality_metrics, month_label, month_name_label, year_label, table_id)
 
         expect(metric_collector)
           .to have_received(:record_evaluations)
-          .with(quality_metrics, :this_month, "explicit")
+          .with(quality_metrics, :this_month, "July", 2025, "explicit")
 
         expect(push_client)
           .to have_received(:add)
@@ -58,7 +60,7 @@ RSpec.describe DiscoveryEngine::Quality::PrometheusReporter do
       it "logs and raises an error" do
         ClimateControl.modify PROMETHEUS_PUSHGATEWAY_URL: "https://www.something.example.org" do
           expect {
-            prometheus_reporter.send(quality_metrics, month_label, table_id)
+            prometheus_reporter.send(quality_metrics, month_label, month_name_label, year_label, table_id)
           }.to raise_error(Prometheus::Client::Push::HttpError)
         end
       end

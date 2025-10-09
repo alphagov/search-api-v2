@@ -69,7 +69,7 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
 
     allow(prometheus_reporter)
       .to receive(:send)
-      .with(anything, anything, anything)
+      .with(anything, anything, anything, anything, anything)
       .and_return(true)
 
     allow(Kernel).to receive(:sleep).with(10).and_return(true)
@@ -118,8 +118,8 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
       evaluations = [evaluation_of_this_month_sample_query_set, evaluation_of_last_month_sample_query_set]
       expect(evaluations).to all(have_received(:quality_metrics))
 
-      expect(prometheus_reporter).to have_received(:send).with("quality_metrics", :this_month, "explicit").once
-      expect(prometheus_reporter).to have_received(:send).with("quality_metrics", :last_month, "explicit").once
+      expect(prometheus_reporter).to have_received(:send).with("quality_metrics", :this_month, "October", 1979, "explicit").once
+      expect(prometheus_reporter).to have_received(:send).with("quality_metrics", :last_month, "September", 1979, "explicit").once
     end
 
     context "when environment is development" do
