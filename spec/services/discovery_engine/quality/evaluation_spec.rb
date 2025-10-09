@@ -7,7 +7,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
                     partition_date: date)
   end
   let(:evaluation) { described_class.new(sample_set) }
-  let(:evaluation_service) { double("evaluation_service", create_evaluation: operation, get_evaluation: evaluation_success) }
+  let(:evaluation_service) { double("evaluation_service", create_evaluation: operation, get_evaluation: evaluation_success, list_evaluations: [evaluation_success]) }
   let(:operation) { double("operation", error?: false, wait_until_done!: true, results: operation_results) }
   let(:operation_results) { double("operation_results", name: "/evaluations/1") }
   let(:google_time_stamp) { double("google_time_stamp", nanos: 812_173_000, seconds: 1_753_600_645) }
@@ -27,7 +27,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
            create_time: google_time_stamp,
            evaluation_spec: evaluation_spec)
   end
-  let(:evaluation_pending) { double("evaluation", state: :PENDING) }
+  let(:evaluation_pending) { double("evaluation", state: :PENDING, name: "/evaluations/2") }
 
   let(:quality_metrics_response) do
     {
@@ -59,6 +59,46 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
   end
 
   describe "#quality_metrics" do
+    context "when there are already pending evaluations" do
+      let(:busy_evaluations_service) { double("busy_evaluations_service", create_evaluation: operation) }
+
+      before do
+        # the first pending is needed to be returned from line 71, in order for pending_evaluations not to be empty
+        # the second bending is needed to be returned on line 59, in order for us to NOT break and to test that we sleep
+        allow(evaluation_pending).to receive(:state).and_return(:PENDING, :PENDING, :SUCCEEDED)
+
+        allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(busy_evaluations_service)
+
+        allow(busy_evaluations_service)
+          .to receive(:list_evaluations)
+          .and_return([evaluation_pending])
+
+        allow(busy_evaluations_service)
+          .to receive(:get_evaluation)
+          .with(name: evaluation_pending.name)
+          .and_return(evaluation_pending)
+
+        allow(busy_evaluations_service)
+          .to receive(:get_evaluation)
+          .with(name: evaluation_success.name)
+          .and_return(evaluation_success)
+      end
+
+      it "waits for all pending evaluations to complete before creating a new one" do
+        evaluation.quality_metrics
+
+        expect(busy_evaluations_service).to have_received(:list_evaluations).once
+
+        expect(Rails.logger).to have_received(:info)
+          .with("Waiting for #{evaluation_pending.name} to finish")
+
+        expect(Kernel).to have_received(:sleep).with(10).once
+        expect(evaluation_pending).to have_received(:state).exactly(3).times
+
+        expect(busy_evaluations_service).to have_received(:create_evaluation).once
+      end
+    end
+
     it "sends a create evaluation request to the evaluations service" do
       evaluation.quality_metrics
 
@@ -93,6 +133,11 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
 
       before do
         allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(erroring_evaluation_service)
+
+        allow(erroring_evaluation_service)
+          .to receive(:list_evaluations)
+          .with(parent: Rails.application.config.discovery_engine_default_location_name)
+          .and_return([evaluation_success])
 
         allow(erroring_evaluation_service)
           .to receive(:create_evaluation)

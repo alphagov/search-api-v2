@@ -45,8 +45,29 @@ module DiscoveryEngine::Quality
     end
 
     def fetch_evaluation
+      wait_for_pending_evaluations_to_finish
       create_evaluation
       get_evaluation_with_wait(evaluation_name)
+    end
+
+    def wait_for_pending_evaluations_to_finish
+      return if pending_evaluations.blank?
+
+      pending_evaluations.each do |e|
+        Rails.logger.info("Waiting for #{e.name} to finish")
+        while (e = get_evaluation(e.name))
+          break if e.state == :SUCCEEDED
+
+          Kernel.sleep(10)
+        end
+      end
+    end
+
+    def pending_evaluations
+      @pending_evaluations ||=
+        evaluation_service
+          .list_evaluations(parent:)
+          .select { |e| e.state == :PENDING }
     end
 
     def create_evaluation
