@@ -68,12 +68,12 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
     end
 
     context "when GCP returns an AlreadyExistsError" do
-      let(:erroring_service) { double("evaluation") }
+      let(:erroring_evaluation_service) { double("erroring_evaluation_service") }
 
       before do
-        allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(erroring_service)
+        allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(erroring_evaluation_service)
 
-        allow(erroring_service)
+        allow(erroring_evaluation_service)
           .to receive(:create_evaluation)
           .with(anything)
           .and_raise(Google::Cloud::AlreadyExistsError)
