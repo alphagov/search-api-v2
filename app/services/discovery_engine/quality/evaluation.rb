@@ -46,13 +46,13 @@ module DiscoveryEngine::Quality
 
     def fetch_evaluation
       create_evaluation
-      get_evaluation_with_wait
+      get_evaluation_with_wait(evaluation_name)
     end
 
     def create_evaluation
       operation = evaluation_service
         .create_evaluation(
-          parent: Rails.application.config.discovery_engine_default_location_name,
+          parent:,
           evaluation: {
             evaluation_spec: {
               query_set_spec: {
@@ -76,10 +76,10 @@ module DiscoveryEngine::Quality
       raise e
     end
 
-    def get_evaluation_with_wait
+    def get_evaluation_with_wait(name)
       Rails.logger.info("Fetching evaluations...")
 
-      while (e = get_evaluation)
+      while (e = get_evaluation(name))
         return e if e.state == :SUCCEEDED
 
         Rails.logger.info("Still waiting for evaluation to complete...")
@@ -87,12 +87,16 @@ module DiscoveryEngine::Quality
       end
     end
 
-    def get_evaluation
-      evaluation_service.get_evaluation(name: evaluation_name)
+    def get_evaluation(name)
+      evaluation_service.get_evaluation(name:)
     end
 
     def evaluation_service
       @evaluation_service ||= DiscoveryEngine::Clients.evaluation_service
+    end
+
+    def parent
+      @parent ||= Rails.application.config.discovery_engine_default_location_name
     end
   end
 end
