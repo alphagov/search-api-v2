@@ -7,9 +7,9 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
                     partition_date: date)
   end
   let(:evaluation) { described_class.new(sample_set) }
-  let(:evaluation_service) { double("evaluation_service", create_evaluation: operation) }
-  let(:operation) { double("operation", error?: false, wait_until_done!: true, results: fetched_evaluation) }
-  let(:fetched_evaluation) { double("fetched_evaluation", name: "/evaluations/1") }
+  let(:evaluation_service) { double("evaluation_service", create_evaluation: operation, get_evaluation: evaluation_success) }
+  let(:operation) { double("operation", error?: false, wait_until_done!: true, results: operation_results) }
+  let(:operation_results) { double("operation_results", name: "/evaluations/1") }
   let(:google_time_stamp) { double("google_time_stamp", nanos: 812_173_000, seconds: 1_753_600_645) }
   let(:search_request) do
     double("search_request",
@@ -55,10 +55,31 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
   before do
     allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(evaluation_service)
     allow(Rails.logger).to receive(:info)
+    allow(Kernel).to receive(:sleep).with(10).and_return(true)
   end
 
   describe "#quality_metrics" do
-    context "when operation does not complete" do
+    it "sends a create evaluation request to the evaluations service" do
+      evaluation.quality_metrics
+
+      expect(evaluation_service)
+        .to have_received(:create_evaluation)
+        .with(
+          parent: Rails.application.config.discovery_engine_default_location_name,
+          evaluation: {
+            evaluation_spec: {
+              query_set_spec: {
+                sample_query_set: sample_set.name,
+              },
+              search_request: {
+                serving_config: ServingConfig.default.name,
+              },
+            },
+          },
+        )
+    end
+
+    context "when the create evaluations request does not complete" do
       let(:error) { double("error", message: "An error message") }
       let(:operation) { double("operation", wait_until_done!: true, error?: true, error:) }
 
@@ -89,29 +110,12 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
       end
     end
 
-    context "when evaluation state is :SUCCEEDED" do
-      before do
-        allow(evaluation_service).to receive(:get_evaluation)
-          .with(name: fetched_evaluation.name)
-          .and_return(evaluation_success)
-      end
-
-      it "calls the create_evaluation endpoint" do
+    context "when the evaluation completes and has a state of :SUCCEEDED" do
+      it "fetches the evaluation" do
         evaluation.quality_metrics
 
-        expect(evaluation_service).to have_received(:create_evaluation).with(
-          parent: Rails.application.config.discovery_engine_default_location_name,
-          evaluation: {
-            evaluation_spec: {
-              query_set_spec: {
-                sample_query_set: "/set",
-              },
-              search_request: {
-                serving_config: ServingConfig.default.name,
-              },
-            },
-          },
-        )
+        expect(evaluation_service).to have_received(:get_evaluation)
+          .with(name: evaluation_success.name)
 
         expect(Rails.logger).to have_received(:info)
           .with("Successfully created an evaluation of sample set clickstream 2025-10")
@@ -120,16 +124,12 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
       it "fetches quality metrics" do
         evaluation.quality_metrics
 
-        expect(evaluation_service).to have_received(:get_evaluation)
-          .with(name: fetched_evaluation.name)
-          .once
-
         expect(evaluation_success)
           .to have_received(:quality_metrics)
           .once
       end
 
-      it "calls quality_metrics on the memoised fetched_evaluation" do
+      it "calls quality_metrics on the memoised evaluation object" do
         evaluation.quality_metrics
         evaluation.quality_metrics
 
@@ -137,27 +137,25 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
          .once
 
         expect(evaluation_service).to have_received(:get_evaluation)
-          .with(name: fetched_evaluation.name)
+          .with(name: evaluation_success.name)
           .once
       end
     end
 
-    context "when evaluation state is :PENDING" do
+    context "when the evaluation is still being processed and has a state of :PENDING" do
       let(:evaluation_pending) { double("evaluation", state: :PENDING) }
 
       before do
         allow(evaluation_service).to receive(:get_evaluation)
-          .with(name: fetched_evaluation.name)
+          .with(name: evaluation_success.name)
           .and_return(evaluation_pending, evaluation_success)
-
-        allow(Kernel).to receive(:sleep).with(10).and_return(true)
       end
 
       it "sleeps for 10, then polls again" do
         evaluation.quality_metrics
 
         expect(evaluation_service).to have_received(:get_evaluation)
-          .with(name: fetched_evaluation.name)
+          .with(name: evaluation_success.name)
           .twice
 
         expect(Kernel).to have_received(:sleep)
@@ -171,16 +169,6 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
     let(:list_evaluation_results) { double("list_evaluation_results") }
 
     before do
-      allow(evaluation_service)
-        .to receive(:create_evaluation)
-        .with(anything)
-        .and_return(operation)
-
-      allow(evaluation_service)
-        .to receive(:get_evaluation)
-        .with(name: operation.results.name)
-        .and_return(evaluation_success)
-
       allow(DiscoveryEngine::Quality::ListEvaluationResults)
         .to receive(:new)
         .with(anything, anything, anything)
@@ -214,7 +202,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
   describe "#formatted_create_time" do
     before do
       allow(evaluation_service).to receive(:get_evaluation)
-        .with(name: fetched_evaluation.name)
+        .with(name: evaluation_success.name)
         .and_return(evaluation_success)
     end
 
