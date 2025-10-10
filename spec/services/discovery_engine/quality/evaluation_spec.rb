@@ -93,6 +93,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
           .with("Waiting for #{evaluation_pending.name} to finish")
 
         expect(Kernel).to have_received(:sleep).with(10).once
+
         expect(evaluation_pending).to have_received(:state).exactly(3).times
 
         expect(busy_evaluations_service).to have_received(:create_evaluation).once
@@ -136,6 +137,47 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
         expect(Kernel).to have_received(:sleep).with(10).once
 
         expect(evaluation_running).to have_received(:state).exactly(3).times
+
+        expect(busy_evaluations_service).to have_received(:create_evaluation).once
+      end
+    end
+
+    context "when a running evaluation fails" do
+      let(:evaluation_failing) { double("evaluation", name: "/evaluations/failing") }
+      let(:busy_evaluations_service) { double("busy_evaluations_service", create_evaluation: operation) }
+
+      before do
+        allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(busy_evaluations_service)
+
+        allow(evaluation_failing).to receive(:state)
+          .and_return(:RUNNING, :RUNNING, :FAILED)
+
+        allow(busy_evaluations_service)
+          .to receive(:list_evaluations)
+          .and_return([evaluation_failing])
+
+        allow(busy_evaluations_service)
+         .to receive(:get_evaluation)
+         .with(name: evaluation_failing.name)
+         .and_return(evaluation_failing)
+
+        allow(busy_evaluations_service)
+          .to receive(:get_evaluation)
+          .with(name: evaluation_success.name)
+          .and_return(evaluation_success)
+      end
+
+      it "waits for all running evaluations to complete before creating a new one" do
+        evaluation.quality_metrics
+
+        expect(busy_evaluations_service).to have_received(:list_evaluations).once
+
+        expect(Rails.logger).to have_received(:info)
+          .with("Waiting for #{evaluation_failing.name} to finish")
+
+        expect(Kernel).to have_received(:sleep).with(10).once
+
+        expect(evaluation_failing).to have_received(:state).exactly(3).times
 
         expect(busy_evaluations_service).to have_received(:create_evaluation).once
       end

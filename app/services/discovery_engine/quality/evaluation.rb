@@ -56,7 +56,7 @@ module DiscoveryEngine::Quality
       active_evaluations.each do |e|
         Rails.logger.info("Waiting for #{e.name} to finish")
         while (e = get_evaluation(e.name))
-          break if e.state == :SUCCEEDED
+          break if %i[SUCCEEDED FAILED].include?(e.state)
 
           Kernel.sleep(10)
         end
