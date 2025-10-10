@@ -99,6 +99,48 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
       end
     end
 
+    context "when there are already running evaluations" do
+      let(:busy_evaluations_service) { double("busy_evaluations_service", create_evaluation: operation) }
+      let(:evaluation_name) { "a running evaluation" }
+      let(:evaluation_running) { double("evaluation_running", name: evaluation_name) }
+
+      before do
+        allow(evaluation_running).to receive(:state)
+          .and_return(:RUNNING, :RUNNING, :SUCCEEDED)
+
+        allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(busy_evaluations_service)
+
+        allow(busy_evaluations_service)
+          .to receive(:list_evaluations)
+          .and_return([evaluation_running])
+
+        allow(busy_evaluations_service)
+          .to receive(:get_evaluation)
+          .with(name: evaluation_running.name)
+          .and_return(evaluation_running)
+
+        allow(busy_evaluations_service)
+          .to receive(:get_evaluation)
+          .with(name: evaluation_success.name)
+          .and_return(evaluation_success)
+      end
+
+      it "waits for all running evaluations to complete before creating a new one" do
+        evaluation.quality_metrics
+
+        expect(busy_evaluations_service).to have_received(:list_evaluations).once
+
+        expect(Rails.logger).to have_received(:info)
+          .with("Waiting for #{evaluation_name} to finish")
+
+        expect(Kernel).to have_received(:sleep).with(10).once
+
+        expect(evaluation_running).to have_received(:state).exactly(3).times
+
+        expect(busy_evaluations_service).to have_received(:create_evaluation).once
+      end
+    end
+
     it "sends a create evaluation request to the evaluations service" do
       evaluation.quality_metrics
 
