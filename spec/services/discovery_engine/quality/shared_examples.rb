@@ -13,9 +13,7 @@ RSpec.shared_examples "waits for running evaluations to complete" do |first_stat
   let(:operation_results) { double("operation_results", name: new_evaluation.name) }
 
   before do
-    # the first pending is needed to be returned from line 71, in order for pending_evaluations not to be empty
-    # the second bending is needed to be returned on line 59, in order for us to NOT break and to test that we sleep
-    allow(active_evaluation).to receive(:state).and_return(first_state, second_state, end_state)
+    allow(active_evaluation).to receive(:state).and_return(first_state, first_state, first_state, first_state, second_state, end_state)
 
     allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(busy_evaluations_service)
 
@@ -34,17 +32,21 @@ RSpec.shared_examples "waits for running evaluations to complete" do |first_stat
       .and_return(new_evaluation)
   end
 
-  it "waits for all active evaluations to complete before creating a new one" do
+  it "fetches all evaluations from the evaluations service" do
     evaluation.quality_metrics
 
     expect(busy_evaluations_service).to have_received(:list_evaluations).once
+  end
+
+  it "polls active evaluations 5 times waiting for them to complete" do
+    evaluation.quality_metrics
 
     expect(Rails.logger).to have_received(:info)
       .with("Waiting for #{active_evaluation.name} to finish")
 
-    expect(Kernel).to have_received(:sleep).with(10).once
+    expect(Kernel).to have_received(:sleep).exactly(4).times
 
-    expect(active_evaluation).to have_received(:state).exactly(3).times
+    expect(active_evaluation).to have_received(:state).exactly(6).times
 
     expect(busy_evaluations_service).to have_received(:create_evaluation).once
   end

@@ -57,7 +57,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
   before do
     allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(evaluation_service)
     allow(Rails.logger).to receive(:info)
-    allow(Kernel).to receive(:sleep).with(10).and_return(true)
+    allow(Kernel).to receive(:sleep).and_return(true)
   end
 
   describe "#quality_metrics" do

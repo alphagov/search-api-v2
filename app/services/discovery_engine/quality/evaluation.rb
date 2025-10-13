@@ -1,5 +1,8 @@
 module DiscoveryEngine::Quality
   class Evaluation
+    MAX_RETRIES = 5
+    WAIT_TIME = 60
+
     attr_reader :sample_set
 
     def initialize(sample_set)
@@ -62,10 +65,13 @@ module DiscoveryEngine::Quality
 
       active_evaluations.each do |e|
         Rails.logger.info("Waiting for #{e.name} to finish")
+        attempts = 0
+
         while (e = get_evaluation(e.name))
           break if evaluation_states[:finished].include?(e.state)
+          break if (attempts += 1) > MAX_RETRIES
 
-          Kernel.sleep(10)
+          Kernel.sleep(WAIT_TIME)
         end
       end
     end
