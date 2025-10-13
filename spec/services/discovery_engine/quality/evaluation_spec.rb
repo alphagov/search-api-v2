@@ -1,3 +1,5 @@
+require_relative "shared_examples"
+
 RSpec.describe DiscoveryEngine::Quality::Evaluation do
   let(:date) { Date.new(2025, 10, 1) }
   let(:sample_set) do
@@ -59,128 +61,12 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
   end
 
   describe "#quality_metrics" do
-    context "when there are already pending evaluations" do
-      let(:busy_evaluations_service) { double("busy_evaluations_service", create_evaluation: operation) }
-
-      before do
-        # the first pending is needed to be returned from line 71, in order for pending_evaluations not to be empty
-        # the second bending is needed to be returned on line 59, in order for us to NOT break and to test that we sleep
-        allow(evaluation_pending).to receive(:state).and_return(:PENDING, :PENDING, :SUCCEEDED)
-
-        allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(busy_evaluations_service)
-
-        allow(busy_evaluations_service)
-          .to receive(:list_evaluations)
-          .and_return([evaluation_pending])
-
-        allow(busy_evaluations_service)
-          .to receive(:get_evaluation)
-          .with(name: evaluation_pending.name)
-          .and_return(evaluation_pending)
-
-        allow(busy_evaluations_service)
-          .to receive(:get_evaluation)
-          .with(name: evaluation_success.name)
-          .and_return(evaluation_success)
-      end
-
-      it "waits for all pending evaluations to complete before creating a new one" do
-        evaluation.quality_metrics
-
-        expect(busy_evaluations_service).to have_received(:list_evaluations).once
-
-        expect(Rails.logger).to have_received(:info)
-          .with("Waiting for #{evaluation_pending.name} to finish")
-
-        expect(Kernel).to have_received(:sleep).with(10).once
-
-        expect(evaluation_pending).to have_received(:state).exactly(3).times
-
-        expect(busy_evaluations_service).to have_received(:create_evaluation).once
-      end
-    end
-
-    context "when there are already running evaluations" do
-      let(:busy_evaluations_service) { double("busy_evaluations_service", create_evaluation: operation) }
-      let(:evaluation_name) { "a running evaluation" }
-      let(:evaluation_running) { double("evaluation_running", name: evaluation_name) }
-
-      before do
-        allow(evaluation_running).to receive(:state)
-          .and_return(:RUNNING, :RUNNING, :SUCCEEDED)
-
-        allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(busy_evaluations_service)
-
-        allow(busy_evaluations_service)
-          .to receive(:list_evaluations)
-          .and_return([evaluation_running])
-
-        allow(busy_evaluations_service)
-          .to receive(:get_evaluation)
-          .with(name: evaluation_running.name)
-          .and_return(evaluation_running)
-
-        allow(busy_evaluations_service)
-          .to receive(:get_evaluation)
-          .with(name: evaluation_success.name)
-          .and_return(evaluation_success)
-      end
-
-      it "waits for all running evaluations to complete before creating a new one" do
-        evaluation.quality_metrics
-
-        expect(busy_evaluations_service).to have_received(:list_evaluations).once
-
-        expect(Rails.logger).to have_received(:info)
-          .with("Waiting for #{evaluation_name} to finish")
-
-        expect(Kernel).to have_received(:sleep).with(10).once
-
-        expect(evaluation_running).to have_received(:state).exactly(3).times
-
-        expect(busy_evaluations_service).to have_received(:create_evaluation).once
-      end
-    end
-
-    context "when a running evaluation fails" do
-      let(:evaluation_failing) { double("evaluation", name: "/evaluations/failing") }
-      let(:busy_evaluations_service) { double("busy_evaluations_service", create_evaluation: operation) }
-
-      before do
-        allow(DiscoveryEngine::Clients).to receive(:evaluation_service).and_return(busy_evaluations_service)
-
-        allow(evaluation_failing).to receive(:state)
-          .and_return(:RUNNING, :RUNNING, :FAILED)
-
-        allow(busy_evaluations_service)
-          .to receive(:list_evaluations)
-          .and_return([evaluation_failing])
-
-        allow(busy_evaluations_service)
-         .to receive(:get_evaluation)
-         .with(name: evaluation_failing.name)
-         .and_return(evaluation_failing)
-
-        allow(busy_evaluations_service)
-          .to receive(:get_evaluation)
-          .with(name: evaluation_success.name)
-          .and_return(evaluation_success)
-      end
-
-      it "waits for all running evaluations to complete before creating a new one" do
-        evaluation.quality_metrics
-
-        expect(busy_evaluations_service).to have_received(:list_evaluations).once
-
-        expect(Rails.logger).to have_received(:info)
-          .with("Waiting for #{evaluation_failing.name} to finish")
-
-        expect(Kernel).to have_received(:sleep).with(10).once
-
-        expect(evaluation_failing).to have_received(:state).exactly(3).times
-
-        expect(busy_evaluations_service).to have_received(:create_evaluation).once
-      end
+    context "when the evaluations service is busy" do
+      it_behaves_like "waits for running evaluations to complete", :PENDING, :PENDING, :SUCCEEDED
+      it_behaves_like "waits for running evaluations to complete", :RUNNING, :RUNNING, :SUCCEEDED
+      it_behaves_like "waits for running evaluations to complete", :RUNNING, :RUNNING, :FAILED
+      it_behaves_like "waits for running evaluations to complete", :PENDING, :RUNNING, :FAILED
+      it_behaves_like "waits for running evaluations to complete", :PENDING, :RUNNING, :SUCCEEDED
     end
 
     it "sends a create evaluation request to the evaluations service" do
