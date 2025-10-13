@@ -1,8 +1,16 @@
 RSpec.shared_examples "waits for running evaluations to complete" do |first_state, second_state, end_state|
   let(:active_evaluation) { double("evaluation", name: "/evaluations/active-evaluation") }
+  let(:new_evaluation) do
+    double("evaluation",
+           state: :SUCCEEDED,
+           quality_metrics: quality_metrics_response,
+           name: new_evaluation_name,
+           create_time: google_time_stamp,
+           evaluation_spec: evaluation_spec)
+  end
   let(:busy_evaluations_service) { double("busy_evaluations_service", create_evaluation: operation) }
   let(:operation) { double("operation", error?: false, wait_until_done!: true, results: operation_results) }
-  let(:operation_results) { double("operation_results", name: "/evaluations/1") }
+  let(:operation_results) { double("operation_results", name: new_evaluation.name) }
 
   before do
     # the first pending is needed to be returned from line 71, in order for pending_evaluations not to be empty
@@ -22,8 +30,8 @@ RSpec.shared_examples "waits for running evaluations to complete" do |first_stat
 
     allow(busy_evaluations_service)
       .to receive(:get_evaluation)
-      .with(name: evaluation_success.name)
-      .and_return(evaluation_success)
+      .with(name: new_evaluation.name)
+      .and_return(new_evaluation)
   end
 
   it "waits for all active evaluations to complete before creating a new one" do

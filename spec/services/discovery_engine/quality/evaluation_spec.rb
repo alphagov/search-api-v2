@@ -9,9 +9,10 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
                     partition_date: date)
   end
   let(:evaluation) { described_class.new(sample_set) }
-  let(:evaluation_service) { double("evaluation_service", create_evaluation: operation, get_evaluation: evaluation_success, list_evaluations: [evaluation_success]) }
+  let(:evaluation_service) { double("evaluation_service", create_evaluation: operation, get_evaluation: new_evaluation, list_evaluations: [new_evaluation]) }
   let(:operation) { double("operation", error?: false, wait_until_done!: true, results: operation_results) }
-  let(:operation_results) { double("operation_results", name: "/evaluations/1") }
+  let(:operation_results) { double("operation_results", name: new_evaluation_name) }
+  let(:new_evaluation_name) { "/evaluations/1" }
   let(:google_time_stamp) { double("google_time_stamp", nanos: 812_173_000, seconds: 1_753_600_645) }
   let(:search_request) do
     double("search_request",
@@ -21,11 +22,11 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
     double("evaluation_spec",
            search_request: search_request)
   end
-  let(:evaluation_success) do
+  let(:new_evaluation) do
     double("evaluation",
            state: :SUCCEEDED,
            quality_metrics: quality_metrics_response,
-           name: "/evaluations/1",
+           name: new_evaluation_name,
            create_time: google_time_stamp,
            evaluation_spec: evaluation_spec)
   end
@@ -107,7 +108,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
         allow(erroring_evaluation_service)
           .to receive(:list_evaluations)
           .with(parent: Rails.application.config.discovery_engine_default_location_name)
-          .and_return([evaluation_success])
+          .and_return([new_evaluation])
 
         allow(erroring_evaluation_service)
           .to receive(:create_evaluation)
@@ -130,7 +131,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
         evaluation.quality_metrics
 
         expect(evaluation_service).to have_received(:get_evaluation)
-          .with(name: evaluation_success.name)
+          .with(name: new_evaluation.name)
 
         expect(Rails.logger).to have_received(:info)
           .with("Successfully created an evaluation of sample set clickstream 2025-10")
@@ -139,7 +140,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
       it "fetches quality metrics" do
         evaluation.quality_metrics
 
-        expect(evaluation_success)
+        expect(new_evaluation)
           .to have_received(:quality_metrics)
           .once
       end
@@ -152,7 +153,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
          .once
 
         expect(evaluation_service).to have_received(:get_evaluation)
-          .with(name: evaluation_success.name)
+          .with(name: new_evaluation.name)
           .once
       end
     end
@@ -162,15 +163,15 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
 
       before do
         allow(evaluation_service).to receive(:get_evaluation)
-          .with(name: evaluation_success.name)
-          .and_return(evaluation_pending, evaluation_success)
+          .with(name: new_evaluation.name)
+          .and_return(evaluation_pending, new_evaluation)
       end
 
       it "sleeps for 10, then polls again" do
         evaluation.quality_metrics
 
         expect(evaluation_service).to have_received(:get_evaluation)
-          .with(name: evaluation_success.name)
+          .with(name: new_evaluation.name)
           .twice
 
         expect(Kernel).to have_received(:sleep)
@@ -208,7 +209,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
       expect(evaluation_service).to have_received(:create_evaluation).once
       expect(evaluation_service).to have_received(:get_evaluation).once
 
-      expect(evaluation_success)
+      expect(new_evaluation)
         .to have_received(:name)
         .exactly(3).times
     end
@@ -217,8 +218,8 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
   describe "#formatted_create_time" do
     before do
       allow(evaluation_service).to receive(:get_evaluation)
-        .with(name: evaluation_success.name)
-        .and_return(evaluation_success)
+        .with(name: new_evaluation.name)
+        .and_return(new_evaluation)
     end
 
     it "formats the create_time stamp from the google response" do
