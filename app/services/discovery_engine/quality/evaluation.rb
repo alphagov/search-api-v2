@@ -34,6 +34,13 @@ module DiscoveryEngine::Quality
 
     attr_reader :evaluation_name
 
+    def evaluation_states
+      {
+        active: %i[PENDING RUNNING],
+        finished: %i[SUCCEEDED FAILED],
+      }
+    end
+
     def serving_config
       raise "Error: cannot provide serving config of an evaluation unless one exists" if @fetched_evaluation.blank?
 
@@ -56,7 +63,7 @@ module DiscoveryEngine::Quality
       active_evaluations.each do |e|
         Rails.logger.info("Waiting for #{e.name} to finish")
         while (e = get_evaluation(e.name))
-          break if %i[SUCCEEDED FAILED].include?(e.state)
+          break if evaluation_states[:finished].include?(e.state)
 
           Kernel.sleep(10)
         end
@@ -67,7 +74,7 @@ module DiscoveryEngine::Quality
       @active_evaluations ||=
         evaluation_service
           .list_evaluations(parent:)
-          .select { |e| %i[PENDING RUNNING].include?(e.state) }
+          .select { |e| evaluation_states[:active].include?(e.state) }
     end
 
     def create_evaluation
