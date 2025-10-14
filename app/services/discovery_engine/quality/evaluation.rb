@@ -7,23 +7,23 @@ module DiscoveryEngine::Quality
     end
 
     def quality_metrics
-      api_response.quality_metrics.to_h
+      fetched_evaluation.quality_metrics.to_h
     end
 
-    # evaluation_name and api_response.name are equivalent, but calling api_response
+    # evaluation_name and fetched_evaluation.name are equivalent, but calling fetched_evaluation
     # ensures that we have fetched an evaluation before we ask for list_results.
     def list_evaluation_results
       ListEvaluationResults.new(
-        api_response.name,
+        fetched_evaluation.name,
         sample_set.display_name,
         serving_config,
       ).formatted_json
     end
 
     def formatted_create_time
-      raise "Error: cannot provide create time of an evaluation unless one exists" if @api_response.blank?
+      raise "Error: cannot provide create time of an evaluation unless one exists" if @fetched_evaluation.blank?
 
-      google_time_stamp = @api_response.create_time
+      google_time_stamp = @fetched_evaluation.create_time
       if google_time_stamp
         data = { nanos: google_time_stamp.nanos, seconds: google_time_stamp.seconds }
         Google::Protobuf::Timestamp.new(data).to_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -35,23 +35,22 @@ module DiscoveryEngine::Quality
     attr_reader :evaluation_name
 
     def serving_config
-      raise "Error: cannot provide serving config of an evaluation unless one exists" if @api_response.blank?
+      raise "Error: cannot provide serving config of an evaluation unless one exists" if @fetched_evaluation.blank?
 
-      @api_response.evaluation_spec.search_request.serving_config
+      @fetched_evaluation.evaluation_spec.search_request.serving_config
     end
 
-    def api_response
-      @api_response ||= fetch_api_response
+    def fetched_evaluation
+      @fetched_evaluation ||= fetch_evaluation
     end
 
-    def fetch_api_response
+    def fetch_evaluation
       create_evaluation
       get_evaluation_with_wait
     end
 
     def create_evaluation
-      operation = DiscoveryEngine::Clients
-        .evaluation_service
+      operation = evaluation_service
         .create_evaluation(
           parent: Rails.application.config.discovery_engine_default_location_name,
           evaluation: {
@@ -89,7 +88,11 @@ module DiscoveryEngine::Quality
     end
 
     def get_evaluation
-      DiscoveryEngine::Clients.evaluation_service.get_evaluation(name: evaluation_name)
+      evaluation_service.get_evaluation(name: evaluation_name)
+    end
+
+    def evaluation_service
+      @evaluation_service ||= DiscoveryEngine::Clients.evaluation_service
     end
   end
 end
