@@ -160,7 +160,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
           allow(new_evaluation).to receive(:state).and_return(:PENDING, :SUCCEEDED)
         end
 
-        it "sleeps for 10, then polls again" do
+        it "sleeps for 60, then polls again" do
           evaluation.quality_metrics
 
           expect(evaluation_service).to have_received(:get_evaluation)

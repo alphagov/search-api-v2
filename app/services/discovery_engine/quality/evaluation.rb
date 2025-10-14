@@ -117,7 +117,7 @@ module DiscoveryEngine::Quality
         return e if e.state == :SUCCEEDED
 
         Rails.logger.info("Still waiting for evaluation to complete...")
-        Kernel.sleep(10)
+        Kernel.sleep(WAIT_TIME)
       end
     end
 
