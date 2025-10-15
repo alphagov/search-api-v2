@@ -1,5 +1,8 @@
 module DiscoveryEngine::Quality
   class Evaluation
+    MAX_RETRIES = 5
+    WAIT_TIME = 60
+
     attr_reader :sample_set
 
     def initialize(sample_set)
@@ -34,6 +37,13 @@ module DiscoveryEngine::Quality
 
     attr_reader :evaluation_name
 
+    def evaluation_states
+      {
+        active: %i[PENDING RUNNING],
+        finished: %i[SUCCEEDED FAILED],
+      }
+    end
+
     def serving_config
       raise "Error: cannot provide serving config of an evaluation unless one exists" if @fetched_evaluation.blank?
 
@@ -45,14 +55,38 @@ module DiscoveryEngine::Quality
     end
 
     def fetch_evaluation
+      wait_for_active_evaluations_to_finish
       create_evaluation
-      get_evaluation_with_wait
+      get_evaluation_with_wait(evaluation_name)
+    end
+
+    def wait_for_active_evaluations_to_finish
+      return if active_evaluations.blank?
+
+      active_evaluations.each do |e|
+        Rails.logger.info("Waiting for #{e.name} to finish")
+        attempts = 0
+
+        while (e = get_evaluation(e.name))
+          break if evaluation_states[:finished].include?(e.state)
+          break if (attempts += 1) > MAX_RETRIES
+
+          Kernel.sleep(WAIT_TIME)
+        end
+      end
+    end
+
+    def active_evaluations
+      @active_evaluations ||=
+        evaluation_service
+          .list_evaluations(parent:)
+          .select { |e| evaluation_states[:active].include?(e.state) }
     end
 
     def create_evaluation
       operation = evaluation_service
         .create_evaluation(
-          parent: Rails.application.config.discovery_engine_default_location_name,
+          parent:,
           evaluation: {
             evaluation_spec: {
               query_set_spec: {
@@ -76,23 +110,27 @@ module DiscoveryEngine::Quality
       raise e
     end
 
-    def get_evaluation_with_wait
+    def get_evaluation_with_wait(name)
       Rails.logger.info("Fetching evaluations...")
 
-      while (e = get_evaluation)
+      while (e = get_evaluation(name))
         return e if e.state == :SUCCEEDED
 
         Rails.logger.info("Still waiting for evaluation to complete...")
-        Kernel.sleep(10)
+        Kernel.sleep(WAIT_TIME)
       end
     end
 
-    def get_evaluation
-      evaluation_service.get_evaluation(name: evaluation_name)
+    def get_evaluation(name)
+      evaluation_service.get_evaluation(name:)
     end
 
     def evaluation_service
       @evaluation_service ||= DiscoveryEngine::Clients.evaluation_service
+    end
+
+    def parent
+      @parent ||= Rails.application.config.discovery_engine_default_location_name
     end
   end
 end
