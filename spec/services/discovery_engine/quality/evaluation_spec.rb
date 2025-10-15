@@ -62,6 +62,10 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
 
   describe "#quality_metrics" do
     context "when the evaluations service is busy" do
+      # When the first check of state returns :PENDING or :ACTIVE, the evaluation is added to the active_evaluations array.
+      # In order for us to test that we wait for evaluations to finish, the second state must also be :PENDING or :ACTIVE so
+      # that we don't break on the first check of state in the wait_for_active_evaluations_to_finish while loop.
+
       it_behaves_like "waits for running evaluations to complete", :PENDING, :PENDING, :SUCCEEDED
       it_behaves_like "waits for running evaluations to complete", :RUNNING, :RUNNING, :SUCCEEDED
       it_behaves_like "waits for running evaluations to complete", :RUNNING, :RUNNING, :FAILED
