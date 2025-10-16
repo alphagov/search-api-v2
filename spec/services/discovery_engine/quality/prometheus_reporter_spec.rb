@@ -1,7 +1,7 @@
 RSpec.describe DiscoveryEngine::Quality::PrometheusReporter do
   subject(:prometheus_reporter) { described_class.new }
 
-  let(:month_label) { :last_month }
+  let(:month_label) { :this_month }
   let(:table_id) { "explicit" }
   let(:quality_metrics) { "quality_metrics" }
   let(:registry) { double("registry", gauge: nil) }
@@ -33,7 +33,7 @@ RSpec.describe DiscoveryEngine::Quality::PrometheusReporter do
 
         expect(metric_collector)
           .to have_received(:record_evaluations)
-          .with(quality_metrics, :last_month, "explicit")
+          .with(quality_metrics, :this_month, "explicit")
 
         expect(push_client)
           .to have_received(:add)

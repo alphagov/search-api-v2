@@ -2,7 +2,7 @@ RSpec.describe Metrics::Evaluation do
   subject(:evaluation) { described_class.instance }
 
   let(:registry) { double("registry") }
-  let(:month) { :last_month }
+  let(:month) { :this_month }
   let(:table_id) { "clickstream" }
 
   let(:evaluation_response) do

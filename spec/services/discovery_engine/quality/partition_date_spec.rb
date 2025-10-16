@@ -6,8 +6,8 @@ RSpec.describe DiscoveryEngine::Quality::PartitionDate do
       Timecop.freeze(1987, 1, 8) { example.call }
     end
 
-    context "with a month label of :last_month" do
-      let(:month_label) { :last_month }
+    context "with a month label of :this_month" do
+      let(:month_label) { :this_month }
       let(:month) { nil }
       let(:year) { nil }
 
