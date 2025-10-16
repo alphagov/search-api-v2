@@ -16,8 +16,8 @@ RSpec.describe DiscoveryEngine::Quality::PartitionDate do
       end
     end
 
-    context "with a month label of :month_before_last" do
-      let(:month_label) { :month_before_last }
+    context "with a month label of :last_month" do
+      let(:month_label) { :last_month }
       let(:month) { nil }
       let(:year) { nil }
 

@@ -1,6 +1,6 @@
 module DiscoveryEngine::Quality
   class EvaluationsRunner
-    MONTH_LABELS = %i[this_month month_before_last].freeze
+    MONTH_LABELS = %i[this_month last_month].freeze
 
     def initialize(table_id)
       @table_id = table_id

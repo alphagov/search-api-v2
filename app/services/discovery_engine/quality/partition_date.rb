@@ -5,7 +5,7 @@ module DiscoveryEngine::Quality
                     when :this_month
                       t = Time.zone.now
                       [t.year, t.month]
-                    when :month_before_last
+                    when :last_month
                       t = Time.zone.now.prev_month
                       [t.year, t.month]
                     else
