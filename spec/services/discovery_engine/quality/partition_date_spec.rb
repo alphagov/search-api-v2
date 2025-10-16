@@ -11,8 +11,8 @@ RSpec.describe DiscoveryEngine::Quality::PartitionDate do
       let(:month) { nil }
       let(:year) { nil }
 
-      it "returns a Date object for the first day of last month" do
-        expect(partition_date.calculate(month_label:, month:, year:)).to eq(Date.new(1986, 12, 1))
+      it "returns a Date object for the first day of this month" do
+        expect(partition_date.calculate(month_label:, month:, year:)).to eq(Date.new(1987, 1, 1))
       end
     end
 
@@ -21,8 +21,8 @@ RSpec.describe DiscoveryEngine::Quality::PartitionDate do
       let(:month) { nil }
       let(:year) { nil }
 
-      it "returns a Date object for the first day of the month before last" do
-        expect(partition_date.calculate(month_label:, month:, year:)).to eq(Date.new(1986, 11, 1))
+      it "returns a Date object for the first day of last month" do
+        expect(partition_date.calculate(month_label:, month:, year:)).to eq(Date.new(1986, 12, 1))
       end
     end
 

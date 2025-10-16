@@ -1,6 +1,6 @@
 RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
   around do |example|
-    Timecop.freeze(2025, 11, 1) { example.call }
+    Timecop.freeze(2025, 10, 1) { example.call }
   end
 
   before do
