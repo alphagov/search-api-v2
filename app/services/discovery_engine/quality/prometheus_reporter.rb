@@ -1,9 +1,11 @@
 module DiscoveryEngine::Quality
   class PrometheusReporter
-    def send(quality_metrics, month_label, table_id)
+    def send(quality_metrics, month_label, month_name_label, year_label, table_id)
       metric_collector.record_evaluations(
         quality_metrics,
         month_label,
+        month_name_label,
+        year_label,
         table_id,
       )
 
