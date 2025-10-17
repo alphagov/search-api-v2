@@ -2,34 +2,34 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
   subject(:evaluations_runner) { described_class.new("explicit") }
 
   let(:table_id) { "explicit" }
-  let(:last_month_partition_date) { Date.new(1979, 10, 1) }
-  let(:month_before_last_partition_date) { Date.new(1979, 9, 1) }
-  let(:query_set_last_month) do
+  let(:this_month_partition_date) { Date.new(1979, 10, 1) }
+  let(:last_month_partition_date) { Date.new(1979, 9, 1) }
+  let(:query_set_this_month) do
     instance_double(DiscoveryEngine::Quality::SampleQuerySet,
                     table_id:,
-                    name: "/path/to/#{table_id}-set-last_month",
-                    partition_date: last_month_partition_date,
-                    month_label: :last_month)
+                    name: "/path/to/#{table_id}-set-this_month",
+                    partition_date: this_month_partition_date,
+                    month_label: :this_month)
   end
-  let(:evaluation_of_last_month) do
+  let(:evaluation_of_this_month_sample_query_set) do
     instance_double(DiscoveryEngine::Quality::Evaluation,
                     list_evaluation_results: "detailed_metrics",
                     formatted_create_time: "time-stamp",
-                    sample_set: query_set_last_month,
+                    sample_set: query_set_this_month,
                     quality_metrics: "quality_metrics")
   end
-  let(:query_set_month_before_last) do
+  let(:query_set_last_month) do
     instance_double(DiscoveryEngine::Quality::SampleQuerySet,
                     table_id:,
-                    name: "/path/to/#{table_id}-month_before_last",
-                    partition_date: month_before_last_partition_date,
-                    month_label: :month_before_last)
+                    name: "/path/to/#{table_id}-last_month",
+                    partition_date: last_month_partition_date,
+                    month_label: :last_month)
   end
-  let(:evaluation_of_month_before_last) do
+  let(:evaluation_of_last_month_sample_query_set) do
     instance_double(DiscoveryEngine::Quality::Evaluation,
                     list_evaluation_results: "more_detailed_metrics",
                     formatted_create_time: "time-stamp",
-                    sample_set: query_set_month_before_last,
+                    sample_set: query_set_last_month,
                     quality_metrics: "quality_metrics")
   end
   let(:gcp_bucket_exporter) { instance_double(DiscoveryEngine::Quality::GcpBucketExporter) }
@@ -38,16 +38,16 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
   before do
     allow(DiscoveryEngine::Quality::Evaluation)
       .to receive(:new)
-      .with(query_set_last_month)
-      .and_return(evaluation_of_last_month)
+      .with(query_set_this_month)
+      .and_return(evaluation_of_this_month_sample_query_set)
 
     allow(DiscoveryEngine::Quality::Evaluation)
      .to receive(:new)
-     .with(query_set_month_before_last)
-     .and_return(evaluation_of_month_before_last)
+     .with(query_set_last_month)
+     .and_return(evaluation_of_last_month_sample_query_set)
 
-    { last_month: query_set_last_month,
-      month_before_last: query_set_month_before_last }.each do |label, query_set|
+    { this_month: query_set_this_month,
+      last_month: query_set_last_month }.each do |label, query_set|
       allow(DiscoveryEngine::Quality::SampleQuerySet)
         .to receive(:new)
         .with(table_id: "explicit", month_label: label)
@@ -76,15 +76,17 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
   end
 
   describe "#upload_and_report_metrics" do
-    it "fetches explicit sample query sets for this month and the month before last" do
+    it "fetches explicit sample query sets for this month and last month" do
       evaluations_runner.upload_and_report_metrics
 
       expect(DiscoveryEngine::Quality::SampleQuerySet)
         .to have_received(:new)
-        .with(table_id:, month_label: :last_month)
+        .with(table_id:, month_label: :this_month)
+        .once
       expect(DiscoveryEngine::Quality::SampleQuerySet)
         .to have_received(:new)
-        .with(table_id:, month_label: :month_before_last)
+        .with(table_id:, month_label: :last_month)
+        .once
     end
 
     it "creates an evaluation of each sample query set" do
@@ -92,32 +94,32 @@ RSpec.describe DiscoveryEngine::Quality::EvaluationsRunner do
 
       expect(DiscoveryEngine::Quality::Evaluation)
       .to have_received(:new)
-      .with(query_set_last_month)
+      .with(query_set_this_month)
 
       expect(DiscoveryEngine::Quality::Evaluation)
        .to have_received(:new)
-       .with(query_set_month_before_last)
+       .with(query_set_last_month)
     end
 
     it "sends list_evaluation_results for each evaluation to a gcp bucket" do
       evaluations_runner.upload_and_report_metrics
 
-      evaluations = [evaluation_of_last_month, evaluation_of_month_before_last]
+      evaluations = [evaluation_of_this_month_sample_query_set, evaluation_of_last_month_sample_query_set]
       expect(evaluations).to all(have_received(:list_evaluation_results))
       expect(evaluations).to all(have_received(:formatted_create_time))
 
-      expect(gcp_bucket_exporter).to have_received(:send).with("time-stamp", "explicit", last_month_partition_date, "detailed_metrics").once
-      expect(gcp_bucket_exporter).to have_received(:send).with("time-stamp", "explicit", month_before_last_partition_date, "more_detailed_metrics").once
+      expect(gcp_bucket_exporter).to have_received(:send).with("time-stamp", "explicit", this_month_partition_date, "detailed_metrics").once
+      expect(gcp_bucket_exporter).to have_received(:send).with("time-stamp", "explicit", last_month_partition_date, "more_detailed_metrics").once
     end
 
     it "sends quality metrics for each evaluation to prometheus" do
       evaluations_runner.upload_and_report_metrics
 
-      evaluations = [evaluation_of_last_month, evaluation_of_month_before_last]
+      evaluations = [evaluation_of_this_month_sample_query_set, evaluation_of_last_month_sample_query_set]
       expect(evaluations).to all(have_received(:quality_metrics))
 
+      expect(prometheus_reporter).to have_received(:send).with("quality_metrics", :this_month, "explicit").once
       expect(prometheus_reporter).to have_received(:send).with("quality_metrics", :last_month, "explicit").once
-      expect(prometheus_reporter).to have_received(:send).with("quality_metrics", :month_before_last, "explicit").once
     end
 
     context "when environment is development" do

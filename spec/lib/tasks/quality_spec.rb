@@ -13,7 +13,7 @@ RSpec.describe "Quality tasks" do
 
       allow(DiscoveryEngine::Quality::SampleQuerySets)
       .to receive(:new)
-      .with(:last_month)
+      .with(:this_month)
       .and_return(sample_query_sets)
 
       allow(sample_query_sets)

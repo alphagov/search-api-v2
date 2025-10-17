@@ -4,7 +4,7 @@ require "prometheus/client/push"
 namespace :quality do
   desc "Create sample query sets from each of last months BigQuery tables"
   task setup_sample_query_sets: :environment do
-    DiscoveryEngine::Quality::SampleQuerySets.new(:last_month).create_and_import_all
+    DiscoveryEngine::Quality::SampleQuerySets.new(:this_month).create_and_import_all
   end
 
   desc "Create a sample query set for a given month, year and table id"

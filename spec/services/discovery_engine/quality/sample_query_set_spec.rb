@@ -11,10 +11,10 @@ RSpec.describe DiscoveryEngine::Quality::SampleQuerySet do
   let(:sample_query_service_stub) { double("sample_query_service", import_sample_queries: operation_object) }
   let(:operation_object) { double("operation", wait_until_done!: true, error?: false) }
   let(:table_id) { "clickstream" }
-  let(:month_label) { :last_month }
+  let(:month_label) { :this_month }
 
   describe "#create_and_import_queries" do
-    context "when the month label ':last_month' is provided" do
+    context "when the month label ':this_month' is provided" do
       subject(:sample_query_set) { described_class.new(month_label:, table_id:) }
 
       it "creates a sample query set for last month" do

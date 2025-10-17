@@ -1,8 +1,8 @@
 RSpec.describe DiscoveryEngine::Quality::SampleQuerySets do
-  subject(:sample_query_sets) { described_class.new(:last_month) }
+  subject(:sample_query_sets) { described_class.new(:this_month) }
 
   let(:sample_query_set) { instance_double(DiscoveryEngine::Quality::SampleQuerySet) }
-  let(:month_label) { :last_month }
+  let(:month_label) { :this_month }
 
   describe "#all" do
     it "returns SampleQuerySet objects" do

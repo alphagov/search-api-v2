@@ -2,10 +2,10 @@ module DiscoveryEngine::Quality
   class PartitionDate
     def self.calculate(month_label: nil, month: nil, year: nil)
       year, month = case month_label
-                    when :last_month
+                    when :this_month
                       t = Time.zone.now
                       [t.year, t.month]
-                    when :month_before_last
+                    when :last_month
                       t = Time.zone.now.prev_month
                       [t.year, t.month]
                     else
