@@ -109,7 +109,7 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
         end
       end
 
-      context "when GCP returns an AlreadyExistsError" do
+      context "when the CREATE evaluations request returns AlreadyExistsError" do
         before do
           allow(evaluation_service)
             .to receive(:create_evaluation)
@@ -119,11 +119,32 @@ RSpec.describe DiscoveryEngine::Quality::Evaluation do
           allow(GovukError).to receive(:notify)
         end
 
-        it "logs then raises the error" do
-          expect { evaluation.quality_metrics }.to raise_error(Google::Cloud::AlreadyExistsError)
-
+        it "sleeps for 60 seconds, retries a maximum of 5 times, then raises an error" do
+          expect { evaluation.quality_metrics }.to raise_error("Google::Cloud::AlreadyExistsError")
+          expect(evaluation_service).to have_received(:create_evaluation).exactly(5).times
+          expect(Kernel).to have_received(:sleep).with(60).exactly(4).times
           expect(GovukError).to have_received(:notify)
-            .with("No evaluation created of sample set clickstream 2025-10 (Google::Cloud::AlreadyExistsError)")
+            .with("No evaluation created of sample set clickstream 2025-10")
+        end
+      end
+
+      context "when the CREATE evaluations request returns AlreadyExistsError but then succeeds" do
+        before do
+          allow(evaluation_service)
+          .to receive(:create_evaluation)
+          .and_invoke(
+            ->(_) { raise Google::Cloud::AlreadyExistsError },
+            ->(_) { operation },
+          )
+        end
+
+        it "completes the creation" do
+          evaluation.quality_metrics
+          expect(evaluation_service).to have_received(:create_evaluation).exactly(2).times
+          expect(Kernel).to have_received(:sleep).with(60).once
+
+          expect(Rails.logger).to have_received(:info)
+            .with("Successfully created an evaluation of sample set #{sample_set.display_name}")
         end
       end
 
