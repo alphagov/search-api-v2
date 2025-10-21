@@ -7,6 +7,7 @@ module DiscoveryEngine::Quality
 
     def initialize(sample_set)
       @sample_set = sample_set
+      @attempt = 1
     end
 
     def quality_metrics
@@ -35,7 +36,7 @@ module DiscoveryEngine::Quality
 
   private
 
-    attr_reader :evaluation_name
+    attr_reader :evaluation_name, :attempt
 
     def evaluation_states
       {
@@ -84,6 +85,7 @@ module DiscoveryEngine::Quality
     end
 
     def create_evaluation
+      Rails.logger.info("Attempting to create evalution of #{sample_set.display_name}. Attempt #{attempt}")
       operation = evaluation_service
         .create_evaluation(
           parent:,
@@ -106,7 +108,19 @@ module DiscoveryEngine::Quality
 
       Rails.logger.info("Successfully created an evaluation of sample set #{sample_set.display_name}")
     rescue Google::Cloud::AlreadyExistsError => e
-      GovukError.notify("No evaluation created of sample set #{sample_set.display_name} (#{e})")
+      Rails.logger.info("An active evaluation has been detected")
+
+      if attempt < MAX_RETRIES
+
+        Rails.logger.info("Sleeping for #{WAIT_TIME} seconds, then will retry.")
+
+        Kernel.sleep(WAIT_TIME)
+
+        @attempt += 1
+        retry
+      end
+
+      GovukError.notify("No evaluation created of sample set #{sample_set.display_name}")
       raise e
     end
 
