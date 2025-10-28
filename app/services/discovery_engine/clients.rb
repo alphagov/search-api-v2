@@ -1,6 +1,6 @@
 module DiscoveryEngine
   module Clients
-    extend self
+  module_function
 
     def completion_service
       @completion_service ||= Google::Cloud::DiscoveryEngine.completion_service(version: :v1)
