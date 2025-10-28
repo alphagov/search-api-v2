@@ -115,10 +115,6 @@ GEM
       gapic-common (~> 1.0)
       google-cloud-errors (~> 1.0)
       google-cloud-location (~> 1.0)
-    google-cloud-discovery_engine-v1beta (0.20.1)
-      gapic-common (~> 1.0)
-      google-cloud-errors (~> 1.0)
-      google-cloud-location (~> 1.0)
     google-cloud-env (2.3.1)
       base64 (~> 0.2)
       faraday (>= 1.0, < 3.a)
@@ -604,7 +600,6 @@ DEPENDENCIES
   csv
   debug
   google-cloud-discovery_engine (<= 2.2.0)
-  google-cloud-discovery_engine-v1beta (<= 0.20.1)
   google-cloud-storage
   govuk_app_config
   govuk_message_queue_consumer
