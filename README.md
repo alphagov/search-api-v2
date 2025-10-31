@@ -48,7 +48,7 @@ govuk-docker run search-api-v2-document-sync-worker bundle exec rake document_sy
 
 ### Running other rake tasks
 
-Other rake tasks (including evaluations related rask tasks) require connecting to the integration environment. 
+Other rake tasks require connecting to the integration environment.
 The `task-runner` stack has been created to do this with minimal dependencies and can be run as follows:
 
 ```bash
@@ -107,11 +107,10 @@ as some other marketing terms used in some project artefacts.
       the "finder" in use and some other conditions
 - [`search-api`][search-api]: The original Search API, a subset of which this application's API
       replicates
+- [`search-api-v2-beta-features`][search-api-v2-beta-features]: Runs evaluations for site-search. Also used to experiment with Google Discovery Engine beta features.
 - [`search-v2-infrastructure`][search-v2-infrastructure]: Provisions infrastructure for Discovery
       Engine including cloud resources and event ingestion for continuous training of the search
       engine
-- [`search-v2-evaluator`][search-v2-evaluator]: Internal tool to test and rate search results
-
 
 [vertex-docs]: https://cloud.google.com/generative-ai-app-builder/docs/introduction
 [search-all-finder]: https://www.gov.uk/search/all
@@ -119,5 +118,5 @@ as some other marketing terms used in some project artefacts.
 [env]: https://github.com/alphagov/govuk-docker/blob/main/projects/search-api-v2/docker-compose.yml
 [finder-frontend]: https://github.com/alphagov/finder-frontend
 [search-api]: https://github.com/alphagov/search-api
+[search-api-v2-beta-features]: https://github.com/alphagov/search-api-v2-beta-features
 [search-v2-infrastructure]: https://github.com/alphagov/search-v2-infrastructure
-[search-v2-evaluator]: https://github.com/alphagov/search-v2-evaluator
