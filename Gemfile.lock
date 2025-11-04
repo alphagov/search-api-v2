@@ -566,7 +566,7 @@ DEPENDENCIES
   connection_pool
   csv
   debug
-  google-cloud-discovery_engine (<= 2.2.0)
+  google-cloud-discovery_engine
   govuk_app_config
   govuk_message_queue_consumer
   govuk_test
