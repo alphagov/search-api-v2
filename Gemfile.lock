@@ -91,7 +91,7 @@ GEM
     google-cloud-core (1.8.0)
       google-cloud-env (>= 1.0, < 3.a)
       google-cloud-errors (~> 1.0)
-    google-cloud-discovery_engine (2.3.1)
+    google-cloud-discovery_engine (2.2.0)
       google-cloud-core (~> 1.6)
       google-cloud-discovery_engine-v1 (~> 2.0)
     google-cloud-discovery_engine-v1 (2.6.2)
@@ -566,7 +566,7 @@ DEPENDENCIES
   connection_pool
   csv
   debug
-  google-cloud-discovery_engine
+  google-cloud-discovery_engine (<= 2.2.0)
   govuk_app_config
   govuk_message_queue_consumer
   govuk_test
