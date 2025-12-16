@@ -43,16 +43,28 @@ module DiscoveryEngine::Query
     end
 
     def discovery_engine_params
-      {
-        query:,
-        serving_config: serving_config.name,
-        page_size:,
-        offset:,
-        order_by:,
-        filter:,
-        boost_spec:,
-        user_labels:,
-      }.compact
+      if query_params[:disable_query_time_boosts].present?
+        {
+          query:,
+          serving_config: serving_config.name,
+          page_size:,
+          offset:,
+          order_by:,
+          filter:,
+          user_labels:,
+        }.compact
+      else
+        {
+          query:,
+          serving_config: serving_config.name,
+          page_size:,
+          offset:,
+          order_by:,
+          filter:,
+          boost_spec:,
+          user_labels:,
+        }.compact
+      end
     end
 
     def query
