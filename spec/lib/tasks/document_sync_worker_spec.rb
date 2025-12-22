@@ -79,6 +79,17 @@ RSpec.describe "Document synchronisation tasks" do
       Rake::Task[task_name].reenable
     end
 
+    context "when the environment is not development" do
+      before do
+        allow(Rails.env).to receive(:development?).and_return(false)
+      end
+
+      it "raises an error" do
+        message = "This task should only be run in development"
+        expect { Rake::Task[task_name].invoke }.to raise_error(message)
+      end
+    end
+
     context "when the environment is development" do
       before do
         allow(Rails.env).to receive(:development?).and_return(true)
