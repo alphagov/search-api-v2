@@ -61,4 +61,52 @@ RSpec.describe "Document synchronisation tasks" do
       end
     end
   end
+
+  describe "document_sync_worker:create_queue" do
+    let(:task_name) { "document_sync_worker:create_queue" }
+
+    let(:session) do
+      instance_double(Bunny::Session, create_channel: channel).tap do |double|
+        allow(double).to receive(:start).and_return(double)
+      end
+    end
+    let(:channel) { instance_double(Bunny::Channel) }
+    let(:exchange) { instance_double(Bunny::Exchange, name: "published_documents") }
+
+    before do
+      allow(Bunny).to receive(:new).and_return(session)
+      allow(Bunny::Exchange).to receive(:new).with(channel, :topic, "published_documents").and_return(exchange)
+      Rake::Task[task_name].reenable
+    end
+
+    context "when the environment is not development" do
+      before do
+        allow(Rails.env).to receive(:development?).and_return(false)
+      end
+
+      it "raises an error" do
+        message = "This task should only be run in development"
+        expect { Rake::Task[task_name].invoke }.to raise_error(message)
+      end
+    end
+
+    context "when the environment is development" do
+      before do
+        allow(Rails.env).to receive(:development?).and_return(true)
+      end
+
+      it "creates the exchange and queue" do
+        ClimateControl.modify PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_NAME: "my queue" do
+          name = ENV.fetch("PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_NAME")
+          queue = instance_double(Bunny::Queue, name: name, bind: nil)
+
+          allow(channel).to receive(:queue).with(name).and_return(queue)
+
+          Rake::Task[task_name].invoke
+          expect(channel).to have_received(:queue).with(name)
+          expect(queue).to have_received(:bind).with(exchange, routing_key: "*.*")
+        end
+      end
+    end
+  end
 end
