@@ -51,7 +51,7 @@ jobs:
       # Redis running through govuk-infrastructure action
       REDIS_URL: redis://localhost:6379
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ inputs.ref || github.ref }}
           show-progress: false
