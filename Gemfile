@@ -29,8 +29,8 @@ end
 
 group :development, :test do
   gem "brakeman", require: false
-  gem "debug", platforms: %i[mri mingw x64_mingw]
   gem "govuk_test"
+  gem "pry-byebug"
   gem "rspec-rails"
   gem "rubocop-govuk", require: false
 end
