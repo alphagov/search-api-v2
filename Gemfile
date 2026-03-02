@@ -7,6 +7,7 @@ gem "activemodel", RAILS_GEMS_VERSION
 gem "activesupport", RAILS_GEMS_VERSION
 gem "railties", RAILS_GEMS_VERSION
 
+gem "benchmark"
 gem "bootsnap", require: false
 gem "connection_pool"
 gem "csv"
