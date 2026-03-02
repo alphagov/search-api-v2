@@ -39,13 +39,4 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions.
   config.action_controller.raise_on_missing_callback_actions = true
-
-  # Google Discovery Engine configuration
-  config.google_cloud_project_id = "project_id"
-  config.google_cloud_project_id_number = "project_id_number"
-  config.discovery_engine_default_collection_name = "[collection]"
-  config.discovery_engine_default_location_name = "[location]"
 end
-
-# TODO: remove this workaround once GovukPrometheusExporter initialisation is fixed in govuk_app_config.
-ENV["GOVUK_PROMETHEUS_EXPORTER"] = "force"
