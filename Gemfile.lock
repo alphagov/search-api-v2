@@ -124,7 +124,7 @@ GEM
       grpc (~> 1.41)
     googleapis-common-protos-types (1.22.0)
       google-protobuf (~> 4.26)
-    googleauth (1.15.1)
+    googleauth (1.16.2)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.2)
       google-logging-utils (~> 0.1)
@@ -578,6 +578,7 @@ DEPENDENCIES
   connection_pool
   csv
   google-cloud-discovery_engine
+  googleauth (>= 1.16.0)
   govuk_app_config
   govuk_message_queue_consumer
   govuk_test

@@ -29,6 +29,7 @@ end
 
 group :development, :test do
   gem "brakeman", require: false
+  gem "googleauth", ">= 1.16.0"
   gem "govuk_test"
   gem "pry-byebug"
   gem "rspec-rails"
