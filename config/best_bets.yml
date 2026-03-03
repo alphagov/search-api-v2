@@ -32,6 +32,12 @@ shared:
   "death of a child": /after-a-death
   "making tax digital": https://makingtaxdigital.campaign.gov.uk/
   "making tax digital for income tax": https://makingtaxdigital.campaign.gov.uk/
+  "travel": /foreign-travel-advice
+  "register abroad": /government/news/foreign-office-travel-advice-updates
+  "register": /government/news/foreign-office-travel-advice-updates
+  "evacuation": /government/news/foreign-office-travel-advice-updates
+  "middle east": /government/news/foreign-office-travel-advice-updates
+  "doha": /foreign-travel-advice/qatar
 
 test:
   "i want to test a single best bet": /here/you/go
