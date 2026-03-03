@@ -1,12 +1,13 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-RAILS_GEMS_VERSION = "8.0.1".freeze
+RAILS_GEMS_VERSION = "8.1.2".freeze
 gem "actionpack", RAILS_GEMS_VERSION
 gem "activemodel", RAILS_GEMS_VERSION
 gem "activesupport", RAILS_GEMS_VERSION
 gem "railties", RAILS_GEMS_VERSION
 
+gem "benchmark"
 gem "bootsnap", require: false
 gem "connection_pool"
 gem "csv"
