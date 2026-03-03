@@ -27,7 +27,7 @@ make search-api-v2
 ### Running search-api-v2
 
 ```bash
-gcloud auth application-default login
+gcloud auth application-default login --impersonate-service-account search-api-v2@search-api-v2-integration.iam.gserviceaccount.com
 govuk-docker up -d search-api-v2-app
 ```
 
