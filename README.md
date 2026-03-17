@@ -26,8 +26,17 @@ make search-api-v2
 
 ### Running search-api-v2
 
+#### Prerequisites
+
+1. You must be a member of the integration gcp access google group: govuk-gcp-access-integration@digital.cabinet-office.gov.uk
+2. You will need the email address of the custom search-api-v2 integration service account. This is the service account used by Search API v2 running in integration to authenticate its requests to Google Vertex AI Search.
+
+The email address can be found under *IAM and admin > Service Accounts* in the __Search API V2 Integration__ project at https://console.cloud.google.com.
+
+Note: There are two similarly named service accounts. Make sure to select the account used to provide access to the search-api-v2 Rails app and document sync worker.
+
 ```bash
-gcloud auth application-default login
+gcloud auth application-default login --impersonate-service-account <search-api-v2 service account email address>
 govuk-docker up -d search-api-v2-app
 ```
 
