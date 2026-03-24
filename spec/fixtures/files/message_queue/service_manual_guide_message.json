@@ -2,7 +2,7 @@
   "title": "5. Make sure everyone can use the service",
   "public_updated_at": "2022-05-30T10:20:28Z",
   "publishing_app": "service-manual-publisher",
-  "rendering_app": "government-frontend",
+  "rendering_app": "frontend",
   "update_type": "major",
   "phase": "beta",
   "analytics_identifier": null,

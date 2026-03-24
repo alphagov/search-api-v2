@@ -2,7 +2,7 @@
   "title": "Britische Botschaft Wien",
   "public_updated_at": "2013-06-28T16:28:46Z",
   "publishing_app": "whitehall",
-  "rendering_app": "government-frontend",
+  "rendering_app": "frontend",
   "update_type": "republish",
   "phase": "live",
   "analytics_identifier": "WO26",
