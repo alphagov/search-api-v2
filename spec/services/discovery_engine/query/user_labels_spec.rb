@@ -9,9 +9,9 @@ RSpec.describe DiscoveryEngine::Query::UserLabels do
     end
 
     context "with different app names" do
-      let(:user_agent) { "gds-api-adapters/1.0.0 (government-frontend)" }
+      let(:user_agent) { "gds-api-adapters/1.0.0 (frontend)" }
 
-      it { is_expected.to have_attributes(consumer: "government-frontend", consumer_group: "web") }
+      it { is_expected.to have_attributes(consumer: "frontend", consumer_group: "web") }
     end
 
     context "with different version numbers" do
