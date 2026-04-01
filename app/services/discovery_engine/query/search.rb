@@ -32,7 +32,9 @@ module DiscoveryEngine::Query
       @response ||= begin
         search_result =
           Metrics::Exported.observe_duration(:vertex_search_request_duration) do
-            DiscoveryEngine::Clients.search_service.search(discovery_engine_params)
+            ActiveSupport::Notifications.instrument("vertex_request") do
+              DiscoveryEngine::Clients.search_service.search(discovery_engine_params)
+            end
           end
 
         search_result.response
