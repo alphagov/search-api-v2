@@ -2,7 +2,9 @@ class SearchesController < ApplicationController
   before_action :validate_query_params, only: :show
 
   def show
-    render json: DiscoveryEngine::Query::Search.new(query_params, user_agent: request.user_agent).result_set
+    ActiveSupport::Notifications.instrument("vertex_search_request_duration") do
+      render json: DiscoveryEngine::Query::Search.new(query_params, user_agent: request.user_agent).result_set
+    end
   end
 
 private
