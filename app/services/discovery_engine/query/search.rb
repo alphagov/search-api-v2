@@ -37,9 +37,13 @@ module DiscoveryEngine::Query
 
         search_result.response
       rescue Google::Cloud::DeadlineExceededError, Google::Cloud::InternalError => e
-        Rails.logger.warn("#{self.class.name}: Did not get search results: '#{e.message}'")
+        Rails.logger.warn(debugging_message(e))
         raise DiscoveryEngine::InternalError
       end
+    end
+
+    def debugging_message(error)
+      "#{self.class.name}: Did not get search results for '#{discovery_engine_params.except(:boost_spec)}': #{error.message}"
     end
 
     def discovery_engine_params

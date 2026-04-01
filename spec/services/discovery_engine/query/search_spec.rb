@@ -17,6 +17,19 @@ RSpec.describe DiscoveryEngine::Query::Search do
        condition: "content_purpose_supergroup: ANY(\"news_and_communications\") AND public_timestamp: IN(*,503280000e)" }]
   end
 
+  let(:debugging_message) do
+    <<~HEREDOC.squish
+      DiscoveryEngine::Query::Search: Did not get search results for
+      '{query: "garden centres",
+      serving_config: "[collection]/engines/govuk_global/servingConfigs/default",
+      page_size: 10,
+      offset: 0,
+      filter: "filter-expression",
+      user_labels: {consumer: "test-consumer", consumer_group: "test-group"}}':
+      #{error_type}
+    HEREDOC
+  end
+
   before do
     allow(DiscoveryEngine::Clients).to receive(:search_service).and_return(client)
     allow(DiscoveryEngine::Query::Filters).to receive(:new).and_return(filters)
@@ -267,26 +280,23 @@ RSpec.describe DiscoveryEngine::Query::Search do
       end
 
       context "and the error is a Google::Cloud::DeadlineExceededError" do
-        let(:error) { Google::Cloud::DeadlineExceededError.new("Deadline error") }
+        let(:error_type) { "Deadline error" }
+        let(:error) { Google::Cloud::DeadlineExceededError.new(error_type) }
 
         it "raises an error and logs it to the Rails logger" do
           expect { search.result_set }.to raise_error(DiscoveryEngine::InternalError)
-
-          expect(Rails.logger).to have_received(:warn).with(
-            "DiscoveryEngine::Query::Search: Did not get search results: 'Deadline error'",
-          )
+          expect(Rails.logger).to have_received(:warn).with(debugging_message)
         end
       end
 
       context "and the error is a Google::Cloud::InternalError" do
-        let(:error) { Google::Cloud::DeadlineExceededError.new("Internal error") }
+        let(:error_type) { "Internal error" }
+        let(:error) { Google::Cloud::DeadlineExceededError.new(error_type) }
 
         it "raises an error and logs it to the Rails logger" do
           expect { search.result_set }.to raise_error(DiscoveryEngine::InternalError)
 
-          expect(Rails.logger).to have_received(:warn).with(
-            "DiscoveryEngine::Query::Search: Did not get search results: 'Internal error'",
-          )
+          expect(Rails.logger).to have_received(:warn).with(debugging_message)
         end
       end
     end
