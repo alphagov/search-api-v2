@@ -34,7 +34,7 @@ GEM
       uri (>= 0.13.1)
     addressable (2.8.9)
       public_suffix (>= 2.0.2, < 8.0)
-    amq-protocol (2.3.3)
+    amq-protocol (2.7.0)
     ast (2.4.3)
     base64 (0.3.0)
     benchmark (0.5.0)
@@ -145,7 +145,7 @@ GEM
       sentry-rails (>= 5.3, < 7.0)
       sentry-ruby (>= 5.3, < 7.0)
       statsd-ruby (~> 1.5)
-    govuk_message_queue_consumer (6.0.0)
+    govuk_message_queue_consumer (6.1.0)
       bunny (~> 2.17)
       ostruct
     govuk_test (4.1.2)
@@ -389,7 +389,7 @@ GEM
     opentelemetry-semantic_conventions (1.36.0)
       opentelemetry-api (~> 1.0)
     os (1.1.4)
-    ostruct (0.6.1)
+    ostruct (0.6.3)
     parallel (1.27.0)
     parser (3.3.10.1)
       ast (~> 2.4.1)
@@ -531,7 +531,6 @@ GEM
       bigdecimal
       concurrent-ruby (~> 1.0, >= 1.0.2)
       logger
-    set (1.1.1)
     signet (0.21.0)
       addressable (~> 2.8)
       faraday (>= 0.17.5, < 3.a)
@@ -544,9 +543,8 @@ GEM
     simplecov-html (0.13.1)
     simplecov_json_formatter (0.1.4)
     simpleidn (0.2.3)
-    sorted_set (1.0.3)
+    sorted_set (1.1.0)
       rbtree
-      set (~> 1.0)
     statsd-ruby (1.5.0)
     stringio (3.2.0)
     thor (1.5.0)
