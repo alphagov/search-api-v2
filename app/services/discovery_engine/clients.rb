@@ -3,9 +3,7 @@ module DiscoveryEngine
   module_function
 
     def completion_service
-      @completion_service ||= Google::Cloud::DiscoveryEngine.completion_service(version: :v1) do |config|
-        config.timeout = 1.second
-      end
+      @completion_service ||= Google::Cloud::DiscoveryEngine.completion_service(version: :v1)
     end
 
     def document_service
@@ -13,9 +11,7 @@ module DiscoveryEngine
     end
 
     def search_service
-      @search_service ||= Google::Cloud::DiscoveryEngine.search_service(version: :v1) do |config|
-        config.timeout = 4.seconds
-      end
+      @search_service ||= Google::Cloud::DiscoveryEngine.search_service(version: :v1)
     end
 
     def user_event_service
