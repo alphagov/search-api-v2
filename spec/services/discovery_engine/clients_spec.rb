@@ -30,7 +30,7 @@ RSpec.describe DiscoveryEngine::Clients do
   describe ".search_service with 3 second timeout" do
     subject { described_class.search_service }
 
-    include_examples "a client with timeout configured", :search_service, 4
+    include_examples "a client with timeout configured", :search_service, 2
   end
 
   describe ".completion_service with one second timeout" do
