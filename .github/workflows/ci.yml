@@ -51,11 +51,11 @@ jobs:
       # Redis running through govuk-infrastructure action
       REDIS_URL: redis://localhost:6379
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ inputs.ref || github.ref }}
           show-progress: false
-      - uses: ruby/setup-ruby@v1
+      - uses: ruby/setup-ruby@0cb964fd540e0a24c900370abf38a33466142735 # v1.305.0
         with:
           bundler-cache: true
       - name: Setup Redis
