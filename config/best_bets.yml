@@ -4,7 +4,7 @@ shared:
     - /government/people/test-person
     - /government/publications/test--150
     - /service-manual/technology/test-your-services-performance
-  "budget": 
+  "budget":
     - /government/topical-events/budget-2025
     - /government/publications/budget-2025
   "budget 2025":
@@ -22,6 +22,7 @@ shared:
   "anti social behaviour": /how-report-antisocial-behaviour
   "anti-social behaviour": /how-report-antisocial-behaviour
   "contact hmrc": /contact-hmrc
+  "crisis and resilience fund": /cost-living-help-local-council
   "mediation": /find-legal-advice
   "ombudsman": /find-legal-advice
   "plan for change": /missions
