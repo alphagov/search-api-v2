@@ -23,6 +23,11 @@ RSpec.describe "Making a search request" do
       })
     end
 
+    it "adds a vertex response time header to the response" do
+      get "/search.json"
+      expect(response.headers["vertex-response-time"]).not_to be_nil
+    end
+
     it "passes any query parameters and user agent to the search service in the expected format" do
       get "/search.json?q=garden+centres&start=11&count=22&filter_public_timestamp=from:2019-01-01",
           headers: { "User-Agent" => "gds-api-adapters/99.2.0 (finder-frontend)" }
