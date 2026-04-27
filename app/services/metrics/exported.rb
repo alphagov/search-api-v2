@@ -31,6 +31,12 @@ module Metrics
         "total time taken for google vertex to respond to an autocomplete request (seconds)",
         buckets: [0.1, 0.5, 1, 2, 5],
       ),
+      search_controller_request_duration: CLIENT.register(
+        :histogram,
+        "search_api_v2_search_controller_request_duration",
+        "total time taken for the show action of the search controller (seconds)",
+        buckets: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10, 15, 25, 50],
+      ),
     }.freeze
 
     def self.increment_counter(counter, labels = {})
