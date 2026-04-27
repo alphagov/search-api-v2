@@ -4,6 +4,7 @@ RSpec.describe "Making a search request" do
   let(:results) { [Result.new(content_id: "123"), Result.new(content_id: "456")] }
 
   before do
+    allow(Metrics::Exported).to receive(:observe_duration).and_call_original
     allow(DiscoveryEngine::Query::Search).to receive(:new).and_return(search_service)
   end
 
@@ -43,6 +44,14 @@ RSpec.describe "Making a search request" do
 
       expect(response).to have_http_status(:bad_request)
       expect(JSON.parse(response.body)).to eq("error" => "Invalid query parameter")
+    end
+
+    it "logs the request duration" do
+      get "/search.json"
+
+      expect(Metrics::Exported)
+        .to have_received(:observe_duration)
+        .with(:search_controller_request_duration)
     end
 
     context "when search returns a DiscoveryEngine::InternalError" do
