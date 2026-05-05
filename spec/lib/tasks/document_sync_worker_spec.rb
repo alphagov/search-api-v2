@@ -100,10 +100,10 @@ RSpec.describe "Document synchronisation tasks" do
           name = ENV.fetch("PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_NAME")
           queue = instance_double(Bunny::Queue, name: name, bind: nil)
 
-          allow(channel).to receive(:queue).with(name).and_return(queue)
+          allow(channel).to receive(:queue).with(name, anything).and_return(queue)
 
           Rake::Task[task_name].invoke
-          expect(channel).to have_received(:queue).with(name)
+          expect(channel).to have_received(:queue).with(name, durable: true)
           expect(queue).to have_received(:bind).with(exchange, routing_key: "*.*")
         end
       end
