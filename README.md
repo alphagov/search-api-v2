@@ -3,10 +3,11 @@ API and synchronisation worker for general site search on GOV.UK
 
 This application powers the new site search for GOV.UK using Google Cloud Platform (GCP)'s [Vertex
 AI Search][vertex-docs] ("Discovery Engine") product as its underlying search engine. It provides
-two core pieces of functionality:
+three core pieces of functionality:
 - An API that is "minimally compatible" with the existing `search-api` REST interface to the extent
   necessary to power the ["site search" (`/search/all`) finder][search-all-finder].
-- A synchonisation worker that receives content updates from the Publishing API message queue and
+- An [autocomplete function](docs/search_autocomplete.md) that provides our users with helpful suggestions to complete their query as they type in search fields
+- A synchronisation worker that receives content updates from the Publishing API message queue and
   updates the Discovery Engine dataset accordingly
 
 ## Local development
