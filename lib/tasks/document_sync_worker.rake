@@ -9,7 +9,7 @@ namespace :document_sync_worker do
     bunny = Bunny.new
     channel = bunny.start.create_channel
     exch = Bunny::Exchange.new(channel, :topic, "published_documents")
-    channel.queue(ENV.fetch("PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_NAME")).bind(exch, routing_key: "*.*")
+    channel.queue(ENV.fetch("PUBLISHED_DOCUMENTS_MESSAGE_QUEUE_NAME"), durable: true).bind(exch, routing_key: "*.*")
   end
 
   desc "Listens to and processes messages from the published documents queue"
