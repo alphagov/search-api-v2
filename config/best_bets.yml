@@ -39,6 +39,8 @@ shared:
   "evacuation": /government/news/foreign-office-travel-advice-updates
   "middle east": /government/news/foreign-office-travel-advice-updates
   "doha": /foreign-travel-advice/qatar
+  "chat": /guidance/download-the-govuk-app
+  "gov.uk chat": /guidance/download-the-govuk-app
 
 test:
   "i want to test a single best bet": /here/you/go
