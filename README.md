@@ -1,13 +1,13 @@
 # search-api-v2
-API and synchronisation worker for general site search on GOV.UK
+API and synchronisation worker for general site search on GOV.UK.
 
-This application powers the new site search for GOV.UK using Google Cloud Platform (GCP)'s [Vertex
-AI Search][vertex-docs] ("Discovery Engine") product as its underlying search engine. It provides
+This application powers the new site search for GOV.UK using Google Cloud Platform (GCP)'s [Agent
+Search][agent-search-docs] ("Discovery Engine") product as its underlying search engine. It provides
 two core pieces of functionality:
 - An API that is "minimally compatible" with the existing `search-api` REST interface to the extent
   necessary to power the ["site search" (`/search/all`) finder][search-all-finder].
 - A synchonisation worker that receives content updates from the Publishing API message queue and
-  updates the Discovery Engine dataset accordingly
+  updates the Discovery Engine dataset accordingly.
 
 ## Local development
 The official way of running this application locally is through [GOV.UK Docker][govuk-docker], where
@@ -29,7 +29,7 @@ make search-api-v2
 #### Prerequisites
 
 1. You must be a member of the integration gcp access google group: govuk-gcp-access-integration@digital.cabinet-office.gov.uk
-2. You will need the email address of the custom search-api-v2 integration service account. This is the service account used by Search API v2 running in integration to authenticate its requests to Google Vertex AI Search.
+2. You will need the email address of the custom search-api-v2 integration service account. This is the service account used by Search API v2 running in integration to authenticate its requests to Discovery Engine.
 
 The email address can be found under *IAM and admin > Service Accounts* in the __Search API V2 Integration__ project at https://console.cloud.google.com.
 
@@ -101,14 +101,14 @@ time being, it is intentionally not a complete replacement for [Search API][sear
 See [Search API compatibility](docs/search_api_compatibility.md) for more information about our
 compatibility design choices.
 
-## "Vertex" vs "Discovery Engine"
-The marketing name of the search product we use (_Google Vertex AI Search and Conversation_) has
-undergone several changes while this application was first developed, and some concepts have
-different naming in the Google Cloud Platform UI compared to the actual underlying APIs themselves.
+## "Agent Search" vs "Discovery Engine"
+The marketing name of the search product we use (_Google Cloud Agent Search_) has
+undergone several changes since this application was first developed, and some concepts have
+different naming in the Google Cloud Platform UI compared to the actual underlying APIs.
 
-We have chosen to exclusively use the more stable API naming (_Discovery Engine_, _engine_ instead
+We prefer to use the more stable API naming (_Discovery Engine_, _engine_ instead
 of _app_, etc.) throughout the codebase and documentation to avoid having to rename things as the
-product reached general availability, but you may see the terms "Vertex" or "Vertex Search" as well
+product reached general availability, but you may see the terms "Agent Search" as well
 as some other marketing terms used in some project artefacts.
 
 ## Related projects
@@ -121,7 +121,7 @@ as some other marketing terms used in some project artefacts.
       Engine including cloud resources and event ingestion for continuous training of the search
       engine
 
-[vertex-docs]: https://cloud.google.com/generative-ai-app-builder/docs/introduction
+[agent-search-docs]: https://cloud.google.com/generative-ai-app-builder/docs/introduction
 [search-all-finder]: https://www.gov.uk/search/all
 [govuk-docker]: https://github.com/alphagov/govuk-docker
 [env]: https://github.com/alphagov/govuk-docker/blob/main/projects/search-api-v2/docker-compose.yml

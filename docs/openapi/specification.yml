@@ -475,7 +475,7 @@ components:
             The suggested query text with highlighting.
 
             Note that this is always just the entire `text` property wrapped in `<mark>` tags as
-            Vertex AI Search does not provide highlighting for individual parts of the query.
+            Discovery Engine does not provide highlighting for individual parts of the query.
           example: "<mark>driving test</mark>"
 
     AutocompleteResponse:

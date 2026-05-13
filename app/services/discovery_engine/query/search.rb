@@ -90,7 +90,7 @@ module DiscoveryEngine::Query
         DEFAULT_ORDER_BY
       else
         # This helps us spot clients that are sending unexpected values and probably should continue
-        # to use the previoius search-api instead of this API.
+        # to use the previous search-api instead of this API.
         Rails.logger.warn("Unexpected order_by value: #{query_params[:order].inspect}")
         DEFAULT_ORDER_BY
       end
@@ -110,7 +110,7 @@ module DiscoveryEngine::Query
     end
 
     def news_recency_boost_specs
-      # Since we first created `NewsRecencyBoost`, Vertex AI Search has gained the equivalent
+      # Since we first created `NewsRecencyBoost`, Discovery Engine has gained the equivalent
       # functionality natively. As of Mar 2025, we are AB testing this new feature on the `variant`
       # serving configuration, so we do not want to apply our custom boost if that is the serving
       # config used for the current search, as it would cause content to be boosted twice.
