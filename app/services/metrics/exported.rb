@@ -18,17 +18,17 @@ module Metrics
         "total time taken to process an incoming message from Publishing API (seconds)",
         buckets: [0.1, 0.5, 1, 2, 5],
       ),
-      ### VAIS response duration histograms
+      ### Discovery Engine (perviously marketed as "Vertex AI Search") response duration histograms
       vertex_search_request_duration: CLIENT.register(
         :histogram,
         "search_api_v2_vertex_search_request_duration",
-        "total time taken for google vertex to respond to a search request (seconds)",
+        "total time taken for google cloud discovery engine to respond to a search request (seconds)",
         buckets: [0.1, 0.5, 1, 2, 5],
       ),
       vertex_autocomplete_request_duration: CLIENT.register(
         :histogram,
         "search_api_v2_vertex_autocomplete_request_duration",
-        "total time taken for google vertex to respond to an autocomplete request (seconds)",
+        "total time taken for google cloud discovery engine to respond to an autocomplete request (seconds)",
         buckets: [0.1, 0.5, 1, 2, 5],
       ),
       search_controller_request_duration: CLIENT.register(

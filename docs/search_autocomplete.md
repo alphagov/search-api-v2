@@ -1,5 +1,5 @@
 # Search autocomplete
-We use Vertex AI Search's [built-in autocomplete functionality][vais-ac] to provide our users with
+We use Discovery Engine's [built-in autocomplete functionality][discovery-engine-ac] to provide our users with
 helpful suggestions to complete their query as they type in search fields.
 
 Search API v2 provides an API to return suggestions, which the [`search_with_autocomplete`
@@ -31,6 +31,6 @@ This will cause an empty array of suggestions to be returned to all clients (web
 
 [component]: https://components.publishing.service.gov.uk/component-guide/search_with_autocomplete
 [ff-proxy]: https://github.com/alphagov/finder-frontend/blob/main/app/controllers/api/autocompletes_controller.rb
-[vais-ac]: https://cloud.google.com/generative-ai-app-builder/docs/configure-autocomplete
+[discovery-engine-ac]: https://cloud.google.com/generative-ai-app-builder/docs/configure-autocomplete
 [values-production.yaml]: https://github.com/alphagov/govuk-helm-charts/blob/main/charts/app-config/values-production.yaml
 [search-admin-denylist]: https://search-admin.publishing.service.gov.uk/completion_denylist_entries

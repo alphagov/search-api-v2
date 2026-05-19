@@ -40,7 +40,7 @@ module PublishingApi
         document_type: document_hash[:document_type],
         content_purpose_supergroup: document_hash[:content_purpose_supergroup],
         part_of_taxonomy_tree:,
-        # Vertex can only currently boost on numeric fields, not booleans
+        # Discovery Engine can only currently boost on numeric fields, not booleans
         is_historic: historic? ? 1 : 0,
         government_name:,
         organisation_state:,
