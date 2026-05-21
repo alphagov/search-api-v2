@@ -3,9 +3,10 @@ API and synchronisation worker for general site search on GOV.UK.
 
 This application powers the new site search for GOV.UK using Google Cloud Platform (GCP)'s [Agent
 Search][agent-search-docs] ("Discovery Engine") product as its underlying search engine. It provides
-two core pieces of functionality:
+three core pieces of functionality:
 - An API that is "minimally compatible" with the existing `search-api` REST interface to the extent
   necessary to power the ["site search" (`/search/all`) finder][search-all-finder].
+- An [autocomplete function](docs/search_autocomplete.md) that provides our users with helpful suggestions to complete their query as they type in search fields.
 - A synchonisation worker that receives content updates from the Publishing API message queue and
   updates the Discovery Engine dataset accordingly.
 
@@ -112,14 +113,13 @@ product reached general availability, but you may see the terms "Agent Search" a
 as some other marketing terms used in some project artefacts.
 
 ## Related projects
+- [`govuk-infrastructure`][govuk-infrastructure]: Provisions infrastructure for Discovery Engine, see [gcp-search-api-v2][govuk-infrastructure-gcp-search-api-v2] and [search-api-v2][govuk-infrastructure-search-api-v2] terraform deployment folders
 - [`finder-frontend`][finder-frontend]: Displays results from this application's API depending on
-      the "finder" in use and some other conditions
+  the "finder" in use and some other conditions
 - [`search-api`][search-api]: The original Search API, a subset of which this application's API
-      replicates
+  replicates
 - [`search-api-v2-beta-features`][search-api-v2-beta-features]: Runs evaluations for site-search. Also used to experiment with Google Discovery Engine beta features.
-- [`search-v2-infrastructure`][search-v2-infrastructure]: Provisions infrastructure for Discovery
-      Engine including cloud resources and event ingestion for continuous training of the search
-      engine
+- [`search-api-v2-dataform`][search-api-v2-dataform]: Hosts data pipelines that process and transform GA4 user data into judgement lists for Discovery Engine evaluation, and for ingestion into Discovery Engine for continuous training of the search engine.
 
 [agent-search-docs]: https://cloud.google.com/generative-ai-app-builder/docs/introduction
 [search-all-finder]: https://www.gov.uk/search/all
@@ -128,4 +128,7 @@ as some other marketing terms used in some project artefacts.
 [finder-frontend]: https://github.com/alphagov/finder-frontend
 [search-api]: https://github.com/alphagov/search-api
 [search-api-v2-beta-features]: https://github.com/alphagov/search-api-v2-beta-features
-[search-v2-infrastructure]: https://github.com/alphagov/search-v2-infrastructure
+[govuk-infrastructure]: https://github.com/alphagov/govuk-infrastructure
+[govuk-infrastructure-gcp-search-api-v2]: https://github.com/alphagov/govuk-infrastructure/tree/main/terraform/deployments/gcp-search-api-v2
+[govuk-infrastructure-search-api-v2]: https://github.com/alphagov/govuk-infrastructure/tree/main/terraform/deployments/search-api-v2
+[search-api-v2-dataform]: https://github.com/alphagov/search-api-v2-dataform
