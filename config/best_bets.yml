@@ -41,6 +41,9 @@ shared:
   "doha": /foreign-travel-advice/qatar
   "chat": /guidance/download-the-govuk-app
   "gov.uk chat": /guidance/download-the-govuk-app
+  "mandelson": /government/publications/update-on-the-government-response-to-the-humble-address-motion
+  "mandelson files": /government/publications/update-on-the-government-response-to-the-humble-address-motion
+  "peter mandelson": /government/publications/update-on-the-government-response-to-the-humble-address-motion
 
 test:
   "i want to test a single best bet": /here/you/go
