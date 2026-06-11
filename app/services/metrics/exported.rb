@@ -10,7 +10,15 @@ module Metrics
         labels: %i[action],
       ),
     }.freeze
-    HISTOGRAMS = {
+    COUNTER_HISTOGRAMS = {
+      discovery_engine_autocomplete_suggestions_response: CLIENT.register(
+        :histogram,
+        "search_api_v2_discovery_engine_autocomplete_suggestions_response",
+        "number of autocomplete suggestions returned by discovery engine",
+        buckets: [0, 1, 2, 3, 4, 5],
+      ),
+    }.freeze
+    DURATION_HISTOGRAMS = {
       ### Syncing histograms
       total_processing_duration: CLIENT.register(
         :histogram,
@@ -47,8 +55,16 @@ module Metrics
       # Metrics are best effort only, don't raise if they fail
     end
 
+    def self.observe_count(histogram, count, labels = {})
+      Rails.logger.warn("Unknown histogram: #{histogram}") and return unless COUNTER_HISTOGRAMS.key?(histogram)
+
+      COUNTER_HISTOGRAMS[histogram].observe(count, labels)
+    rescue StandardError
+      # Metrics are best effort only, don't raise if they fail
+    end
+
     def self.observe_duration(histogram, labels = {}, &block)
-      unless HISTOGRAMS.key?(histogram)
+      unless DURATION_HISTOGRAMS.key?(histogram)
         Rails.logger.warn("Unknown histogram: #{histogram}")
         return block.call
       end
@@ -59,7 +75,7 @@ module Metrics
       end
 
       begin
-        HISTOGRAMS[histogram].observe(duration, labels)
+        DURATION_HISTOGRAMS[histogram].observe(duration, labels)
       rescue StandardError
         # Metrics are best effort only, don't raise if they fail
       end
