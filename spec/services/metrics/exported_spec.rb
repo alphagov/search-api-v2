@@ -72,7 +72,7 @@ RSpec.describe Metrics::Exported do
     it "fails gracefully if the operation raises an error" do
       allow(histogram).to receive(:observe).and_raise("boom")
 
-      expect(described_class.observe_duration(:bar) { "result" }).to eq("result")
+      expect(described_class.observe_duration(:foo) { "result" }).to eq("result")
     end
   end
 end
