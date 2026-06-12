@@ -8,6 +8,9 @@ RSpec.describe DiscoveryEngine::Autocomplete::Complete do
     allow(Metrics::Exported)
       .to receive(:observe_duration)
       .and_call_original
+    allow(Metrics::Exported)
+      .to receive(:observe_count)
+      .and_call_original
   end
 
   describe "#completion_result" do
@@ -39,12 +42,26 @@ RSpec.describe DiscoveryEngine::Autocomplete::Complete do
         .with(:vertex_autocomplete_request_duration)
     end
 
+    it "logs the number of autocomplete suggestions" do
+      completion_result
+
+      expect(Metrics::Exported)
+        .to have_received(:observe_count)
+        .with(:discovery_engine_autocomplete_suggestions_response, 3)
+    end
+
     context "when the query is empty" do
       let(:query) { "" }
 
       it "returns an empty array and does not make a request" do
         expect(completion_result.suggestions).to eq([])
         expect(client).not_to have_received(:complete_query)
+      end
+
+      it "doesn't log the number of autocomplete suggestions" do
+        completion_result
+
+        expect(Metrics::Exported).not_to have_received(:observe_count)
       end
     end
 
@@ -72,6 +89,14 @@ RSpec.describe DiscoveryEngine::Autocomplete::Complete do
             "DiscoveryEngine::Autocomplete::Complete: Did not get autocomplete suggestion: 'Deadline error'",
           )
         end
+
+        it "logs that zero autocomplete suggestions were returned" do
+          completion_result
+
+          expect(Metrics::Exported)
+            .to have_received(:observe_count)
+            .with(:discovery_engine_autocomplete_suggestions_response, 0)
+        end
       end
 
       context "and the error is a Google::Cloud::InternalError" do
@@ -83,6 +108,14 @@ RSpec.describe DiscoveryEngine::Autocomplete::Complete do
           expect(Rails.logger).to have_received(:warn).with(
             "DiscoveryEngine::Autocomplete::Complete: Did not get autocomplete suggestion: 'Internal error'",
           )
+        end
+
+        it "logs that zero autocomplete suggestions were returned" do
+          completion_result
+
+          expect(Metrics::Exported)
+            .to have_received(:observe_count)
+            .with(:discovery_engine_autocomplete_suggestions_response, 0)
         end
       end
     end

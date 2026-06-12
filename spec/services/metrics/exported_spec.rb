@@ -23,11 +23,36 @@ RSpec.describe Metrics::Exported do
     end
   end
 
+  describe ".observe_count" do
+    let(:histogram) { double(observe: nil) }
+    let(:count) { 3 }
+
+    before do
+      stub_const("Metrics::Exported::COUNTER_HISTOGRAMS", { foo: histogram })
+    end
+
+    it "observes the passed in count for the given histogram with the given labels" do
+      described_class.observe_count(:foo, :count, bar: "baz")
+
+      expect(histogram).to have_received(:observe).with(:count, bar: "baz")
+    end
+
+    it "fails gracefully if the histogram does not exist" do
+      expect { described_class.observe_count(:bar, :count) }.not_to raise_error
+    end
+
+    it "fails gracefully if the operation raises an error" do
+      allow(histogram).to receive(:observe).and_raise("boom")
+
+      expect { described_class.observe_count(:foo, :count) }.not_to raise_error
+    end
+  end
+
   describe ".observe_duration" do
     let(:histogram) { double(observe: nil) }
 
     before do
-      stub_const("Metrics::Exported::HISTOGRAMS", { foo: histogram })
+      stub_const("Metrics::Exported::DURATION_HISTOGRAMS", { foo: histogram })
     end
 
     it "observes the duration of the given block for the given histogram with the given labels" do
@@ -47,7 +72,7 @@ RSpec.describe Metrics::Exported do
     it "fails gracefully if the operation raises an error" do
       allow(histogram).to receive(:observe).and_raise("boom")
 
-      expect(described_class.observe_duration(:bar) { "result" }).to eq("result")
+      expect(described_class.observe_duration(:foo) { "result" }).to eq("result")
     end
   end
 end
