@@ -26,6 +26,7 @@ module DiscoveryEngine::Autocomplete
               .complete_query(complete_query_request)
           end
         suggestions = response.query_suggestions.map(&:suggestion)
+        Rails.logger.warn("Completion service did not return any autocomplete suggestions") if suggestions.nil?
       rescue Google::Cloud::DeadlineExceededError, Google::Cloud::InternalError => e
         Rails.logger.warn("#{self.class.name}: Did not get autocomplete suggestion: '#{e.message}'")
         suggestions = []
