@@ -6,6 +6,7 @@
 shared:
   - !ruby/regexp /^placeholder/ # any placeholder type
   - completed_transaction
+  - !ruby/regexp /^content_block/
   - email_alert_signup
   - embassies_index
   - facet
