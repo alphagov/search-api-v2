@@ -1,4 +1,5 @@
 class SearchesController < ApplicationController
+  rescue_from DiscoveryEngine::InternalError, with: :render_internal_error
   before_action :validate_query_params, only: :show
 
   def show
@@ -15,5 +16,9 @@ private
 
   def validate_query_params
     raise ActionController::BadRequest, "Invalid query parameter" unless params.fetch(:q, "").is_a?(String)
+  end
+
+  def render_internal_error
+    render json: { "error": "Internal server error" }, status: :internal_server_error
   end
 end
