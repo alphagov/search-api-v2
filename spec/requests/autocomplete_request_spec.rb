@@ -33,16 +33,16 @@ RSpec.describe "Making an autocomplete request" do
     end
   end
 
-  context "when autocomplete returns a DiscoveryEngine::InternalError" do
-    before do
-      allow(DiscoveryEngine::Autocomplete::Complete).to receive(:new)
-        .and_raise(DiscoveryEngine::InternalError)
-    end
+  context "when autocomplete returns zero suggestions" do
+    let(:completion_result) { CompletionResult.new(suggestions: []) }
 
-    it "returns a 500 response" do
+    it "returns empty suggestions" do
       get "/autocomplete.json?q=foo"
 
-      expect(response).to have_http_status(:internal_server_error)
+      expect(response).to have_http_status(:ok)
+      expect(JSON.parse(response.body)).to eq({
+        "suggestions" => [],
+      })
     end
   end
 end
