@@ -97,7 +97,7 @@ RSpec.describe DiscoveryEngine::Query::Search do
       it "logs the request duration" do
         expect(Metrics::Exported)
           .to have_received(:observe_duration)
-          .with(:vertex_search_request_duration)
+          .with(:discovery_engine_search_request_duration)
       end
 
       context "when start and count are specified" do
