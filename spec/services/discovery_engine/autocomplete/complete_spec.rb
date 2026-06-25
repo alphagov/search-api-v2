@@ -39,7 +39,7 @@ RSpec.describe DiscoveryEngine::Autocomplete::Complete do
 
       expect(Metrics::Exported)
         .to have_received(:observe_duration)
-        .with(:vertex_autocomplete_request_duration)
+        .with(:discovery_engine_autocomplete_request_duration)
     end
 
     it "logs the number of autocomplete suggestions" do

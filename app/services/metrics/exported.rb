@@ -32,11 +32,10 @@ module Metrics
         "search_api_v2_discovery_engine_search_request_duration",
         "total time taken for google cloud discovery engine to respond to a search request (seconds)",
       ),
-      vertex_autocomplete_request_duration: CLIENT.register(
+      discovery_engine_autocomplete_request_duration: CLIENT.register(
         :histogram,
-        "search_api_v2_vertex_autocomplete_request_duration",
+        "search_api_v2_discovery_engine_autocomplete_request_duration",
         "total time taken for google cloud discovery engine to respond to an autocomplete request (seconds)",
-        buckets: [0.1, 0.5, 1, 2, 5],
       ),
       search_controller_request_duration: CLIENT.register(
         :histogram,
