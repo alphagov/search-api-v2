@@ -31,7 +31,7 @@ module DiscoveryEngine::Query
     def response
       @response ||= begin
         search_result =
-          Metrics::Exported.observe_duration(:vertex_search_request_duration) do
+          Metrics::Exported.observe_duration(:discovery_engine_search_request_duration) do
             DiscoveryEngine::Clients.search_service.search(discovery_engine_params)
           end
 

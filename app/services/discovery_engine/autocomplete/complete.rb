@@ -20,7 +20,7 @@ module DiscoveryEngine::Autocomplete
 
       begin
         response =
-          Metrics::Exported.observe_duration(:vertex_autocomplete_request_duration) do
+          Metrics::Exported.observe_duration(:discovery_engine_autocomplete_request_duration) do
             DiscoveryEngine::Clients
               .completion_service
               .complete_query(complete_query_request)
