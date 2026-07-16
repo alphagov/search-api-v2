@@ -16,6 +16,12 @@ private
 
   def validate_query_params
     raise ActionController::BadRequest, "Invalid query parameter" unless params.fetch(:q, "").is_a?(String)
+
+    max_start = DiscoveryEngine::Query::Search::MAX_RESULTS_VALUE
+    start = params.fetch(:start, 0).to_i
+    if start.negative? || start > max_start
+      raise ActionController::BadRequest, "Invalid start value"
+    end
   end
 
   def render_internal_error

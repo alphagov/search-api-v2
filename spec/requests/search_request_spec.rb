@@ -46,6 +46,20 @@ RSpec.describe "Making a search request" do
       expect(JSON.parse(response.body)).to eq("error" => "Invalid query parameter")
     end
 
+    it "returns a bad request if the start parameter is negative" do
+      get "/search.json?start=-1"
+
+      expect(response).to have_http_status(:bad_request)
+      expect(JSON.parse(response.body)).to eq("error" => "Invalid start value")
+    end
+
+    it "returns a bad request if the start parameter is too large" do
+      get "/search.json?start=2_147_483_648"
+
+      expect(response).to have_http_status(:bad_request)
+      expect(JSON.parse(response.body)).to eq("error" => "Invalid start value")
+    end
+
     it "logs the request duration" do
       get "/search.json"
 

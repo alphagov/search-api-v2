@@ -3,6 +3,7 @@ module DiscoveryEngine::Query
     DEFAULT_PAGE_SIZE = 10
     DEFAULT_OFFSET = 0
     DEFAULT_ORDER_BY = nil # not specifying an order_by means the results are ordered by relevance
+    MAX_RESULTS_VALUE = 2_147_483_647
 
     def initialize(
       query_params,
