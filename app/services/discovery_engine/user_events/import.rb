@@ -59,6 +59,10 @@ module DiscoveryEngine::UserEvents
         count = results.joined_events_count + results.unjoined_events_count
 
         logger.info("Successfully imported #{count} user events")
+
+        if !date.today? && count < minimum_events_threshold
+          raise "Imported events count of #{count} is lower than minimum events threshold of #{minimum_events_threshold}"
+        end
       end
     end
 
@@ -82,6 +86,16 @@ module DiscoveryEngine::UserEvents
       @logger ||= ActiveSupport::TaggedLogging
         .new(Rails.logger)
         .tagged(self.class.name, "event_type=#{event_type}", "date=#{date}")
+    end
+
+    def minimum_events_threshold
+      if event_type == "search"
+        50_000
+      elsif event_type == "view-item"
+        300_000
+      else
+        200
+      end
     end
   end
 end

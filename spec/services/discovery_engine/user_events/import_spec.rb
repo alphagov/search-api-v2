@@ -88,5 +88,20 @@ RSpec.describe DiscoveryEngine::UserEvents::Import do
         expect { import.call }.to raise_error("BROKEN")
       end
     end
+
+    context "when user events are missing" do
+      let(:date) { Date.new(2000, 1, 1) }
+      let(:error) { "Imported events count of 20 is lower than minimum events threshold of 50000" }
+      let(:missing_user_events_response) { double("response", error?: false, results: double(joined_events_count: 20, unjoined_events_count: 0)) }
+
+      before do
+        allow(operation).to receive(:wait_until_done!).and_yield(missing_user_events_response)
+        allow(operation).to receive(:wait_until_done!).and_raise(error)
+      end
+
+      it "raises an error" do
+        expect { import.call }.to raise_error(error)
+      end
+    end
   end
 end
