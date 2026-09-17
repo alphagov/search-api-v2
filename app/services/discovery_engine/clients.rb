@@ -14,7 +14,7 @@ module DiscoveryEngine
 
     def search_service
       @search_service ||= Google::Cloud::DiscoveryEngine.search_service(version: :v1) do |config|
-        config.timeout = 2.0
+        config.timeout = 0.01
         config.retry_policy = {
           initial_delay: 1.0, # Seconds to wait before the first retry
           max_delay: 2.0, # Maximum delay between retries
