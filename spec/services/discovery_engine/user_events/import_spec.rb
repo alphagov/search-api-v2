@@ -38,16 +38,13 @@ RSpec.describe DiscoveryEngine::UserEvents::Import do
   end
 
   describe "#call" do
-    before do
-      Timecop.freeze(Time.zone.local(1989, 12, 13, 1, 2, 3)) do
-        import.call
-      end
-    end
+    around { |example| Timecop.freeze(Time.zone.local(1989, 12, 13, 1, 2, 3)) { example.run } }
 
     context "with a specific date" do
       let(:date) { Date.new(2000, 1, 1) }
 
       it "triggers an import of that day's user events" do
+        import.call
         expect(client).to have_received(:import_user_events).with(
           bigquery_source: {
             project_id: "my-fancy-project",
@@ -64,6 +61,7 @@ RSpec.describe DiscoveryEngine::UserEvents::Import do
       let(:date) { Date.new(1989, 12, 13) }
 
       it "triggers an import of today's intraday user events" do
+        import.call
         expect(client).to have_received(:import_user_events).with(
           bigquery_source: {
             project_id: "my-fancy-project",
@@ -86,6 +84,33 @@ RSpec.describe DiscoveryEngine::UserEvents::Import do
 
       it "raises an error" do
         expect { import.call }.to raise_error("BROKEN")
+      end
+    end
+
+    context "when an import is missing user events" do
+      let(:date) { Date.new(2000, 1, 1) }
+      let(:error) { "Imported events count of 20 is lower than minimum events threshold of 50000" }
+      let(:missing_user_events_response) { double("response", error?: false, results: double(joined_events_count: 20, unjoined_events_count: 0)) }
+
+      before do
+        allow(operation).to receive(:wait_until_done!).and_yield(missing_user_events_response)
+      end
+
+      it "raises an error" do
+        expect { import.call }.to raise_error(error)
+      end
+    end
+
+    context "when an import is missing today's user events" do
+      let(:date) { Date.new(1989, 12, 13) }
+      let(:missing_user_events_response) { double("response", error?: false, results: double(joined_events_count: 20, unjoined_events_count: 0)) }
+
+      before do
+        allow(operation).to receive(:wait_until_done!).and_yield(missing_user_events_response)
+      end
+
+      it "does not raise an error" do
+        expect { import.call }.not_to raise_error
       end
     end
   end
