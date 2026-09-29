@@ -28,6 +28,14 @@ module DiscoveryEngine::UserEvents
     # The event types we can import from the BigQuery dataset
     EVENT_TYPES = %w[search view-item view-item-external-link].freeze
 
+    # The minimum event thresholds beneath which we deem the import to have been unsuccessful
+    # We don't need to be notified if an intraday import is unsuccessful
+    MINIMUM_EVENTS_THRESHOLDS = {
+      "search-event" => 50_000,
+      "view-item-event" => 300_000,
+      "view-item-external-link-event" => 200,
+    }.tap { |h| h.default = 0 }.freeze
+
     def self.import_all(date)
       EVENT_TYPES.each do |event_type|
         new(event_type, date:).call
@@ -59,6 +67,10 @@ module DiscoveryEngine::UserEvents
         count = results.joined_events_count + results.unjoined_events_count
 
         logger.info("Successfully imported #{count} user events")
+
+        if count < MINIMUM_EVENTS_THRESHOLDS[table_id]
+          raise "Imported events count of #{count} is lower than minimum events threshold of #{MINIMUM_EVENTS_THRESHOLDS[table_id]}"
+        end
       end
     end
 
