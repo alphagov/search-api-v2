@@ -1,9 +1,4 @@
 shared:
-  # TODO: Test data that we can delete once demo'ed
-  "i want to test best bets":
-    - /government/people/test-person
-    - /government/publications/test--150
-    - /service-manual/technology/test-your-services-performance
   "budget":
     - /government/topical-events/budget-2025
     - /government/publications/budget-2025
@@ -46,6 +41,22 @@ shared:
   "peter mandelson": /government/publications/update-on-the-government-response-to-the-humble-address-motion
   "code of practice": /government/publications/dwp-direct-deduction-and-disqualification-from-driving-orders-code-of-practice/dwp-direct-deduction-and-disqualification-from-driving-orders-code-of-practice
   "codes of practice": /government/publications/dwp-direct-deduction-and-disqualification-from-driving-orders-code-of-practice/dwp-direct-deduction-and-disqualification-from-driving-orders-code-of-practice
+  "announcements":
+    - /search/news-and-communications
+    - /search/research-and-statistics
+  "cos": /uk-visa-sponsorship-employers
+  "ni":
+    - /national-insurance
+    - /check-national-insurance-record
+  "nic": /check-national-insurance-record
+  "nics": /check-national-insurance-record
+  "nino":
+    - /find-national-insurance-number
+    - /apply-national-insurance-number
+  "p87": /tax-relief-for-employees
+  "p87 form": /tax-relief-for-employees
+  "psw": /graduate-visa
+  "journal": /sign-in-universal-credit
 
 test:
   "i want to test a single best bet": /here/you/go
