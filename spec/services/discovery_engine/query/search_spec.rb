@@ -284,7 +284,8 @@ RSpec.describe DiscoveryEngine::Query::Search do
         let(:error) { Google::Cloud::DeadlineExceededError.new(error_type) }
 
         it "raises an error and logs it to the Rails logger" do
-          expect { search.result_set }.to raise_error(DiscoveryEngine::InternalError)
+          expect { search.result_set }
+            .to raise_error(DiscoveryEngine::InternalError, error_type)
           expect(Rails.logger).to have_received(:warn).with(debugging_message)
         end
       end
@@ -294,7 +295,8 @@ RSpec.describe DiscoveryEngine::Query::Search do
         let(:error) { Google::Cloud::DeadlineExceededError.new(error_type) }
 
         it "raises an error and logs it to the Rails logger" do
-          expect { search.result_set }.to raise_error(DiscoveryEngine::InternalError)
+          expect { search.result_set }
+            .to raise_error(DiscoveryEngine::InternalError, error_type)
 
           expect(Rails.logger).to have_received(:warn).with(debugging_message)
         end

@@ -69,16 +69,20 @@ RSpec.describe "Making a search request" do
     end
 
     context "when search returns a DiscoveryEngine::InternalError" do
+      let(:error_message) { "Google agent search error" }
+
       before do
         allow(search_service)
           .to receive(:result_set)
-          .and_raise(DiscoveryEngine::InternalError)
+          .and_raise(DiscoveryEngine::InternalError, error_message)
       end
 
-      it "returns a 500 response" do
+      it "returns a 500 response with the search error detail" do
         get "/search.json"
 
         expect(response).to have_http_status(:internal_server_error)
+        expect(JSON.parse(response.body))
+          .to eq("error" => "Internal server error: #{error_message}")
       end
     end
   end

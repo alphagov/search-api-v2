@@ -39,7 +39,7 @@ module DiscoveryEngine::Query
         search_result.response
       rescue Google::Cloud::DeadlineExceededError, Google::Cloud::InternalError => e
         Rails.logger.warn(debugging_message(e))
-        raise DiscoveryEngine::InternalError
+        raise DiscoveryEngine::InternalError.new(e.message), cause: e
       end
     end
 
