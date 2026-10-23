@@ -1,18 +1,18 @@
 shared:
   "budget":
-    - /government/topical-events/budget-2025
-    - /government/publications/budget-2025
-  "budget 2025":
-    - /government/topical-events/budget-2025
-    - /government/publications/budget-2025
-  "autumn budget": /government/topical-events/budget-2025
-  "autumn budget 2025": /government/topical-events/budget-2025
-  "2025 budget": /government/topical-events/budget-2025
-  "budget november 2025": /government/topical-events/budget-2025
-  "budget statement": /government/topical-events/budget-2025
-  "autumn statement": /government/topical-events/budget-2025
-  "the budget": /government/topical-events/budget-2025
-  "budget documents": /government/publications/budget-2025
+    - /government/topical-events/budget-2026
+    - /government/publications/budget-2026-document
+  "budget 2026":
+    - /government/topical-events/budget-2026
+    - /government/publications/budget-2026-document
+  "autumn budget": /government/topical-events/budget-2026
+  "autumn budget 2026": /government/topical-events/budget-2026
+  "2026 budget": /government/topical-events/budget-2026
+  "budget statement": /government/topical-events/budget-2026
+  "autumn statement": /government/topical-events/budget-2026
+  "the budget": /government/topical-events/budget-2026
+  "budget documents": /government/publications/budget-2026-document
+  "autumn statement 2026": /government/topical-events/budget-2026
   "antisocial behaviour": /how-report-antisocial-behaviour
   "anti social behaviour": /how-report-antisocial-behaviour
   "anti-social behaviour": /how-report-antisocial-behaviour
