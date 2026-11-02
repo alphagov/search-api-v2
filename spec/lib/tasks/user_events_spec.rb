@@ -54,6 +54,27 @@ RSpec.describe "user events tasks" do
         Rake::Task["user_events:import_events_for_date"].invoke(date.to_s)
       end
     end
+
+    describe "user_events:import_events_for_multiple_dates" do
+      let(:first_date) { Date.new(2000, 1, 1) }
+      let(:second_date) { Date.new(2000, 1, 2) }
+      let(:third_date) { Date.new(2000, 1, 3) }
+      let(:dates) { "#{first_date} #{second_date} #{third_date}" }
+
+      before do
+        Rake::Task["user_events:import_events_for_multiple_dates"].reenable
+      end
+
+      it "imports events for the given dates" do
+        dates.split(" ").each do |date|
+          expect(import).to receive(:import_all)
+                                      .with(date.to_date)
+          .once
+        end
+
+        Rake::Task["user_events:import_events_for_multiple_dates"].invoke(dates)
+      end
+    end
   end
 
   describe "purge events" do
