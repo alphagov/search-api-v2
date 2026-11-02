@@ -21,8 +21,15 @@ e.g. `import_events_for_multiple_dates['2026-10-01 2026-10-02 2026-10-03']`"
   task :import_events_for_multiple_dates, [:dates] => :environment do |_, args|
     dates = args[:dates].split(" ")
     dates.each do |date|
-      formatted_date = Time.zone.parse(date).to_date
+      begin
+        formatted_date = Time.zone.parse(date).to_date
+      rescue NoMethodError => e
+        Rails.logger.warn("Invalid date '#{date}': #{e.message}")
+        raise e
+      end
+
       DiscoveryEngine::UserEvents::Import.import_all(formatted_date)
+      Rails.logger.info("Imported user events for #{formatted_date}")
     end
   end
 

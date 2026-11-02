@@ -62,6 +62,7 @@ RSpec.describe "user events tasks" do
       let(:dates) { "#{first_date} #{second_date} #{third_date}" }
 
       before do
+        allow(Rails.logger).to receive(:info)
         Rake::Task["user_events:import_events_for_multiple_dates"].reenable
       end
 
@@ -72,7 +73,23 @@ RSpec.describe "user events tasks" do
           .once
         end
 
+        expect(Rails.logger).to receive(:info).with(
+          "Imported user events for 2000-01-03",
+        )
+
         Rake::Task["user_events:import_events_for_multiple_dates"].invoke(dates)
+      end
+
+      context "when an invalid string is given" do
+        let(:invalid_dates) { "not-a-date" }
+
+        it "logs the error to Rails logger and exits the task" do
+          expect(Rails.logger).to receive(:warn).with(
+            "Invalid date 'not-a-date': undefined method 'to_date' for nil",
+          )
+
+          expect { Rake::Task["user_events:import_events_for_multiple_dates"].invoke(invalid_dates) }.to raise_error(NoMethodError)
+        end
       end
     end
   end
