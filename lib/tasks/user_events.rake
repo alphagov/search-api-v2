@@ -15,6 +15,24 @@ namespace :user_events do
     DiscoveryEngine::UserEvents::Import.import_all(date)
   end
 
+  desc "Import user events from the BigQuery analytics dataset for multiple dates
+Specify a list of dates to import user events for
+e.g. `import_events_for_multiple_dates['2026-10-01 2026-10-02 2026-10-03']`"
+  task :import_events_for_multiple_dates, [:dates] => :environment do |_, args|
+    dates = args[:dates].split(" ")
+    dates.each do |date|
+      begin
+        formatted_date = Time.zone.parse(date).to_date
+      rescue NoMethodError, ArgumentError => e
+        Rails.logger.warn("Invalid date '#{date}': #{e.message}")
+        raise e
+      end
+
+      DiscoveryEngine::UserEvents::Import.import_all(formatted_date)
+      Rails.logger.info("Imported user events for #{formatted_date}")
+    end
+  end
+
   desc "Purge user events that occurred during the final week of the retention period"
   task purge_final_week_of_retention_period: :environment do
     DiscoveryEngine::UserEvents::Purge.purge_final_week_of_retention_period
