@@ -23,7 +23,7 @@ e.g. `import_events_for_multiple_dates['2026-10-01 2026-10-02 2026-10-03']`"
     dates.each do |date|
       begin
         formatted_date = Time.zone.parse(date).to_date
-      rescue NoMethodError => e
+      rescue NoMethodError, ArgumentError => e
         Rails.logger.warn("Invalid date '#{date}': #{e.message}")
         raise e
       end

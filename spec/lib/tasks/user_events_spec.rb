@@ -91,6 +91,18 @@ RSpec.describe "user events tasks" do
           expect { Rake::Task["user_events:import_events_for_multiple_dates"].invoke(invalid_dates) }.to raise_error(NoMethodError)
         end
       end
+
+      context "when an invalid date is given" do
+        let(:invalid_dates) { "2000-31-01" }
+
+        it "logs the error to Rails logger and exits the task" do
+          expect(Rails.logger).to receive(:warn).with(
+            "Invalid date '2000-31-01': argument out of range",
+          )
+
+          expect { Rake::Task["user_events:import_events_for_multiple_dates"].invoke(invalid_dates) }.to raise_error(ArgumentError)
+        end
+      end
     end
   end
 
