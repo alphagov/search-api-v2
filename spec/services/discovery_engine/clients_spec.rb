@@ -10,7 +10,6 @@ RSpec.describe DiscoveryEngine::Clients do
 
     before do
       allow(config).to receive(:timeout=)
-      allow(config).to receive(:retry_policy=)
       allow(Google::Cloud::DiscoveryEngine).to receive(service_name) do |**_kwargs, &block|
         block.call(config) if block
         client
@@ -28,23 +27,10 @@ RSpec.describe DiscoveryEngine::Clients do
     end
   end
 
-  describe ".search_service with four second timeout and retry policy" do
+  describe ".search_service with configurable timeout" do
     let(:service) { described_class.search_service }
 
-    include_examples "a client with custom configuration", :search_service, 2
-
-    it "configures the client with a retry_policy" do
-      service
-
-      expect(config).to have_received(:retry_policy=).with(
-        {
-          initial_delay: 1.0,
-          max_delay: 2.0,
-          multiplier: 1.5,
-          retry_codes: %w[UNAVAILABLE DEADLINE_EXCEEDED INTERNAL],
-        },
-      )
-    end
+    include_examples "a client with custom configuration", :search_service, 1.5
   end
 
   describe ".completion_service with one second timeout" do
