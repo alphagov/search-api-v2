@@ -261,6 +261,52 @@ RSpec.describe DiscoveryEngine::Query::Search do
       end
     end
 
+    context "when the search times out" do
+      let(:search_return_value) { nil }
+      let(:timeout_error) { Google::Cloud::DeadlineExceededError.new("Deadline error") }
+      let(:search_response) do
+        double(total_size: 1, attribution_token: "token", results: [], corrected_query: nil)
+      end
+
+      before { allow(Rails.logger).to receive(:warn) }
+
+      context "and the retry succeeds" do
+        before do
+          allow(client).to receive(:search).and_invoke(
+            ->(*) { raise timeout_error },
+            ->(*) { double(response: search_response) },
+          )
+        end
+
+        it "retries once and returns the result" do
+          expect(search.result_set.total).to eq(1)
+          expect(client).to have_received(:search).twice
+        end
+      end
+
+      context "and the retry also times out" do
+        before { allow(client).to receive(:search).and_raise(timeout_error) }
+
+        it "raises an InternalError after only one retry" do
+          expect { search.result_set }
+            .to raise_error(DiscoveryEngine::InternalError, "Deadline error")
+          expect(client).to have_received(:search).twice
+        end
+      end
+
+      context "and the error is not a timeout" do
+        before do
+          allow(client).to receive(:search)
+            .and_raise(Google::Cloud::InternalError.new("Internal error"))
+        end
+
+        it "does not retry" do
+          expect { search.result_set }.to raise_error(DiscoveryEngine::InternalError)
+          expect(client).to have_received(:search).once
+        end
+      end
+    end
+
     context "when search fails" do
       let(:search_return_value) { double }
 

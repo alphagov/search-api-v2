@@ -4,6 +4,7 @@ module DiscoveryEngine::Query
     DEFAULT_OFFSET = 0
     DEFAULT_ORDER_BY = nil # not specifying an order_by means the results are ordered by relevance
     MAX_RESULTS_VALUE = 2_147_483_647
+    MAX_RETRIES = 1
 
     def initialize(
       query_params,
@@ -33,13 +34,26 @@ module DiscoveryEngine::Query
       @response ||= begin
         search_result =
           Metrics::Exported.observe_duration(:discovery_engine_search_request_duration) do
-            DiscoveryEngine::Clients.search_service.search(discovery_engine_params)
+            search_with_retry
           end
 
         search_result.response
       rescue Google::Cloud::DeadlineExceededError, Google::Cloud::InternalError => e
         Rails.logger.warn(debugging_message(e))
         raise DiscoveryEngine::InternalError.new(e.message), cause: e
+      end
+    end
+
+    def search_with_retry
+      attempts = 0
+      begin
+        attempts += 1
+        DiscoveryEngine::Clients.search_service.search(discovery_engine_params)
+      rescue Google::Cloud::DeadlineExceededError => e
+        raise if attempts > MAX_RETRIES
+
+        Rails.logger.warn("#{self.class.name}: Search timed out, retrying: #{e.message}")
+        retry
       end
     end
 
