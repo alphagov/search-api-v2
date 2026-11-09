@@ -14,14 +14,7 @@ module DiscoveryEngine
 
     def search_service
       @search_service ||= Google::Cloud::DiscoveryEngine.search_service(version: :v1) do |config|
-        config.timeout = 2.0
-        config.retry_policy = {
-          initial_delay: 1.0, # Seconds to wait before the first retry
-          max_delay: 2.0, # Maximum delay between retries
-          multiplier: 1.5, # Factor to increase delay by for each attempt
-          # https://grpc.io/docs/guides/status-codes/
-          retry_codes: %w[UNAVAILABLE DEADLINE_EXCEEDED INTERNAL],
-        }
+        config.timeout = 1.5
       end
     end
 
