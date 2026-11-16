@@ -8,6 +8,12 @@ module DiscoveryEngine
       end
     end
 
+    def conversational_search_service
+      @conversational_search_service ||= Google::Cloud::DiscoveryEngine.conversational_search_service(version: :v1) do |config|
+        config.timeout = 60
+      end
+    end
+
     def document_service
       @document_service ||= Google::Cloud::DiscoveryEngine.document_service(version: :v1)
     end
