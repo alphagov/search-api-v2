@@ -12,8 +12,10 @@ class KibanaLogFormatter
 
   def save_as_gor
     File.open(@gor_traffic_replay_file, "a") do |f|
-      CSV.foreach(@csv_logs_file, headers: true) do |row|
-        f.print get_gor_entry(row)
+      logs = CSV.read(@csv_logs_file, headers: true)
+      sorted_logs = logs.sort_by { |log| Time.zone.parse(log["timestamp"]) }
+      sorted_logs.each do |log|
+        f.print get_gor_entry(log)
         f.print GOR_LINE_SEPARATOR
       end
     end
