@@ -14,11 +14,12 @@ RSpec.describe KibanaLogFormatter do
       csv << ["17 Jun, 2026 @ 09:58:20.222", "/search/all?keywords=te9+form", '{"@timestamp":"2026-06-17T09:58:20+00:00","body_bytes_sent":111202}']
     end
   end
-  let(:gor_formatted_first_request) { "1781690401305000000 0\nGET /search/all?keywords=change+of+address HTTP/1.1\r\nHost: www.gov.uk\r\n\n\n🐵🙈🙉\n" }
+  let(:gor_formatted_first_request) { "1 7f83aa1e10c7a2d02f87f63d 1781690300222000000 0\nGET /search/all?keywords=te9+form HTTP/1.1\r\nHost: www.gov.uk\r\n\n\n🐵🙈🙉\n" }
 
   before do
     file.write(input_csv_file)
     file.close
+    allow(Random).to receive(:hex).with(12).and_return("7f83aa1e10c7a2d02f87f63d")
   end
 
   after do
@@ -28,7 +29,12 @@ RSpec.describe KibanaLogFormatter do
   describe "#save_as_gor" do
     it "formats the output correctly" do
       formatter.save_as_gor
-      expect(File.open(output_gor_file.path).read).to include(gor_formatted_first_request)
+      expect(File.open(output_gor_file.path).read).to start_with(gor_formatted_first_request)
+    end
+
+    it "sorts the logs by timestamp" do
+      formatter.save_as_gor
+      expect(File.open(output_gor_file.path).read).to match(/te9.*change.*applying/m)
     end
   end
 end
