@@ -9,4 +9,10 @@ namespace :generate_answers do
     DiscoveryEngine::Answer::CsvExport.new.export(input_path, output_path)
     puts "Wrote #{output_path}"
   end
+
+  desc "Outputs the full JSON answer response for a single query"
+  task :raw_response, [:query] => :environment do |_, args|
+    query = args[:query] || abort("Usage: rake generate_answers:raw_response['your query']")
+    puts JSON.pretty_generate(DiscoveryEngine::Answer::Query.new(query).response.to_h)
+  end
 end

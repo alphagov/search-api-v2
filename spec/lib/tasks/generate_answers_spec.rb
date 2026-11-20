@@ -40,4 +40,20 @@ RSpec.describe "generate_answers rake tasks" do
              .and output("Usage: rake generate_answers:answers_csv[input.csv,output.csv]\n").to_stderr
     end
   end
+
+  describe "generate_answers:raw_response" do
+    let(:query) { instance_double(DiscoveryEngine::Answer::Query) }
+    let(:response) { Google::Cloud::DiscoveryEngine::V1::AnswerQueryResponse.new(answer: { answer_text: "An answer" }) }
+
+    before do
+      allow(DiscoveryEngine::Answer::Query).to receive(:new).and_return(query)
+      allow(query).to receive(:response).and_return(response)
+      Rake::Task["generate_answers:raw_response"].reenable
+    end
+
+    it "prints the full JSON response" do
+      expect { Rake::Task["generate_answers:raw_response"].invoke("my query") }
+        .to output("#{JSON.pretty_generate(response.to_h)}\n").to_stdout
+    end
+  end
 end
