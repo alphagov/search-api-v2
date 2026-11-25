@@ -122,7 +122,7 @@ GEM
       grpc (~> 1.41)
     googleapis-common-protos-types (1.25.0)
       google-protobuf (~> 4.26)
-    googleauth (1.17.7)
+    googleauth (1.17.8)
       faraday (>= 1.0, < 3.a)
       google-cloud-env (~> 2.2)
       google-logging-utils (~> 0.1)
@@ -183,7 +183,7 @@ GEM
       simpleidn (~> 0.2)
     jsonpath (1.1.5)
       multi_json
-    jwt (3.3.0)
+    jwt (3.3.1)
       base64
     language_server-protocol (3.17.0.5)
     lint_roller (1.1.0)
