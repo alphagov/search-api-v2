@@ -152,16 +152,16 @@ GEM
       capybara (>= 3.36)
       puma
       selenium-webdriver (>= 4.0)
-    grpc (1.85.0-aarch64-linux-gnu)
+    grpc (1.85.4-aarch64-linux-gnu)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
-    grpc (1.85.0-arm64-darwin)
+    grpc (1.85.4-arm64-darwin)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
-    grpc (1.85.0-x86_64-darwin)
+    grpc (1.85.4-x86_64-darwin)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
-    grpc (1.85.0-x86_64-linux-gnu)
+    grpc (1.85.4-x86_64-linux-gnu)
       google-protobuf (>= 3.25, < 5.0)
       googleapis-common-protos-types (~> 1.0)
     grpc_mock (0.4.6)
@@ -599,7 +599,7 @@ DEPENDENCIES
   govuk_app_config
   govuk_message_queue_consumer
   govuk_test
-  grpc (~> 1.85.0)
+  grpc (~> 1.85.4)
   grpc_mock
   json_schemer
   jsonpath
